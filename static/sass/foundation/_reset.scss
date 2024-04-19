@@ -2,32 +2,42 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@100;200;300;400;500;600;700&family=Sriracha&display=swap');
 
 body {
-  font-family: 'Poppins', sans-serif, 'Renner*', 'Avenir', 'Helvetica Neue',
-    'Helvetica', 'Arial', 'Hiragino Sans', 'ヒラギノ角ゴシック', YuGothic,
-    'Yu Gothic', 'メイリオ', Meiryo, 'ＭＳ Ｐゴシック', 'MS PGothic';
+  font-family: Muli, sans-serif, 'Poppins', 'Renner*', 'Avenir',
+    'Helvetica Neue', 'Helvetica', 'Arial', 'Hiragino Sans',
+    'ヒラギノ角ゴシック', YuGothic, 'Yu Gothic', 'メイリオ', Meiryo,
+    'ＭＳ Ｐゴシック', 'MS PGothic';
 }
 
 h1,
 h2,
 h3,
+h4,
 ul,
 li,
-p {
+div,
+p,
+dl,
+dt,
+dd,
+select,
+span {
   margin: 0;
   padding: 0;
+  font-size: var(--font-size-base);
 }
 
 h1 {
   font-size: 0;
 }
 
-h5 {
-  font-size: 1em;
+span,
+a,
+time {
+  font-size: inherit;
 }
 
 p {
   color: var(--color-font);
-  font-size: 13px;
 }
 
 ul {

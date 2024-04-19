@@ -23,14 +23,13 @@
     i {
       position: relative;
       top: 1px;
-      font-size: 30px;
+      font-size: var(--font-size-3xl);
       vertical-align: top;
     }
   }
 
   select.language-select {
     text-align: center;
-    font-size: 14px;
     appearance: none;
     border-radius: 1lh;
     padding: 5px 10px;
@@ -42,16 +41,14 @@
     flex-grow: inherit;
     cursor: pointer;
     option {
-      color: var(--color-secondary);
+      color: var(--color-black);
       background-color: var(--color-background-gray);
-      font-weight: bold;
     }
   }
 
   ul.navbar-nav {
     a.nav-link {
       color: #fff;
-      font-size: 14px;
       margin-left: 12px;
 
       &:hover {

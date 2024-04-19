@@ -43,7 +43,8 @@ str(?inheritance_name_ja) as ?inheritance_ja
 str(?inheritance_id_en) as ?inheritance_id_en
 str(?inheritance_id_ja) as ?inheritance_id_ja
 CONCAT('ORPHA:', STR(?orpha_id)) as ?orpha_id
-str(?ordo_id) as ?orpha_url
+#str(?ordo_id) as ?orpha_url
+str(?orpha_url) as ?orpha_url
 str(?mondo_ID) as ?mondo_id
 ?mondo_url
 str(?DBMS) as ?ur_dbms_url
@@ -139,8 +140,9 @@ WHERE {
               sio:SIO_000205 ?HGNC .
         ?HGNC rdfs:label ?gene_symbol .
       }
-
+      #https://www.orpha.net/en/disease/detail/822?name=822
       BIND (replace(str(?ordo_id), 'http://www.orpha.net/ORDO/Orphanet_', '') AS ?orpha_id)
+      BIND (CONCAT('https://www.orpha.net/en/disease/detail/', ?orpha_id, '?name=', ?orpha_id, '&mode=orpha') AS ?orpha_url)
       
       OPTIONAL { ?mim_id rdfs:seeAlso ?mondo FILTER(CONTAINS(STR(?mim_id), "mim")) }
       BIND (replace(str(?mim_id), 'http://identifiers.org/mim/', 'OMIM:') AS ?omim_id)

@@ -6,6 +6,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+  <!-- SEO -->
+  <title>API | NanbyoData</title>
+  <meta name="description" content="NanbyoDataのAPIページです." />
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="API| NanbyoData" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanbyodata.jp/api" />
+  <meta property="og:description" content="NanbyoDataのAPIページです." />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -16,7 +26,10 @@
   <!-- CSS -->
   <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
   <link rel="stylesheet" href="https://unpkg.com/swagger-ui-dist@5.11.0/swagger-ui.css" />
-  <title>NanbyoData - API</title>
+
+  <!-- favicon -->
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+
 </head>
 
 <body>
@@ -34,7 +47,7 @@
       <script>
         window.onload = () => {
           window.ui = SwaggerUIBundle({
-            url: '/static/json/swagger-nanbyo-data.json',
+            url: 'https://nanbyodata.jp/api_spec_json',
             dom_id: '#swagger-ui',
           });
         };

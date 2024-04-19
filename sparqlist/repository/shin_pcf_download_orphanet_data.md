@@ -98,7 +98,8 @@ WHERE {
         oa:hasBody ?hpo .
     #FILTER(CONTAINS(STR(?ordo_id), "ORDO"))
   }
-    BIND (replace(str(?ordo_id), 'http://www.orpha.net/ORDO/Orphanet_', '') AS ?orpha_id)
+  BIND (replace(str(?ordo_id), 'http://www.orpha.net/ORDO/Orphanet_', '') AS ?orpha_id)
+  BIND (CONCAT('https://www.orpha.net/en/disease/detail/', ?orpha_id, '?name=', ?orpha_id, '&mode=orpha') AS ?orpha_url)
 } order by ?ordo_id
 ```
 

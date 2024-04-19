@@ -4,18 +4,21 @@ footer {
   background-color: var(--color-footer-bg);
 
   li,
-  p,
-  a,
-  a:visited {
+  p {
     color: var(--color-font);
-    font-size: 12px;
+    font-size: var(--font-size-small);
   }
 
   a {
+    color: inherit;
     &:hover {
       color: var(--color-link);
       text-decoration-color: var(--color-link);
       text-underline-offset: 4px;
+    }
+
+    &:visited {
+      color: inherit;
     }
 
     &[target='_blank']::after {
@@ -42,7 +45,7 @@ footer {
           margin-top: 11px;
 
           .footer__organism-main {
-            font-size: 15px;
+            font-size: var(--font-size-medium);
             font-weight: 700;
             letter-spacing: -0.5px;
           }
@@ -51,7 +54,6 @@ footer {
 
       h2.footer-title {
         font-weight: 800;
-        font-size: 14px;
         margin-bottom: 10px;
       }
 
@@ -70,7 +72,7 @@ footer {
           overflow-wrap: break-word;
 
           li.individual_link {
-            +li {
+            + li {
               margin-top: 5px;
             }
           }
@@ -94,8 +96,8 @@ footer {
       }
 
       .footer__lisence {
-        p {
-          font-size: 10px;
+        small {
+          font-size: var(--font-size-xs);
           display: flex;
           justify-content: center;
           gap: 5px;
@@ -105,10 +107,6 @@ footer {
             width: 81px;
             height: 16px;
             background: url(../img/by.svg) no-repeat;
-          }
-
-          a {
-            font-size: inherit;
           }
         }
       }

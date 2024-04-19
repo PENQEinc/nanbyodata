@@ -3,14 +3,6 @@
   flex-wrap: wrap;
   margin: 12px 0;
 
-  &::after {
-    content: '';
-    width: 100%;
-    height: 2px;
-    background-color: var(--color-secondary);
-    order: -1;
-  }
-
   .tab-label {
     position: relative;
     display: flex;
@@ -23,10 +15,11 @@
     font-weight: bold;
     margin-bottom: 0;
     cursor: pointer;
+    border-bottom: 2px solid var(--color-secondary);
 
     .data-num {
-      padding: 0px 5px;
-      font-size: 10px;
+      padding: 0 4px;
+      font-size: var(--font-size-xs);
       margin-left: 5px;
       min-width: 15px;
     }
@@ -34,13 +27,17 @@
     small {
       margin-right: 4px;
     }
+
+    &.-flex {
+      flex: 1;
+    }
   }
 
   .tab-content {
     width: 100%;
     height: 0;
     overflow: hidden;
-    opacity: 0;
+    display: none;
     line-height: 2;
   }
 
@@ -50,13 +47,12 @@
     &:checked + .tab-label {
       border: var(--color-secondary) 2px solid;
       border-bottom: #fff 2px solid;
-      margin-bottom: -2px;
 
       + .tab-content {
         height: auto;
         overflow: auto;
         padding: 10px 5px;
-        opacity: 1;
+        display: block;
       }
     }
   }

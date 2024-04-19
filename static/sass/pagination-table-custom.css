@@ -1,0 +1,7 @@
+
+.wrapper > .tableOptionWrapper {
+  min-height: 0 !important;
+}
+.wrapper > .tableOptionWrapper  > .tableWrapper {
+    min-height: 0 !important;
+}

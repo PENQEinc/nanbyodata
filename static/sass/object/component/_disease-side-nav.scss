@@ -25,11 +25,10 @@
         margin-top: -1.5px;
         position: relative;
         color: var(--color-secondary);
-        font-size: 14px;
       }
       .data-num {
-        padding: 0 6px;
-        font-size: 12px;
+        padding: 0 5px;
+        font-size: var(--font-size-small);
         min-width: 18px;
         position: absolute;
         right: 8px;
@@ -38,9 +37,8 @@
         background-color: rgba(22, 35, 78, 0.2);
         color: var(--color-secondary);
       }
-      .brc,
+      .bio-resource,
       .variant {
-        font-size: 14px;
         cursor: pointer;
         color: var(--color-secondary);
         font-weight: bold;

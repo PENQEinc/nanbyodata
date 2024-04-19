@@ -1,0 +1,6 @@
+memo.txt
+cgi/log.txt
+config.cfg
+uwsgi/uwsgi.log
+uwsgi/uwsgi.pid
+ontology/current_release

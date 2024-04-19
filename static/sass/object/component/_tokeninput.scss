@@ -1,7 +1,7 @@
 // reference: static/js/jquery.tokeninput.js DEFAULT_CLASSES
 ul.token-input-list-facebook {
   overflow: hidden;
-  font-size: 12px;
+  font-size: var(--font-size-small);
   font-family: Verdana;
   background-color: #fff;
   border: 1px solid #dfe1e5;
@@ -9,7 +9,7 @@ ul.token-input-list-facebook {
 
   li.token-input-input-token-facebook {
     input#token-input-tokeninput {
-      font-size: 16px;
+      font-size: var(--font-size-medium);
       border: 0;
       width: 100px;
       padding: 3px 8px;
@@ -29,7 +29,7 @@ div.token-input-dropdown-facebook {
   border-right: 1px solid #ccc;
   border-bottom: 1px solid #ccc;
   cursor: default;
-  font-size: 11px;
+  font-size: var(--font-size-small);
   font-family: Verdana;
   z-index: 1031;
 
@@ -107,12 +107,12 @@ div.token-input-dropdown-facebook {
 }
 
 li.token-input-token-result-facebook {
-	font-size:16px;
+	font-size:var(--font-size-medium);
 
   span.token-input-token-word-facebook {
     &.token-input-token-information-facebook{
       top: 4px;
-      font-size:20px;
+      font-size: var(--font-size-xl);
     }
 
     &.token-input-token-synonym-facebook {
@@ -120,7 +120,7 @@ li.token-input-token-result-facebook {
     }
 
     &.token-input-token-id-facebook {
-      font-size: 14px;
+      // font-size: 14px;
     }
 
     &.token-input-token-name-facebook {

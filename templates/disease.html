@@ -6,6 +6,16 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
+  <!-- SEO -->
+  <title>{{title}} | NanbyoData</title>
+  <meta name="description" content="{{description}}" />
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="{{title}}" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nanbyodata.jp/disease/NANDO:{{id_nando}}" />
+  <meta property="og:description" content="{{description}}" />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
     integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
@@ -20,13 +30,12 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@webcomponents/webcomponentsjs@1.3.0/webcomponents-loader.js"
     crossorigin></script>
-  <link rel="import" href="https://nanbyodata.jp/stanza/nando_entry_v2/" />
 
   <!-- Main CSS -->
   <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
 
-  <title>NanbyoData</title>
-
+  <!-- favicon -->
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
 
 </head>
 
@@ -111,13 +120,13 @@
             <li><a href="#phenotypes" class="nav-link phenotypes">臨床的特徴<span class="data-num"></span></a>
             </li>
             <li>
-              <div class="brc">難病特異的バイオリソース
+              <div class="bio-resource">難病特異的バイオリソース
                 <ul>
-                  <li><a href="#brc" class="cell nav-link">細胞<span class="data-num"></span></a>
+                  <li><a href="#bio-resource" class="cell nav-link">細胞<span class="data-num"></span></a>
                   </li>
-                  <li><a href="#brc" class="mouse nav-link">マウス<span class="data-num"></span></a>
+                  <li><a href="#bio-resource" class="mouse nav-link">マウス<span class="data-num"></span></a>
                   </li>
-                  <li><a href="#brc" class="dna nav-link">DNA<span class="data-num"></span></a>
+                  <li><a href="#bio-resource" class="dna nav-link">DNA<span class="data-num"></span></a>
                   </li>
                 </ul>
               </div>
@@ -254,7 +263,7 @@
                   </div>
                 </div>
 
-                <!-- <div class="summary-header-actions">
+                <div class="summary-header-actions">
                   <div class="summary-download">
                     <button aria-controls="popup-download" aria-expanded="false" class="open-popup-btn">
                       <span class="btn-text">Download</span>
@@ -267,7 +276,7 @@
                           <label class="label" for="format">Format :</label>
                           <select name="format" id="format">
                             <option value="txt">TXT</option>
-                            <option value="json">JSON</option>
+                            <!-- <option value="json">JSON</option> -->
                           </select>
                         </div>
                         <button type="submit" class="popup-btn">Download</button>
@@ -286,10 +295,10 @@
                       <div class="flex-wrapper">
                         <button type="button" class="popup-btn copy">Copy</button>
                         <button type="button" class="popup-btn email">Email</button>
-                    </div>
+                      </div>
                     </div>
                   </div>
-                </div> -->
+                </div>
               </div>
             </header>
 
@@ -345,101 +354,119 @@
                   <label class="tab-label" for="disease-mhlw"><small>From&nbsp;</small>MHLW</label>
                   <div class="tab-content mhlw">
                   </div>
+
                   <input type="radio" name="disease-definition" class="tab-switch" id="disease-monarch-initiative" />
                   <label class="tab-label" for="disease-monarch-initiative"><small>From&nbsp;</small>Monarch
                     Initiative</label>
                   <div class="tab-content monarch-initiative">
                   </div>
+
                   <input type="radio" name="disease-definition" class="tab-switch" id="disease-medgen" />
                   <label class="tab-label" for="disease-medgen"><small>From&nbsp;</small>MedGen</label>
                   <div class="tab-content medgen">
                   </div>
+
+                  <span class="tab-label -flex"></span>
                 </div>
               </div>
             </div>
 
             <div id="causal-genes" open="">
-              <h4 class="temp-title">疾患原因遺伝子<small>&nbsp;From&nbsp;<a href="https://www.ncbi.nlm.nih.gov/medgen/"
-                    target="_blank" rel="noopener noreferrer">MedGen</a>,&nbsp;<a href="https://www.orphadata.com/"
-                    target="_blank" rel="noopener noreferrer">Orphadata</a>,&nbsp;<a href="https://thegencc.org/"
-                    target="_blank" rel="noopener noreferrer">GenCC</a></small><span class="data-num"></span></h4>
-              <div class="temp-wrapper">
-                <div id="temp-properties" class="properties">
-                </div>
-              </div>
+              <h4 class="temp-title">
+                疾患原因遺伝子
+                <small>
+                  &nbsp;From&nbsp;
+                  <a href="https://www.ncbi.nlm.nih.gov/medgen/" target="_blank" rel="noopener noreferrer">MedGen</a>
+                  ,&nbsp;
+                  <a href="https://www.orphadata.com/" target="_blank" rel="noopener noreferrer">Orphadata</a>
+                  ,&nbsp;
+                  <a href="https://thegencc.org/" target="_blank" rel="noopener noreferrer">GenCC</a>
+                </small>
+                <span class="data-num"></span>
+              </h4>
+              <div id="causal-genes-table"></div>
             </div>
 
             <div id="genetic-testing" open="">
               <h4 class="temp-title">
-                診療用遺伝学的検査情報<small>&nbsp;From&nbsp;<a href="http://www.kentaikensa.jp/" target="_blank"
-                    rel="noopener noreferrer">難病領域における検体検査の精度管理体制の整備に資する研究班</a></small><span class="data-num"></span>
+                診療用遺伝学的検査情報
+                <small>
+                  &nbsp;From&nbsp;
+                  <a href="http://www.kentaikensa.jp/" target="_blank"
+                    rel="noopener noreferrer">難病領域における検体検査の精度管理体制の整備に資する研究班</a>
+                </small>
+                <span class="data-num"></span>
               </h4>
-              <div class="inspection-view">
-              </div>
+              <div id="genetic-testing-table"></div>
             </div>
 
             <div id="phenotypes" open="">
-              <h4 class="temp-title">臨床的特徴<small>&nbsp;From&nbsp;<a href="https://hpo.jax.org/app/" target="_blank"
-                    rel="noopener noreferrer">HPO</a></small><span class="data-num"></span>
+              <h4 class="temp-title">
+                臨床的特徴
+                <small>
+                  &nbsp;From&nbsp;
+                  <a href="https://hpo.jax.org/app/" target="_blank" rel="noopener noreferrer">HPO</a>
+                </small>
+                <span class="data-num"></span>
               </h4>
-              <div class="temp-wrapper">
-                <div class="phenotype-ja">
-                </div>
-                <div class="phenotype-en">
-                </div>
-              </div>
+              <div id="phenotype-ja"></div>
+              <div id="phenotype-en"></div>
             </div>
 
-            <div id="brc" open="">
+            <div id="bio-resource" open="">
               <h4 class="temp-title">
-                難病特異的バイオリソース<small>&nbsp;From&nbsp;<a href="https://web.brc.riken.jp/" target="_blank"
-                    rel="noopener noreferrer">Riken BRC</a></small>
+                難病特異的バイオリソース
+                <small>
+                  &nbsp;From&nbsp;
+                  <a href="https://web.brc.riken.jp/" target="_blank" rel="noopener noreferrer">Riken BRC</a>
+                </small>
               </h4>
+
               <div class="tab-wrap">
                 <input type="radio" name="specific-brc" class="tab-switch" id="bio-resource-cell" />
                 <label class="tab-label bio-resource-cell" for="bio-resource-cell">細胞<span
                     class="data-num"></span></label>
-                <div class="tab-content cell">
-                </div>
+                <div class="tab-content cell"></div>
+
                 <input type="radio" name="specific-brc" class="tab-switch" id="bio-resource-mouse" />
                 <label class="tab-label bio-resource-mouse" for="bio-resource-mouse">マウス<span
                     class="data-num"></span></label>
-                <div class="tab-content mouse">
-                </div>
+                <div class="tab-content mouse"></div>
+
                 <input type="radio" name="specific-brc" class="tab-switch" id="bio-resource-dna" />
                 <label class="tab-label bio-resource-dna" for="bio-resource-dna">DNA<span
                     class="data-num"></span></label>
-                <div class="tab-content dna">
-                </div>
+                <div class="tab-content dna"></div>
+
+                <span class="tab-label -flex"></span>
               </div>
             </div>
 
             <div id="variant" open="">
               <h4 class="temp-title">
-                バリアント<small>&nbsp;From&nbsp;<a href="https://grch38.togovar.org/" target="_blank"
-                    rel="noopener noreferrer">TogoVar</a></small>
+                バリアント
+                <small>
+                  &nbsp;From&nbsp;
+                  <a href="https://grch38.togovar.org/" target="_blank" rel="noopener noreferrer">TogoVar</a>
+                </small>
               </h4>
+
               <div class="tab-wrap">
                 <input type="radio" name="variant" class="tab-switch" id="variant-clinvar" />
-                <label class="tab-label variant-clinvar" for="variant-clinvar">ClinVar<span
-                    class="data-num"></span></label>
-                <div class="tab-content clinvar">
-                </div>
+                <label class="tab-label variant-clinvar" for="variant-clinvar">
+                  ClinVar<span class="data-num"></span>
+                </label>
+                <div class="tab-content clinvar"></div>
+
                 <input type="radio" name="variant" class="tab-switch" id="variant-mgend" />
-                <label class="tab-label variant-mgend" for="variant-mgend">MGeND<span class="data-num"></span></label>
-                <div class="tab-content mgend">
-                </div>
+                <label class="tab-label variant-mgend" for="variant-mgend">
+                  MGeND<span class="data-num"></span>
+                </label>
+                <div class="tab-content mgend"></div>
+
+                <span class="tab-label -flex"></span>
               </div>
             </div>
-
-            <!-- <div id="variant" open="">
-              <h4 class="temp-title">バリアント<small>&nbsp;From&nbsp;<a href="https://grch38.togovar.org/" target="_blank"
-                    rel="noopener noreferrer">TogoVar</a></small><span class="data-num"></span></h4>
-              <div class="temp-wrapper">
-                <div id="temp-properties" class="properties">
-                </div>
-              </div>
-            </div> -->
 
           </div>
         </main>

@@ -140,8 +140,9 @@ WHERE {
 
       BIND (replace(str(?mim_id), 'http://identifiers.org/mim/', '') AS ?omim_id)
       
-      OPTIONAL { ?orpha_url rdfs:seeAlso ?mondo FILTER(CONTAINS(STR(?orpha_url), "ORDO")) }
-      BIND (replace(str(?orpha_url), 'http://www.orpha.net/ORDO/Orphanet_', 'ORPHA:') AS ?orpha_id)
+      OPTIONAL { ?ordo_id rdfs:seeAlso ?mondo FILTER(CONTAINS(STR(?ordo_id), "ORDO")) }
+      BIND (replace(str(?ordo_id), 'http://www.orpha.net/ORDO/Orphanet_', 'ORPHA:') AS ?orpha_id)
+      BIND (CONCAT('https://www.orpha.net/en/disease/detail/', ?orpha_id, '?name=', ?orpha_id, '&mode=orpha') AS ?orpha_url)
       
 }
 ```

@@ -24,9 +24,9 @@
       }
 
       .card-title {
-        text-align: center;
-        font-size: 17px;
+        font-size: var(--font-size-large);
         color: var(--color-secondary);
+        text-align: center;
         letter-spacing: 1px;
       }
 

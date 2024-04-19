@@ -2,7 +2,7 @@
 ## Parameters
 * `mondo_id` MONDO ID
   * default: 0007045
-  * example: 0003847, 0018096, 0007477, 0001046
+  * example: 0018096, 0007477, 0001046
 
 ## Endpoint
 https://pubcasefinder-rdf.dbcls.jp/sparql

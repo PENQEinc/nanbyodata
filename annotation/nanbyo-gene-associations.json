@@ -1,0 +1,6027 @@
+{
+  "NANDO:1200680": [
+    "A2ML1",
+    "CBL",
+    "KRAS",
+    "LZTR1",
+    "MRAS",
+    "NRAS",
+    "PTPN11",
+    "RAF1",
+    "RASA2",
+    "RIT1",
+    "RRAS",
+    "RRAS2",
+    "SOS1",
+    "SOS2"
+  ],
+  "NANDO:2200413": [
+    "A2ML1",
+    "CBL",
+    "KRAS",
+    "LZTR1",
+    "MRAS",
+    "NRAS",
+    "PTPN11",
+    "RAF1",
+    "RASA2",
+    "RIT1",
+    "RRAS",
+    "RRAS2",
+    "SOS1",
+    "SOS2"
+  ],
+  "NANDO:1200410": [
+    "AAAS",
+    "GMPPA",
+    "TRAPPC11"
+  ],
+  "NANDO:1200952": [
+    "AARS2"
+  ],
+  "NANDO:1200546": [
+    "AARS2",
+    "CSF1R"
+  ],
+  "NANDO:2200598": [
+    "ABAT"
+  ],
+  "NANDO:1200854": [
+    "ABCA1"
+  ],
+  "NANDO:1200614": [
+    "ABCA12"
+  ],
+  "NANDO:1200617": [
+    "ABCA12",
+    "ALOX12B",
+    "ALOXE3",
+    "CERS3",
+    "CYP4F22",
+    "LIPN",
+    "NIPAL4",
+    "PNPLA1",
+    "SDR9C7",
+    "SULT2B1",
+    "TGM1"
+  ],
+  "NANDO:1200616": [
+    "ABCA12",
+    "ALOX12B",
+    "ALOXE3",
+    "CERS3",
+    "NIPAL4",
+    "PNPLA1",
+    "TGM1"
+  ],
+  "NANDO:2200992": [
+    "ABCA12"
+  ],
+  "NANDO:1200417": [
+    "ABCA3",
+    "ATP11A",
+    "DPP9",
+    "DSP",
+    "FAM13A",
+    "MUC5B",
+    "PARN",
+    "RTEL1",
+    "SFTPA1",
+    "SFTPA2",
+    "SFTPC",
+    "STN1",
+    "TERC",
+    "TERT"
+  ],
+  "NANDO:1200937": [
+    "ABCA4",
+    "ADAM9",
+    "AIPL1",
+    "ATF6",
+    "CACNA1F",
+    "CACNA2D4",
+    "CDHR1",
+    "CFAP410",
+    "CNGA3",
+    "CRX",
+    "DRAM2",
+    "GUCA1A",
+    "GUCY2D",
+    "NMNAT1",
+    "OPN1LW",
+    "OPN1MW",
+    "PITPNM3",
+    "POC1B",
+    "PROM1",
+    "PRPH2",
+    "RAB28",
+    "RAX2",
+    "RIMS1",
+    "RPGR",
+    "RPGRIP1",
+    "SEMA4A",
+    "TTLL5",
+    "UNC119"
+  ],
+  "NANDO:1200434": [
+    "ABCA4",
+    "AGBL5",
+    "AHI1",
+    "AHR",
+    "AIPL1",
+    "ARHGEF18",
+    "ARL2BP",
+    "ARL3",
+    "ARL6",
+    "BBS2",
+    "BEST1",
+    "CA4",
+    "CDHR1",
+    "CERKL",
+    "CFAP418",
+    "CLRN1",
+    "CNGA1",
+    "CNGB1",
+    "CRB1",
+    "CRX",
+    "DHDDS",
+    "DHX38",
+    "EYS",
+    "FAM161A",
+    "FSCN2",
+    "GUCA1B",
+    "HGSNAT",
+    "IDH3A",
+    "IDH3B",
+    "IFT140",
+    "IFT172",
+    "IFT88",
+    "IMPDH1",
+    "IMPG2",
+    "KIAA1549",
+    "KIZ",
+    "KLHL7",
+    "LRAT",
+    "MAK",
+    "MERTK",
+    "NEK2",
+    "NR2E3",
+    "NRL",
+    "OFD1",
+    "PCARE",
+    "PDE6A",
+    "PDE6B",
+    "PDE6G",
+    "POMGNT1",
+    "PRCD",
+    "PROM1",
+    "PRPF3",
+    "PRPF31",
+    "PRPF4",
+    "PRPF6",
+    "PRPF8",
+    "PRPH2",
+    "RBP3",
+    "RDH12",
+    "REEP6",
+    "RGR",
+    "RHO",
+    "RLBP1",
+    "ROM1",
+    "RP1",
+    "RP1L1",
+    "RP2",
+    "RP9",
+    "RPE65",
+    "RPGR",
+    "SAG",
+    "SCAPER",
+    "SEMA4A",
+    "SLC7A14",
+    "SNRNP200",
+    "SPATA7",
+    "TOPORS",
+    "TTC8",
+    "TUB",
+    "TULP1",
+    "USH2A",
+    "ZNF408",
+    "ZNF513"
+  ],
+  "NANDO:1200431": [
+    "ABCA4",
+    "AGBL5",
+    "AHI1",
+    "AHR",
+    "AIPL1",
+    "ARHGEF18",
+    "ARL2BP",
+    "ARL3",
+    "ARL6",
+    "BBS2",
+    "BEST1",
+    "CA4",
+    "CDHR1",
+    "CERKL",
+    "CFAP418",
+    "CLRN1",
+    "CNGA1",
+    "CNGB1",
+    "CRB1",
+    "CRX",
+    "DHDDS",
+    "DHX38",
+    "EYS",
+    "FAM161A",
+    "FSCN2",
+    "GUCA1B",
+    "HGSNAT",
+    "IDH3A",
+    "IDH3B",
+    "IFT140",
+    "IFT172",
+    "IFT88",
+    "IMPDH1",
+    "IMPG2",
+    "KIAA1549",
+    "KIZ",
+    "KLHL7",
+    "LRAT",
+    "MAK",
+    "MERTK",
+    "NEK2",
+    "NR2E3",
+    "NRL",
+    "OFD1",
+    "PCARE",
+    "PDE6A",
+    "PDE6B",
+    "PDE6G",
+    "POMGNT1",
+    "PRCD",
+    "PROM1",
+    "PRPF3",
+    "PRPF31",
+    "PRPF4",
+    "PRPF6",
+    "PRPF8",
+    "PRPH2",
+    "RBP3",
+    "RDH12",
+    "REEP6",
+    "RGR",
+    "RHO",
+    "RLBP1",
+    "ROM1",
+    "RP1",
+    "RP1L1",
+    "RP2",
+    "RP9",
+    "RPE65",
+    "RPGR",
+    "SAG",
+    "SCAPER",
+    "SEMA4A",
+    "SLC7A14",
+    "SNRNP200",
+    "SPATA7",
+    "TOPORS",
+    "TTC8",
+    "TUB",
+    "TULP1",
+    "USH2A",
+    "ZNF408",
+    "ZNF513"
+  ],
+  "NANDO:1200436": [
+    "ABCA4",
+    "AGBL5",
+    "AHI1",
+    "AHR",
+    "AIPL1",
+    "ARHGEF18",
+    "ARL2BP",
+    "ARL3",
+    "ARL6",
+    "BBS2",
+    "BEST1",
+    "CA4",
+    "CDHR1",
+    "CERKL",
+    "CFAP418",
+    "CLRN1",
+    "CNGA1",
+    "CNGB1",
+    "CRB1",
+    "CRX",
+    "DHDDS",
+    "DHX38",
+    "EYS",
+    "FAM161A",
+    "FSCN2",
+    "GUCA1B",
+    "HGSNAT",
+    "IDH3A",
+    "IDH3B",
+    "IFT140",
+    "IFT172",
+    "IFT88",
+    "IMPDH1",
+    "IMPG2",
+    "KIAA1549",
+    "KIZ",
+    "KLHL7",
+    "LRAT",
+    "MAK",
+    "MERTK",
+    "NEK2",
+    "NR2E3",
+    "NRL",
+    "OFD1",
+    "PCARE",
+    "PDE6A",
+    "PDE6B",
+    "PDE6G",
+    "POMGNT1",
+    "PRCD",
+    "PROM1",
+    "PRPF3",
+    "PRPF31",
+    "PRPF4",
+    "PRPF6",
+    "PRPF8",
+    "PRPH2",
+    "RBP3",
+    "RDH12",
+    "REEP6",
+    "RGR",
+    "RHO",
+    "RLBP1",
+    "ROM1",
+    "RP1",
+    "RP1L1",
+    "RP2",
+    "RP9",
+    "RPE65",
+    "RPGR",
+    "SAG",
+    "SCAPER",
+    "SEMA4A",
+    "SLC7A14",
+    "SNRNP200",
+    "SPATA7",
+    "TOPORS",
+    "TTC8",
+    "TUB",
+    "TULP1",
+    "USH2A",
+    "ZNF408",
+    "ZNF513"
+  ],
+  "NANDO:1200933": [
+    "ABCA4",
+    "CNGB3",
+    "ELOVL4",
+    "PROM1",
+    "PRPH2"
+  ],
+  "NANDO:2200461": [
+    "ABCC8",
+    "AKT2",
+    "ENPP1",
+    "GCK",
+    "GPD2",
+    "HMGA1",
+    "HNF1A",
+    "HNF1B",
+    "HNF4A",
+    "IGF2BP2",
+    "IL6",
+    "IRS1",
+    "IRS2",
+    "KCNJ11",
+    "LIPC",
+    "MAPK8IP1",
+    "MTNR1B",
+    "NEUROD1",
+    "PAX4",
+    "PDX1",
+    "PPARG",
+    "PPP1R3A",
+    "PTPN1",
+    "RETN",
+    "SLC2A2",
+    "SLC30A8",
+    "TCF7L2",
+    "WFS1"
+  ],
+  "NANDO:2200399": [
+    "ABCC8"
+  ],
+  "NANDO:2200462": [
+    "ABCC8",
+    "APPL1",
+    "BLK",
+    "CEL",
+    "GCK",
+    "HNF1A",
+    "HNF4A",
+    "INS",
+    "KCNJ11",
+    "KLF11",
+    "NEUROD1",
+    "PAX4",
+    "PDX1"
+  ],
+  "NANDO:1200166": [
+    "ABCD1"
+  ],
+  "NANDO:1200168": [
+    "ABCD1"
+  ],
+  "NANDO:2201248": [
+    "ABCD1"
+  ],
+  "NANDO:1200853": [
+    "ABCG5",
+    "ABCG8"
+  ],
+  "NANDO:1200394": [
+    "ABCG5",
+    "ABCG8",
+    "APOB",
+    "LDLR",
+    "LDLRAP1",
+    "PCSK9"
+  ],
+  "NANDO:2201255": [
+    "ABCG5",
+    "ABCG8",
+    "APOB",
+    "LDLR",
+    "LDLRAP1",
+    "PCSK9"
+  ],
+  "NANDO:1200623": [
+    "ABHD5"
+  ],
+  "NANDO:1200622": [
+    "ABHD5"
+  ],
+  "NANDO:2200997": [
+    "ABHD5"
+  ],
+  "NANDO:2200013": [
+    "ABL1",
+    "BCR",
+    "RUNX1"
+  ],
+  "NANDO:2200022": [
+    "ABL1",
+    "AFF1",
+    "AUTS2",
+    "BCR",
+    "CDKN2A",
+    "ETV6",
+    "FLT3",
+    "FOXP1",
+    "GATA3",
+    "HLA-C",
+    "HLF",
+    "IGH",
+    "IKZF1",
+    "KMT2A",
+    "PAX5",
+    "PBX1",
+    "PDGFRA",
+    "PIP4K2A",
+    "RUNX1",
+    "TCF3",
+    "TP53"
+  ],
+  "NANDO:2200001": [
+    "ABL1",
+    "AFF1",
+    "AUTS2",
+    "BCR",
+    "CDKN2A",
+    "ETV6",
+    "FLT3",
+    "FOXP1",
+    "GATA3",
+    "HLA-C",
+    "HLF",
+    "IGH",
+    "IKZF1",
+    "KMT2A",
+    "PAX5",
+    "PBX1",
+    "PDGFRA",
+    "PIP4K2A",
+    "RUNX1",
+    "TCF3",
+    "TP53"
+  ],
+  "NANDO:2200513": [
+    "ACADM"
+  ],
+  "NANDO:2200514": [
+    "ACADS"
+  ],
+  "NANDO:2200512": [
+    "ACADVL"
+  ],
+  "NANDO:2201139": [
+    "ACADVL"
+  ],
+  "NANDO:1200987": [
+    "ACAT1"
+  ],
+  "NANDO:2200493": [
+    "ACAT1"
+  ],
+  "NANDO:1200765": [
+    "ACOX1"
+  ],
+  "NANDO:2200744": [
+    "ACP5"
+  ],
+  "NANDO:1200483": [
+    "ACTA1",
+    "HACD1",
+    "ITGA7",
+    "MAP3K20",
+    "MYH7",
+    "MYL2",
+    "RYR1",
+    "SELENON",
+    "TPM2",
+    "TPM3"
+  ],
+  "NANDO:2200868": [
+    "ACTA1",
+    "HACD1",
+    "ITGA7",
+    "MAP3K20",
+    "MYH7",
+    "MYL2",
+    "RYR1",
+    "SELENON",
+    "TPM2",
+    "TPM3"
+  ],
+  "NANDO:1200183": [
+    "ACTA2",
+    "RNF213"
+  ],
+  "NANDO:1200184": [
+    "ACTA2",
+    "RNF213"
+  ],
+  "NANDO:1200185": [
+    "ACTA2",
+    "RNF213"
+  ],
+  "NANDO:2200850": [
+    "ACTA2",
+    "RNF213"
+  ],
+  "NANDO:1200286": [
+    "ACTC1",
+    "MYH7",
+    "MYL3",
+    "PRKAG2",
+    "TNNI3",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:1200287": [
+    "ACTC1",
+    "MYH7",
+    "MYL3",
+    "PRKAG2",
+    "TNNI3",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:1200288": [
+    "ACTC1",
+    "MYH7",
+    "MYL3",
+    "PRKAG2",
+    "TNNI3",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:2200229": [
+    "ACTC1",
+    "MYH7",
+    "MYL3",
+    "PRKAG2",
+    "TNNI3",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:2200231": [
+    "ACTC1",
+    "DTNA",
+    "LDB3",
+    "LMNA",
+    "MIB1",
+    "MIB2",
+    "MYBPC3",
+    "MYH7",
+    "MYH7B",
+    "PKP2",
+    "PLEKHM2",
+    "PRDM16",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:2200266": [
+    "ACTC1",
+    "CITED2",
+    "GATA4",
+    "GATA6",
+    "MYH6",
+    "TBX20",
+    "TLL1"
+  ],
+  "NANDO:2201043": [
+    "ACTC1",
+    "MYH7",
+    "MYL3",
+    "PRKAG2",
+    "TNNI3",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:2201042": [
+    "ACTC1",
+    "MYH7",
+    "MYL3",
+    "PRKAG2",
+    "TNNI3",
+    "TNNT2",
+    "TPM1"
+  ],
+  "NANDO:1200459": [
+    "ACTG2",
+    "LMOD1",
+    "MYH11",
+    "MYLK"
+  ],
+  "NANDO:2200947": [
+    "ACTG2",
+    "LMOD1",
+    "MYH11",
+    "MYLK"
+  ],
+  "NANDO:2200665": [
+    "ACTN1"
+  ],
+  "NANDO:1200871": [
+    "ACVR1"
+  ],
+  "NANDO:2201020": [
+    "ACVR1"
+  ],
+  "NANDO:1200744": [
+    "ACVRL1",
+    "ENG",
+    "GDF2",
+    "SMAD4"
+  ],
+  "NANDO:2201047": [
+    "ACVRL1",
+    "BMPR2",
+    "CAV1",
+    "EIF2AK4",
+    "ENG",
+    "KCNK3",
+    "SMAD9",
+    "TBX4"
+  ],
+  "NANDO:2201034": [
+    "ACVRL1",
+    "ENG",
+    "GDF2",
+    "SMAD4"
+  ],
+  "NANDO:1200323": [
+    "ADA"
+  ],
+  "NANDO:1200324": [
+    "ADA",
+    "CHD7",
+    "DCLRE1C",
+    "IL2RG",
+    "IL7R",
+    "LIG4",
+    "RAG1",
+    "RAG2",
+    "RMRP"
+  ],
+  "NANDO:2200696": [
+    "ADA"
+  ],
+  "NANDO:2200697": [
+    "ADA",
+    "CHD7",
+    "DCLRE1C",
+    "IL2RG",
+    "IL7R",
+    "LIG4",
+    "RAG1",
+    "RAG2",
+    "RMRP"
+  ],
+  "NANDO:1200890": [
+    "ADA2",
+    "GATA1",
+    "RPL11",
+    "RPL15",
+    "RPL18",
+    "RPL26",
+    "RPL27",
+    "RPL31",
+    "RPL35",
+    "RPL35A",
+    "RPL5",
+    "RPS10",
+    "RPS15A",
+    "RPS17",
+    "RPS19",
+    "RPS24",
+    "RPS26",
+    "RPS27",
+    "RPS28",
+    "RPS29",
+    "RPS7",
+    "TSR2"
+  ],
+  "NANDO:2200614": [
+    "ADA2",
+    "GATA1",
+    "RPL11",
+    "RPL15",
+    "RPL18",
+    "RPL26",
+    "RPL27",
+    "RPL31",
+    "RPL35",
+    "RPL35A",
+    "RPL5",
+    "RPS10",
+    "RPS15A",
+    "RPS17",
+    "RPS19",
+    "RPS24",
+    "RPS26",
+    "RPS27",
+    "RPS28",
+    "RPS29",
+    "RPS7",
+    "TSR2"
+  ],
+  "NANDO:1200317": [
+    "ADAMTS13"
+  ],
+  "NANDO:1200651": [
+    "ADAMTS2"
+  ],
+  "NANDO:2201261": [
+    "ADAMTS2"
+  ],
+  "NANDO:2200140": [
+    "ADAMTS9",
+    "ANKS6",
+    "GLIS2",
+    "MAPKBP1",
+    "NPHP1",
+    "NPHP4",
+    "WDR19"
+  ],
+  "NANDO:1200996": [
+    "ADAR",
+    "IFIH1",
+    "RNASEH2A",
+    "RNASEH2B",
+    "RNASEH2C",
+    "SAMHD1",
+    "TREX1"
+  ],
+  "NANDO:2200898": [
+    "ADAR"
+  ],
+  "NANDO:2200893": [
+    "ADAR",
+    "IFIH1",
+    "RNASEH2A",
+    "RNASEH2B",
+    "RNASEH2C",
+    "SAMHD1",
+    "TREX1"
+  ],
+  "NANDO:1200943": [
+    "ADGRV1",
+    "MYO7A",
+    "PDZD7",
+    "USH2A",
+    "WHRN"
+  ],
+  "NANDO:1200552": [
+    "ADORA2A"
+  ],
+  "NANDO:2200901": [
+    "ADORA2A"
+  ],
+  "NANDO:1200956": [
+    "ADRA2B",
+    "CNTN2",
+    "CTNND2",
+    "MARCHF6",
+    "SAMD12",
+    "YEATS2"
+  ],
+  "NANDO:1200133": [
+    "AGA"
+  ],
+  "NANDO:2200555": [
+    "AGA"
+  ],
+  "NANDO:1200845": [
+    "AGL"
+  ],
+  "NANDO:1200826": [
+    "AGL"
+  ],
+  "NANDO:1200844": [
+    "AGL"
+  ],
+  "NANDO:2200539": [
+    "AGL"
+  ],
+  "NANDO:1201019": [
+    "AGL"
+  ],
+  "NANDO:2201156": [
+    "AGL"
+  ],
+  "NANDO:2201157": [
+    "AGL"
+  ],
+  "NANDO:2201155": [
+    "AGL"
+  ],
+  "NANDO:2201158": [
+    "AGL"
+  ],
+  "NANDO:1200859": [
+    "AGPAT2",
+    "BSCL2",
+    "CAV1",
+    "CAVIN1",
+    "FOS",
+    "PPARG"
+  ],
+  "NANDO:2200465": [
+    "AGPAT2",
+    "BSCL2",
+    "CAV1",
+    "CAVIN1",
+    "FOS",
+    "PPARG"
+  ],
+  "NANDO:1200772": [
+    "AGPS"
+  ],
+  "NANDO:1200773": [
+    "AGXT"
+  ],
+  "NANDO:1200378": [
+    "AIP",
+    "CDH23"
+  ],
+  "NANDO:2200315": [
+    "AIP",
+    "GPR101"
+  ],
+  "NANDO:2200314": [
+    "AIP"
+  ],
+  "NANDO:2200738": [
+    "AIRE"
+  ],
+  "NANDO:2200346": [
+    "AIRE"
+  ],
+  "NANDO:1200322": [
+    "AK2"
+  ],
+  "NANDO:2200695": [
+    "AK2"
+  ],
+  "NANDO:2200918": [
+    "AKT1",
+    "KLLN",
+    "PIK3CA",
+    "PTEN",
+    "SDHB",
+    "SDHC",
+    "SDHD",
+    "SEC23B",
+    "USF3"
+  ],
+  "NANDO:2200094": [
+    "AKT1",
+    "BAP1",
+    "NF2",
+    "PDGFB",
+    "PIK3CA",
+    "SMARCB1",
+    "SMARCE1",
+    "SMO",
+    "SUFU",
+    "TRAF7"
+  ],
+  "NANDO:1200563": [
+    "AKT3",
+    "PIK3CA"
+  ],
+  "NANDO:1200818": [
+    "ALAS2"
+  ],
+  "NANDO:2201269": [
+    "ALAS2"
+  ],
+  "NANDO:1200620": [
+    "ALDH3A2"
+  ],
+  "NANDO:2200994": [
+    "ALDH3A2"
+  ],
+  "NANDO:2200599": [
+    "ALDH5A1"
+  ],
+  "NANDO:1200834": [
+    "ALDOA"
+  ],
+  "NANDO:2200531": [
+    "ALDOB"
+  ],
+  "NANDO:2200040": [
+    "ALK",
+    "HACE1",
+    "LIN28B",
+    "LMO1",
+    "MYCN",
+    "PHOX2B",
+    "TOP2A"
+  ],
+  "NANDO:1200656": [
+    "ALPL"
+  ],
+  "NANDO:2201012": [
+    "ALPL"
+  ],
+  "NANDO:2201302": [
+    "ALX4",
+    "ERF",
+    "TWIST1"
+  ],
+  "NANDO:1200768": [
+    "AMACR"
+  ],
+  "NANDO:2201025": [
+    "AMER1"
+  ],
+  "NANDO:1200984": [
+    "AMT",
+    "GCSH",
+    "GLDC"
+  ],
+  "NANDO:1200985": [
+    "AMT",
+    "GCSH",
+    "GLDC"
+  ],
+  "NANDO:1200986": [
+    "AMT",
+    "GCSH",
+    "GLDC",
+    "SLC6A9"
+  ],
+  "NANDO:2200476": [
+    "AMT",
+    "GCSH",
+    "GLDC"
+  ],
+  "NANDO:1200002": [
+    "ANG",
+    "ANXA11",
+    "ATXN2",
+    "CCNF",
+    "CFAP410",
+    "CHCHD10",
+    "CHMP2B",
+    "DAO",
+    "DCTN1",
+    "EPHA4",
+    "ERBB4",
+    "FIG4",
+    "FUS",
+    "GLE1",
+    "GLT8D1",
+    "HNRNPA1",
+    "MATR3",
+    "NEFH",
+    "NEK1",
+    "OPTN",
+    "PFN1",
+    "PON1",
+    "PON2",
+    "PON3",
+    "PPARGC1A",
+    "PRPH",
+    "SOD1",
+    "SQSTM1",
+    "TAF15",
+    "TARDBP",
+    "TBK1",
+    "TREM2",
+    "UBQLN2",
+    "UNC13A",
+    "VAPB",
+    "VCP"
+  ],
+  "NANDO:2200622": [
+    "ANK1",
+    "EPB42",
+    "SLC4A1",
+    "SPTA1",
+    "SPTB"
+  ],
+  "NANDO:2201366": [
+    "ANKH",
+    "GJA1"
+  ],
+  "NANDO:2200663": [
+    "ANKRD26"
+  ],
+  "NANDO:1200471": [
+    "ANKRD55",
+    "CD247",
+    "IL2RA",
+    "IL2RB",
+    "PTPN2",
+    "PTPN22",
+    "STAT4"
+  ],
+  "NANDO:2201056": [
+    "ANKRD55",
+    "CD247",
+    "IL2RA",
+    "IL2RB",
+    "PTPN2",
+    "PTPN22",
+    "STAT4"
+  ],
+  "NANDO:2200671": [
+    "ANO6"
+  ],
+  "NANDO:1200388": [
+    "ANOS1",
+    "CHD7",
+    "DUSP6",
+    "FGF17",
+    "FGF8",
+    "FGFR1",
+    "GNRH1",
+    "GNRHR",
+    "HS6ST1",
+    "KISS1",
+    "KISS1R",
+    "NSMF",
+    "PROK2",
+    "PROKR2",
+    "SPRY4",
+    "TAC3",
+    "TACR3",
+    "WDR11"
+  ],
+  "NANDO:2200382": [
+    "ANOS1",
+    "CHD7",
+    "DUSP6",
+    "FGF17",
+    "FGF8",
+    "FGFR1",
+    "GNRH1",
+    "GNRHR",
+    "HS6ST1",
+    "KISS1",
+    "KISS1R",
+    "NSMF",
+    "PROK2",
+    "PROKR2",
+    "SPRY4",
+    "TAC3",
+    "TACR3",
+    "WDR11"
+  ],
+  "NANDO:2200381": [
+    "ANOS1",
+    "CCDC141",
+    "CHD7",
+    "DCC",
+    "DUSP6",
+    "FEZF1",
+    "FGF17",
+    "FGF8",
+    "FGFR1",
+    "FLRT3",
+    "HESX1",
+    "HS6ST1",
+    "IL17RD",
+    "KISS1R",
+    "NDNF",
+    "NSMF",
+    "PROK2",
+    "PROKR2",
+    "SEMA3A",
+    "SOX10",
+    "SPRY4",
+    "TACR3",
+    "WDR11"
+  ],
+  "NANDO:1200240": [
+    "AP1S3",
+    "IL36RN"
+  ],
+  "NANDO:1200241": [
+    "AP1S3",
+    "IL36RN"
+  ],
+  "NANDO:1200242": [
+    "AP1S3",
+    "IL36RN"
+  ],
+  "NANDO:1200590": [
+    "AP2M1",
+    "CHD2",
+    "SLC6A1"
+  ],
+  "NANDO:2200733": [
+    "AP3B1"
+  ],
+  "NANDO:2200047": [
+    "APC",
+    "AXIN1",
+    "CASP8",
+    "CTNNB1",
+    "IGF2R",
+    "MET",
+    "PDGFRL",
+    "PIK3CA",
+    "TP53"
+  ],
+  "NANDO:1200679": [
+    "APC2",
+    "NSD1",
+    "SETD2"
+  ],
+  "NANDO:2200953": [
+    "APC2",
+    "NSD1",
+    "SETD2"
+  ],
+  "NANDO:2200602": [
+    "APOA2",
+    "EPHX2",
+    "GHR",
+    "LDLR",
+    "PPP1R17"
+  ],
+  "NANDO:2200134": [
+    "APOE"
+  ],
+  "NANDO:2200587": [
+    "APRT"
+  ],
+  "NANDO:1200051": [
+    "APTX"
+  ],
+  "NANDO:1200742": [
+    "AQP2",
+    "AVPR2"
+  ],
+  "NANDO:2200326": [
+    "AQP2",
+    "AVPR2"
+  ],
+  "NANDO:1200001": [
+    "AR"
+  ],
+  "NANDO:2200391": [
+    "AR"
+  ],
+  "NANDO:1200807": [
+    "ARG1"
+  ],
+  "NANDO:2200482": [
+    "ARG1"
+  ],
+  "NANDO:2201100": [
+    "ARG1"
+  ],
+  "NANDO:2201101": [
+    "ARG1"
+  ],
+  "NANDO:2200014": [
+    "ARHGAP26",
+    "ASXL1",
+    "CBL",
+    "ETV6",
+    "KRAS",
+    "NF1",
+    "NRAS",
+    "PDGFRB",
+    "PTPN11",
+    "RRAS",
+    "SRSF2"
+  ],
+  "NANDO:2200015": [
+    "ARHGAP26",
+    "CBL",
+    "KRAS",
+    "NF1",
+    "NRAS",
+    "PTPN11",
+    "RRAS"
+  ],
+  "NANDO:1200670": [
+    "ARID1A",
+    "ARID1B",
+    "ARID2",
+    "DPF2",
+    "SMARCA4",
+    "SMARCB1",
+    "SMARCC2",
+    "SMARCD1",
+    "SMARCE1",
+    "SOX11",
+    "SOX4"
+  ],
+  "NANDO:2200977": [
+    "ARID1A",
+    "ARID1B",
+    "ARID2",
+    "DPF2",
+    "SMARCA4",
+    "SMARCB1",
+    "SMARCC2",
+    "SMARCD1",
+    "SMARCE1",
+    "SOX11",
+    "SOX4"
+  ],
+  "NANDO:2200414": [
+    "ARL6",
+    "BBIP1",
+    "BBS1",
+    "BBS10",
+    "BBS12",
+    "BBS2",
+    "BBS4",
+    "BBS5",
+    "BBS7",
+    "BBS9",
+    "CEP290",
+    "IFT172",
+    "IFT27",
+    "LZTFL1",
+    "MKKS",
+    "MKS1",
+    "NPHP1",
+    "SDCCAG8",
+    "TRIM32",
+    "TTC8",
+    "WDPCP"
+  ],
+  "NANDO:1200561": [
+    "ARNT2",
+    "FGFR1",
+    "HESX1",
+    "OTX2",
+    "PROKR2",
+    "SOX2",
+    "SOX3"
+  ],
+  "NANDO:1200560": [
+    "ARNT2",
+    "FGFR1",
+    "HESX1",
+    "OTX2",
+    "PROKR2",
+    "SOX2",
+    "SOX3"
+  ],
+  "NANDO:2200820": [
+    "ARNT2",
+    "FGFR1",
+    "HESX1",
+    "OTX2",
+    "PROKR2",
+    "SOX2",
+    "SOX3"
+  ],
+  "NANDO:1200080": [
+    "ARSA",
+    "PSAP"
+  ],
+  "NANDO:1200078": [
+    "ARSA"
+  ],
+  "NANDO:2200560": [
+    "ARSA"
+  ],
+  "NANDO:2201203": [
+    "ARSA",
+    "PSAP"
+  ],
+  "NANDO:2201202": [
+    "ARSA",
+    "PSAP"
+  ],
+  "NANDO:2201204": [
+    "ARSA",
+    "PSAP"
+  ],
+  "NANDO:1200110": [
+    "ARSB"
+  ],
+  "NANDO:1200109": [
+    "ARSB"
+  ],
+  "NANDO:1200108": [
+    "ARSB"
+  ],
+  "NANDO:2200551": [
+    "ARSB"
+  ],
+  "NANDO:1200944": [
+    "ARSG",
+    "CEP78",
+    "CLRN1",
+    "HARS1",
+    "MT-TS2"
+  ],
+  "NANDO:2201360": [
+    "ARSL"
+  ],
+  "NANDO:2201356": [
+    "ARSL"
+  ],
+  "NANDO:1200688": [
+    "ARVCF",
+    "COMT",
+    "DGCR2",
+    "DGCR6",
+    "DGCR8",
+    "ESS2",
+    "GP1BB",
+    "HIRA",
+    "JMJD1C",
+    "RREB1",
+    "SEC24C",
+    "TBX1",
+    "UFD1"
+  ],
+  "NANDO:1200339": [
+    "ARVCF",
+    "COMT",
+    "DGCR2",
+    "DGCR6",
+    "DGCR8",
+    "ESS2",
+    "GP1BB",
+    "HIRA",
+    "JMJD1C",
+    "RREB1",
+    "SEC24C",
+    "TBX1",
+    "UFD1"
+  ],
+  "NANDO:2200712": [
+    "ARVCF",
+    "COMT",
+    "DGCR2",
+    "DGCR6",
+    "DGCR8",
+    "ESS2",
+    "GP1BB",
+    "HIRA",
+    "JMJD1C",
+    "RREB1",
+    "SEC24C",
+    "TBX1",
+    "UFD1"
+  ],
+  "NANDO:1200593": [
+    "ARX",
+    "CASK",
+    "CDKL5",
+    "DMXL2",
+    "GABRA1",
+    "GABRB3",
+    "GNAO1",
+    "KCNA1",
+    "NEUROD2",
+    "PIGP",
+    "PIGQ",
+    "PNKP",
+    "SCN1B",
+    "SCN2A",
+    "SIK1",
+    "SLC25A22",
+    "STXBP1",
+    "TRIM8"
+  ],
+  "NANDO:1200592": [
+    "ARX",
+    "CDKL5",
+    "CNPY3",
+    "GRIN2B",
+    "GUF1",
+    "NTRK2",
+    "PHACTR1",
+    "PIGA",
+    "PLCB1",
+    "SCN2A",
+    "SIK1",
+    "SPTAN1",
+    "ST3GAL3",
+    "STXBP1",
+    "WDR45"
+  ],
+  "NANDO:2200878": [
+    "ARX",
+    "CDKL5",
+    "CNPY3",
+    "GRIN2B",
+    "GUF1",
+    "NTRK2",
+    "PHACTR1",
+    "PIGA",
+    "PLCB1",
+    "SCN2A",
+    "SIK1",
+    "SPTAN1",
+    "ST3GAL3",
+    "STXBP1",
+    "WDR45"
+  ],
+  "NANDO:1200092": [
+    "ASAH1"
+  ],
+  "NANDO:1200091": [
+    "ASAH1"
+  ],
+  "NANDO:1200086": [
+    "ASAH1"
+  ],
+  "NANDO:1200087": [
+    "ASAH1"
+  ],
+  "NANDO:1200089": [
+    "ASAH1"
+  ],
+  "NANDO:1200088": [
+    "ASAH1"
+  ],
+  "NANDO:1200090": [
+    "ASAH1"
+  ],
+  "NANDO:2200565": [
+    "ASAH1"
+  ],
+  "NANDO:2201220": [
+    "ASAH1"
+  ],
+  "NANDO:2201224": [
+    "ASAH1"
+  ],
+  "NANDO:2201225": [
+    "ASAH1"
+  ],
+  "NANDO:2201221": [
+    "ASAH1"
+  ],
+  "NANDO:2201222": [
+    "ASAH1"
+  ],
+  "NANDO:2201223": [
+    "ASAH1"
+  ],
+  "NANDO:1200753": [
+    "ASCL1",
+    "BDNF",
+    "EDN3",
+    "GDNF",
+    "MYO1H",
+    "PHOX2B",
+    "RET"
+  ],
+  "NANDO:2200198": [
+    "ASCL1",
+    "BDNF",
+    "EDN3",
+    "GDNF",
+    "MYO1H",
+    "PHOX2B",
+    "RET"
+  ],
+  "NANDO:1200806": [
+    "ASL"
+  ],
+  "NANDO:2200481": [
+    "ASL"
+  ],
+  "NANDO:2201098": [
+    "ASL"
+  ],
+  "NANDO:2201097": [
+    "ASL"
+  ],
+  "NANDO:1200948": [
+    "ASPA"
+  ],
+  "NANDO:2200834": [
+    "ASPA"
+  ],
+  "NANDO:2200063": [
+    "ASPSCR1",
+    "TFE3"
+  ],
+  "NANDO:1200805": [
+    "ASS1"
+  ],
+  "NANDO:2200480": [
+    "ASS1"
+  ],
+  "NANDO:2201094": [
+    "ASS1"
+  ],
+  "NANDO:2201095": [
+    "ASS1"
+  ],
+  "NANDO:2200019": [
+    "ASXL1",
+    "GATA2",
+    "GNB1",
+    "MECOM",
+    "SF3B1",
+    "TET2"
+  ],
+  "NANDO:1200331": [
+    "ATM"
+  ],
+  "NANDO:2200705": [
+    "ATM"
+  ],
+  "NANDO:1200043": [
+    "ATN1"
+  ],
+  "NANDO:1200525": [
+    "ATP1A2",
+    "ATP1A3",
+    "CACNA1A",
+    "SLC1A3"
+  ],
+  "NANDO:1200403": [
+    "ATP1A2",
+    "ATP1A3",
+    "CACNA1A",
+    "NR0B1",
+    "SLC1A3"
+  ],
+  "NANDO:2200357": [
+    "ATP1A2",
+    "ATP1A3",
+    "CACNA1A",
+    "NR0B1",
+    "SLC1A3"
+  ],
+  "NANDO:2200883": [
+    "ATP1A2",
+    "ATP1A3",
+    "CACNA1A",
+    "SLC1A3"
+  ],
+  "NANDO:1200524": [
+    "ATP1A3"
+  ],
+  "NANDO:1200523": [
+    "ATP1A3"
+  ],
+  "NANDO:1200526": [
+    "ATP1A3"
+  ],
+  "NANDO:1200631": [
+    "ATP2C1"
+  ],
+  "NANDO:1200654": [
+    "ATP7A"
+  ],
+  "NANDO:1200653": [
+    "ATP7A"
+  ],
+  "NANDO:2200581": [
+    "ATP7A"
+  ],
+  "NANDO:2200580": [
+    "ATP7A"
+  ],
+  "NANDO:1200655": [
+    "ATP7B"
+  ],
+  "NANDO:2200579": [
+    "ATP7B"
+  ],
+  "NANDO:1200665": [
+    "ATRX"
+  ],
+  "NANDO:2200839": [
+    "ATRX"
+  ],
+  "NANDO:1200045": [
+    "ATXN1"
+  ],
+  "NANDO:1200046": [
+    "ATXN2"
+  ],
+  "NANDO:1200041": [
+    "ATXN3"
+  ],
+  "NANDO:1200047": [
+    "ATXN7"
+  ],
+  "NANDO:1200990": [
+    "AUH"
+  ],
+  "NANDO:2201050": [
+    "AVP"
+  ],
+  "NANDO:1200382": [
+    "AXL",
+    "CCDC141",
+    "DUSP6",
+    "FEZF1",
+    "FGF17",
+    "FGFR1",
+    "GNRH1",
+    "GNRHR",
+    "SEMA3E",
+    "SPRY4",
+    "SRA1",
+    "WDR11"
+  ],
+  "NANDO:1200328": [
+    "B2M",
+    "TAP1",
+    "TAP2",
+    "TAPBP"
+  ],
+  "NANDO:2200701": [
+    "B2M",
+    "TAP1",
+    "TAP2",
+    "TAPBP"
+  ],
+  "NANDO:2200232": [
+    "BAG3",
+    "DES",
+    "FLNC",
+    "LMNA",
+    "MYH7",
+    "RBM20",
+    "SCN5A",
+    "TNNC1",
+    "TNNT2",
+    "TTN"
+  ],
+  "NANDO:1200272": [
+    "BANK1",
+    "BLK",
+    "C4A",
+    "C4B",
+    "CR2",
+    "CTLA4",
+    "DNASE1",
+    "ETS1",
+    "FCGR2A",
+    "FCGR2B",
+    "FCGR3B",
+    "HLA-DRB1",
+    "IL10",
+    "IRAK1",
+    "IRF5",
+    "ITGAM",
+    "JAZF1",
+    "KIAA0319L",
+    "MECP2",
+    "PDCD1",
+    "PTPN22",
+    "PXK",
+    "SPP1",
+    "STAT4",
+    "TNFAIP3",
+    "TNFSF4",
+    "TNIP1",
+    "TREX1",
+    "UBE2L3"
+  ],
+  "NANDO:2200416": [
+    "BANK1",
+    "BLK",
+    "C4A",
+    "C4B",
+    "CR2",
+    "CTLA4",
+    "DNASE1",
+    "ETS1",
+    "FCGR2A",
+    "FCGR2B",
+    "FCGR3B",
+    "HLA-DRB1",
+    "IL10",
+    "IRAK1",
+    "IRF5",
+    "ITGAM",
+    "JAZF1",
+    "KIAA0319L",
+    "MECP2",
+    "PDCD1",
+    "PTPN22",
+    "PXK",
+    "SPP1",
+    "STAT4",
+    "TNFAIP3",
+    "TNFSF4",
+    "TNIP1",
+    "TREX1",
+    "UBE2L3"
+  ],
+  "NANDO:1200664": [
+    "BAZ1B",
+    "CLIP2",
+    "ELN",
+    "GTF2I",
+    "GTF2IRD1",
+    "LIMK1",
+    "MLXIPL",
+    "RFC2",
+    "TBL2"
+  ],
+  "NANDO:2200286": [
+    "BAZ1B",
+    "CLIP2",
+    "ELN",
+    "GTF2I",
+    "GTF2IRD1",
+    "LIMK1",
+    "MLXIPL",
+    "RFC2",
+    "TBL2"
+  ],
+  "NANDO:1200791": [
+    "BCKDHA",
+    "BCKDHB",
+    "DBT",
+    "DLD"
+  ],
+  "NANDO:2200473": [
+    "BCKDHA",
+    "BCKDHB",
+    "DBT",
+    "DLD"
+  ],
+  "NANDO:2201078": [
+    "BCKDHA",
+    "BCKDHB",
+    "DBT"
+  ],
+  "NANDO:2201079": [
+    "BCKDHA",
+    "BCKDHB",
+    "DBT",
+    "PPM1K"
+  ],
+  "NANDO:2201080": [
+    "BCKDHA",
+    "BCKDHB",
+    "DBT"
+  ],
+  "NANDO:2201081": [
+    "BCKDHA",
+    "BCKDHB",
+    "DBT"
+  ],
+  "NANDO:2200026": [
+    "BCL2",
+    "BCL6",
+    "HLA-DRB1",
+    "IGH"
+  ],
+  "NANDO:2200044": [
+    "BCOR",
+    "IRX2",
+    "NUTM2B",
+    "NUTM2E",
+    "YWHAE"
+  ],
+  "NANDO:2200007": [
+    "BCOR",
+    "FIP1L1",
+    "IRF2BP2",
+    "NABP1",
+    "NPM1",
+    "NUMA1",
+    "PML",
+    "PRKAR1A",
+    "RARA",
+    "STAT3",
+    "STAT5B",
+    "TBL1XR1",
+    "ZBTB16"
+  ],
+  "NANDO:1200044": [
+    "BEAN1"
+  ],
+  "NANDO:1200368": [
+    "BICC1",
+    "GANAB",
+    "PKD1",
+    "PKD2"
+  ],
+  "NANDO:2200153": [
+    "BICC1",
+    "GANAB",
+    "PKD1",
+    "PKD2"
+  ],
+  "NANDO:1200482": [
+    "BIN1"
+  ],
+  "NANDO:1200481": [
+    "BIN1"
+  ],
+  "NANDO:2200867": [
+    "BIN1"
+  ],
+  "NANDO:1200333": [
+    "BLM"
+  ],
+  "NANDO:2200707": [
+    "BLM"
+  ],
+  "NANDO:2201345": [
+    "BMPR1B",
+    "COL2A1",
+    "GDF5"
+  ],
+  "NANDO:2201346": [
+    "BMPR1B",
+    "COL2A1",
+    "GDF5"
+  ],
+  "NANDO:1200425": [
+    "BMPR2"
+  ],
+  "NANDO:1200427": [
+    "BMPR2",
+    "EIF2AK4"
+  ],
+  "NANDO:2200298": [
+    "BMPR2"
+  ],
+  "NANDO:1200462": [
+    "BRAF",
+    "KRAS",
+    "MAP2K1",
+    "MAP2K2"
+  ],
+  "NANDO:2200967": [
+    "BRAF",
+    "KRAS",
+    "MAP2K1",
+    "MAP2K2"
+  ],
+  "NANDO:2200031": [
+    "BRAF"
+  ],
+  "NANDO:2200091": [
+    "BRAF",
+    "CTNNB1"
+  ],
+  "NANDO:1200303": [
+    "BRCA1",
+    "BRCA2",
+    "BRIP1",
+    "ERCC4",
+    "FANCA",
+    "FANCB",
+    "FANCC",
+    "FANCD2",
+    "FANCE",
+    "FANCF",
+    "FANCG",
+    "FANCI",
+    "FANCL",
+    "FANCM",
+    "MAD2L2",
+    "PALB2",
+    "RAD51",
+    "RAD51C",
+    "RFWD3",
+    "SLX4",
+    "UBE2T",
+    "XRCC2"
+  ],
+  "NANDO:1200891": [
+    "BRCA1",
+    "BRCA2",
+    "BRIP1",
+    "ERCC4",
+    "FANCA",
+    "FANCB",
+    "FANCC",
+    "FANCD2",
+    "FANCE",
+    "FANCF",
+    "FANCG",
+    "FANCI",
+    "FANCL",
+    "FANCM",
+    "MAD2L2",
+    "PALB2",
+    "RAD51",
+    "RAD51C",
+    "RFWD3",
+    "SLX4",
+    "UBE2T",
+    "XRCC2"
+  ],
+  "NANDO:2200652": [
+    "BRCA1",
+    "BRCA2",
+    "BRIP1",
+    "ERCC4",
+    "FANCA",
+    "FANCB",
+    "FANCC",
+    "FANCD2",
+    "FANCE",
+    "FANCF",
+    "FANCG",
+    "FANCI",
+    "FANCL",
+    "FANCM",
+    "MAD2L2",
+    "PALB2",
+    "RAD51",
+    "RAD51C",
+    "RFWD3",
+    "SLX4",
+    "UBE2T",
+    "XRCC2"
+  ],
+  "NANDO:2200090": [
+    "BRCA2",
+    "CTNNB1",
+    "PTCH2",
+    "SUFU"
+  ],
+  "NANDO:2200043": [
+    "BRCA2",
+    "DIS3L2",
+    "GPC3",
+    "H19",
+    "POU6F2",
+    "REST",
+    "TRIM28",
+    "TRIP13",
+    "WT1"
+  ],
+  "NANDO:1200822": [
+    "BTD"
+  ],
+  "NANDO:1200343": [
+    "BTK"
+  ],
+  "NANDO:2200716": [
+    "BTK"
+  ],
+  "NANDO:1200415": [
+    "BTNL2",
+    "HLA-DRB1"
+  ],
+  "NANDO:1200540": [
+    "C19orf12",
+    "CP"
+  ],
+  "NANDO:2200777": [
+    "C1QA",
+    "C1QB",
+    "C1QC"
+  ],
+  "NANDO:2200779": [
+    "C1S"
+  ],
+  "NANDO:2200781": [
+    "C2"
+  ],
+  "NANDO:2200782": [
+    "C3"
+  ],
+  "NANDO:1200284": [
+    "C4A",
+    "CCR1",
+    "ERAP1",
+    "FAS",
+    "HLA-B",
+    "IL10",
+    "IL12A",
+    "IL12A-AS1",
+    "IL23R",
+    "KLRC4",
+    "MEFV",
+    "STAT4",
+    "TLR4",
+    "UBAC2"
+  ],
+  "NANDO:2200422": [
+    "C4A",
+    "CCR1",
+    "ERAP1",
+    "FAS",
+    "HLA-B",
+    "IL10",
+    "IL12A",
+    "IL12A-AS1",
+    "IL23R",
+    "KLRC4",
+    "MEFV",
+    "STAT4",
+    "TLR4",
+    "UBAC2"
+  ],
+  "NANDO:1201027": [
+    "C4A",
+    "CCR1",
+    "ERAP1",
+    "FAS",
+    "HLA-B",
+    "IL10",
+    "IL12A",
+    "IL12A-AS1",
+    "IL23R",
+    "KLRC4",
+    "MEFV",
+    "STAT4",
+    "TLR4",
+    "UBAC2"
+  ],
+  "NANDO:2200783": [
+    "C5"
+  ],
+  "NANDO:2200784": [
+    "C6"
+  ],
+  "NANDO:2200785": [
+    "C7"
+  ],
+  "NANDO:2200787": [
+    "C9"
+  ],
+  "NANDO:1200042": [
+    "CACNA1A"
+  ],
+  "NANDO:1200503": [
+    "CACNA1S",
+    "KCNE3",
+    "SCN4A"
+  ],
+  "NANDO:2200221": [
+    "CALM1",
+    "CALM2",
+    "CALM3",
+    "CASQ2",
+    "RYR2",
+    "TECRL",
+    "TRDN"
+  ],
+  "NANDO:2200216": [
+    "CALM1",
+    "CALM2",
+    "CALM3",
+    "CASQ2",
+    "RYR2",
+    "TECRL",
+    "TRDN"
+  ],
+  "NANDO:2200655": [
+    "CALR",
+    "JAK2",
+    "MPL",
+    "SH2B3",
+    "TET2",
+    "TP53"
+  ],
+  "NANDO:2200443": [
+    "CARD14"
+  ],
+  "NANDO:1200352": [
+    "CASP10",
+    "FAS",
+    "FASLG",
+    "PRKCD",
+    "RASGRP1"
+  ],
+  "NANDO:2200726": [
+    "CASP10",
+    "FAS",
+    "FASLG",
+    "PRKCD",
+    "RASGRP1"
+  ],
+  "NANDO:2200740": [
+    "CASP8"
+  ],
+  "NANDO:1200921": [
+    "CASR",
+    "CFTR",
+    "CPA1",
+    "CTRC",
+    "PRSS1",
+    "PRSS2",
+    "SPINK1"
+  ],
+  "NANDO:2200942": [
+    "CASR",
+    "CFTR",
+    "CPA1",
+    "CTRC",
+    "PRSS1",
+    "PRSS2",
+    "SPINK1"
+  ],
+  "NANDO:1200774": [
+    "CAT"
+  ],
+  "NANDO:1201010": [
+    "CAV1",
+    "CCN2",
+    "CCR6",
+    "HLA-DRB1",
+    "IRF5"
+  ],
+  "NANDO:1201011": [
+    "CAV1",
+    "CCN2",
+    "CCR6",
+    "HLA-DRB1",
+    "IRF5",
+    "KIAA0319L"
+  ],
+  "NANDO:2201083": [
+    "CBS"
+  ],
+  "NANDO:1200662": [
+    "CC2D2A",
+    "CEP290",
+    "TMEM138",
+    "TMEM216",
+    "TMEM231",
+    "TMEM237",
+    "ZNF423"
+  ],
+  "NANDO:2200203": [
+    "CCDC103",
+    "CCDC39",
+    "CCDC40",
+    "CCDC65",
+    "CCNO",
+    "CFAP221",
+    "CFAP298",
+    "CFAP300",
+    "DNAAF1",
+    "DNAAF3",
+    "DNAAF4",
+    "DNAAF5",
+    "DNAH1",
+    "DNAH11",
+    "DNAH5",
+    "DNAH9",
+    "DNAI1",
+    "DNAI2",
+    "DNAJB13",
+    "DNAL1",
+    "DRC1",
+    "FOXJ1",
+    "GAS2L2",
+    "GAS8",
+    "HYDIN",
+    "LRRC56",
+    "MCIDAS",
+    "NEK10",
+    "NME8",
+    "OFD1",
+    "RPGR",
+    "RSPH1",
+    "RSPH3",
+    "RSPH4A",
+    "RSPH9",
+    "SPAG1",
+    "SPEF2",
+    "STK36",
+    "TTC12",
+    "ZMYND10"
+  ],
+  "NANDO:2200204": [
+    "CCDC103",
+    "CCDC39",
+    "CCDC40",
+    "CCDC65",
+    "CCNO",
+    "CFAP221",
+    "CFAP298",
+    "CFAP300",
+    "DNAAF1",
+    "DNAAF3",
+    "DNAAF4",
+    "DNAAF5",
+    "DNAH1",
+    "DNAH11",
+    "DNAH5",
+    "DNAH9",
+    "DNAI1",
+    "DNAI2",
+    "DNAJB13",
+    "DNAL1",
+    "DRC1",
+    "FOXJ1",
+    "GAS2L2",
+    "GAS8",
+    "HYDIN",
+    "LRRC56",
+    "MCIDAS",
+    "NEK10",
+    "NME8",
+    "OFD1",
+    "RPGR",
+    "RSPH1",
+    "RSPH3",
+    "RSPH4A",
+    "RSPH9",
+    "SPAG1",
+    "SPEF2",
+    "STK36",
+    "TTC12",
+    "ZMYND10"
+  ],
+  "NANDO:2200829": [
+    "CCND1",
+    "VHL"
+  ],
+  "NANDO:2200408": [
+    "CCND1",
+    "VHL"
+  ],
+  "NANDO:2200647": [
+    "CD109",
+    "GP1BA",
+    "GP1BB",
+    "ITGA2",
+    "ITGA2B",
+    "ITGB3"
+  ],
+  "NANDO:1200344": [
+    "CD19",
+    "CD81",
+    "CR2",
+    "ICOS",
+    "MS4A1",
+    "NFKB1",
+    "NFKB2",
+    "PRKCD",
+    "TNFRSF13B",
+    "TNFRSF13C",
+    "TNFSF12"
+  ],
+  "NANDO:2200717": [
+    "CD19",
+    "CD81",
+    "CR2",
+    "ICOS",
+    "MS4A1",
+    "NFKB1",
+    "NFKB2",
+    "PRKCD",
+    "TNFRSF13B",
+    "TNFRSF13C",
+    "TNFSF12"
+  ],
+  "NANDO:2200735": [
+    "CD27"
+  ],
+  "NANDO:2200803": [
+    "CD46"
+  ],
+  "NANDO:2200804": [
+    "CD59"
+  ],
+  "NANDO:1200326": [
+    "CD8A"
+  ],
+  "NANDO:2200699": [
+    "CD8A"
+  ],
+  "NANDO:1200886": [
+    "CDAN1"
+  ],
+  "NANDO:2200985": [
+    "CDC42"
+  ],
+  "NANDO:1200334": [
+    "CDCA7",
+    "DNMT3B",
+    "HELLS",
+    "ZBTB24"
+  ],
+  "NANDO:2200708": [
+    "CDCA7",
+    "DNMT3B",
+    "HELLS",
+    "ZBTB24"
+  ],
+  "NANDO:1200942": [
+    "CDH23",
+    "CIB2",
+    "ESPN",
+    "MYO7A",
+    "PCDH15",
+    "USH1C",
+    "USH1G"
+  ],
+  "NANDO:1200377": [
+    "CDH23"
+  ],
+  "NANDO:1200605": [
+    "CDKL5",
+    "GABBR2",
+    "MECP2",
+    "NTNG1",
+    "STXBP1"
+  ],
+  "NANDO:2200405": [
+    "CDKN1A",
+    "CDKN1B",
+    "CDKN2B",
+    "CDKN2C",
+    "MEN1"
+  ],
+  "NANDO:1200406": [
+    "CDKN1C",
+    "POLE"
+  ],
+  "NANDO:2200959": [
+    "CDKN1C",
+    "IGF2",
+    "KCNQ1",
+    "KCNQ1OT1",
+    "NSD1"
+  ],
+  "NANDO:2200797": [
+    "CFB"
+  ],
+  "NANDO:1200726": [
+    "CFH",
+    "DGKE"
+  ],
+  "NANDO:1200739": [
+    "CFH",
+    "CFHR1"
+  ],
+  "NANDO:2200791": [
+    "CFH"
+  ],
+  "NANDO:1201030": [
+    "CFH",
+    "DGKE"
+  ],
+  "NANDO:2200789": [
+    "CFP"
+  ],
+  "NANDO:1200922": [
+    "CFTR",
+    "CLCA4",
+    "DCTN4",
+    "FCGR2A",
+    "STX1A",
+    "TGFB1"
+  ],
+  "NANDO:2200205": [
+    "CFTR",
+    "CLCA4",
+    "DCTN4",
+    "FCGR2A",
+    "STX1A",
+    "TGFB1"
+  ],
+  "NANDO:1201021": [
+    "CFTR",
+    "CLCA4",
+    "DCTN4",
+    "FCGR2A",
+    "STX1A",
+    "TGFB1"
+  ],
+  "NANDO:1200591": [
+    "CHD2",
+    "CUX2",
+    "DNM1",
+    "GABRB3",
+    "MAPK10",
+    "SCN1A"
+  ],
+  "NANDO:2200879": [
+    "CHD2",
+    "CUX2",
+    "DNM1",
+    "GABRB3",
+    "MAPK10",
+    "SCN1A"
+  ],
+  "NANDO:1200464": [
+    "CHD7",
+    "SEMA3E"
+  ],
+  "NANDO:2200972": [
+    "CHD7",
+    "SEMA3E"
+  ],
+  "NANDO:1200550": [
+    "CHMP2B",
+    "GRN",
+    "MAPT",
+    "PSEN1",
+    "TMEM106B",
+    "TREM2"
+  ],
+  "NANDO:1200549": [
+    "CHMP2B",
+    "GRN",
+    "MAPT",
+    "PSEN1",
+    "SQSTM1",
+    "TMEM106B",
+    "TREM2",
+    "VCP"
+  ],
+  "NANDO:2200185": [
+    "CHRM3"
+  ],
+  "NANDO:1200021": [
+    "CHRNE"
+  ],
+  "NANDO:1200652": [
+    "CHST14",
+    "DSE"
+  ],
+  "NANDO:2201262": [
+    "CHST14",
+    "DSE"
+  ],
+  "NANDO:2200768": [
+    "CIB1",
+    "IL7",
+    "TMC6",
+    "TMC8"
+  ],
+  "NANDO:1200329": [
+    "CIITA",
+    "RFX5",
+    "RFXANK",
+    "RFXAP"
+  ],
+  "NANDO:2200702": [
+    "CIITA",
+    "RFX5",
+    "RFXANK",
+    "RFXAP"
+  ],
+  "NANDO:1200757": [
+    "CISD2",
+    "WFS1"
+  ],
+  "NANDO:1200709": [
+    "CITED2",
+    "FLT4",
+    "GATA4",
+    "GATA5",
+    "GATA6",
+    "GDF1",
+    "GJA5",
+    "JAG1",
+    "NKX2-5",
+    "NKX2-6",
+    "TBX1",
+    "ZFPM2"
+  ],
+  "NANDO:2200254": [
+    "CITED2",
+    "FLT4",
+    "GATA4",
+    "GATA5",
+    "GATA6",
+    "GDF1",
+    "GJA5",
+    "JAG1",
+    "NKX2-5",
+    "NKX2-6",
+    "TBX1",
+    "ZFPM2"
+  ],
+  "NANDO:2200267": [
+    "CITED2"
+  ],
+  "NANDO:1200499": [
+    "CLCN1"
+  ],
+  "NANDO:1200498": [
+    "CLCN1"
+  ],
+  "NANDO:1200497": [
+    "CLCN1"
+  ],
+  "NANDO:2200145": [
+    "CLCNKB",
+    "SLC12A3"
+  ],
+  "NANDO:1200363": [
+    "CLEC7A",
+    "IL17F",
+    "IL17RA",
+    "IL17RC",
+    "TRAF3IP2"
+  ],
+  "NANDO:2200764": [
+    "CLEC7A",
+    "IL17F",
+    "IL17RA",
+    "IL17RC",
+    "TRAF3IP2"
+  ],
+  "NANDO:1200150": [
+    "CLN6",
+    "CLN8",
+    "CTSD",
+    "MFSD8",
+    "TPP1"
+  ],
+  "NANDO:1200156": [
+    "CLN6",
+    "CLN8",
+    "CTSD",
+    "MFSD8",
+    "TPP1"
+  ],
+  "NANDO:2200573": [
+    "CLN6",
+    "CLN8",
+    "CTSD",
+    "MFSD8",
+    "TPP1"
+  ],
+  "NANDO:2200487": [
+    "CLTRN",
+    "SLC6A19"
+  ],
+  "NANDO:1200936": [
+    "CNGB3",
+    "GNAT2",
+    "GUCA1A",
+    "PDE6C"
+  ],
+  "NANDO:2201016": [
+    "COL11A1",
+    "COL11A2",
+    "COL9A1",
+    "COL9A2",
+    "COL9A3"
+  ],
+  "NANDO:1200220": [
+    "COL12A1",
+    "COL6A1",
+    "COL6A2",
+    "COL6A3"
+  ],
+  "NANDO:1200215": [
+    "COL12A1",
+    "COL6A1",
+    "COL6A2",
+    "COL6A3"
+  ],
+  "NANDO:2200862": [
+    "COL12A1",
+    "COL6A1",
+    "COL6A2",
+    "COL6A3"
+  ],
+  "NANDO:2201379": [
+    "COL17A1",
+    "ITGB4",
+    "LAMA3",
+    "LAMB3",
+    "LAMC2"
+  ],
+  "NANDO:1200650": [
+    "COL1A1",
+    "COL1A2"
+  ],
+  "NANDO:1200646": [
+    "COL1A1",
+    "COL5A1",
+    "COL5A2"
+  ],
+  "NANDO:2200059": [
+    "COL1A1",
+    "PDGFB"
+  ],
+  "NANDO:2201260": [
+    "COL1A1",
+    "COL1A2"
+  ],
+  "NANDO:2201256": [
+    "COL1A1",
+    "COL5A1",
+    "COL5A2"
+  ],
+  "NANDO:1200373": [
+    "COL2A1",
+    "TRPV4"
+  ],
+  "NANDO:2201354": [
+    "COL2A1"
+  ],
+  "NANDO:2201347": [
+    "COL2A1"
+  ],
+  "NANDO:2201350": [
+    "COL2A1"
+  ],
+  "NANDO:2201348": [
+    "COL2A1"
+  ],
+  "NANDO:2201349": [
+    "COL2A1"
+  ],
+  "NANDO:2201352": [
+    "COL2A1"
+  ],
+  "NANDO:2201353": [
+    "COL2A1"
+  ],
+  "NANDO:1200648": [
+    "COL3A1"
+  ],
+  "NANDO:2201258": [
+    "COL3A1"
+  ],
+  "NANDO:1200712": [
+    "COL4A5"
+  ],
+  "NANDO:2200126": [
+    "COL4A5"
+  ],
+  "NANDO:1200238": [
+    "COL7A1",
+    "MMP1"
+  ],
+  "NANDO:2201383": [
+    "COL7A1",
+    "MMP1"
+  ],
+  "NANDO:2200792": [
+    "COLEC10",
+    "COLEC11",
+    "MASP1"
+  ],
+  "NANDO:2201018": [
+    "COMP"
+  ],
+  "NANDO:1200034": [
+    "COQ2"
+  ],
+  "NANDO:1200035": [
+    "COQ2"
+  ],
+  "NANDO:1200036": [
+    "COQ2"
+  ],
+  "NANDO:1200175": [
+    "COX10",
+    "COX15",
+    "EARS2",
+    "ETHE1",
+    "FBXL4",
+    "LRPPRC",
+    "MTFMT",
+    "NDUFAF2",
+    "NDUFAF6",
+    "NDUFS1",
+    "NDUFS4",
+    "NDUFV1",
+    "PDHA1",
+    "SCO2",
+    "SDHA",
+    "SERAC1",
+    "SLC19A3",
+    "SUCLA2",
+    "SURF1",
+    "TTC19"
+  ],
+  "NANDO:2200527": [
+    "COX10",
+    "COX15",
+    "EARS2",
+    "ETHE1",
+    "FBXL4",
+    "LRPPRC",
+    "MTFMT",
+    "NDUFAF2",
+    "NDUFAF6",
+    "NDUFS1",
+    "NDUFS4",
+    "NDUFV1",
+    "PDHA1",
+    "SCO2",
+    "SDHA",
+    "SERAC1",
+    "SLC19A3",
+    "SUCLA2",
+    "SURF1",
+    "TTC19"
+  ],
+  "NANDO:2200582": [
+    "CP"
+  ],
+  "NANDO:1200683": [
+    "CPLX1",
+    "CTBP1",
+    "FGFRL1",
+    "LETM1",
+    "NELFA",
+    "NSD2"
+  ],
+  "NANDO:2200962": [
+    "CPLX1",
+    "CTBP1",
+    "FGFRL1",
+    "LETM1",
+    "NELFA",
+    "NSD2"
+  ],
+  "NANDO:1200813": [
+    "CPOX"
+  ],
+  "NANDO:2201264": [
+    "CPOX"
+  ],
+  "NANDO:1200803": [
+    "CPS1"
+  ],
+  "NANDO:2200478": [
+    "CPS1"
+  ],
+  "NANDO:2201089": [
+    "CPS1"
+  ],
+  "NANDO:2201088": [
+    "CPS1"
+  ],
+  "NANDO:1200970": [
+    "CPT1A"
+  ],
+  "NANDO:2200509": [
+    "CPT1A"
+  ],
+  "NANDO:1200971": [
+    "CPT2"
+  ],
+  "NANDO:2200510": [
+    "CPT2"
+  ],
+  "NANDO:2201132": [
+    "CPT2"
+  ],
+  "NANDO:2201133": [
+    "CPT2"
+  ],
+  "NANDO:2201134": [
+    "CPT2"
+  ],
+  "NANDO:2200801": [
+    "CR2"
+  ],
+  "NANDO:1200461": [
+    "CREBBP",
+    "EP300"
+  ],
+  "NANDO:2200955": [
+    "CREBBP",
+    "EP300"
+  ],
+  "NANDO:2200268": [
+    "CRELD1",
+    "GATA4",
+    "GATA6",
+    "NR2F2"
+  ],
+  "NANDO:1200746": [
+    "CSF2RA",
+    "CSF2RB"
+  ],
+  "NANDO:1200750": [
+    "CSF2RA",
+    "CSF2RB"
+  ],
+  "NANDO:2200200": [
+    "CSF2RA",
+    "CSF2RB"
+  ],
+  "NANDO:1200954": [
+    "CSTB",
+    "PRICKLE1",
+    "SCARB2"
+  ],
+  "NANDO:2200880": [
+    "CSTB",
+    "PRICKLE1",
+    "SCARB2"
+  ],
+  "NANDO:1200342": [
+    "CTC1",
+    "DKC1",
+    "NHP2",
+    "NOP10",
+    "NPM1",
+    "PARN",
+    "RTEL1",
+    "TERC",
+    "TINF2",
+    "USB1",
+    "WRAP53"
+  ],
+  "NANDO:1200304": [
+    "CTC1",
+    "DKC1",
+    "NHP2",
+    "NOP10",
+    "NPM1",
+    "PARN",
+    "RTEL1",
+    "TERC",
+    "TINF2",
+    "USB1",
+    "WRAP53"
+  ],
+  "NANDO:2200715": [
+    "CTC1",
+    "DKC1",
+    "NHP2",
+    "NOP10",
+    "NPM1",
+    "PARN",
+    "RTEL1",
+    "TERC",
+    "TINF2",
+    "USB1",
+    "WRAP53"
+  ],
+  "NANDO:1200263": [
+    "CTLA4",
+    "HLA-DPA1",
+    "HLA-DPB1",
+    "PRTN3",
+    "PTPN22"
+  ],
+  "NANDO:2200335": [
+    "CTLA4"
+  ],
+  "NANDO:1201009": [
+    "CTLA4",
+    "HLA-DPA1",
+    "HLA-DPB1",
+    "PRTN3",
+    "PTPN22"
+  ],
+  "NANDO:1201008": [
+    "CTLA4",
+    "HLA-DPA1",
+    "HLA-DPB1",
+    "PRTN3",
+    "PTPN22"
+  ],
+  "NANDO:2200130": [
+    "CTLA4",
+    "HLA-DPA1",
+    "HLA-DPB1",
+    "PRTN3",
+    "PTPN22"
+  ],
+  "NANDO:2200424": [
+    "CTLA4",
+    "HLA-DPA1",
+    "HLA-DPB1",
+    "PRTN3",
+    "PTPN22"
+  ],
+  "NANDO:1200684": [
+    "CTNND2",
+    "SEMA5A"
+  ],
+  "NANDO:2200961": [
+    "CTNND2",
+    "SEMA5A"
+  ],
+  "NANDO:1200164": [
+    "CTNS"
+  ],
+  "NANDO:1200162": [
+    "CTNS"
+  ],
+  "NANDO:1200163": [
+    "CTNS"
+  ],
+  "NANDO:1200161": [
+    "CTNS"
+  ],
+  "NANDO:2200571": [
+    "CTNS"
+  ],
+  "NANDO:2201236": [
+    "CTNS"
+  ],
+  "NANDO:2201234": [
+    "CTNS"
+  ],
+  "NANDO:2201235": [
+    "CTNS"
+  ],
+  "NANDO:1200119": [
+    "CTSA"
+  ],
+  "NANDO:1200122": [
+    "CTSA"
+  ],
+  "NANDO:2200557": [
+    "CTSA"
+  ],
+  "NANDO:2201023": [
+    "CTSK"
+  ],
+  "NANDO:2200767": [
+    "CXCR4"
+  ],
+  "NANDO:1200357": [
+    "CYBA",
+    "CYBB",
+    "CYBC1",
+    "NCF1",
+    "NCF2",
+    "NCF4"
+  ],
+  "NANDO:2200757": [
+    "CYBA",
+    "CYBB",
+    "CYBC1",
+    "NCF1",
+    "NCF2",
+    "NCF4"
+  ],
+  "NANDO:2201280": [
+    "CYBA"
+  ],
+  "NANDO:2201279": [
+    "CYBB"
+  ],
+  "NANDO:1200400": [
+    "CYP11B1"
+  ],
+  "NANDO:2200372": [
+    "CYP11B1"
+  ],
+  "NANDO:1200401": [
+    "CYP17A1"
+  ],
+  "NANDO:2200373": [
+    "CYP17A1"
+  ],
+  "NANDO:1200399": [
+    "CYP21A2"
+  ],
+  "NANDO:1200856": [
+    "CYP27A1"
+  ],
+  "NANDO:1200782": [
+    "CYP27B1",
+    "CYP2R1"
+  ],
+  "NANDO:2200597": [
+    "DBH"
+  ],
+  "NANDO:1200547": [
+    "DCTN1"
+  ],
+  "NANDO:1200574": [
+    "DCX"
+  ],
+  "NANDO:2200817": [
+    "DCX"
+  ],
+  "NANDO:1200608": [
+    "DDB2",
+    "ERCC2",
+    "ERCC3",
+    "ERCC4",
+    "ERCC5",
+    "XPA",
+    "XPC"
+  ],
+  "NANDO:2201002": [
+    "DDB2",
+    "ERCC2",
+    "ERCC3",
+    "ERCC4",
+    "ERCC5",
+    "XPA",
+    "XPC"
+  ],
+  "NANDO:1200988": [
+    "DDC"
+  ],
+  "NANDO:2200596": [
+    "DDC"
+  ],
+  "NANDO:1200687": [
+    "DEAF1",
+    "FLII",
+    "IQSEC2",
+    "RAI1"
+  ],
+  "NANDO:2200954": [
+    "DEAF1",
+    "FLII",
+    "IQSEC2",
+    "RAI1"
+  ],
+  "NANDO:1200961": [
+    "DHCR7"
+  ],
+  "NANDO:2200979": [
+    "DHCR7"
+  ],
+  "NANDO:2200080": [
+    "DICER1"
+  ],
+  "NANDO:1200685": [
+    "DLK1",
+    "MEG3",
+    "RTL1"
+  ],
+  "NANDO:1200489": [
+    "DMD"
+  ],
+  "NANDO:1200488": [
+    "DMD",
+    "LTBP4"
+  ],
+  "NANDO:2200865": [
+    "DMD"
+  ],
+  "NANDO:2200856": [
+    "DMD",
+    "LTBP4"
+  ],
+  "NANDO:1200356": [
+    "DNAJC21",
+    "EFL1",
+    "SBDS",
+    "SRP54"
+  ],
+  "NANDO:2200756": [
+    "DNAJC21",
+    "EFL1",
+    "SBDS",
+    "SRP54"
+  ],
+  "NANDO:1200016": [
+    "DNM2",
+    "FGD4",
+    "GDAP1",
+    "MPZ",
+    "YARS1"
+  ],
+  "NANDO:2200855": [
+    "DNM2",
+    "FGD4",
+    "GDAP1",
+    "MPZ",
+    "YARS1"
+  ],
+  "NANDO:1200491": [
+    "DNMT3B",
+    "DUX4",
+    "DUX4L1",
+    "FRG1",
+    "SMCHD1"
+  ],
+  "NANDO:2200859": [
+    "DNMT3B",
+    "DUX4",
+    "DUX4L1",
+    "FRG1",
+    "SMCHD1"
+  ],
+  "NANDO:1200522": [
+    "DRD2",
+    "KCTD17",
+    "SGCE",
+    "TOR1A"
+  ],
+  "NANDO:2200230": [
+    "DSG2",
+    "JUP",
+    "PKP2"
+  ],
+  "NANDO:1200217": [
+    "DYSF"
+  ],
+  "NANDO:1200369": [
+    "DZIP1L",
+    "PKHD1"
+  ],
+  "NANDO:2200154": [
+    "DZIP1L",
+    "PKHD1"
+  ],
+  "NANDO:1200630": [
+    "EBP"
+  ],
+  "NANDO:2201357": [
+    "EBP"
+  ],
+  "NANDO:1200908": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:1200904": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:1200903": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:1200905": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:1200906": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:1200907": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:2200945": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:2200948": [
+    "ECE1",
+    "EDN3",
+    "EDNRB",
+    "GDNF",
+    "NRTN",
+    "RET",
+    "SEMA3C",
+    "SEMA3D"
+  ],
+  "NANDO:2200608": [
+    "ECM1"
+  ],
+  "NANDO:1200659": [
+    "EED",
+    "EZH2",
+    "NSD1",
+    "SUZ12"
+  ],
+  "NANDO:2200957": [
+    "EED",
+    "EZH2",
+    "NSD1",
+    "SUZ12"
+  ],
+  "NANDO:1200766": [
+    "EHHADH",
+    "HSD17B4"
+  ],
+  "NANDO:1200959": [
+    "EHMT1"
+  ],
+  "NANDO:1200951": [
+    "EIF2B1",
+    "EIF2B2",
+    "EIF2B3",
+    "EIF2B4",
+    "EIF2B5"
+  ],
+  "NANDO:2200838": [
+    "EIF2B1",
+    "EIF2B2",
+    "EIF2B3",
+    "EIF2B4",
+    "EIF2B5"
+  ],
+  "NANDO:1200180": [
+    "ELAC2",
+    "FOXRED1",
+    "MT-ND1",
+    "MT-ND2",
+    "MT-ND3",
+    "NDUFA1",
+    "NDUFA11",
+    "NDUFA6",
+    "NDUFAF1",
+    "NDUFAF2",
+    "NDUFAF3",
+    "NDUFAF4",
+    "NDUFAF5",
+    "NDUFAF8",
+    "NDUFB10",
+    "NDUFB11",
+    "NDUFB3",
+    "NDUFB9",
+    "NDUFS1",
+    "NDUFS2",
+    "NDUFS3",
+    "NDUFS4",
+    "NDUFS6",
+    "NDUFS7",
+    "NDUFS8",
+    "NDUFV1",
+    "NDUFV2",
+    "NUBPL",
+    "TIMMDC1",
+    "TMEM126B"
+  ],
+  "NANDO:1200354": [
+    "ELANE"
+  ],
+  "NANDO:2200746": [
+    "ELANE"
+  ],
+  "NANDO:2200285": [
+    "ELN"
+  ],
+  "NANDO:2200818": [
+    "EMX2",
+    "SHH",
+    "SIX3"
+  ],
+  "NANDO:1200835": [
+    "ENO3"
+  ],
+  "NANDO:2200630": [
+    "EPB41",
+    "GYPC",
+    "SPTA1",
+    "SPTB"
+  ],
+  "NANDO:1200955": [
+    "EPM2A",
+    "NHLRC1"
+  ],
+  "NANDO:2200881": [
+    "EPM2A",
+    "NHLRC1"
+  ],
+  "NANDO:1200627": [
+    "ERCC2",
+    "ERCC3",
+    "GTF2E2",
+    "GTF2H5",
+    "MPLKIP",
+    "RNF113A",
+    "TARS1"
+  ],
+  "NANDO:1200666": [
+    "ERF",
+    "FGFR2"
+  ],
+  "NANDO:2200845": [
+    "ERF",
+    "FGFR2"
+  ],
+  "NANDO:2201304": [
+    "ERF"
+  ],
+  "NANDO:2200053": [
+    "ERG",
+    "ETV1",
+    "ETV4",
+    "EWSR1",
+    "FLI1"
+  ],
+  "NANDO:1200801": [
+    "ETFA",
+    "ETFB",
+    "ETFDH"
+  ],
+  "NANDO:2200502": [
+    "ETFA",
+    "ETFB",
+    "ETFDH"
+  ],
+  "NANDO:2200060": [
+    "ETV6",
+    "NTRK3"
+  ],
+  "NANDO:2200050": [
+    "EXT1"
+  ],
+  "NANDO:2200049": [
+    "EXT1",
+    "EXT2",
+    "IDH1",
+    "IDH2",
+    "PTH1R"
+  ],
+  "NANDO:2201015": [
+    "EXT1",
+    "EXT2",
+    "IDH1",
+    "IDH2",
+    "PTH1R"
+  ],
+  "NANDO:2201014": [
+    "EXT1",
+    "EXT2"
+  ],
+  "NANDO:1200675": [
+    "EYA1",
+    "SIX1",
+    "SIX5"
+  ],
+  "NANDO:2200680": [
+    "F12"
+  ],
+  "NANDO:2200681": [
+    "F13A1",
+    "F13B"
+  ],
+  "NANDO:1200437": [
+    "F5",
+    "JAK2"
+  ],
+  "NANDO:2200676": [
+    "F8"
+  ],
+  "NANDO:2200677": [
+    "F9"
+  ],
+  "NANDO:1200541": [
+    "FA2H"
+  ],
+  "NANDO:2200741": [
+    "FADD"
+  ],
+  "NANDO:1200788": [
+    "FAH"
+  ],
+  "NANDO:2200468": [
+    "FAH"
+  ],
+  "NANDO:1200584": [
+    "FAM126A"
+  ],
+  "NANDO:2201296": [
+    "FAM126A"
+  ],
+  "NANDO:1200644": [
+    "FBN1"
+  ],
+  "NANDO:2200968": [
+    "FBN1"
+  ],
+  "NANDO:2201026": [
+    "FBN2"
+  ],
+  "NANDO:2200535": [
+    "FBP1"
+  ],
+  "NANDO:1200315": [
+    "FCGR2C"
+  ],
+  "NANDO:2200645": [
+    "FCGR2C"
+  ],
+  "NANDO:1200815": [
+    "FECH"
+  ],
+  "NANDO:2201266": [
+    "FECH"
+  ],
+  "NANDO:1200239": [
+    "FERMT1"
+  ],
+  "NANDO:1200668": [
+    "FGFR1",
+    "FGFR2"
+  ],
+  "NANDO:2200976": [
+    "FGFR1",
+    "FGFR2"
+  ],
+  "NANDO:2201305": [
+    "FGFR1",
+    "FREM1"
+  ],
+  "NANDO:1200667": [
+    "FGFR2"
+  ],
+  "NANDO:1200669": [
+    "FGFR2"
+  ],
+  "NANDO:2200844": [
+    "FGFR2"
+  ],
+  "NANDO:2200848": [
+    "FGFR2",
+    "FGFR3",
+    "TWIST1"
+  ],
+  "NANDO:2200975": [
+    "FGFR2"
+  ],
+  "NANDO:1200877": [
+    "FGFR3"
+  ],
+  "NANDO:1200875": [
+    "FGFR3"
+  ],
+  "NANDO:1200876": [
+    "FGFR3"
+  ],
+  "NANDO:2201009": [
+    "FGFR3"
+  ],
+  "NANDO:2201010": [
+    "FGFR3"
+  ],
+  "NANDO:2200520": [
+    "FH"
+  ],
+  "NANDO:2200875": [
+    "FHL1"
+  ],
+  "NANDO:1200494": [
+    "FKTN"
+  ],
+  "NANDO:2200860": [
+    "FKTN"
+  ],
+  "NANDO:2200055": [
+    "FLI1"
+  ],
+  "NANDO:2201019": [
+    "FLNB"
+  ],
+  "NANDO:2200004": [
+    "FLT3"
+  ],
+  "NANDO:2200005": [
+    "FLT3",
+    "NPM1"
+  ],
+  "NANDO:2200018": [
+    "FLT3",
+    "KMT2A"
+  ],
+  "NANDO:2200006": [
+    "FLT3",
+    "KIT",
+    "NPM1"
+  ],
+  "NANDO:1200690": [
+    "FMR1"
+  ],
+  "NANDO:1200691": [
+    "FMR1"
+  ],
+  "NANDO:1200692": [
+    "FMR1"
+  ],
+  "NANDO:2200840": [
+    "FMR1"
+  ],
+  "NANDO:2200133": [
+    "FN1"
+  ],
+  "NANDO:2200331": [
+    "FOXE1",
+    "NKX2-1",
+    "PAX8",
+    "SLC26A4",
+    "TSHR"
+  ],
+  "NANDO:1201000": [
+    "FOXE3"
+  ],
+  "NANDO:2200924": [
+    "FOXP3"
+  ],
+  "NANDO:1200601": [
+    "FRRS1L"
+  ],
+  "NANDO:1200539": [
+    "FTL"
+  ],
+  "NANDO:1200542": [
+    "FTL"
+  ],
+  "NANDO:1200131": [
+    "FUCA1"
+  ],
+  "NANDO:1200130": [
+    "FUCA1"
+  ],
+  "NANDO:2200553": [
+    "FUCA1"
+  ],
+  "NANDO:2201153": [
+    "G6PC1"
+  ],
+  "NANDO:1200138": [
+    "GAA"
+  ],
+  "NANDO:1200825": [
+    "GAA"
+  ],
+  "NANDO:1200139": [
+    "GAA"
+  ],
+  "NANDO:2200569": [
+    "GAA"
+  ],
+  "NANDO:2201229": [
+    "GAA"
+  ],
+  "NANDO:1200682": [
+    "GABRD",
+    "KCNAB2",
+    "PRDM16",
+    "RERE",
+    "SKI"
+  ],
+  "NANDO:1200074": [
+    "GALC"
+  ],
+  "NANDO:1200075": [
+    "GALC",
+    "PSAP"
+  ],
+  "NANDO:1200077": [
+    "GALC"
+  ],
+  "NANDO:2200564": [
+    "GALC"
+  ],
+  "NANDO:2201216": [
+    "GALC",
+    "PSAP"
+  ],
+  "NANDO:2201219": [
+    "GALC"
+  ],
+  "NANDO:2200534": [
+    "GALE"
+  ],
+  "NANDO:2200533": [
+    "GALK1"
+  ],
+  "NANDO:1200106": [
+    "GALNS"
+  ],
+  "NANDO:2201178": [
+    "GALNS"
+  ],
+  "NANDO:1200851": [
+    "GALT"
+  ],
+  "NANDO:2200532": [
+    "GALT"
+  ],
+  "NANDO:2201300": [
+    "GAMT"
+  ],
+  "NANDO:2200965": [
+    "GATA1"
+  ],
+  "NANDO:1200911": [
+    "GATA6",
+    "ZFPM2"
+  ],
+  "NANDO:2200275": [
+    "GATA6",
+    "NKX2-5",
+    "NKX2-6",
+    "TBX1"
+  ],
+  "NANDO:2200210": [
+    "GATA6",
+    "ZFPM2"
+  ],
+  "NANDO:2201299": [
+    "GATM"
+  ],
+  "NANDO:1200057": [
+    "GBA",
+    "SCARB2"
+  ],
+  "NANDO:1200058": [
+    "GBA"
+  ],
+  "NANDO:1200059": [
+    "GBA"
+  ],
+  "NANDO:1200056": [
+    "GBA"
+  ],
+  "NANDO:2200562": [
+    "GBA"
+  ],
+  "NANDO:2201210": [
+    "GBA",
+    "SCARB2"
+  ],
+  "NANDO:2201211": [
+    "GBA"
+  ],
+  "NANDO:2201212": [
+    "GBA"
+  ],
+  "NANDO:1200827": [
+    "GBE1",
+    "KCNJ2",
+    "KCNJ5"
+  ],
+  "NANDO:1200850": [
+    "GBE1"
+  ],
+  "NANDO:2200540": [
+    "GBE1"
+  ],
+  "NANDO:2201163": [
+    "GBE1"
+  ],
+  "NANDO:2201159": [
+    "GBE1"
+  ],
+  "NANDO:2201160": [
+    "GBE1"
+  ],
+  "NANDO:2201161": [
+    "GBE1"
+  ],
+  "NANDO:2201162": [
+    "GBE1"
+  ],
+  "NANDO:1200800": [
+    "GCDH"
+  ],
+  "NANDO:2200501": [
+    "GCDH"
+  ],
+  "NANDO:2201125": [
+    "GCDH"
+  ],
+  "NANDO:1200516": [
+    "GCH1"
+  ],
+  "NANDO:2201070": [
+    "GCK"
+  ],
+  "NANDO:1200698": [
+    "GDF1",
+    "MED13L"
+  ],
+  "NANDO:1200554": [
+    "GFAP"
+  ],
+  "NANDO:1200557": [
+    "GFAP"
+  ],
+  "NANDO:1200555": [
+    "GFAP"
+  ],
+  "NANDO:1200556": [
+    "GFAP"
+  ],
+  "NANDO:2200835": [
+    "GFAP"
+  ],
+  "NANDO:1200705": [
+    "GJA1"
+  ],
+  "NANDO:2200973": [
+    "GJA1"
+  ],
+  "NANDO:2200249": [
+    "GJA1"
+  ],
+  "NANDO:1200621": [
+    "GJB2",
+    "GJB6"
+  ],
+  "NANDO:2200996": [
+    "GJB2",
+    "GJB6"
+  ],
+  "NANDO:2200505": [
+    "GK"
+  ],
+  "NANDO:1200157": [
+    "GLA"
+  ],
+  "NANDO:1200158": [
+    "GLA"
+  ],
+  "NANDO:1200159": [
+    "GLA"
+  ],
+  "NANDO:2200563": [
+    "GLA"
+  ],
+  "NANDO:2201214": [
+    "GLA"
+  ],
+  "NANDO:2201213": [
+    "GLA"
+  ],
+  "NANDO:1200067": [
+    "GLB1"
+  ],
+  "NANDO:1200068": [
+    "GLB1"
+  ],
+  "NANDO:1200069": [
+    "GLB1"
+  ],
+  "NANDO:1200107": [
+    "GLB1"
+  ],
+  "NANDO:1200066": [
+    "GLB1"
+  ],
+  "NANDO:2200558": [
+    "GLB1"
+  ],
+  "NANDO:2201196": [
+    "GLB1"
+  ],
+  "NANDO:2201197": [
+    "GLB1"
+  ],
+  "NANDO:2201198": [
+    "GLB1"
+  ],
+  "NANDO:2201179": [
+    "GLB1"
+  ],
+  "NANDO:1200073": [
+    "GM2A"
+  ],
+  "NANDO:2201201": [
+    "GM2A"
+  ],
+  "NANDO:1200606": [
+    "GNAQ"
+  ],
+  "NANDO:2200830": [
+    "GNAQ"
+  ],
+  "NANDO:2200412": [
+    "GNAS"
+  ],
+  "NANDO:2200348": [
+    "GNAS"
+  ],
+  "NANDO:1200218": [
+    "GNE",
+    "SQSTM1"
+  ],
+  "NANDO:1200771": [
+    "GNPAT"
+  ],
+  "NANDO:1200124": [
+    "GNPTAB"
+  ],
+  "NANDO:1200125": [
+    "GNPTAB"
+  ],
+  "NANDO:2200567": [
+    "GNPTAB"
+  ],
+  "NANDO:2200568": [
+    "GNPTAB"
+  ],
+  "NANDO:1200104": [
+    "GNS"
+  ],
+  "NANDO:2201177": [
+    "GNS"
+  ],
+  "NANDO:2200668": [
+    "GP1BA"
+  ],
+  "NANDO:2200656": [
+    "GP1BA",
+    "GP1BB",
+    "GP9"
+  ],
+  "NANDO:2200670": [
+    "GP6"
+  ],
+  "NANDO:1200913": [
+    "GPC1"
+  ],
+  "NANDO:2200930": [
+    "GPC1"
+  ],
+  "NANDO:2200978": [
+    "GPC3",
+    "GPC4"
+  ],
+  "NANDO:1200440": [
+    "GPR35",
+    "MST1",
+    "TCF4"
+  ],
+  "NANDO:2200929": [
+    "GPR35",
+    "MST1",
+    "TCF4"
+  ],
+  "NANDO:1200602": [
+    "GRIN2A"
+  ],
+  "NANDO:1200939": [
+    "GUCA1A",
+    "GUCY2D",
+    "PRPH2"
+  ],
+  "NANDO:1200111": [
+    "GUSB"
+  ],
+  "NANDO:1200112": [
+    "GUSB"
+  ],
+  "NANDO:2200552": [
+    "GUSB"
+  ],
+  "NANDO:1200837": [
+    "GYG1"
+  ],
+  "NANDO:2201152": [
+    "GYS1"
+  ],
+  "NANDO:1200824": [
+    "GYS2"
+  ],
+  "NANDO:2200537": [
+    "GYS2"
+  ],
+  "NANDO:2201151": [
+    "GYS2"
+  ],
+  "NANDO:2200516": [
+    "HADH"
+  ],
+  "NANDO:1200974": [
+    "HADHA",
+    "HADHB"
+  ],
+  "NANDO:1200977": [
+    "HADHA",
+    "HADHB"
+  ],
+  "NANDO:2200515": [
+    "HADHA",
+    "HADHB"
+  ],
+  "NANDO:2201148": [
+    "HADHA",
+    "HADHB"
+  ],
+  "NANDO:2201147": [
+    "HADHA",
+    "HADHB"
+  ],
+  "NANDO:2200030": [
+    "HAVCR2"
+  ],
+  "NANDO:2201273": [
+    "HBA1",
+    "HBA2",
+    "HBB"
+  ],
+  "NANDO:2200624": [
+    "HBB"
+  ],
+  "NANDO:2200635": [
+    "HBB"
+  ],
+  "NANDO:2201274": [
+    "HBB"
+  ],
+  "NANDO:1200960": [
+    "HDAC8",
+    "KMT2A",
+    "NIPBL",
+    "RAD21",
+    "SETD5",
+    "SMC1A",
+    "SMC3"
+  ],
+  "NANDO:2200958": [
+    "HDAC8",
+    "KMT2A",
+    "NIPBL",
+    "RAD21",
+    "SETD5",
+    "SMC1A",
+    "SMC3"
+  ],
+  "NANDO:1200950": [
+    "HEPACAM",
+    "MLC1"
+  ],
+  "NANDO:2200837": [
+    "HEPACAM",
+    "MLC1"
+  ],
+  "NANDO:1200678": [
+    "HERC2",
+    "IPW",
+    "MAGEL2",
+    "MKRN3",
+    "MKRN3-AS1",
+    "NDN",
+    "NPAP1",
+    "PWAR1",
+    "PWRN1",
+    "SNORD115-1",
+    "SNORD116-1",
+    "SNRPN"
+  ],
+  "NANDO:2200411": [
+    "HERC2",
+    "IPW",
+    "MAGEL2",
+    "MKRN3",
+    "MKRN3-AS1",
+    "NDN",
+    "NPAP1",
+    "PWAR1",
+    "PWRN1",
+    "SNORD115-1",
+    "SNORD116-1",
+    "SNRPN"
+  ],
+  "NANDO:1200071": [
+    "HEXA"
+  ],
+  "NANDO:2201199": [
+    "HEXA"
+  ],
+  "NANDO:1200072": [
+    "HEXB"
+  ],
+  "NANDO:2201200": [
+    "HEXB"
+  ],
+  "NANDO:1200814": [
+    "HFE",
+    "PPOX"
+  ],
+  "NANDO:2201265": [
+    "HFE",
+    "PPOX"
+  ],
+  "NANDO:2200504": [
+    "HGD"
+  ],
+  "NANDO:1200103": [
+    "HGSNAT"
+  ],
+  "NANDO:1200100": [
+    "HGSNAT"
+  ],
+  "NANDO:2200549": [
+    "HGSNAT"
+  ],
+  "NANDO:2201176": [
+    "HGSNAT"
+  ],
+  "NANDO:1200245": [
+    "HLA-A",
+    "HLA-B",
+    "IKZF1"
+  ],
+  "NANDO:2201006": [
+    "HLA-A",
+    "HLA-B",
+    "IKZF1"
+  ],
+  "NANDO:1200255": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200252": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200253": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200254": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200251": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200257": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200256": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:2200423": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:2201064": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:2201063": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:2201062": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:2201065": [
+    "HLA-B",
+    "IL12B",
+    "MLX"
+  ],
+  "NANDO:1200189": [
+    "HLA-DQB1",
+    "PRNP"
+  ],
+  "NANDO:1200633": [
+    "HLA-DQB1",
+    "HLA-DRB1"
+  ],
+  "NANDO:1200470": [
+    "HLA-DRB1",
+    "IL6",
+    "LACC1",
+    "MIF"
+  ],
+  "NANDO:2201055": [
+    "HLA-DRB1",
+    "IL6",
+    "LACC1",
+    "MIF"
+  ],
+  "NANDO:1200821": [
+    "HLCS"
+  ],
+  "NANDO:1200812": [
+    "HMBS"
+  ],
+  "NANDO:2201263": [
+    "HMBS"
+  ],
+  "NANDO:2200497": [
+    "HMGCL"
+  ],
+  "NANDO:2201119": [
+    "HMGCL"
+  ],
+  "NANDO:2200498": [
+    "HMGCS2"
+  ],
+  "NANDO:2201071": [
+    "HNF1A"
+  ],
+  "NANDO:2201073": [
+    "HNF1B",
+    "HNF4A"
+  ],
+  "NANDO:2201069": [
+    "HNF4A"
+  ],
+  "NANDO:2200660": [
+    "HOXA11",
+    "MECOM"
+  ],
+  "NANDO:1200657": [
+    "HOXD13"
+  ],
+  "NANDO:2200983": [
+    "HOXD13"
+  ],
+  "NANDO:1200513": [
+    "HPCA"
+  ],
+  "NANDO:1200790": [
+    "HPD"
+  ],
+  "NANDO:2200470": [
+    "HPD"
+  ],
+  "NANDO:1200642": [
+    "HPGD",
+    "SLCO2A1"
+  ],
+  "NANDO:2201004": [
+    "HPGD",
+    "SLCO2A1"
+  ],
+  "NANDO:2200586": [
+    "HPRT1"
+  ],
+  "NANDO:1200463": [
+    "HRAS"
+  ],
+  "NANDO:2200971": [
+    "HRAS"
+  ],
+  "NANDO:2200362": [
+    "HSD11B2"
+  ],
+  "NANDO:2200390": [
+    "HSD17B3"
+  ],
+  "NANDO:1200398": [
+    "HSD3B2"
+  ],
+  "NANDO:2200371": [
+    "HSD3B2"
+  ],
+  "NANDO:1200581": [
+    "HSPD1"
+  ],
+  "NANDO:2201293": [
+    "HSPD1"
+  ],
+  "NANDO:1200224": [
+    "HSPG2"
+  ],
+  "NANDO:2200876": [
+    "HSPG2"
+  ],
+  "NANDO:1200544": [
+    "HTRA1"
+  ],
+  "NANDO:2200102": [
+    "HTRA1",
+    "SH3PXD2A"
+  ],
+  "NANDO:1200012": [
+    "HTT",
+    "SLC2A3"
+  ],
+  "NANDO:1200115": [
+    "HYAL1"
+  ],
+  "NANDO:2200086": [
+    "IDH2"
+  ],
+  "NANDO:2200089": [
+    "IDH2",
+    "POT1"
+  ],
+  "NANDO:1200097": [
+    "IDS"
+  ],
+  "NANDO:1200098": [
+    "IDS"
+  ],
+  "NANDO:1200099": [
+    "IDS"
+  ],
+  "NANDO:2200548": [
+    "IDS"
+  ],
+  "NANDO:2201173": [
+    "IDS"
+  ],
+  "NANDO:2201172": [
+    "IDS"
+  ],
+  "NANDO:2201171": [
+    "IDS"
+  ],
+  "NANDO:1200094": [
+    "IDUA"
+  ],
+  "NANDO:1200096": [
+    "IDUA"
+  ],
+  "NANDO:1200095": [
+    "IDUA"
+  ],
+  "NANDO:2200547": [
+    "IDUA"
+  ],
+  "NANDO:2201168": [
+    "IDUA"
+  ],
+  "NANDO:2201170": [
+    "IDUA"
+  ],
+  "NANDO:2201169": [
+    "IDUA"
+  ],
+  "NANDO:2200770": [
+    "IFNAR2",
+    "STAT2"
+  ],
+  "NANDO:1200296": [
+    "IFNG",
+    "NBN",
+    "PRF1",
+    "SBDS",
+    "TERC",
+    "TERT"
+  ],
+  "NANDO:2201276": [
+    "IFNG",
+    "NBN",
+    "PRF1",
+    "SBDS",
+    "TERC",
+    "TERT"
+  ],
+  "NANDO:2200320": [
+    "IGF1R"
+  ],
+  "NANDO:2200719": [
+    "IGHG2",
+    "IGKC"
+  ],
+  "NANDO:1200360": [
+    "IKBKG",
+    "NFKBIA"
+  ],
+  "NANDO:2200974": [
+    "IKBKG"
+  ],
+  "NANDO:2200761": [
+    "IKBKG",
+    "NFKBIA"
+  ],
+  "NANDO:2200446": [
+    "IL10",
+    "IL10RA",
+    "IL10RB"
+  ],
+  "NANDO:2200447": [
+    "IL10RA"
+  ],
+  "NANDO:2200448": [
+    "IL10RB"
+  ],
+  "NANDO:1200439": [
+    "IL12A",
+    "IL12RB1",
+    "IRF5",
+    "MMEL1",
+    "POU2AF1",
+    "SPIB",
+    "TNFSF15",
+    "TNPO3"
+  ],
+  "NANDO:2200439": [
+    "IL1RN"
+  ],
+  "NANDO:2200736": [
+    "IL2RA"
+  ],
+  "NANDO:1200321": [
+    "IL2RG"
+  ],
+  "NANDO:2200694": [
+    "IL2RG"
+  ],
+  "NANDO:1200244": [
+    "IL36RN"
+  ],
+  "NANDO:2200452": [
+    "IL36RN"
+  ],
+  "NANDO:1200469": [
+    "IL6",
+    "MIF"
+  ],
+  "NANDO:2200851": [
+    "IL6",
+    "KRAS"
+  ],
+  "NANDO:2200415": [
+    "IL6",
+    "MIF"
+  ],
+  "NANDO:1200485": [
+    "INPP5K",
+    "SIL1"
+  ],
+  "NANDO:1200361": [
+    "IRAK4"
+  ],
+  "NANDO:2200762": [
+    "IRAK4"
+  ],
+  "NANDO:2200808": [
+    "IRF8"
+  ],
+  "NANDO:2200739": [
+    "ITCH"
+  ],
+  "NANDO:2200657": [
+    "ITGA2B",
+    "ITGB3"
+  ],
+  "NANDO:2200664": [
+    "ITGA2B",
+    "ITGB3"
+  ],
+  "NANDO:2201380": [
+    "ITGA6",
+    "ITGB4",
+    "PLEC"
+  ],
+  "NANDO:2200861": [
+    "ITGA7",
+    "LAMA2"
+  ],
+  "NANDO:2200734": [
+    "ITK"
+  ],
+  "NANDO:1200798": [
+    "IVD"
+  ],
+  "NANDO:2200494": [
+    "IVD"
+  ],
+  "NANDO:2201118": [
+    "IVD"
+  ],
+  "NANDO:2201117": [
+    "IVD"
+  ],
+  "NANDO:2200643": [
+    "JAK2",
+    "MPL",
+    "TET2"
+  ],
+  "NANDO:1200207": [
+    "JAM2",
+    "MYORG",
+    "PDGFB",
+    "PDGFRB",
+    "SLC20A2",
+    "XPR1"
+  ],
+  "NANDO:1200681": [
+    "KAT6B"
+  ],
+  "NANDO:2200982": [
+    "KAT6B"
+  ],
+  "NANDO:1200521": [
+    "KCNA1",
+    "PRRT2"
+  ],
+  "NANDO:2200632": [
+    "KCNN4",
+    "PIEZO1",
+    "SLC4A1"
+  ],
+  "NANDO:2200633": [
+    "KCNN4",
+    "PIEZO1",
+    "SLC4A1"
+  ],
+  "NANDO:1200595": [
+    "KCNT1",
+    "PLCB1",
+    "SCN1A",
+    "SLC12A5",
+    "SLC25A22",
+    "TBC1D24"
+  ],
+  "NANDO:1200953": [
+    "KCTD7",
+    "SCARB2"
+  ],
+  "NANDO:1200672": [
+    "KDM6A",
+    "KMT2D"
+  ],
+  "NANDO:2200956": [
+    "KDM6A",
+    "KMT2D"
+  ],
+  "NANDO:1200888": [
+    "KIF23"
+  ],
+  "NANDO:2200684": [
+    "KLKB1"
+  ],
+  "NANDO:2200017": [
+    "KMT2A"
+  ],
+  "NANDO:2200685": [
+    "KNG1"
+  ],
+  "NANDO:1200612": [
+    "KRT10"
+  ],
+  "NANDO:2200989": [
+    "KRT10"
+  ],
+  "NANDO:1200613": [
+    "KRT2"
+  ],
+  "NANDO:2200990": [
+    "KRT2"
+  ],
+  "NANDO:1200713": [
+    "LAGE3",
+    "NUP107",
+    "NUP133",
+    "OSGEP",
+    "TP53RK",
+    "TPRKB",
+    "WDR4",
+    "WDR73"
+  ],
+  "NANDO:2200120": [
+    "LAGE3",
+    "NUP107",
+    "NUP133",
+    "OSGEP",
+    "TP53RK",
+    "TPRKB",
+    "WDR4",
+    "WDR73"
+  ],
+  "NANDO:1200236": [
+    "LAMA3",
+    "LAMB3",
+    "LAMC2"
+  ],
+  "NANDO:2200119": [
+    "LAMA3",
+    "LAMB3",
+    "LAMC2"
+  ],
+  "NANDO:2201378": [
+    "LAMA3",
+    "LAMB3",
+    "LAMC2"
+  ],
+  "NANDO:2201342": [
+    "LAMA3",
+    "LAMB3",
+    "LAMC2"
+  ],
+  "NANDO:2200117": [
+    "LAMB2"
+  ],
+  "NANDO:1200145": [
+    "LAMP2"
+  ],
+  "NANDO:1200222": [
+    "LAMP2"
+  ],
+  "NANDO:2200752": [
+    "LAMTOR2"
+  ],
+  "NANDO:2201361": [
+    "LBR"
+  ],
+  "NANDO:1200852": [
+    "LCAT"
+  ],
+  "NANDO:1200833": [
+    "LDHA"
+  ],
+  "NANDO:2201364": [
+    "LEMD3",
+    "MAP2K1"
+  ],
+  "NANDO:1200142": [
+    "LIPA"
+  ],
+  "NANDO:1200143": [
+    "LIPA"
+  ],
+  "NANDO:1200144": [
+    "LIPA"
+  ],
+  "NANDO:2200570": [
+    "LIPA"
+  ],
+  "NANDO:2201232": [
+    "LIPA"
+  ],
+  "NANDO:2201233": [
+    "LIPA"
+  ],
+  "NANDO:2200686": [
+    "LMAN1",
+    "MCFD2"
+  ],
+  "NANDO:2201110": [
+    "LMBRD1"
+  ],
+  "NANDO:1201007": [
+    "LMNA",
+    "ZMPSTE24"
+  ],
+  "NANDO:2200833": [
+    "LMNA",
+    "ZMPSTE24"
+  ],
+  "NANDO:2200866": [
+    "LMNA"
+  ],
+  "NANDO:1200862": [
+    "LMNB2"
+  ],
+  "NANDO:1200967": [
+    "LMX1B"
+  ],
+  "NANDO:2200132": [
+    "LMX1B"
+  ],
+  "NANDO:2200453": [
+    "LPIN2"
+  ],
+  "NANDO:1200219": [
+    "LRP12"
+  ],
+  "NANDO:2201369": [
+    "LRP4",
+    "SOST"
+  ],
+  "NANDO:2201059": [
+    "LTA"
+  ],
+  "NANDO:1200639": [
+    "LYST"
+  ],
+  "NANDO:1200350": [
+    "LYST"
+  ],
+  "NANDO:2200724": [
+    "LYST"
+  ],
+  "NANDO:1200126": [
+    "MAN2B1"
+  ],
+  "NANDO:1200127": [
+    "MAN2B1"
+  ],
+  "NANDO:1200128": [
+    "MAN2B1"
+  ],
+  "NANDO:2201188": [
+    "MAN2B1"
+  ],
+  "NANDO:2201189": [
+    "MAN2B1"
+  ],
+  "NANDO:1200129": [
+    "MANBA"
+  ],
+  "NANDO:2201190": [
+    "MANBA"
+  ],
+  "NANDO:2200999": [
+    "MBTPS2"
+  ],
+  "NANDO:1200408": [
+    "MC2R"
+  ],
+  "NANDO:2200495": [
+    "MCCC1",
+    "MCCC2"
+  ],
+  "NANDO:2200771": [
+    "MCM4"
+  ],
+  "NANDO:2200907": [
+    "MCM6"
+  ],
+  "NANDO:1200604": [
+    "MECP2"
+  ],
+  "NANDO:1200603": [
+    "MECP2"
+  ],
+  "NANDO:2200825": [
+    "MECP2"
+  ],
+  "NANDO:2200984": [
+    "MECP2"
+  ],
+  "NANDO:1200864": [
+    "MEFV"
+  ],
+  "NANDO:1200863": [
+    "MEFV"
+  ],
+  "NANDO:2200431": [
+    "MEFV"
+  ],
+  "NANDO:2200847": [
+    "MEGF8",
+    "RAB23"
+  ],
+  "NANDO:1200992": [
+    "MICOS13",
+    "OPA3"
+  ],
+  "NANDO:1200795": [
+    "MMAA"
+  ],
+  "NANDO:2201105": [
+    "MMAA"
+  ],
+  "NANDO:1200796": [
+    "MMAB"
+  ],
+  "NANDO:2201106": [
+    "MMAB"
+  ],
+  "NANDO:2201107": [
+    "MMACHC",
+    "PRDX1"
+  ],
+  "NANDO:1200797": [
+    "MMADHC"
+  ],
+  "NANDO:2201108": [
+    "MMADHC"
+  ],
+  "NANDO:1200794": [
+    "MMUT"
+  ],
+  "NANDO:2200651": [
+    "MPL"
+  ],
+  "NANDO:1200358": [
+    "MPO"
+  ],
+  "NANDO:2200758": [
+    "MPO"
+  ],
+  "NANDO:1200409": [
+    "MRAP"
+  ],
+  "NANDO:1200940": [
+    "MT-ATP6",
+    "MT-CO1",
+    "MT-CO3",
+    "MT-CYB",
+    "MT-ND1",
+    "MT-ND2",
+    "MT-ND4",
+    "MT-ND4L",
+    "MT-ND5",
+    "MT-ND6",
+    "NDUFS2"
+  ],
+  "NANDO:1200178": [
+    "MT-ATP6",
+    "MT-CO1",
+    "MT-CO3",
+    "MT-CYB",
+    "MT-ND1",
+    "MT-ND2",
+    "MT-ND4",
+    "MT-ND4L",
+    "MT-ND5",
+    "MT-ND6",
+    "NDUFS2"
+  ],
+  "NANDO:2200529": [
+    "MT-ATP8",
+    "MT-TL1",
+    "RRM2B"
+  ],
+  "NANDO:1200176": [
+    "MT-CO1",
+    "MT-CO2",
+    "MT-CO3",
+    "MT-CYB",
+    "MT-ND1",
+    "MT-ND4",
+    "MT-ND5",
+    "MT-ND6",
+    "MT-TC",
+    "MT-TF",
+    "MT-TH",
+    "MT-TK",
+    "MT-TL1",
+    "MT-TQ",
+    "MT-TS1",
+    "MT-TS2",
+    "MT-TV",
+    "MT-TW"
+  ],
+  "NANDO:2200525": [
+    "MT-CO1",
+    "MT-CO2",
+    "MT-CO3",
+    "MT-CYB",
+    "MT-ND1",
+    "MT-ND4",
+    "MT-ND5",
+    "MT-ND6",
+    "MT-TC",
+    "MT-TF",
+    "MT-TH",
+    "MT-TK",
+    "MT-TL1",
+    "MT-TQ",
+    "MT-TS1",
+    "MT-TS2",
+    "MT-TV",
+    "MT-TW"
+  ],
+  "NANDO:1200177": [
+    "MT-ND5",
+    "MT-RNR1",
+    "MT-TF",
+    "MT-TH",
+    "MT-TI",
+    "MT-TK",
+    "MT-TL1",
+    "MT-TP",
+    "MT-TQ",
+    "MT-TS1",
+    "MT-TS2"
+  ],
+  "NANDO:2200526": [
+    "MT-ND5",
+    "MT-RNR1",
+    "MT-TF",
+    "MT-TH",
+    "MT-TI",
+    "MT-TK",
+    "MT-TL1",
+    "MT-TP",
+    "MT-TQ",
+    "MT-TS1",
+    "MT-TS2"
+  ],
+  "NANDO:2201111": [
+    "MTR"
+  ],
+  "NANDO:2201109": [
+    "MTRR"
+  ],
+  "NANDO:1200857": [
+    "MTTP"
+  ],
+  "NANDO:2200604": [
+    "MTTP"
+  ],
+  "NANDO:1200866": [
+    "MVK"
+  ],
+  "NANDO:2200436": [
+    "MVK"
+  ],
+  "NANDO:1200362": [
+    "MYD88"
+  ],
+  "NANDO:2200763": [
+    "MYD88"
+  ],
+  "NANDO:1200711": [
+    "MYH7"
+  ],
+  "NANDO:2200260": [
+    "MYH7"
+  ],
+  "NANDO:1200893": [
+    "MYH9"
+  ],
+  "NANDO:2200654": [
+    "MYH9"
+  ],
+  "NANDO:2200127": [
+    "MYH9"
+  ],
+  "NANDO:2200913": [
+    "MYO5B",
+    "STX3"
+  ],
+  "NANDO:1200135": [
+    "NAGA"
+  ],
+  "NANDO:1200136": [
+    "NAGA"
+  ],
+  "NANDO:1200137": [
+    "NAGA"
+  ],
+  "NANDO:1200102": [
+    "NAGLU"
+  ],
+  "NANDO:2201175": [
+    "NAGLU"
+  ],
+  "NANDO:1200808": [
+    "NAGS"
+  ],
+  "NANDO:2200477": [
+    "NAGS"
+  ],
+  "NANDO:2201085": [
+    "NAGS"
+  ],
+  "NANDO:2201086": [
+    "NAGS"
+  ],
+  "NANDO:2201084": [
+    "NAGS"
+  ],
+  "NANDO:1200004": [
+    "NAIP",
+    "SMN1",
+    "SMN2"
+  ],
+  "NANDO:1200005": [
+    "NAIP",
+    "SMN1",
+    "SMN2"
+  ],
+  "NANDO:1200006": [
+    "NAIP",
+    "SMN1",
+    "SMN2"
+  ],
+  "NANDO:1200332": [
+    "NBN"
+  ],
+  "NANDO:2200706": [
+    "NBN"
+  ],
+  "NANDO:2201281": [
+    "NCF1"
+  ],
+  "NANDO:2201282": [
+    "NCF2"
+  ],
+  "NANDO:2201283": [
+    "NCF4"
+  ],
+  "NANDO:1200120": [
+    "NEU1"
+  ],
+  "NANDO:1200118": [
+    "NEU1"
+  ],
+  "NANDO:1200117": [
+    "NEU1"
+  ],
+  "NANDO:2201193": [
+    "NEU1"
+  ],
+  "NANDO:2201192": [
+    "NEU1"
+  ],
+  "NANDO:2201191": [
+    "NEU1"
+  ],
+  "NANDO:1200226": [
+    "NF1"
+  ],
+  "NANDO:1200225": [
+    "NF1"
+  ],
+  "NANDO:2201003": [
+    "NF1"
+  ],
+  "NANDO:1200227": [
+    "NF2"
+  ],
+  "NANDO:2200075": [
+    "NFKBIA"
+  ],
+  "NANDO:2200821": [
+    "NID1"
+  ],
+  "NANDO:1200994": [
+    "NLRC4"
+  ],
+  "NANDO:2200449": [
+    "NLRP12",
+    "NLRP3"
+  ],
+  "NANDO:2200454": [
+    "NLRP12",
+    "NLRP3"
+  ],
+  "NANDO:1200467": [
+    "NLRP3"
+  ],
+  "NANDO:1200468": [
+    "NLRP3"
+  ],
+  "NANDO:1200466": [
+    "NLRP3"
+  ],
+  "NANDO:2201067": [
+    "NLRP3"
+  ],
+  "NANDO:2201066": [
+    "NLRP3"
+  ],
+  "NANDO:2201068": [
+    "NLRP3"
+  ],
+  "NANDO:1200476": [
+    "NOD2"
+  ],
+  "NANDO:2200434": [
+    "NOD2"
+  ],
+  "NANDO:1200048": [
+    "NOP56"
+  ],
+  "NANDO:1200065": [
+    "NPC1",
+    "NPC2"
+  ],
+  "NANDO:2201209": [
+    "NPC1",
+    "NPC2"
+  ],
+  "NANDO:2200110": [
+    "NPHS1"
+  ],
+  "NANDO:1200404": [
+    "NR0B1"
+  ],
+  "NANDO:2200358": [
+    "NR3C1"
+  ],
+  "NANDO:1200405": [
+    "NR5A1"
+  ],
+  "NANDO:2200387": [
+    "NR5A1",
+    "SOX9",
+    "SRY"
+  ],
+  "NANDO:2200827": [
+    "NRAS"
+  ],
+  "NANDO:1200629": [
+    "NSDHL"
+  ],
+  "NANDO:2201358": [
+    "NSDHL"
+  ],
+  "NANDO:2200998": [
+    "NSDHL"
+  ],
+  "NANDO:1200553": [
+    "NTRK1"
+  ],
+  "NANDO:2200854": [
+    "NTRK1"
+  ],
+  "NANDO:2200484": [
+    "OAT"
+  ],
+  "NANDO:2200486": [
+    "OAT"
+  ],
+  "NANDO:2200188": [
+    "OCRL"
+  ],
+  "NANDO:1200804": [
+    "OTC"
+  ],
+  "NANDO:2200479": [
+    "OTC"
+  ],
+  "NANDO:2201091": [
+    "OTC"
+  ],
+  "NANDO:2201092": [
+    "OTC"
+  ],
+  "NANDO:2200499": [
+    "OXCT1"
+  ],
+  "NANDO:2200669": [
+    "P2RY12"
+  ],
+  "NANDO:1200493": [
+    "PABPN1"
+  ],
+  "NANDO:1200784": [
+    "PAH"
+  ],
+  "NANDO:1200785": [
+    "PAH"
+  ],
+  "NANDO:1200787": [
+    "PAH"
+  ],
+  "NANDO:2200467": [
+    "PAH"
+  ],
+  "NANDO:2201075": [
+    "PAH"
+  ],
+  "NANDO:2201077": [
+    "PAH"
+  ],
+  "NANDO:1200534": [
+    "PANK2"
+  ],
+  "NANDO:1200535": [
+    "PANK2"
+  ],
+  "NANDO:1200536": [
+    "PANK2"
+  ],
+  "NANDO:2200886": [
+    "PANK2"
+  ],
+  "NANDO:2200330": [
+    "PAX8"
+  ],
+  "NANDO:2200519": [
+    "PC"
+  ],
+  "NANDO:1200792": [
+    "PCCA",
+    "PCCB"
+  ],
+  "NANDO:2200492": [
+    "PCCA",
+    "PCCB"
+  ],
+  "NANDO:2201113": [
+    "PCCA",
+    "PCCB"
+  ],
+  "NANDO:1200599": [
+    "PCDH19"
+  ],
+  "NANDO:2200536": [
+    "PCK1",
+    "PCK2"
+  ],
+  "NANDO:1200208": [
+    "PDGFB",
+    "PDGFRB",
+    "SLC20A2"
+  ],
+  "NANDO:2201072": [
+    "PDX1"
+  ],
+  "NANDO:2200472": [
+    "PEPD"
+  ],
+  "NANDO:1200761": [
+    "PEX1",
+    "PEX10",
+    "PEX11B",
+    "PEX12",
+    "PEX13",
+    "PEX14",
+    "PEX16",
+    "PEX19",
+    "PEX2",
+    "PEX26",
+    "PEX3",
+    "PEX5",
+    "PEX6"
+  ],
+  "NANDO:1200762": [
+    "PEX1",
+    "PEX10",
+    "PEX11B",
+    "PEX12",
+    "PEX13",
+    "PEX14",
+    "PEX16",
+    "PEX19",
+    "PEX2",
+    "PEX26",
+    "PEX3",
+    "PEX5",
+    "PEX6"
+  ],
+  "NANDO:1200759": [
+    "PEX1",
+    "PEX10",
+    "PEX11B",
+    "PEX12",
+    "PEX13",
+    "PEX14",
+    "PEX16",
+    "PEX19",
+    "PEX2",
+    "PEX26",
+    "PEX3",
+    "PEX5",
+    "PEX6",
+    "PEX7"
+  ],
+  "NANDO:1200760": [
+    "PEX1",
+    "PEX10",
+    "PEX11B",
+    "PEX12",
+    "PEX13",
+    "PEX14",
+    "PEX16",
+    "PEX19",
+    "PEX2",
+    "PEX26",
+    "PEX3",
+    "PEX5",
+    "PEX6"
+  ],
+  "NANDO:2200575": [
+    "PEX1",
+    "PEX10",
+    "PEX11B",
+    "PEX12",
+    "PEX13",
+    "PEX14",
+    "PEX16",
+    "PEX19",
+    "PEX2",
+    "PEX26",
+    "PEX3",
+    "PEX5",
+    "PEX6",
+    "PEX7"
+  ],
+  "NANDO:1200763": [
+    "PEX7"
+  ],
+  "NANDO:1200769": [
+    "PEX7",
+    "PHYH"
+  ],
+  "NANDO:2200577": [
+    "PEX7",
+    "PHYH"
+  ],
+  "NANDO:1200829": [
+    "PFKM"
+  ],
+  "NANDO:1200823": [
+    "PFKM"
+  ],
+  "NANDO:2200543": [
+    "PFKM"
+  ],
+  "NANDO:1200832": [
+    "PGAM2"
+  ],
+  "NANDO:1200836": [
+    "PGM1"
+  ],
+  "NANDO:1200779": [
+    "PHEX"
+  ],
+  "NANDO:1200830": [
+    "PHKA1",
+    "PHKG1"
+  ],
+  "NANDO:2201167": [
+    "PHKA1",
+    "PHKG1"
+  ],
+  "NANDO:1200847": [
+    "PHKA2"
+  ],
+  "NANDO:2201164": [
+    "PHKA2"
+  ],
+  "NANDO:1200848": [
+    "PHKB"
+  ],
+  "NANDO:2201165": [
+    "PHKB"
+  ],
+  "NANDO:1200849": [
+    "PHKG2"
+  ],
+  "NANDO:2201166": [
+    "PHKG2"
+  ],
+  "NANDO:1200983": [
+    "PIGM",
+    "PIGW"
+  ],
+  "NANDO:2200823": [
+    "PIK3CA"
+  ],
+  "NANDO:2200934": [
+    "PKHD1"
+  ],
+  "NANDO:2200628": [
+    "PKLR"
+  ],
+  "NANDO:1200537": [
+    "PLA2G6"
+  ],
+  "NANDO:1200538": [
+    "PLA2G6"
+  ],
+  "NANDO:2200887": [
+    "PLA2G6"
+  ],
+  "NANDO:2200455": [
+    "PLCG2"
+  ],
+  "NANDO:2200451": [
+    "PLCG2"
+  ],
+  "NANDO:2200442": [
+    "PLCG2"
+  ],
+  "NANDO:2201376": [
+    "PLEC"
+  ],
+  "NANDO:1200649": [
+    "PLOD1"
+  ],
+  "NANDO:2201259": [
+    "PLOD1"
+  ],
+  "NANDO:1200576": [
+    "PLP1"
+  ],
+  "NANDO:2201288": [
+    "PLP1"
+  ],
+  "NANDO:1200559": [
+    "PLXND1",
+    "REV3L"
+  ],
+  "NANDO:2200980": [
+    "PLXND1",
+    "REV3L"
+  ],
+  "NANDO:1200030": [
+    "PMP22"
+  ],
+  "NANDO:2200905": [
+    "PMP22"
+  ],
+  "NANDO:1200519": [
+    "PNKD",
+    "PRRT2"
+  ],
+  "NANDO:2200912": [
+    "PNLIP"
+  ],
+  "NANDO:1200325": [
+    "PNP"
+  ],
+  "NANDO:2200698": [
+    "PNP"
+  ],
+  "NANDO:1200585": [
+    "POLR3A",
+    "POLR3B"
+  ],
+  "NANDO:1200583": [
+    "POLR3A"
+  ],
+  "NANDO:2201297": [
+    "POLR3A",
+    "POLR3B"
+  ],
+  "NANDO:2201295": [
+    "POLR3A"
+  ],
+  "NANDO:1200402": [
+    "POR"
+  ],
+  "NANDO:2200375": [
+    "POR"
+  ],
+  "NANDO:1200152": [
+    "PPT1"
+  ],
+  "NANDO:2201241": [
+    "PPT1"
+  ],
+  "NANDO:2200728": [
+    "PRF1"
+  ],
+  "NANDO:2200217": [
+    "PRKAG2"
+  ],
+  "NANDO:1200756": [
+    "PRKAR1A"
+  ],
+  "NANDO:2200743": [
+    "PRKCD"
+  ],
+  "NANDO:1200529": [
+    "PRKRA"
+  ],
+  "NANDO:1200190": [
+    "PRNP"
+  ],
+  "NANDO:1200191": [
+    "PRNP"
+  ],
+  "NANDO:2200689": [
+    "PROC"
+  ],
+  "NANDO:1200531": [
+    "PRRT2",
+    "SLC2A1"
+  ],
+  "NANDO:1200082": [
+    "PSAP"
+  ],
+  "NANDO:2201205": [
+    "PSAP"
+  ],
+  "NANDO:1200867": [
+    "PSMB8"
+  ],
+  "NANDO:2200435": [
+    "PSMB8"
+  ],
+  "NANDO:1200868": [
+    "PSTPIP1"
+  ],
+  "NANDO:2200437": [
+    "PSTPIP1"
+  ],
+  "NANDO:2200828": [
+    "PTCH1",
+    "PTCH2",
+    "SUFU"
+  ],
+  "NANDO:1200258": [
+    "PTPN22"
+  ],
+  "NANDO:1200259": [
+    "PTPN22"
+  ],
+  "NANDO:1200260": [
+    "PTPN22"
+  ],
+  "NANDO:1200846": [
+    "PYGL"
+  ],
+  "NANDO:2200542": [
+    "PYGL"
+  ],
+  "NANDO:1200828": [
+    "PYGM"
+  ],
+  "NANDO:2200541": [
+    "PYGM"
+  ],
+  "NANDO:2200732": [
+    "RAB27A"
+  ],
+  "NANDO:2200042": [
+    "RB1"
+  ],
+  "NANDO:2200766": [
+    "RBCK1"
+  ],
+  "NANDO:2200456": [
+    "RBCK1"
+  ],
+  "NANDO:2200661": [
+    "RBM8A"
+  ],
+  "NANDO:1200671": [
+    "RECQL4"
+  ],
+  "NANDO:2200088": [
+    "RELA"
+  ],
+  "NANDO:2200406": [
+    "RET"
+  ],
+  "NANDO:2201053": [
+    "RET"
+  ],
+  "NANDO:2201052": [
+    "RET"
+  ],
+  "NANDO:2200896": [
+    "RNASEH2A"
+  ],
+  "NANDO:2200894": [
+    "RNASEH2B"
+  ],
+  "NANDO:2200895": [
+    "RNASEH2C"
+  ],
+  "NANDO:1200336": [
+    "RNF168"
+  ],
+  "NANDO:2200710": [
+    "RNF168"
+  ],
+  "NANDO:1200934": [
+    "RP1L1"
+  ],
+  "NANDO:1200435": [
+    "RP2",
+    "RPGR"
+  ],
+  "NANDO:1200660": [
+    "RPS6KA3"
+  ],
+  "NANDO:2200952": [
+    "RPS6KA3"
+  ],
+  "NANDO:2200775": [
+    "RPSA"
+  ],
+  "NANDO:1200938": [
+    "RS1"
+  ],
+  "NANDO:2200662": [
+    "RUNX1"
+  ],
+  "NANDO:1200479": [
+    "RYR1"
+  ],
+  "NANDO:2200870": [
+    "RYR1"
+  ],
+  "NANDO:1200213": [
+    "SAA1"
+  ],
+  "NANDO:2200897": [
+    "SAMHD1"
+  ],
+  "NANDO:1200501": [
+    "SCN4A"
+  ],
+  "NANDO:1200504": [
+    "SCN4A"
+  ],
+  "NANDO:1200500": [
+    "SCN4A"
+  ],
+  "NANDO:2200228": [
+    "SCN5A"
+  ],
+  "NANDO:2200363": [
+    "SCNN1G"
+  ],
+  "NANDO:1200767": [
+    "SCP2"
+  ],
+  "NANDO:1200181": [
+    "SDHA",
+    "SDHAF1",
+    "SDHB",
+    "SDHD"
+  ],
+  "NANDO:2200396": [
+    "SDHD"
+  ],
+  "NANDO:1200887": [
+    "SEC23B"
+  ],
+  "NANDO:1200755": [
+    "SERPINA1"
+  ],
+  "NANDO:2200611": [
+    "SERPINA1"
+  ],
+  "NANDO:2200688": [
+    "SERPINE1"
+  ],
+  "NANDO:2200687": [
+    "SERPINF2"
+  ],
+  "NANDO:1200365": [
+    "SERPING1"
+  ],
+  "NANDO:2200795": [
+    "SERPING1"
+  ],
+  "NANDO:2201367": [
+    "SFRP4"
+  ],
+  "NANDO:1200101": [
+    "SGSH"
+  ],
+  "NANDO:2201174": [
+    "SGSH"
+  ],
+  "NANDO:2200444": [
+    "SH3BP2"
+  ],
+  "NANDO:2200908": [
+    "SI"
+  ],
+  "NANDO:1200594": [
+    "SIK1",
+    "SLC25A22"
+  ],
+  "NANDO:1200580": [
+    "SLC16A2"
+  ],
+  "NANDO:2201292": [
+    "SLC16A2"
+  ],
+  "NANDO:1200147": [
+    "SLC17A5"
+  ],
+  "NANDO:1200582": [
+    "SLC17A5"
+  ],
+  "NANDO:1200149": [
+    "SLC17A5"
+  ],
+  "NANDO:1200148": [
+    "SLC17A5"
+  ],
+  "NANDO:2201237": [
+    "SLC17A5"
+  ],
+  "NANDO:2201294": [
+    "SLC17A5"
+  ],
+  "NANDO:2201238": [
+    "SLC17A5"
+  ],
+  "NANDO:1200973": [
+    "SLC22A5"
+  ],
+  "NANDO:2200508": [
+    "SLC22A5"
+  ],
+  "NANDO:1200979": [
+    "SLC25A13"
+  ],
+  "NANDO:1200980": [
+    "SLC25A13"
+  ],
+  "NANDO:2200485": [
+    "SLC25A15"
+  ],
+  "NANDO:1200972": [
+    "SLC25A20"
+  ],
+  "NANDO:2200511": [
+    "SLC25A20"
+  ],
+  "NANDO:2200457": [
+    "SLC29A3"
+  ],
+  "NANDO:2201365": [
+    "SLC29A3",
+    "TCIRG1",
+    "TNFRSF11A"
+  ],
+  "NANDO:1200520": [
+    "SLC2A1"
+  ],
+  "NANDO:1200799": [
+    "SLC2A1"
+  ],
+  "NANDO:2200545": [
+    "SLC2A1"
+  ],
+  "NANDO:2200202": [
+    "SLC34A2"
+  ],
+  "NANDO:1200565": [
+    "SLC35A2"
+  ],
+  "NANDO:1200841": [
+    "SLC37A4"
+  ],
+  "NANDO:2200754": [
+    "SLC37A4"
+  ],
+  "NANDO:2201154": [
+    "SLC37A4"
+  ],
+  "NANDO:2200584": [
+    "SLC39A4"
+  ],
+  "NANDO:2200489": [
+    "SLC3A1",
+    "SLC7A9"
+  ],
+  "NANDO:1200810": [
+    "SLC46A1"
+  ],
+  "NANDO:2200592": [
+    "SLC46A1"
+  ],
+  "NANDO:2200909": [
+    "SLC5A1"
+  ],
+  "NANDO:2201301": [
+    "SLC6A8"
+  ],
+  "NANDO:1200809": [
+    "SLC7A7"
+  ],
+  "NANDO:2200488": [
+    "SLC7A7"
+  ],
+  "NANDO:2200925": [
+    "SLCO2A1"
+  ],
+  "NANDO:1200337": [
+    "SMARCAL1"
+  ],
+  "NANDO:2200711": [
+    "SMARCAL1"
+  ],
+  "NANDO:2200101": [
+    "SMARCB1"
+  ],
+  "NANDO:1200007": [
+    "SMN1",
+    "SMN2"
+  ],
+  "NANDO:1200061": [
+    "SMPD1"
+  ],
+  "NANDO:1200062": [
+    "SMPD1"
+  ],
+  "NANDO:2201206": [
+    "SMPD1"
+  ],
+  "NANDO:2201207": [
+    "SMPD1"
+  ],
+  "NANDO:1200686": [
+    "SNRPN",
+    "UBE3A"
+  ],
+  "NANDO:2200960": [
+    "SNRPN",
+    "UBE3A"
+  ],
+  "NANDO:2201368": [
+    "SOST"
+  ],
+  "NANDO:1200586": [
+    "SOX10"
+  ],
+  "NANDO:2201298": [
+    "SOX10"
+  ],
+  "NANDO:1200341": [
+    "SP110"
+  ],
+  "NANDO:2200714": [
+    "SP110"
+  ],
+  "NANDO:1200008": [
+    "SPG7"
+  ],
+  "NANDO:1200338": [
+    "SPINK5"
+  ],
+  "NANDO:1200619": [
+    "SPINK5"
+  ],
+  "NANDO:2200993": [
+    "SPINK5"
+  ],
+  "NANDO:1200982": [
+    "SPR"
+  ],
+  "NANDO:2200631": [
+    "SPTA1"
+  ],
+  "NANDO:2200388": [
+    "SRY"
+  ],
+  "NANDO:2200061": [
+    "SS18",
+    "SSX1",
+    "SSX2"
+  ],
+  "NANDO:2200917": [
+    "STK11"
+  ],
+  "NANDO:1200625": [
+    "STS"
+  ],
+  "NANDO:2200730": [
+    "STX11"
+  ],
+  "NANDO:2200731": [
+    "STXBP2"
+  ],
+  "NANDO:1200624": [
+    "SUMF1"
+  ],
+  "NANDO:1200085": [
+    "SUMF1"
+  ],
+  "NANDO:1200083": [
+    "SUMF1"
+  ],
+  "NANDO:2200566": [
+    "SUMF1"
+  ],
+  "NANDO:2201228": [
+    "SUMF1"
+  ],
+  "NANDO:2200583": [
+    "SUOX"
+  ],
+  "NANDO:1201006": [
+    "TACSTD2"
+  ],
+  "NANDO:1200514": [
+    "TAF1"
+  ],
+  "NANDO:1200991": [
+    "TAFAZZIN"
+  ],
+  "NANDO:2200751": [
+    "TAFAZZIN"
+  ],
+  "NANDO:1200789": [
+    "TAT"
+  ],
+  "NANDO:2200469": [
+    "TAT"
+  ],
+  "NANDO:2200772": [
+    "TBK1",
+    "TICAM1",
+    "TLR3",
+    "TRAF3",
+    "UNC93B1"
+  ],
+  "NANDO:2200098": [
+    "TBXT"
+  ],
+  "NANDO:2201027": [
+    "TEK"
+  ],
+  "NANDO:2200617": [
+    "TF"
+  ],
+  "NANDO:2200970": [
+    "TGFB1"
+  ],
+  "NANDO:2200969": [
+    "TGFBR1",
+    "TGFBR2"
+  ],
+  "NANDO:1200517": [
+    "THAP1"
+  ],
+  "NANDO:2200800": [
+    "THBD"
+  ],
+  "NANDO:1200395": [
+    "THRB"
+  ],
+  "NANDO:2200341": [
+    "THRB"
+  ],
+  "NANDO:2200910": [
+    "TMPRSS15"
+  ],
+  "NANDO:1200472": [
+    "TNFRSF1A"
+  ],
+  "NANDO:2200433": [
+    "TNFRSF1A"
+  ],
+  "NANDO:1200512": [
+    "TOR1A"
+  ],
+  "NANDO:2200884": [
+    "TOR1A"
+  ],
+  "NANDO:2200093": [
+    "TP53"
+  ],
+  "NANDO:2200073": [
+    "TP53"
+  ],
+  "NANDO:1200153": [
+    "TPP1"
+  ],
+  "NANDO:2201242": [
+    "TPP1"
+  ],
+  "NANDO:1200658": [
+    "TREM2",
+    "TYROBP"
+  ],
+  "NANDO:1200607": [
+    "TSC2"
+  ],
+  "NANDO:2200826": [
+    "TSC2"
+  ],
+  "NANDO:1200050": [
+    "TTPA"
+  ],
+  "NANDO:1200214": [
+    "TTR"
+  ],
+  "NANDO:2200667": [
+    "TUBB1"
+  ],
+  "NANDO:1200515": [
+    "TUBB4A"
+  ],
+  "NANDO:1200578": [
+    "TUBB4A",
+    "UFM1"
+  ],
+  "NANDO:2201290": [
+    "TUBB4A",
+    "UFM1"
+  ],
+  "NANDO:2200590": [
+    "UMPS"
+  ],
+  "NANDO:2200729": [
+    "UNC13D"
+  ],
+  "NANDO:1200819": [
+    "UROD"
+  ],
+  "NANDO:2201270": [
+    "UROD"
+  ],
+  "NANDO:2200749": [
+    "USB1"
+  ],
+  "NANDO:1200783": [
+    "VDR"
+  ],
+  "NANDO:1200223": [
+    "VMA21"
+  ],
+  "NANDO:1200014": [
+    "VPS13A"
+  ],
+  "NANDO:2200750": [
+    "VPS13B"
+  ],
+  "NANDO:1200330": [
+    "WAS",
+    "WIPF1"
+  ],
+  "NANDO:2200753": [
+    "WAS"
+  ],
+  "NANDO:2200704": [
+    "WAS",
+    "WIPF1"
+  ],
+  "NANDO:1200676": [
+    "WRN"
+  ],
+  "NANDO:2200831": [
+    "WRN"
+  ],
+  "NANDO:2200116": [
+    "WT1"
+  ],
+  "NANDO:1200015": [
+    "XK"
+  ],
+  "NANDO:1200327": [
+    "ZAP70"
+  ],
+  "NANDO:1200663": [
+    "ZEB2"
+  ],
+  "NANDO:2200981": [
+    "ZEB2"
+  ]
+}

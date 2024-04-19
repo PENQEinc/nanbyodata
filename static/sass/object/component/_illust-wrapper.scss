@@ -12,8 +12,9 @@
 
     .illust-title {
       text-align: center;
-      font-size: 17px;
+      font-size: var(--font-size-large);
       color: var(--color-secondary);
+      margin-bottom: 0.3lh;
     }
   }
 }

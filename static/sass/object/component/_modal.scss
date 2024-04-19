@@ -4,62 +4,69 @@
 
   .modal-body {
     padding: 50px;
-      img {
-        margin-bottom: 20px;
+    img {
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: var(--font-size-xl);
+    }
+
+    p {
+      margin-top: 10px;
+      margin-bottom: 30px;
+    }
+
+    button.close {
+      &:focus,
+      &:focus-visible {
+        outline: none;
+      }
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      margin-bottom: 40px;
+      border-top: 1px solid var(--color-table-border);
+      border-bottom: 1px solid var(--color-table-border);
+
+      th,
+      td {
+        padding: 10px;
       }
 
-      .modal-title {
-        font-size: 20px;
-      }
-
-      p {
-        margin-top: 10px;
-        margin-bottom: 30px;
-      }
-
-      table {
-        border-collapse: collapse;
-        margin: 0 auto;
-        margin-bottom: 40px;
-        border-top: 1px solid var(--color-table-border);
+      th {
+        color: #000;
         border-bottom: 1px solid var(--color-table-border);
+      }
 
-        th,
-        td {
-          padding: 10px;
-        }
+      td {
+        border-bottom: 1px dashed var(--color-table-dash);
+        text-align: left;
+        font-size: var(--font-size-medium);
 
-        th {
-          color: #000;
-          border-bottom: 1px solid var(--color-table-border);
-        }
+        a {
+          text-decoration: none;
+          color: var(--color-blue);
 
-        td {
-          border-bottom: 1px dashed var(--color-table-dash);
-          text-align: left;
-          font-size: 15px;
+          &:hover {
+            color: var(--color-table-border);
+          }
 
-          a {
-            text-decoration: none;
-            color: var(--color-blue);
-
-            &:hover {
-              color: var(--color-table-border);
-            }
-
-            &::before {
-              content: var(--icon-file);
-              font-family: 'Font Awesome 5 Free';
-              font-weight: 900;
-              margin-right: 8px;
-            }
+          &::before {
+            content: var(--icon-file);
+            font-family: 'Font Awesome 5 Free';
+            font-weight: 900;
+            margin-right: 8px;
           }
         }
       }
+    }
 
     &.content-tos {
       .modal-title {
-        font-size: 30px;
+        font-size: var(--font-size-3xl);
         color: var(--color-secondary);
         letter-spacing: 1px;
 
@@ -70,6 +77,10 @@
           margin-right: 8px;
           color: var(--color-blue);
         }
+      }
+
+      p {
+        text-align: left;
       }
     }
   }

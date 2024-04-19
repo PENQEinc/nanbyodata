@@ -27,6 +27,7 @@ PREFIX nando: <http://nanbyodata.jp/ontology/nando#>
 PREFIX ncbigene: <http://identifiers.org/ncbigene/>
 PREFIX ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#>
 PREFIX mim: <http://identifiers.org/mim/>
+PREFIX mondo: <http://purl.obolibrary.org/obo/>
 PREFIX oa: <http://www.w3.org/ns/oa#>
 PREFIX obo: <http://purl.obolibrary.org/obo/>
 PREFIX sio: <http://semanticscience.org/resource/>
@@ -71,13 +72,16 @@ WHERE {
       ?disease_url rdf:type ncit:C7057 ;
                    dcterms:identifier ?disease_id ;
                    rdfs:seeAlso ?mondo_url .
+      
       ?mondo_url rdfs:label ?mondo_disease_name_en ;
-                 <http://www.geneontology.org/formats/oboInOwl#id> ?mondo_id .
-
+                 <http://www.geneontology.org/formats/oboInOwl#id> ?mondo_id . 
+      
       OPTIONAL { ?disease_url nando:hasInheritance ?inheritance . ?inheritance rdfs:label ?inheritance_en, ?inheritance_ja . FILTER (lang(?inheritance_en) = "en") . FILTER (lang(?inheritance_ja) = "ja") . }
       OPTIONAL { ?disease_url rdfs:label ?mondo_disease_name_ja FILTER (lang(?mondo_disease_name_ja) = "ja") }
 
       BIND (replace(str(?hgnc_gene_url), 'https://www.genenames.org/data/gene-symbol-report/#!/hgnc_id/HGNC:', '') AS ?hgnc_gene_id)
+      
+      ?mondo_url rdfs:subClassOf* mondo:MONDO_0000001 .
       
 } order by ?ncbi_gene_id
 ```

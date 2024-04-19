@@ -3,7 +3,6 @@
   .breadcrumb-title {
     color: var(--color-secondary);
     font-weight: bold;
-    font-size: 14px;
     margin-bottom: 3px;
   }
 
@@ -46,7 +45,6 @@
         .select-option {
           font-weight: bold;
           padding: 2px 26px 0px 5px;
-          font-size: 14px;
           position: relative;
           border-radius: var(--radius-small);
           border: 1px solid var(--color-secondary);
@@ -87,7 +85,6 @@
             .option {
               line-height: 1.7;
               padding: 0 20px;
-              font-size: 12px;
               border-radius: var(--radius-medium);
               cursor: pointer;
 

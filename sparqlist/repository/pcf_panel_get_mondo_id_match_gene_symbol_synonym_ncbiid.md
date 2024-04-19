@@ -1,4 +1,5 @@
-# [PCF] Get MONDO ID by PANEL NAME or SYNONYM - https://pubcasefinder-rdf.dbcls.jp/sparql
+# [PCF] Get MONDO ID by GENE SYMBOL or GENE SYMBOL SYNONYM or NCBI GENE ID - https://pubcasefinder-rdf.dbcls.jp/sparql
+pcf_panel_get_mondo_id_match_gene_symbol_synonym_ncbiid
 ## Parameters
 * `input_text` Text
   * default: dhodh 

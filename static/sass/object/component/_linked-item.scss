@@ -3,7 +3,7 @@
   border: var(--color-primary) 1px solid;
   border-radius: var(--radius-base);
   background-color: var(--color-primary);
-  font-size: 12px;
+  font-size: var(--font-size-small);
   font-weight: bold;
   line-height: 1.4;
 
@@ -23,6 +23,7 @@
 }
 
 .linked-items {
+  font-size: var(--font-size-small);
   display: inline;
   font-weight: bold;
   border-radius: var(--radius-base);
@@ -31,7 +32,6 @@
 
   > {
     dt {
-      font-size: 12px;
       font-weight: 500;
     }
 

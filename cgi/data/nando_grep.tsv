@@ -47,18 +47,24 @@ nando:1200003	sma
 nando:1200003	spinal muscular atrophy
 nando:1200003	脊髄性筋萎縮症
 nando:1200004	sma i
+nando:1200004	sma type i
 nando:1200004	spinal muscular atrophy type i
 nando:1200004	werdnig-hoffmann disease
 nando:1200004	ｳｪﾙﾄﾞﾆｯﾋ･ﾎﾌﾏﾝ病
 nando:1200004	急性乳児型sma
 nando:1200004	脊髄性筋萎縮症i型
+nando:1200005	dubowitz disease
 nando:1200005	sma ii
+nando:1200005	sma type ii
 nando:1200005	spinal muscular atrophy type ii
 nando:1200005	ﾃﾞｭﾎﾞﾋﾞｯﾂ病
+nando:1200005	ﾄﾞｭﾎﾞｳｨﾂ症候群
 nando:1200005	脊髄性筋萎縮症ii型
 nando:1200005	慢性乳児型sma
 nando:1200006	kugelberg-welander disease
+nando:1200006	kugelberg-welander病
 nando:1200006	sma iii
+nando:1200006	sma type iii
 nando:1200006	spinal muscular atrophy type iii
 nando:1200006	ｸｰｹﾞﾝﾍﾞﾙｸﾞ･ｳｪﾗﾝﾀﾞｰ病
 nando:1200006	若年型sma
@@ -94,6 +100,7 @@ nando:1200014	有棘赤血球舞踏病
 nando:1200015	mls
 nando:1200015	mcleod syndrome
 nando:1200015	mcleod症候群
+nando:1200015	ﾏｸﾛｰﾄﾞ症候群
 nando:1200016	cmt
 nando:1200016	charcot-marie-tooth disease
 nando:1200016	ｼｬﾙｺｰ･ﾏﾘｰ･ﾄｩｰｽ病
@@ -432,6 +439,7 @@ nando:1200105	ﾑｺ多糖症iv型
 nando:1200105	ﾓﾙｷｵ症候群
 nando:1200106	mps iva
 nando:1200106	morquio syndrome type a
+nando:1200106	morquio症候群a型
 nando:1200106	mucopolysaccharidosis type iva
 nando:1200106	ﾑｺ多糖症iv型a型
 nando:1200106	ﾓﾙｷｵ症候群a型
@@ -552,7 +560,7 @@ nando:1200137	schindler病iii型
 nando:1200137	ｼﾝﾄﾞﾗｰ病iii型
 nando:1200138	pompe disease
 nando:1200138	pompe病
-nando:1200138	ﾎﾟﾝぺ病
+nando:1200138	ﾎﾟﾝﾍﾟ病
 nando:1200139	classic infantile pompe disease
 nando:1200139	pompe病(乳児型)
 nando:1200139	乳児型ﾎﾟﾝﾍﾟ病
@@ -592,6 +600,7 @@ nando:1200149	遊離ｼｱﾙ酸蓄積症(軽症型)
 nando:1200150	ncl
 nando:1200150	neuronal ceroid-lipofuscinosis
 nando:1200150	ｾﾛｲﾄﾞﾘﾎﾟﾌｽﾁﾉｰｼｽ
+nando:1200150	神経ｾﾛｲﾄﾞﾘﾎﾟﾌｽﾁﾝ症
 nando:1200151	congenital neuronal ceroid lipofuscinosis
 nando:1200151	先天型神経ｾﾛｲﾄﾞﾘﾎﾟﾌｽﾁﾝ症
 nando:1200152	cln1
@@ -679,8 +688,6 @@ nando:1200173	ﾐﾄｺﾝﾄﾞﾘｱ脳筋症
 nando:1200173	ﾐﾄｺﾝﾄﾞﾘｱ病
 nando:1200174	cpeo
 nando:1200174	chronic progressive external ophthalmoplegia
-nando:1200174	kearns-sayre syndrome
-nando:1200174	ｶｰﾝｽﾞ･ｾｲﾔｰ症候群
 nando:1200174	慢性進行性外眼筋麻痺症候群
 nando:1200175	leigh encephalomyelopathy
 nando:1200175	leigh's encephalomyelopathy
@@ -690,7 +697,6 @@ nando:1200176	melas syndrome
 nando:1200176	mitochondrial encephalomyopathy, lactic acidosis, and strokelike episodes syndrome
 nando:1200176	ﾐﾄｺﾝﾄﾞﾘｱ脳筋症･乳酸ｱｼﾄﾞｰｼｽ･脳卒中様発作症候群
 nando:1200177	merrf
-nando:1200177	myoclonic epilepsy associated with ragged-red fibers
 nando:1200177	myoclonus epilepsy associated with ragged-red fibers
 nando:1200177	赤色ぼろ線維･ﾐｵｸﾛｰﾇｽてんかん症候群
 nando:1200178	lhon
@@ -700,7 +706,7 @@ nando:1200178	ﾚｰﾍﾞﾙ遺伝性視神経症
 nando:1200179	mitochondrial diseases with proven biochemical abnormality
 nando:1200179	生化学的異常が明らかになったﾐﾄｺﾝﾄﾞﾘｱ病
 nando:1200180	mitochondrial complex i deficiency
-nando:1200180	複合体ⅰ欠損症
+nando:1200180	複合体i欠損症
 nando:1200181	mitochondrial complex ii deficiency
 nando:1200181	複合体ii欠損症
 nando:1200182	hyperlacticacidaemia with no identified etiology
@@ -829,7 +835,7 @@ nando:1200225	神経線維腫症
 nando:1200226	nf1
 nando:1200226	neurofibromatosis type 1
 nando:1200226	ﾚｯｸﾘﾝｸﾞﾊｳｾﾞﾝ病
-nando:1200226	神経線維腫症ⅰ型
+nando:1200226	神経線維腫症i型
 nando:1200227	nf2
 nando:1200227	neurofibromatosis type 2
 nando:1200227	神経線維腫症ii型
@@ -892,6 +898,7 @@ nando:1200244	稽留性肢端皮膚炎の汎発化
 nando:1200244	稽留性肢端皮膚炎汎発型
 nando:1200245	sjs
 nando:1200245	stevens-johnson syndrome
+nando:1200245	stevens-johnson症候群
 nando:1200245	ｽﾃｨｰｳﾞﾝｽ･ｼﾞｮﾝｿﾝ症候群
 nando:1200245	皮膚粘膜眼症候群
 nando:1200246	ten
@@ -912,7 +919,7 @@ nando:1200251	takayasu arteritis
 nando:1200251	takayasu's arteritis
 nando:1200251	高安動脈炎
 nando:1200252	type i takayasu arteritis
-nando:1200252	高安動脈炎(ⅰ型)
+nando:1200252	高安動脈炎(i型)
 nando:1200253	type ii a takayasu arteritis
 nando:1200253	高安動脈炎(iia型)
 nando:1200254	type ii b takayasu arteritis
@@ -1000,6 +1007,7 @@ nando:1200278	混合性結合組織病
 nando:1200279	sjogren syndrome
 nando:1200279	sjogren's syndrome
 nando:1200279	sjogren症候群
+nando:1200279	sjögren's syndrome
 nando:1200279	ｼｪｰｸﾞﾚﾝ症候群
 nando:1200280	primary sjogren syndrome
 nando:1200280	primary sjogren's syndrome
@@ -1043,6 +1051,7 @@ nando:1200290	心尖部肥大型心筋症
 nando:1200291	d-hcm
 nando:1200291	dilated phase of hypertrophic cardiomyopathy
 nando:1200291	拡張相肥大型心筋症
+nando:1200292	restricted cardiomyopathy
 nando:1200292	restrictive cardiomyopathy
 nando:1200292	拘束型心筋症
 nando:1200293	idiopathic restrictive cardiomyopathy
@@ -1186,8 +1195,8 @@ nando:1200337	ｼﾑｹ症候群
 nando:1200338	netherton syndrome
 nando:1200338	netherton症候群
 nando:1200338	ﾈｻﾞｰﾄﾝ症候群
-nando:1200339	22q11.2 deletion syndrome
-nando:1200339	22q11.2欠失症候群
+nando:1200339	22q11;2 deletion syndrome
+nando:1200339	22q11;2欠失症候群
 nando:1200339	digeorge syndrome
 nando:1200339	digeorge症候群
 nando:1200339	thymus hypoplasia
@@ -1294,6 +1303,8 @@ nando:1200373	idiopathic osteonecrosis of the femoral head
 nando:1200373	特発性大腿骨頭壊死症
 nando:1200374	diencephalo-hypophysial insufficiency-inappropriate adh syndrome
 nando:1200374	pituitary adh secretion disorders
+nando:1200374	siadh
+nando:1200374	syndrome of inappropriate adh secretion
 nando:1200374	下垂体性adh分泌異常症
 nando:1200375	central diabetes insipidus
 nando:1200375	ﾊﾞｿﾞﾌﾟﾚｼﾝ分泌低下症
@@ -1304,9 +1315,12 @@ nando:1200376	syndrome of inappropriate secretion of antidiuretic hormone
 nando:1200376	ﾊﾞｿﾞﾌﾟﾚｼﾝ分泌過剰症
 nando:1200376	抗利尿ﾎﾙﾓﾝ不適切分泌症候群
 nando:1200377	diencephalo-hypophysial insufficiency-inappropriate thyroid stimulating hormone syndrome
+nando:1200377	syndrome of inappropriate tsh secretion
+nando:1200377	syndrome of inappropriate thyroid-stimulating hormone secretion
 nando:1200377	tsh-secreting pituitary adenoma
 nando:1200377	下垂体性tsh分泌亢進症
 nando:1200378	diencephalo-hypophysial insufficiency-inappropriate prolactin syndrome
+nando:1200378	inappropriate prolactin secretion syndrome
 nando:1200378	prl-secreting pituitary adenoma
 nando:1200378	prolactin secreting pituitary adenoma
 nando:1200378	下垂体性prl分泌亢進症
@@ -1329,7 +1343,7 @@ nando:1200384	続発性ｺﾞﾅﾄﾞﾄﾛﾋﾟﾝ分泌低下症
 nando:1200385	gh secreting pituitary adenoma
 nando:1200385	growth hormone secreting pituitary adenoma
 nando:1200385	下垂体ｺﾞﾅﾄﾞﾄﾛﾋﾟﾝ産生腫瘍
-nando:1200386	diencephalo-hypophysial dysfunction-sndrome of abnormal secretion of growth hormone
+nando:1200386	diencephalo-hypophysial dysfunction-syndrome of abnormal secretion of growth hormone
 nando:1200386	growth hormone secreting pituitary adenoma
 nando:1200386	下垂体性成長ﾎﾙﾓﾝ分泌亢進症
 nando:1200387	hypopituitarism
@@ -1349,6 +1363,7 @@ nando:1200391	gh 分泌不全性低身長症(小児)
 nando:1200391	growth hormone deficiency
 nando:1200391	growth hormone secretion deficiency of dwarfism
 nando:1200391	成長ﾎﾙﾓﾝ分泌不全症(小児)
+nando:1200391	成長ﾎﾙﾓﾝ分泌不全性低身長症
 nando:1200392	adult growth hormone deficiency
 nando:1200392	成人gh 分泌不全症
 nando:1200392	成長ﾎﾙﾓﾝ分泌不全症(成人)
@@ -1427,6 +1442,7 @@ nando:1200412	ｱｼﾞｿﾝ病(自己免疫性副腎炎)
 nando:1200412	特発性ｱｼﾞｿﾝ病
 nando:1200413	tuberculous addison's disease
 nando:1200413	結核性ｱｼﾞｿﾝ病
+nando:1200414	ad
 nando:1200414	infectious addison's disease
 nando:1200414	ｱｼﾞｿﾝ病(感染症)
 nando:1200415	sarcoidosis
@@ -1494,7 +1510,10 @@ nando:1200436	網膜色素変性症(二遺伝子異常型)
 nando:1200437	budd-chiari syndrome
 nando:1200437	ﾊﾞｯﾄﾞ･ｷｱﾘ症候群
 nando:1200438	banti syndrome
+nando:1200438	banti症候群
+nando:1200438	iph
 nando:1200438	idiopathic portal hypertension
+nando:1200438	ﾊﾞﾝﾁ症候群
 nando:1200438	特発性門脈圧亢進症
 nando:1200439	pbc
 nando:1200439	primary biliary cholangitis
@@ -1643,40 +1662,55 @@ nando:1200485	marinesco-sjogren syndrome
 nando:1200485	marinesco-sjogren症候群
 nando:1200485	ﾏﾘﾈｽｺ･ｼｪｰｸﾞﾚﾝ症候群
 nando:1200486	muscular dystrophy
-nando:1200486	筋ｼﾞｽﾄﾛﾌｨｰ
+nando:1200486	筋ｼ゙ｽﾄﾛﾌｨｰ
 nando:1200487	dystrophinopathies
 nando:1200487	ｼﾞｽﾄﾛﾌｨﾝ異常症
 nando:1200488	duchenne muscular dystrophy
+nando:1200488	duchenne型筋ｼﾞｽﾄﾛﾌｨｰ
 nando:1200488	ﾃﾞｭｼｪﾝﾇ型筋ｼﾞｽﾄﾛﾌｨｰ
+nando:1200489	bmd
 nando:1200489	becker muscular dystrophy
 nando:1200489	ﾍﾞｯｶｰ型筋ｼﾞｽﾄﾛﾌｨｰ
 nando:1200490	limb-girdle muscular dystrophy
 nando:1200490	肢帯型筋ｼﾞｽﾄﾛﾌｨｰ
+nando:1200491	fsmd
 nando:1200491	facioscapulohumeral muscular dystrophy
 nando:1200491	顔面肩甲上腕型筋ｼﾞｽﾄﾛﾌｨｰ
 nando:1200492	emery-dreifuss muscular dystrophy
+nando:1200492	emery-dreifuss型筋ｼﾞｽﾄﾛﾌｨｰ
 nando:1200492	ｴﾒﾘｰ･ﾄﾞﾚｲﾌｽ型筋ｼﾞｽﾄﾛﾌｨｰ
+nando:1200493	opmd
 nando:1200493	oculopharyngeal muscular dystrophy
 nando:1200493	眼咽頭筋型筋ｼﾞｽﾄﾛﾌｨｰ
+nando:1200494	fcmd
 nando:1200494	fukuyama type congenital muscular dystrophy
 nando:1200494	福山型先天性筋ｼﾞｽﾄﾛﾌｨｰ
 nando:1200495	myotonic dystrophy
 nando:1200495	筋強直性ｼﾞｽﾄﾛﾌｨｰ
 nando:1200495	筋硬直型筋ｼﾞｽﾄﾛﾌｨｰ
 nando:1200496	non-dystrophic myotonia
-nando:1200496	non-dystrophic myotonia syndrome
+nando:1200496	non-dystrophic myotonic syndromes
 nando:1200496	非ｼﾞｽﾄﾛﾌｨｰ性ﾐｵﾄﾆｰ症候群
+nando:1200497	mc
 nando:1200497	myotonia congenita
 nando:1200497	先天性ﾐｵﾄﾆｰ
 nando:1200498	thomsen disease
+nando:1200498	thomsen's disease
+nando:1200498	thomsen病
 nando:1200498	ﾄﾑｾﾞﾝ病
 nando:1200498	先天性ﾐｵﾄﾆｰ(ﾄﾑｾﾞﾝ病(優性遺伝))
 nando:1200499	becker disease
+nando:1200499	becker's disease
+nando:1200499	becker病
 nando:1200499	ﾍﾞｯｶｰ病
 nando:1200499	先天性ﾐｵﾄﾆｰ(ﾍﾞｯｶｰ病(劣性遺伝))
+nando:1200500	naﾁｬﾈﾙﾐｵﾄﾆｰ
+nando:1200500	naﾁｬﾈﾙﾐｵﾄﾆｱ
+nando:1200500	scm
 nando:1200500	sodium channel myotonia
 nando:1200500	ｶﾘｳﾑ惹起性ﾐｵﾄﾆｰ
 nando:1200500	ﾅﾄﾘｳﾑﾁｬﾈﾙﾐｵﾄﾆｰ
+nando:1200501	pmc
 nando:1200501	paramyotonia congenita
 nando:1200501	先天性ﾊﾟﾗﾐｵﾄﾆｰ
 nando:1200502	familial periodic paralysis
@@ -1701,6 +1735,8 @@ nando:1200508	無症候性脊髄空洞症
 nando:1200509	myelomeningocele
 nando:1200509	脊髄髄膜瘤
 nando:1200510	isaacs syndrome
+nando:1200510	isaacs' syndrome
+nando:1200510	isaacs症候群
 nando:1200510	ｱｲｻﾞｯｸｽ症候群
 nando:1200511	hereditary dystonia
 nando:1200511	遺伝性ｼﾞｽﾄﾆｱ
@@ -1872,7 +1908,6 @@ nando:1200543	superficial siderosis
 nando:1200543	脳表ﾍﾓｼﾞﾃﾞﾘﾝ沈着症
 nando:1200544	autosomal recessive leukoencephalopathy with baldness and degenerative spondylosis
 nando:1200544	carasil
-nando:1200544	cerebral autosomal recessive arteriopathy
 nando:1200544	cerebral autosomal recessive arteriopathy with baldness and degenerative spondylosis
 nando:1200544	cerebral autosomal recessive arteriopathy with subcortical infarcts and leukoencephalopathy
 nando:1200544	禿頭と変形性脊椎症を伴う常染色体劣性白質脳症
@@ -1881,52 +1916,66 @@ nando:1200545	cadasil
 nando:1200545	cerebral autosomal dominant arteriopathy with subcortical infarct and leukoencephalopathy
 nando:1200545	cerebral autosomal dominant arteriopathy with subcortical infarcts and leukoencephalopathy
 nando:1200545	皮質下梗塞と白質脳症を伴う常染色体優性脳動脈症
+nando:1200546	hdls
 nando:1200546	hereditary diffuse leukoencephalopathy with spheroid
 nando:1200546	神経軸索ｽﾌｪﾛｲﾄﾞ形成を伴う遺伝性びまん性白質脳症
 nando:1200547	perry syndrome
+nando:1200547	perry症候群
 nando:1200547	ﾍﾟﾘｰ症候群
+nando:1200548	ftld
 nando:1200548	frontotemporal lobar degeneration
 nando:1200548	前頭側頭葉変性症
 nando:1200549	behavioral variant frontotemporal dementia
+nando:1200549	bvftd
 nando:1200549	(行動異常型)前頭側頭型認知症
+nando:1200549	行動異常型前頭側頭型認知症
+nando:1200550	sd
 nando:1200550	semantic dementia
 nando:1200550	意味性認知症
 nando:1200551	bickerstaff brainstem encephalitis
 nando:1200551	bickerstaff's brainstem encephalitis
+nando:1200551	bickerstaff型脳幹脳炎
 nando:1200551	vickers staff brainstem encephalitis
 nando:1200551	ﾋﾞｯｶｰｽﾀｯﾌ脳幹脳炎
-nando:1200552	aesd
-nando:1200552	acute encephalopathy with biphasic seizures and late reduced diffusion
+nando:1200552	aesd
 nando:1200552	acute encephalopathy with biphasic seizures and late reduced diffusion
 nando:1200552	痙攣重積型(二相性)急性脳症
 nando:1200552	痙攣重積型急性脳症
+nando:1200553	cipa
 nando:1200553	congenital insensitivity to pain with anhidrosis
 nando:1200553	先天性無痛無汗症
 nando:1200554	alexander disease
+nando:1200554	alexander病
+nando:1200554	axd
 nando:1200554	ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200555	1型ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200555	alexander disease type i
 nando:1200555	cerebral alexander disease
+nando:1200555	type i axd
 nando:1200555	大脳優位型ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200556	2型ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200556	alexander disease type ii
 nando:1200556	bulbospinal alexander disease
+nando:1200556	type ii axd
 nando:1200556	延髄･脊髄優位型ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200557	3型ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200557	alexander disease type iii
 nando:1200557	中間型ｱﾚｷｻﾝﾀﾞｰ病
 nando:1200558	congenital suprabulbar paresis
 nando:1200558	congenital supranuclear bulbar palsy
-nando:1200558	worcester drought syndrome
 nando:1200558	worster-drought syndrome
 nando:1200558	ｳｰｽﾀｰ･ﾄﾞﾛｰﾄ症候群
 nando:1200558	先天性核上性球麻痺
-nando:1200559	mobius syndrome
 nando:1200559	moebius syndrome
+nando:1200559	moebius症候群
+nando:1200559	möbius syndrome
 nando:1200559	ﾒﾋﾞｳｽ症候群
+nando:1200560	sod
 nando:1200560	septo-optic dysplasia / de morsier syndrome
+nando:1200560	中隔視神経形成異常症/de morsier症候群
 nando:1200560	中隔視神経形成異常症/ﾄﾞﾓﾙｼｱ症候群
 nando:1200561	de morsier syndrome
+nando:1200561	de morsier症候群
 nando:1200561	sod
 nando:1200561	septo-optic dysplasia
 nando:1200561	ﾄﾞﾓﾙｼｱ症候群
@@ -1934,55 +1983,85 @@ nando:1200561	中隔視神経異形成症
 nando:1200561	中隔視神経異常症
 nando:1200561	中隔視神経形成異常症
 nando:1200562	aicardi syndrome
+nando:1200562	aicardi症候群
 nando:1200562	ｱｲｶﾙﾃﾞｨ症候群
 nando:1200563	hemimegalencephaly
 nando:1200563	片側巨脳症
+nando:1200564	fcd
 nando:1200564	focal cortical dysplasia
 nando:1200564	限局性皮質異形成
+nando:1200565	fcd type 1a
 nando:1200565	fcd ﾀｲﾌﾟ1a
 nando:1200565	focal cortical dysplasia type 1a
+nando:1200565	focal cortical dysplasia type ia
 nando:1200565	限局性皮質異形成ﾀｲﾌﾟ1a
+nando:1200566	fcd type 1b
 nando:1200566	fcd ﾀｲﾌﾟ1b
 nando:1200566	focal cortical dysplasia type 1b
+nando:1200566	focal cortical dysplasia type ib
 nando:1200566	限局性皮質異形成ﾀｲﾌﾟ1b
+nando:1200567	fcd type 1c
 nando:1200567	fcd ﾀｲﾌﾟ1c
 nando:1200567	focal cortical dysplasia type 1c
+nando:1200567	focal cortical dysplasia type ic
 nando:1200567	限局性皮質異形成ﾀｲﾌﾟ1c
+nando:1200568	fcd type 2a
 nando:1200568	fcd ﾀｲﾌﾟ2a
 nando:1200568	focal cortical dysplasia type 2a
+nando:1200568	focal cortical dysplasia type iia
 nando:1200568	限局性皮質異形成ﾀｲﾌﾟ2a
+nando:1200569	fcd type 2b
 nando:1200569	fcd ﾀｲﾌﾟ2b
 nando:1200569	focal cortical dysplasia type 2b
+nando:1200569	focal cortical dysplasia type iib
 nando:1200569	限局性皮質異形成ﾀｲﾌﾟ2b
+nando:1200570	fcd type 3a
 nando:1200570	fcd ﾀｲﾌﾟ3a
 nando:1200570	focal cortical dysplasia type 3a
+nando:1200570	focal cortical dysplasia type iiia
 nando:1200570	限局性皮質異形成ﾀｲﾌﾟ3a
+nando:1200571	fcd type 3b
 nando:1200571	fcd ﾀｲﾌﾟ3b
 nando:1200571	focal cortical dysplasia type 3b
+nando:1200571	focal cortical dysplasia type iiib
 nando:1200571	限局性皮質異形成ﾀｲﾌﾟ3b
+nando:1200572	fcd type 3c
 nando:1200572	fcd ﾀｲﾌﾟ3c
 nando:1200572	focal cortical dysplasia type 3c
+nando:1200572	focal cortical dysplasia type iiic
 nando:1200572	限局性皮質異形成ﾀｲﾌﾟ3c
+nando:1200573	fcd type 3d
 nando:1200573	fcd ﾀｲﾌﾟ3d
 nando:1200573	focal cortical dysplasia type 3d
+nando:1200573	focal cortical dysplasia type iiid
 nando:1200573	限局性皮質異形成ﾀｲﾌﾟ3d
 nando:1200574	lissencephaly
+nando:1200574	miller-dieker syndrom
 nando:1200574	nerve cell migration disorders
 nando:1200574	neuronal migration defects
 nando:1200574	神経細胞移動異常症
 nando:1200575	congenital cerebral white matter aplasia
 nando:1200575	congenital hypomyelinating leukodystrophy
 nando:1200575	先天性大脳白質形成不全症
+nando:1200576	pmd
 nando:1200576	pelizaeus-merzbacher disease
+nando:1200576	pelizaeus-merzbacher病
 nando:1200576	ﾍﾟﾘﾂｪｳｽ･ﾒﾙﾂﾊﾞｯﾊ病
+nando:1200577	pmld1
 nando:1200577	pelizaeus-merzbacher like disease
+nando:1200577	pelizaeus-merzbacher like disease 1
+nando:1200577	pelizaeus-merzbacher様病1
 nando:1200577	ﾍﾟﾘﾂｪｳｽ･ﾒﾙﾂﾊﾞｯﾊ様病1
 nando:1200578	habc
 nando:1200578	hypomyelination with atrophy of the basal ganglia and cerebellum
 nando:1200578	基底核および小脳萎縮を伴う髄鞘形成不全症
 nando:1200579	18q-syndrome
 nando:1200579	18q欠失症候群
+nando:1200580	ahds
 nando:1200580	allan-herndon-dudley syndrome
+nando:1200580	allan-herndon-dudley症候群
+nando:1200580	mct8欠損症
+nando:1200580	monocarboxylate transporter 8 deficiency
 nando:1200580	ｱﾗﾝ･ﾊｰﾝﾄﾞﾝ･ﾀﾄﾞﾘｰ症候群
 nando:1200581	hsp60 chaperon病
 nando:1200581	hsp60ｼｬﾍﾟﾛﾝ病
@@ -1993,6 +2072,7 @@ nando:1200582	salla病
 nando:1200582	ｻﾗ病
 nando:1200582	遊離ｼｱﾙ酸蓄積症(軽症型)
 nando:1200583	diffuse cerebral hypomyelination with cerebellar atrophy and hypoplasia of the corpus callosum
+nando:1200583	hcahc
 nando:1200583	小脳萎縮と脳梁低形成を伴うび漫性大脳白質形成不全症
 nando:1200584	hcc
 nando:1200584	hypomyelination and congenital cataract
@@ -2010,39 +2090,52 @@ nando:1200587	ﾄﾞﾗﾍﾞ症候群
 nando:1200588	mesial temporal lobe epilepsy with bilateral hippocampal sclerosis
 nando:1200588	mesial temporal lobe epilepsy with hippocampal sclerosis
 nando:1200588	海馬硬化を伴う内側側頭葉てんかん
+nando:1200589	ema
+nando:1200589	epilepsy with myoclonic absence
 nando:1200589	myoclonic absence epilepsy
 nando:1200589	ﾐｵｸﾛﾆｰ欠神てんかん
 nando:1200590	epilepsy with myoclonic atonic seizures
 nando:1200590	epilepsy with myoclonic cataplexy
 nando:1200590	ﾐｵｸﾛﾆｰ脱力発作を伴うてんかん
 nando:1200591	lennox-gastaut syndrome
+nando:1200591	lennox-gastaut症候群
 nando:1200591	ﾚﾉｯｸｽ･ｶﾞｽﾄｰ症候群
 nando:1200592	infantile spasms
 nando:1200592	west syndrome
+nando:1200592	west症候群
 nando:1200592	ｳｴｽﾄ症候群
 nando:1200592	点頭てんかん
 nando:1200593	early infantile epileptic encephalopathy with suppression burst
 nando:1200593	ohtahara syndrome
+nando:1200593	早期乳児てんかん性脳症
 nando:1200593	大田原症候群
+nando:1200594	eme
 nando:1200594	early myoclonic encephalopathy
 nando:1200594	早期ﾐｵｸﾛﾆｰ脳症
+nando:1200595	eimfs
 nando:1200595	epilepsy of infancy with migrating focal seizures
 nando:1200595	infant epilepsy with migratory focus seizure
 nando:1200595	migrating partial seizures in infancy
 nando:1200595	遊走性焦点発作を伴う乳児てんかん
+nando:1200596	hhe
 nando:1200596	hemiconvulsion-hemiplegia-epilepsy syndrome
-nando:1200596	one side convulsions, hemiplegia - epilepsy syndrome
+nando:1200596	one side convulsions, hemiplegia epilepsy syndrome
 nando:1200596	片側痙攣･片麻痺･てんかん症候群
-nando:1200597	ring chromosome 20 syndrome
 nando:1200597	ring chromosome 20 epilepsy syndrome
+nando:1200597	ring chromosome 20 syndrome
 nando:1200597	環状20番染色体症候群
 nando:1200598	rasmussen encephalitis
 nando:1200598	rasmussen's encephalitis
+nando:1200598	rasmussen脳炎
 nando:1200598	ﾗｽﾑｯｾﾝ脳炎
+nando:1200599	efmr
 nando:1200599	epilepsy and mental retardation limited to females
 nando:1200599	pcdh19 epilepsy
+nando:1200599	pcdh19-related epilepsy
 nando:1200599	pcdh19-related syndrome
+nando:1200599	pcdh19関連てんかん
 nando:1200599	pcdh19関連症候群
+nando:1200600	aerrps
 nando:1200600	acute encephalitis with refractory, repetitive partial seizures
 nando:1200600	refractory frequent partial seizures intussusception acute encephalitis
 nando:1200600	難治頻回部分発作重積型急性脳炎
@@ -2051,9 +2144,10 @@ nando:1200601	epileptic encephalopathy with continuous spike-and-wave during sle
 nando:1200601	徐波睡眠期持続性棘徐波を示すてんかん性脳症
 nando:1200602	acquired aphasia with convulsive disorder
 nando:1200602	landau-kleffner syndrome
+nando:1200602	landau-kleffner症候群
 nando:1200602	ﾗﾝﾄﾞｳ･ｸﾚﾌﾅｰ症候群
 nando:1200603	rett syndrome
-nando:1200603	rett 症候群
+nando:1200603	rett症候群
 nando:1200603	ﾚｯﾄ症候群
 nando:1200604	typical rett syndrome
 nando:1200604	典型的rett症候群
@@ -2063,9 +2157,11 @@ nando:1200605	非典型的rett症候群
 nando:1200605	非典型的ﾚｯﾄ症候群
 nando:1200606	sturge-weber syndrome
 nando:1200606	ｽﾀｰｼﾞ･ｳｪｰﾊﾞｰ症候群
-nando:1200607	tuberous sclerosis complex
+nando:1200607	tsc
 nando:1200607	tuberous sclerosis
+nando:1200607	tuberous sclerosis complex
 nando:1200607	結節性硬化症
+nando:1200608	xp
 nando:1200608	xeroderma pigmentosum
 nando:1200608	色素性乾皮症
 nando:1200609	congenital ichthyosis
@@ -2083,6 +2179,7 @@ nando:1200614	道化師様魚鱗癬
 nando:1200615	autosomal recessive congenital ichthyosis excluding harlequin ichthyosis
 nando:1200615	道化師様魚鱗癬以外の常染色体劣性遺伝性魚鱗癬
 nando:1200616	congenital ichthyosiform erythroderma
+nando:1200616	non-bullous congenital ichthyosiform erythroderma
 nando:1200616	先天性魚鱗癬様紅皮症
 nando:1200617	lamellar ichthyosis
 nando:1200617	葉状魚鱗癬
@@ -2093,16 +2190,18 @@ nando:1200619	netherton症候群
 nando:1200619	ﾈｻﾞｰﾄﾝ症候群
 nando:1200620	sjogren-larsson syndrome
 nando:1200620	sjögren-larsson syndrome
+nando:1200620	sjögren-larsson症候群
 nando:1200620	ｼｪｰｸﾞﾚﾝ･ﾗﾙｿﾝ症候群
 nando:1200621	kid syndrome
 nando:1200621	kid症候群
 nando:1200621	keratitis-ichthyosis-deafness syndrome
 nando:1200622	chanarin-dorfman syndrome
 nando:1200622	dorfman-chanarin syndrome
+nando:1200622	dorfman-chanarin症候群
 nando:1200622	ﾄﾞﾙﾌﾏﾝ･ｼｬﾅﾘﾝ症候群
+nando:1200623	ichthyotic neutral lipid storage disease
 nando:1200623	nlsdi
 nando:1200623	neutral lipid storage disease with ichthyosis
-nando:1200623	ichthyotic neutral lipid storage disease
 nando:1200623	中性脂肪蓄積症
 nando:1200624	multiple sulfatase deficiency
 nando:1200624	ﾏﾙﾁﾌﾟﾙｽﾙﾌｧﾀｰｾﾞ欠損症
@@ -2121,6 +2220,7 @@ nando:1200629	congenital hemidysplasia with ichthyosiform nevus and limb defects
 nando:1200630	conradi hunermann happle syndrome
 nando:1200630	conradi hünermann happle syndrome
 nando:1200630	conradi-hünermann-happle 症候群
+nando:1200630	conradi-hünermann-happle症候群
 nando:1200631	benign familial pemphigus
 nando:1200631	familial benign chronic pemphigus
 nando:1200631	hailey-hailey disease
@@ -2135,27 +2235,35 @@ nando:1200634	mucous membrane pemphigoid
 nando:1200634	粘膜類天疱瘡
 nando:1200635	epidermolysis bullosa acquisita
 nando:1200635	後天性表皮水疱症
+nando:1200636	aiga
 nando:1200636	acquired idiopathic generalized anhidrosis
 nando:1200636	idiopathic acquired systemic anhidrosis
 nando:1200636	idiopathic pure sudomotor failure
 nando:1200636	特発性後天性全身性無汗症
+nando:1200637	oca
 nando:1200637	oculocutaneous albinism
 nando:1200637	眼皮膚白皮症
+nando:1200638	hps
 nando:1200638	hermansky-pudlak syndrome
+nando:1200638	hermansky-pudlak症候群
 nando:1200638	ﾍﾙﾏﾝｽｷｰ･ﾊﾟﾄﾞﾗｯｸ症候群
 nando:1200639	chs
 nando:1200639	chédiak-higashi syndrome
 nando:1200639	ﾁｪﾃﾞｨｱｯｸ･東症候群
 nando:1200640	griscelli syndrome
+nando:1200640	griscelli症候群
 nando:1200640	ｸﾞﾘｾﾘ症候群
 nando:1200641	non-syndromic oculocutaneous albinism
 nando:1200641	非症候型眼皮膚白皮症
 nando:1200641	非症候性眼皮膚白皮症
+nando:1200642	pdp
 nando:1200642	pachydermoperiostosis
 nando:1200642	肥厚性皮膚骨膜症
+nando:1200643	pxe
 nando:1200643	pseudoxanthoma elasticum
 nando:1200643	弾性線維性仮性黄色腫
 nando:1200644	marfan syndrome
+nando:1200644	marfan症候群
 nando:1200644	ﾏﾙﾌｧﾝ症候群
 nando:1200645	eds
 nando:1200645	ehlers-danlos syndrome
@@ -2185,6 +2293,7 @@ nando:1200653	ﾒﾝｹｽ病
 nando:1200654	occipital horn syndrome
 nando:1200654	ｵｸｼﾋﾟﾀﾙ･ﾎｰﾝ症候群
 nando:1200655	wilson disease
+nando:1200655	wilson病
 nando:1200655	ｳｨﾙｿﾝ病
 nando:1200656	hypophosphatasia
 nando:1200656	低ﾎｽﾌｧﾀｰｾﾞ症
@@ -2194,8 +2303,10 @@ nando:1200657	vater症候群
 nando:1200658	nasu-hakola disease
 nando:1200658	那須･ﾊｺﾗ病
 nando:1200659	weaver syndrome
+nando:1200659	weaver症候群
 nando:1200659	ｳｨｰﾊﾞｰ症候群
 nando:1200660	coffin-lowry syndrome
+nando:1200660	coffin-lowry症候群
 nando:1200660	ｺﾌｨﾝ･ﾛｰﾘｰ症候群
 nando:1200661	cerebro-oculo-hepato-renal syndrome
 nando:1200661	joubert syndrome and related disorders
@@ -2203,15 +2314,22 @@ nando:1200661	ｼﾞｭﾍﾞｰﾙ疾患群関連疾患
 nando:1200662	arima syndrome
 nando:1200662	有馬症候群
 nando:1200663	mowat-wilson syndrome
+nando:1200663	mowat-wilson症候群
 nando:1200663	ﾓﾜｯﾄ･ｳｨﾙｿﾝ症候群
 nando:1200664	williams syndrome
+nando:1200664	williams症候群
 nando:1200664	ｳｨﾘｱﾑｽﾞ症候群
 nando:1200665	atr-x syndrome
 nando:1200665	atr-x症候群
-nando:1200665	alpha-thalassemia mental retardation syndrome
+nando:1200665	alpha-thalassemia/mental retardation syndrome
+nando:1200665	x-linked a-thalassemia/intellectual disability syndrome
+nando:1200665	x連鎖αｻﾗｾﾐｱ･精神遅滞症候群
+nando:1200666	crouzon syndrome
 nando:1200666	crouzon's syndrome
+nando:1200666	crouzon症候群
 nando:1200666	ｸﾙｰｿﾞﾝ症候群
 nando:1200667	apert syndrome
+nando:1200667	apert症候群
 nando:1200667	ｱﾍﾟｰﾙ症候群
 nando:1200668	pfeiffer syndrome
 nando:1200668	pfeiffer症候群
@@ -2220,6 +2338,7 @@ nando:1200669	antley-bixler syndrome phenotype
 nando:1200669	antley-bixler syndrome
 nando:1200669	ｱﾝﾄﾚｰ･ﾋﾞｸｽﾗｰ症候群
 nando:1200670	coffin-siris syndrome
+nando:1200670	coffin-siris症候群
 nando:1200670	ｺﾌｨﾝ･ｼﾘｽ症候群
 nando:1200671	rothmund-thomson syndrome
 nando:1200671	ﾛｽﾑﾝﾄﾞ･ﾄﾑｿﾝ症候群
@@ -2230,42 +2349,56 @@ nando:1200673	多脾症候群
 nando:1200674	asplenia syndrome
 nando:1200674	無脾症候群
 nando:1200675	bor syndrome
+nando:1200675	bor症候群
 nando:1200675	branchio-oto-renal syndrome
 nando:1200675	鰓耳腎症候群
 nando:1200676	werner syndrome
 nando:1200676	ｳｪﾙﾅｰ症候群
 nando:1200677	cockayne syndrome
+nando:1200677	cockayne症候群
 nando:1200677	ｺｹｲﾝ症候群
 nando:1200678	prader-willi syndrome
+nando:1200678	prader-willi症候群
 nando:1200678	ﾌﾟﾗﾀﾞｰ･ｳｨﾘ症候群
 nando:1200679	sotos syndrome
+nando:1200679	sotos症候群
 nando:1200679	ｿﾄｽ症候群
 nando:1200680	noonan syndrome
+nando:1200680	noonan症候群
 nando:1200680	ﾇｰﾅﾝ症候群
 nando:1200681	young-simpson syndrome
+nando:1200681	young-simpson症候群
 nando:1200681	ﾔﾝｸﾞ･ｼﾝﾌﾟｿﾝ症候群
 nando:1200682	1p36 deletion syndrome
 nando:1200682	1p36欠失症候群
 nando:1200683	4p deletion syndrome
 nando:1200683	4p-syndrome
 nando:1200683	4p欠失症候群
+nando:1200683	wolf-hirschhorn syndrome
+nando:1200683	ｳｫﾙﾌ･ﾋﾙｼｭﾎｰﾝ症候群
 nando:1200684	5p deletion syndrome
 nando:1200684	5p-syndrome
 nando:1200684	5p-症候群
 nando:1200684	5p欠失症候群
 nando:1200685	kagami-ogata syndrome
-nando:1200685	no. 14 chromosome father disomy syndrome
+nando:1200685	no; 14 chromosome father disomy syndrome
+nando:1200685	paternal uniparental disomy 14
 nando:1200685	paternal uniparental disomy of chromosome 14
 nando:1200685	第14番染色体父親性ﾀﾞｲｿﾐｰ症候群
 nando:1200686	angelman syndrome
+nando:1200686	angelman症候群
 nando:1200686	ｱﾝｼﾞｪﾙﾏﾝ症候群
 nando:1200687	smith-magenis syndrome
+nando:1200687	smith-magenis症候群
 nando:1200687	ｽﾐｽ･ﾏｷﾞﾆｽ症候群
-nando:1200688	22q11.2 deletion syndrome
-nando:1200688	22q11.2欠失症候群
+nando:1200688	22q11;2 deletion syndrome
+nando:1200688	22q11;2欠失症候群
+nando:1200688	chromosome 22q11;2 deletion syndrome
 nando:1200689	emanuel syndrome
 nando:1200689	ｴﾏﾇｴﾙ症候群
+nando:1200690	fragile x syndrome and associated disorders
 nando:1200690	fragile x syndrome related diseases
+nando:1200690	fragile x-associated disorders
 nando:1200690	fragile x-associated tremor/ataxia syndrome
 nando:1200690	脆弱x症候群関連疾患
 nando:1200691	fxtas
@@ -2276,17 +2409,18 @@ nando:1200692	脆弱x症候群
 nando:1200693	truncus arteriosus communis
 nando:1200693	総動脈幹遺残症
 nando:1200694	truncus arteriosus communis type i
-nando:1200694	総動脈幹遺残症ⅰ型
-nando:1200694	総動脈幹遺残症(ⅰ型)
+nando:1200694	type i truncus arteriosus communis
+nando:1200694	総動脈幹遺残症i型
+nando:1200694	総動脈幹遺残症(i型)
 nando:1200695	truncus arteriosus communis type ii
 nando:1200695	総動脈幹遺残症ii型
-nando:1200695	総動脈幹遺残症(ⅱ型)
+nando:1200695	総動脈幹遺残症(ii型)
 nando:1200696	truncus arteriosus communis type iii
 nando:1200696	総動脈幹遺残症iii型
-nando:1200696	総動脈幹遺残症(ⅲ型)
+nando:1200696	総動脈幹遺残症(iii型)
 nando:1200697	truncus arteriosus communis type iv
 nando:1200697	総動脈幹遺残症iv型
-nando:1200697	総動脈幹遺残症(ⅳ型)
+nando:1200697	総動脈幹遺残症(iv型)
 nando:1200698	corrected transposition of great arteries
 nando:1200698	corrected transposition of the great arteries
 nando:1200698	修正大血管転位症
@@ -2294,17 +2428,17 @@ nando:1200699	complete tga
 nando:1200699	complete transposition of the great arteries
 nando:1200699	完全大血管転位症
 nando:1200700	complete transposition of the great arteries (group1)
-nando:1200700	完全大血管転位症ⅰ型
-nando:1200700	完全大血管転位症(ⅰ型)
+nando:1200700	完全大血管転位症i型
+nando:1200700	完全大血管転位症(i型)
 nando:1200701	complete transposition of the great arteries (group2)
 nando:1200701	完全大血管転位症ii型
-nando:1200701	完全大血管転位症(ⅱ型)
+nando:1200701	完全大血管転位症(ii型)
 nando:1200702	complete transposition of the great arteries (group3)
 nando:1200702	完全大血管転位症iii型
-nando:1200702	完全大血管転位症(ⅲ型)
+nando:1200702	完全大血管転位症(iii型)
 nando:1200703	complete transposition of the great arteries (group4)
 nando:1200703	完全大血管転位症iv型
-nando:1200703	完全大血管転位症(ⅳ型)
+nando:1200703	完全大血管転位症(iv型)
 nando:1200704	single ventricle
 nando:1200704	univentricular heart
 nando:1200704	単心室症
@@ -2323,17 +2457,22 @@ nando:1200709	tetralogy of fallot
 nando:1200709	ﾌｧﾛｰ四徴症
 nando:1200710	double outlet right ventricle
 nando:1200710	両大血管右室起始症
+nando:1200711	ebstein anomaly
 nando:1200711	ebstein malformation
 nando:1200711	ebstein's anomaly
+nando:1200711	ebstein's malformation
+nando:1200711	ebstein奇形
+nando:1200711	ebstein病
 nando:1200711	ｴﾌﾟｽﾀｲﾝ病
 nando:1200712	alport syndrome
 nando:1200712	alport's syndrome
+nando:1200712	alport症候群
 nando:1200712	ｱﾙﾎﾟｰﾄ症候群
 nando:1200713	galloway-mowat syndrome
 nando:1200713	galloway-mowat症候群
 nando:1200713	ｷﾞｬﾛｳｪｲ･ﾓﾜﾄ症候群
-nando:1200714	rapidly progressive glomerulonephritis
 nando:1200714	crescentic glomerulonephritis
+nando:1200714	rapidly progressive glomerulonephritis
 nando:1200714	急速進行性糸球体腎炎
 nando:1200715	mpo-anca associated crescentic glomerulonephritis
 nando:1200715	mpo-anca positive rapidly progressive glomerulonephritis
@@ -2345,6 +2484,7 @@ nando:1200717	急速進行性糸球体腎炎(抗gbm抗体陽性)
 nando:1200718	anti-gbm nephritis
 nando:1200718	anti-glomerular basement membrane disease
 nando:1200718	goodpasture syndrome
+nando:1200718	goodpasture症候群
 nando:1200718	ｸﾞｯﾄﾞﾊﾟｽﾁｬｰ症候群
 nando:1200718	抗糸球体基底膜腎炎
 nando:1200719	primary nephrotic syndrome
@@ -2366,7 +2506,7 @@ nando:1200725	primary membranoproliferative glomerulonephritis
 nando:1200725	一次性膜性増殖性糸球体腎炎
 nando:1200726	mpgn type i
 nando:1200726	primary membranoproliferative glomerulonephritis type i
-nando:1200726	一次性膜性増殖性糸球体腎炎ⅰ型
+nando:1200726	一次性膜性増殖性糸球体腎炎i型
 nando:1200727	mild mespgn
 nando:1200727	slight mesangial proliferative  glomerulonephritis
 nando:1200727	ﾒｻﾝｷﾞｳﾑ細胞軽度増殖性糸球体腎炎
@@ -2411,7 +2551,9 @@ nando:1200739	一次性膜性増殖性糸球体腎炎ii型
 nando:1200740	mpgn type iii
 nando:1200740	primary membranoproliferative glomerulonephritis type iii
 nando:1200740	一次性膜性増殖性糸球体腎炎iii型
+nando:1200741	hspn
 nando:1200741	henoch-schonlein purpura nephritis
+nando:1200741	henoch-schönlein purpura nephritis
 nando:1200741	紫斑病性腎炎
 nando:1200742	congenital nephrogenic diabetes insipidus
 nando:1200742	nephrogenic diabetes insipidus
@@ -2419,8 +2561,9 @@ nando:1200742	遺伝性腎性尿崩症
 nando:1200742	先天性腎性尿崩症
 nando:1200743	interstitial cystitis
 nando:1200743	interstitial cystitis (hunner type)
-nando:1200743	interstitial cystitis with hunners ulcer
+nando:1200743	interstitial cystitis with hunner's ulcer
 nando:1200743	間質性膀胱炎(ﾊﾝﾅ型)
+nando:1200744	hereditary haemorrhagic telangiectasia
 nando:1200744	hereditary hemorrhagic telangiectasia
 nando:1200744	osler disease
 nando:1200744	ｵｽﾗｰ病
@@ -2428,19 +2571,25 @@ nando:1200744	遺伝性出血性末梢血管拡張症
 nando:1200745	bronchiolitis obliterans
 nando:1200745	obliterating bronchiolitis
 nando:1200745	閉塞性細気管支炎
-nando:1200746	congenital pulmonary alveolar proteinosis
-nando:1200746	hereditary pulmonary alveolar proteinosis
 nando:1200746	pap
 nando:1200746	pulmonary alveolar proteinosis
 nando:1200746	肺胞蛋白症
 nando:1200747	autoimmune pulmonary alveolar proteinosis
+nando:1200747	apap
+nando:1200747	自己免疫性pap
 nando:1200747	自己免疫性肺胞蛋白症
+nando:1200748	i-pap
 nando:1200748	idiopathic pulmonary alveolar proteinosis
 nando:1200748	特発性肺胞蛋白症
+nando:1200749	s-pap
 nando:1200749	secondary pulmonary alveolar proteinosis
 nando:1200749	続発性肺胞蛋白症
+nando:1200750	c-pap
+nando:1200750	congenital pap
 nando:1200750	congenital alveolar proteinosis
+nando:1200750	congenital pulmonary alveolar proteinosis
 nando:1200750	hereditary pulmonary alveolar proteinosis
+nando:1200750	先天性pap
 nando:1200750	先天性肺胞蛋白症
 nando:1200751	ahs
 nando:1200751	alveolar hypoventilation syndrome
@@ -2458,16 +2607,20 @@ nando:1200755	alpha-1-antitrypsin deficiency
 nando:1200755	α-1-antitrypsin deficiency
 nando:1200755	α1-ｱﾝﾁﾄﾘﾌﾟｼﾝ欠損症
 nando:1200756	carney complex
+nando:1200756	carney複合
 nando:1200756	ｶｰﾆｰ複合
 nando:1200757	wolfram syndrome
+nando:1200757	wolfram症候群
 nando:1200757	ｳｫﾙﾌﾗﾑ症候群
-nando:1200758	peroxisomal disorder
 nando:1200758	peroxisomal disease
+nando:1200758	peroxisomal disorder
 nando:1200758	ﾍﾟﾙｵｷｼｿｰﾑ病
+nando:1200759	pbd
 nando:1200759	pex遺伝子異常症
 nando:1200759	peroxisome biogenesis disorders
 nando:1200759	ﾍﾟﾙｵｷｼｿｰﾑ形成異常症
 nando:1200760	zellweger syndrome
+nando:1200760	zellweger症候群
 nando:1200760	ﾂｪﾙﾍﾞｰｶﾞｰ症候群
 nando:1200761	neonatal adrenoleukodystrophy
 nando:1200761	新生児型副腎白質ｼﾞｽﾄﾛﾌｨｰ
@@ -2477,9 +2630,11 @@ nando:1200763	rcdp type 1
 nando:1200763	rhizomelic chondrodysplasia punctata type 1
 nando:1200763	根性点状軟骨異形成症1型
 nando:1200764	peroxisomal beta-oxidation enzyme deficiency
+nando:1200764	peroxisomal β-oxidation enzyme deficiency
 nando:1200764	ﾍﾟﾙｵｷｼｿｰﾑβ酸化系酵素欠損症
 nando:1200765	aox欠損症
 nando:1200765	peroxisomal acyl-coa oxidase deficiency
+nando:1200765	peroxisomal acyl-coenzyme a oxidase deficiency
 nando:1200765	ｱｼﾙ coa ｵｷｼﾀﾞｰｾﾞ欠損症 
 nando:1200766	d-bifunctional protein deficiency
 nando:1200766	d-二頭酵素欠損症
@@ -2487,10 +2642,12 @@ nando:1200766	dbp欠損症
 nando:1200767	scpx欠損症
 nando:1200767	sterol carrier protein 2 deficiency
 nando:1200767	ｽﾃﾛｰﾙｷｬﾘｱﾌﾟﾛﾃｲﾝx欠損症
+nando:1200768	2-methylacyl-coa racemase欠損症
 nando:1200768	amacr欠損症
 nando:1200768	alpha-methylacyl-coa racemase deficiency
 nando:1200768	2-ﾒﾁﾙｱｼﾙcoaﾗｾﾏｰｾﾞ欠損症
 nando:1200769	refsum disease
+nando:1200769	refsum病
 nando:1200769	ﾚﾌｻﾑ病
 nando:1200770	plasmalogen biosynthesis enzyme deficiency
 nando:1200770	ﾌﾟﾗｽﾏﾛｰｹﾞﾝ合成系酵素欠損症
@@ -2500,8 +2657,9 @@ nando:1200771	根性点状軟骨異形成症2型
 nando:1200772	rcdp type 3
 nando:1200772	rhizomelic chondrodysplasia punctata type 3
 nando:1200772	根性点状軟骨異形成症3型
+nando:1200773	ph1
 nando:1200773	primary hyperoxaluria type 1
-nando:1200773	原発性高ｼｭｳ酸尿症ⅰ型
+nando:1200773	原発性高ｼｭｳ酸尿症i型
 nando:1200774	acatalasaemia
 nando:1200774	acatalasemia
 nando:1200774	acatalasia
@@ -2526,22 +2684,28 @@ nando:1200779	vitamin d-resistant rickets
 nando:1200779	ﾋﾞﾀﾐﾝd抵抗性くる病
 nando:1200780	vitamin d-resistant osteomalacia
 nando:1200780	ﾋﾞﾀﾐﾝd抵抗性骨軟化症
-nando:1200781	vitamin d-dependent rickets / osteomalacia
 nando:1200781	vitamin d-dependent osteomalacia
-nando:1200781	ﾋﾞﾀﾐﾝd依存症
+nando:1200781	vitamin d-dependent rickets / osteomalacia
 nando:1200781	ﾋﾞﾀﾐﾝd依存性くる病/骨軟化症
 nando:1200782	vddr 1
+nando:1200782	vddr-i
 nando:1200782	vitamin d-dependent rickets, type 1
 nando:1200782	ﾋﾞﾀﾐﾝd依存症1型
 nando:1200783	vddr 2
+nando:1200783	vddr-ii
 nando:1200783	vitamin d-dependent rickets, type 2
 nando:1200783	ﾋﾞﾀﾐﾝd依存症2型
+nando:1200784	hpa
+nando:1200784	hyperphenylalaninemia
 nando:1200784	pku
 nando:1200784	phenylketonuria
 nando:1200784	ﾌｪﾆﾙｹﾄﾝ尿症
+nando:1200784	高ﾌｪﾆﾙｱﾗﾆﾝ血症
+nando:1200785	pah deficiency
 nando:1200785	pah欠損症
 nando:1200785	phenylalanine hydroxylase deficiency
 nando:1200785	ﾌｪﾆﾙｱﾗﾆﾝ水酸化酵素欠損症
+nando:1200786	bh4 deficiency
 nando:1200786	bh4欠損症
 nando:1200786	tetrahydrobiopterin deficiency
 nando:1200786	ﾋﾞｵﾌﾟﾃﾘﾝ代謝異常症
@@ -2571,6 +2735,7 @@ nando:1200793	methylmalonic acidaemia
 nando:1200793	methylmalonic acidemia
 nando:1200793	ﾒﾁﾙﾏﾛﾝ酸血症
 nando:1200794	methylmalonyl-coenzyme a mutase deficiency
+nando:1200794	methylmalonyl-coa mutase deficiency
 nando:1200794	ｺﾊﾞﾗﾐﾝ代謝異常(mcm欠損症)
 nando:1200795	methylmalonic acidaemia cbla type
 nando:1200795	methylmalonic acidemia cbla type
@@ -2585,8 +2750,9 @@ nando:1200798	isovaleric acidaemia
 nando:1200798	isovaleric acidemia
 nando:1200798	ｲｿ吉草酸血症
 nando:1200799	glut-1 ds
+nando:1200799	glut-1 deficiency
+nando:1200799	glut1欠損症
 nando:1200799	glucose transporter 1 deficiency
-nando:1200799	glut1 deficiency
 nando:1200799	ｸﾞﾙｺｰｽﾄﾗﾝｽﾎﾟｰﾀｰ1欠損症
 nando:1200800	ga1
 nando:1200800	glutaric acidaemia type 1
@@ -2600,16 +2766,20 @@ nando:1200801	multiple acyl-coa dehydrogenase deficiency
 nando:1200801	ｸﾞﾙﾀﾙ酸血症2型
 nando:1200802	urea cycle disorder
 nando:1200802	尿素ｻｲｸﾙ異常症
+nando:1200803	cps1 deficiency
+nando:1200803	cps1d
 nando:1200803	cpsi欠損症
 nando:1200803	carbamoyl phosphate synthetase i deficiency
 nando:1200803	ｶﾙﾊﾞﾐﾙﾘﾝ酸合成酵素欠損症
+nando:1200804	otc deficiency
 nando:1200804	otc欠損症
 nando:1200804	ornithine transcarbamylase deficiency
 nando:1200804	ｵﾙﾆﾁﾝﾄﾗﾝｽｶﾙﾊﾞﾐﾗｰｾﾞ欠損症
-nando:1200805	ⅲ型ｼﾄﾙﾘﾝ血症
 nando:1200805	citrullinemia type i
 nando:1200805	classic citrullinaemia
 nando:1200805	classic citrullinemia
+nando:1200805	iii型ｼﾄﾙﾘﾝ血症
+nando:1200805	i型ｼﾄﾙﾘﾝ血症
 nando:1200805	古典型ｼﾄﾙﾘﾝ血症
 nando:1200806	argininosuccinic aciduria
 nando:1200806	ｱﾙｷﾞﾆﾉｺﾊｸ酸尿症
@@ -2617,6 +2787,7 @@ nando:1200807	argininaemia
 nando:1200807	argininemia
 nando:1200807	ｱﾙｷﾞﾆﾝ血症
 nando:1200807	高ｱﾙｷﾞﾆﾝ血症
+nando:1200808	n-acetyl glutamate synthase deficiency
 nando:1200808	n-ｱｾﾁﾙｸﾞﾙﾀﾐﾝ酸合成酵素欠損症
 nando:1200808	nags deficiency
 nando:1200808	nags欠損症
@@ -2636,6 +2807,7 @@ nando:1200813	遺伝性ｺﾌﾟﾛﾎﾟﾙﾌｨﾘﾝ症
 nando:1200814	vp
 nando:1200814	variegate porphyria
 nando:1200814	異型ﾎﾟﾙﾌｨﾘﾝ症
+nando:1200814	多様性ﾎﾟﾙﾌｨﾘﾝ症
 nando:1200815	epp
 nando:1200815	erythropoietic protoporphyria
 nando:1200815	骨髄性ﾌﾟﾛﾄﾎﾟﾙﾌｨﾘﾝ症
@@ -2647,8 +2819,10 @@ nando:1200817	cep
 nando:1200817	congenital erythropoietic porphyria
 nando:1200817	遺伝性赤芽球増殖性ﾎﾟﾙﾌｨﾘﾝ症
 nando:1200817	先天性骨髄性ﾎﾟﾙﾌｨﾘﾝ症
+nando:1200817	先天性赤芽球性ﾎﾟﾙﾌｨﾘﾝ症
 nando:1200818	cldp
 nando:1200818	x-linked dominant protoporphyria
+nando:1200818	xldpp
 nando:1200818	x連鎖優性ﾌﾟﾛﾄﾎﾟﾙﾌｨﾘﾝ症
 nando:1200819	hep
 nando:1200819	hepatoerythropoietic porphyria
@@ -2656,6 +2830,7 @@ nando:1200819	肝性骨髄性ﾎﾟﾙﾌｨﾘﾝ症
 nando:1200820	multiple carboxylase deficiency
 nando:1200820	複合ｶﾙﾎﾞｷｼﾗｰｾﾞ欠損症
 nando:1200821	hcs欠損症
+nando:1200821	hlcs deficiency
 nando:1200821	holocarboxylase synthetase deficiency
 nando:1200821	ﾎﾛｶﾙﾎﾞｷｼﾗｰｾﾞ合成酵素欠損症
 nando:1200822	biotinidase deficiency
@@ -2667,8 +2842,10 @@ nando:1200823	skeletal muscle glycogenosis
 nando:1200823	筋型糖原病
 nando:1200824	glycogen storage diseases type 0
 nando:1200824	glycogen synthase deficiency
-nando:1200824	ｸﾞﾘｺｰｹﾞﾝ合成酵素欠損症
+nando:1200824	筋ｸﾞﾘｺｰｹﾞﾝ合成酵素欠損症
 nando:1200824	筋型糖原病0型
+nando:1200824	糖原病0b型
+nando:1200825	acid maltase deficiency
 nando:1200825	glycogen storage diseases type ii
 nando:1200825	pompe disease
 nando:1200825	pompe病
@@ -2695,23 +2872,34 @@ nando:1200829	tarui disease
 nando:1200829	tarui病
 nando:1200829	筋型糖原病vii型
 nando:1200829	垂井病
+nando:1200830	gsd ixd
 nando:1200830	glycogen storage diseases type ixd
+nando:1200830	phka1-related phosphorylase kinase deficiency
 nando:1200830	筋型糖原病ixd型
+nando:1200831	pgk deficiency
 nando:1200831	pgk欠損症
 nando:1200831	phosphoglycerate kinase deficiency
+nando:1200831	phosphoglycerate kinase欠損症
 nando:1200831	ﾎｽﾎｸﾞﾘｾﾘﾝ酸ｷﾅｰｾﾞ欠損症
 nando:1200832	glycogen storage diseases type x
+nando:1200832	pgam deficiency
+nando:1200832	phosphoglycerate mutase deficiency
 nando:1200832	筋型糖原病x型
+nando:1200833	fbs
+nando:1200833	fanconi-bickel syndrome
 nando:1200833	glycogen storage diseases type xi
 nando:1200833	kanno disease
 nando:1200833	kanno病
 nando:1200833	筋型糖原病xi型
 nando:1200834	glycogen storage diseases type xii
 nando:1200834	筋型糖原病xii型
+nando:1200835	gsdxiii
 nando:1200835	glycogen storage diseases type xiii
 nando:1200835	筋型糖原病xiii型
 nando:1200836	glycogen storage diseases type xiv
+nando:1200836	glycogenosis type xiv
 nando:1200836	筋型糖原病xiv型
+nando:1200837	gsd xv
 nando:1200837	glycogen storage diseases type xv
 nando:1200837	筋型糖原病xv型
 nando:1200838	hepatic glycogen storage disease
@@ -2719,15 +2907,18 @@ nando:1200838	hepatic glycogenosis
 nando:1200838	肝型糖原病
 nando:1200839	obsolete hepatic glycogen storage disease type i-iii-vi-ix
 nando:1200839	obsolete 肝型糖原病ⅰ-ⅲ-ⅵ-ⅸ型
+nando:1200840	glucose-6-phosphatase deficiency 
 nando:1200840	glycogen storage disease due to glucose-6-phosphatase deficiency
 nando:1200840	hepatic glycogen storage disease type ia
 nando:1200840	ｸﾞﾙｺｰｽ-6-ﾎｽﾌｧﾀｰｾﾞ欠損症
 nando:1200840	肝型糖原病ia型
 nando:1200841	g6p translocase deficiency
 nando:1200841	g6pt deficiency
+nando:1200841	glucose-6-phosphate translocase deficiency
 nando:1200841	hepatic glycogen storage disease type ib
 nando:1200841	ｸﾞﾙｺｰｽ-6-ﾎｽﾌｧﾀｰｾﾞﾄﾗﾝｽﾎﾟｰﾀｰ異常症
 nando:1200841	肝型糖原病ib型
+nando:1200842	gsd iiia
 nando:1200842	glycogen storage disease due to glycogen debranching enzyme deficiency
 nando:1200842	hepatic gsd type iiia
 nando:1200842	ｸﾞﾘｺｰｹﾞﾝ脱分枝酵素欠損症
@@ -2736,35 +2927,40 @@ nando:1200843	glycogen storage disease due to glycogen debranching enzyme defici
 nando:1200843	hepatic gsd type iiib
 nando:1200843	ｸﾞﾘｺｰｹﾞﾝ脱分枝酵素欠損症
 nando:1200843	肝型糖原病iiib型
+nando:1200844	amylo-1,6-glucosidase deficiency
 nando:1200844	hepatic gsd type iiic
-nando:1200844	amylo 1,6- glucosidase deficiency
 nando:1200844	ｸﾞﾙｺｼﾀﾞｰｾﾞ欠損症
 nando:1200844	肝型糖原病iiic型
 nando:1200845	4-alpha-glucanotransferase deficiency
 nando:1200845	hepatic gsd type iiid
 nando:1200845	ﾄﾗﾝｽﾌｪﾗｰｾﾞ欠損症
 nando:1200845	肝型糖原病iiid型
+nando:1200846	glycogenosis type vi
 nando:1200846	hepatic glycogen storage disease type vi
 nando:1200846	hepatic phosphorylase deficiency
 nando:1200846	hers disease
 nando:1200846	ﾊｰｽ病
 nando:1200846	肝ｸﾞﾘｺｰｹﾞﾝﾎｽﾎﾘﾗｰｾﾞ欠損症
 nando:1200846	肝型糖原病vi型
+nando:1200847	gsd type ixa
 nando:1200847	hepatic glycogen storage disease type ix a
 nando:1200847	hepatic glycogen storage disease type ixa
 nando:1200847	ﾎｽﾎﾘﾗｰｾﾞ欠損症(αｻﾌﾞﾕﾆｯﾄ異常症)
 nando:1200847	αｻﾌﾞﾕﾆｯﾄ異常症(肝型)
 nando:1200847	肝型糖原病ixa型
+nando:1200848	gsd type ixb
 nando:1200848	hepatic glycogen storage disease type ix b
 nando:1200848	hepatic glycogen storage disease type ixb
 nando:1200848	ﾎｽﾎﾘﾗｰｾﾞ欠損症(βｻﾌﾞﾕﾆｯﾄ異常症)
 nando:1200848	βｻﾌﾞﾕﾆｯﾄ異常症(肝筋型)
 nando:1200848	肝型糖原病ixb型
+nando:1200849	gsd type ixc
 nando:1200849	hepatic glycogen storage disease type ix c
 nando:1200849	hepatic glycogen storage disease type ixc
 nando:1200849	ﾎｽﾎﾘﾗｰｾﾞ欠損症(γｻﾌﾞﾕﾆｯﾄ異常症)
 nando:1200849	γｻﾌﾞﾕﾆｯﾄ異常症(肝型)
 nando:1200849	肝型糖原病ixc型
+nando:1200850	gsd iv
 nando:1200850	hepatic glycogen storage disease type iv
 nando:1200850	ｱﾐﾛ1,4→1,6ﾄﾗﾝｽｸﾞﾙｺｼﾗｰｾﾞ欠損症
 nando:1200850	肝型糖原病iv型
@@ -2783,10 +2979,13 @@ nando:1200853	sitosterolaemia
 nando:1200853	sitosterolemia
 nando:1200853	ｼﾄｽﾃﾛｰﾙ血症
 nando:1200854	tangier disease
+nando:1200854	tangier病
 nando:1200854	ﾀﾝｼﾞｰﾙ病
 nando:1200855	primary hyperchylomicronaemia
 nando:1200855	primary hyperchylomicronemia
 nando:1200855	原発性高ｶｲﾛﾐｸﾛﾝ血症
+nando:1200856	27-ﾋﾄﾞﾛｷｼﾗｰｾﾞ欠損症
+nando:1200856	ctx
 nando:1200856	cerebrotendinous xanthomatosis
 nando:1200856	脳腱黄色腫症
 nando:1200857	abetalipoproteinaemia
@@ -2796,12 +2995,23 @@ nando:1200857	無βﾘﾎﾟﾀﾝﾊﾟｸ血症
 nando:1200858	lipodystrophy
 nando:1200858	脂肪異栄養症
 nando:1200858	脂肪萎縮症
+nando:1200859	berardinelli-seip syndrome
+nando:1200859	berardinelli-seip症候群
+nando:1200859	cgl
 nando:1200859	generalized congenital lipodystrophy
 nando:1200859	先天性全身性脂肪萎縮症
+nando:1200860	agl
 nando:1200860	acquired generalized lipodystrophy
+nando:1200860	lawrence syndrome
+nando:1200860	lawrence症候群
 nando:1200860	後天性全身性脂肪萎縮症
+nando:1200861	fpld
 nando:1200861	familial partial lipodystrophy
 nando:1200861	家族性部分性脂肪萎縮症
+nando:1200862	apl
+nando:1200862	acquired partial lipodystrophy
+nando:1200862	barraquer-simons syndrome
+nando:1200862	barraquer-simons症候群
 nando:1200862	partial acquired lipodystrophy
 nando:1200862	後天性部分性脂肪萎縮症
 nando:1200863	fmf
@@ -2811,27 +3021,34 @@ nando:1200864	typical familial mediterranean fever
 nando:1200864	家族性地中海熱典型例
 nando:1200865	atypical familial mediterranean fever
 nando:1200865	家族性地中海熱非典型例
+nando:1200866	hids
+nando:1200866	hyper igd syndrome
 nando:1200866	hyperimmunoglobulinemia d and periodic fever syndrome
 nando:1200866	mkd
 nando:1200866	mevalonate kinase deffiency
-nando:1200866	hyper igd syndrome
 nando:1200866	ﾒﾊﾞﾛﾝ酸ｷﾅｰｾﾞ欠損症
 nando:1200866	高igd症候群
 nando:1200867	autoinflammation, lipodystrophy, and dermatosis syndrome
 nando:1200867	candle syndrome
+nando:1200867	chronic atypical neutrophilic dermatosis with lipodystrophy and elevated temperature syndrome
 nando:1200867	jmp syndrome
+nando:1200867	joint contractures, muscle atrophy, microcytic anemia, and panniculitis induced lipodystrophy
 nando:1200867	nakajo-nishimura syndrome
+nando:1200867	関節拘縮､筋委縮､小球性貧血､脂肪異栄養症誘因性脂肪織炎
+nando:1200867	脂肪異栄養症および発熱を伴う慢性非典型的好中球性皮膚疾患症候群
 nando:1200867	中條･西村症候群
 nando:1200868	papa syndrome
 nando:1200868	papa症候群
-nando:1200868	pyogenic arthritis, pyoderma gangrenosum, acne syndrome
 nando:1200868	pyogenic arthritis, pyoderma gangrenosum and acne syndrome
+nando:1200868	pyogenic arthritis, pyoderma gangrenosum, acne syndrome
 nando:1200868	化膿性無菌性関節炎･壊疽性膿皮症･ｱｸﾈ症候群
+nando:1200869	crmo
 nando:1200869	chronic recurrent multifocal osteomyelitis
 nando:1200869	慢性再発性多発性骨髄炎
 nando:1200870	ankylosing spondylitis
 nando:1200870	spondylarthritis ankylopoietica
 nando:1200870	強直性脊椎炎
+nando:1200871	fop
 nando:1200871	fibrodysplasia ossificans progressiva
 nando:1200871	進行性骨化性線維異形成症
 nando:1200872	congenital scoliosis with rib anomalies
@@ -2853,8 +3070,10 @@ nando:1200877	軟骨無形成症
 nando:1200878	lymphangiomatosis / gorham-stout disease
 nando:1200878	lymphangiomatosis/gorham disease
 nando:1200878	ﾘﾝﾊﾟ管腫症/ｺﾞｰﾊﾑ病
+nando:1200879	generalized lymphatic anomaly
 nando:1200879	obsolete lymphangiomatosis
 nando:1200879	obsolete ﾘﾝﾊﾟ管腫症
+nando:1200880	gorham-stout disease
 nando:1200880	obsolete gorham disease
 nando:1200880	obsolete ｺﾞｰﾊﾑ病
 nando:1200881	giant lymphatic malformation (cervicofacial lesion)
@@ -2869,25 +3088,32 @@ nando:1200883	huge arteriovenous malformation with cervicofacial or limb lesion
 nando:1200883	gigantic arteriovenous malformation (cervicofacial/limb lesion)
 nando:1200883	巨大動静脈奇形(頚部顔面又は四肢病変)
 nando:1200884	klippel-trenaunay-weber syndrome
+nando:1200884	klippel-trénanay-weber syndrome
 nando:1200884	ｸﾘｯﾍﾟﾙ･ﾄﾚﾉﾈｰ･ｳｪｰﾊﾞｰ症候群
 nando:1200885	cda
 nando:1200885	congenital dyserythropoietic anaemia
 nando:1200885	congenital dyserythropoietic anemia
 nando:1200885	先天性赤血球形成異常性貧血
+nando:1200886	cda i
 nando:1200886	congenital dyserythropoietic anaemia type i
 nando:1200886	congenital dyserythropoietic anemia type i
 nando:1200886	先天性赤血球形成異常性貧血 type i
+nando:1200887	cda ii
 nando:1200887	congenital dyserythropoietic anaemia type ii
 nando:1200887	congenital dyserythropoietic anemia type ii
 nando:1200887	先天性赤血球形成異常性貧血 type ii
+nando:1200888	cda iii
 nando:1200888	congenital dyserythropoietic aanemia type iii
 nando:1200888	congenital dyserythropoietic anemia type iii
 nando:1200888	先天性赤血球形成異常性貧血 type iii
 nando:1200889	acquired pure red cell aplasia
 nando:1200889	後天性赤芽球癆
+nando:1200890	congenital red cell aplasia
 nando:1200890	diamond-blackfan anaemia
 nando:1200890	diamond-blackfan anemia
+nando:1200890	diamond-blackfan貧血
 nando:1200890	ﾀﾞｲｱﾓﾝﾄﾞ･ﾌﾞﾗｯｸﾌｧﾝ貧血
+nando:1200890	先天性赤芽球癆
 nando:1200891	fanconi anaemia
 nando:1200891	fanconi anemia
 nando:1200891	ﾌｧﾝｺﾆ貧血
@@ -2904,8 +3130,9 @@ nando:1200895	中等症ｴﾌﾟｽﾀｲﾝ症候群
 nando:1200896	aicfd
 nando:1200896	autoimmune acquired coagulation factor deficiency
 nando:1200896	自己免疫性後天性凝固因子欠乏症
-nando:1200897	ah13
+nando:1200897	ah 13
 nando:1200897	autoimmune haemorrhaphilia xiii/13
+nando:1200897	autoimmune hemophilia-like disease due to anti-factor xiii antibodies
 nando:1200897	autoimmune hemorrhaphilia xiii/13
 nando:1200897	自己免疫性後天性凝固第 xiii/13 因子欠乏症
 nando:1200897	自己免疫性出血病xiii
@@ -2915,34 +3142,52 @@ nando:1200898	後天性血友病a
 nando:1200898	自己免疫性後天性凝固第 viii/8 因子欠乏症
 nando:1200899	avwd
 nando:1200899	acquired von willebrand disease
+nando:1200899	acquired von willebrand syndrome
+nando:1200899	avwd
+nando:1200899	avws
+nando:1200899	von willebrand病
+nando:1200899	後天性ﾌｫﾝ･ｳｨﾙﾌﾞﾗﾝﾄﾞ症候群
 nando:1200899	自己免疫性後天性ﾌｫﾝｳｨﾙﾌﾞﾗﾝﾄﾞ因子欠乏症
 nando:1200899	自己免疫性後天性ﾌｫﾝｳｨﾙﾌﾞﾗﾝﾄﾞ病
 nando:1200900	af5d
+nando:1200900	afvi
 nando:1200900	acquired factor v inhibitor
+nando:1200900	後天性第5因子ｲﾝﾋﾋﾞﾀｰ
 nando:1200900	自己免疫性後天性f5欠乏症
 nando:1200900	自己免疫性後天性凝固第 v/5 因子欠乏症
 nando:1200900	第5因子ｲﾝﾋﾋﾞﾀｰ
 nando:1200901	cronkhite-canada syndrome
+nando:1200901	cronkhite-canada症候群
 nando:1200901	ｸﾛﾝｶｲﾄ･ｶﾅﾀﾞ症候群
+nando:1200902	ceas
+nando:1200902	chronic enteropathy associated with slco2a1
 nando:1200902	chronic nonspecific multiple ulcers of the small intestine
 nando:1200902	非特異性多発性小腸潰瘍症
 nando:1200903	hirschsprung disease (entire colon type / extensive type)
 nando:1200903	hirschsprung disease
+nando:1200903	hirschsprung's disease
+nando:1200903	hirschsprung病
 nando:1200903	ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
+nando:1200904	short-segment hirschsprung disease
 nando:1200904	short-segment hirschsprung's disease
 nando:1200904	直腸下部型ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
+nando:1200905	rectosigmoid hirschsprung disease
 nando:1200905	rectosigmoid hirschsprung's disease
 nando:1200905	s状結腸型ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
+nando:1200906	long-segment hirschsprung disease
 nando:1200906	long-segment hirschsprung's disease
 nando:1200906	左右結腸型ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
 nando:1200907	entire colon hirschsprung disease
+nando:1200907	entire colon hirschsprung's disease
 nando:1200907	全結腸型ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
 nando:1200908	extensive aganglionosis hirschsprung disease
+nando:1200908	extensive aganglionosis hirschsprung's disease
 nando:1200908	小腸型ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
 nando:1200909	cloacal exstrophy
 nando:1200909	総排泄腔外反症
 nando:1200910	persistent cloaca
 nando:1200910	総排泄腔遺残
+nando:1200911	cdh
 nando:1200911	congenital diaphragmatic hernia
 nando:1200911	先天性横隔膜ﾍﾙﾆｱ
 nando:1200912	infantile giant hepatic haemangiomas
@@ -2951,9 +3196,9 @@ nando:1200912	乳幼児肝巨大血管腫
 nando:1200913	ba
 nando:1200913	biliary atresia
 nando:1200913	胆道閉鎖症
-nando:1200914	ⅰ型胆道閉鎖症
+nando:1200914	i型胆道閉鎖症
 nando:1200914	type i biliary atresia
-nando:1200915	ⅰcyst型胆道閉鎖症
+nando:1200915	icyst型胆道閉鎖症
 nando:1200915	type i cystic biliary atresia
 nando:1200916	ii型胆道閉鎖症
 nando:1200916	type ii biliary atresia
@@ -2969,6 +3214,7 @@ nando:1200920	atypical alagille syndrome
 nando:1200920	ｱﾗｼﾞｰﾙ症候群非典型例
 nando:1200921	hereditary pancreatitis
 nando:1200921	遺伝性膵炎
+nando:1200922	cf
 nando:1200922	cystic fibrosis
 nando:1200922	嚢胞性線維症
 nando:1200923	igg4-rd
@@ -3015,10 +3261,13 @@ nando:1200938	x染色体若年網膜分離症
 nando:1200938	x連鎖性若年網膜分離症
 nando:1200939	central areolar choroidal dystrophy
 nando:1200939	中心性輪紋状脈絡膜ｼﾞｽﾄﾛﾌｨｰ
+nando:1200939	中心輪紋状脈絡膜ｼﾞｽﾄﾛﾌｨｰ
+nando:1200940	lhon
 nando:1200940	leber hereditary optic neuropathy
 nando:1200940	ﾚｰﾍﾞﾙ遺伝性視神経症
 nando:1200940	ﾚｰﾍﾞﾙ病
 nando:1200941	usher syndrome
+nando:1200941	usher症候群
 nando:1200941	ｱｯｼｬｰ症候群
 nando:1200942	usher syndrome type i
 nando:1200942	ｱｯｼｬｰ症候群1型
@@ -3042,6 +3291,7 @@ nando:1200950	megaloencephalic leukoencephalopathy with subcortical cysts
 nando:1200950	皮質下嚢胞をもつ大頭型白質脳症
 nando:1200951	vanishing white matter disease
 nando:1200951	白質消失病
+nando:1200952	lkenp
 nando:1200952	leukoencephalopathy, progressive, with ovarian failure
 nando:1200952	卵巣機能障害を伴う進行性白質脳症
 nando:1200953	pme
@@ -3049,13 +3299,16 @@ nando:1200953	progressive myoclonus epilepsy
 nando:1200953	進行性ﾐｵｸﾛｰﾇｽてんかん
 nando:1200954	uld
 nando:1200954	unverricht-lundborg disease
+nando:1200954	unverricht-lundborg病
 nando:1200954	ｳﾝﾌｪﾙﾘﾋﾄ･ﾙﾝﾄﾎﾞﾙｸﾞ病
 nando:1200955	lafora disease
+nando:1200955	lafora病
 nando:1200955	ﾗﾌｫﾗ病
 nando:1200956	bafme
 nando:1200956	benign adult familial myoclonus epilepsy
 nando:1200956	良性成人型家族性ﾐｵｸﾛｰﾇｽてんかん
 nando:1200957	congenital anomalies syndrome
+nando:1200957	congenital malformation syndrome
 nando:1200957	malformative syndrome
 nando:1200957	先天異常症候群
 nando:1200958	1q部分重複症候群
@@ -3063,26 +3316,34 @@ nando:1200958	partial trisomy 1q
 nando:1200959	9q34 deletion syndrome
 nando:1200959	9q34欠失症候群
 nando:1200959	kleefstra syndrome
+nando:1200960	cornelia de lange症候群
 nando:1200960	cornelia de lange syndrome
 nando:1200960	ｺﾙﾈﾘｱ･ﾃﾞﾗﾝｹﾞ症候群
+nando:1200961	smith-lemli-opitz症候群
 nando:1200961	smith-lemli-opitz syndrome
 nando:1200961	ｽﾐｽ･ﾚﾑﾘ･ｵﾋﾟｯﾂ症候群
 nando:1200962	congenital tricuspid atresia
 nando:1200962	congenital tricuspid stenosis
+nando:1200962	congenital tricuspid valve stenosis
 nando:1200962	tricuspid atresia
 nando:1200962	先天性三尖弁狭窄症
 nando:1200963	congenital mitral stenosis
+nando:1200963	congenital mitral valve stenosis
 nando:1200963	mitral stenosis
+nando:1200963	mitral valve stenosis
 nando:1200963	先天性僧帽弁狭窄症
 nando:1200964	congenital pulmonary vein stenosis
+nando:1200964	congenital pulmonary venous obstruction
 nando:1200964	先天性肺静脈狭窄症
 nando:1200965	pa sling
 nando:1200965	pulmonary artery sling
 nando:1200965	vascular sling
 nando:1200965	左肺動脈右肺動脈起始症
 nando:1200966	nail-patella syndrome/lmx1b-associated nephropathy
+nando:1200966	nail-patella症候群
 nando:1200966	ﾈｲﾙﾊﾟﾃﾗ症候群(爪膝蓋骨症候群)/lmx1b関連腎症
 nando:1200967	nail-patella syndrome
+nando:1200967	nail-patella症候群
 nando:1200967	ﾈｲﾙ･ﾊﾟﾃﾗ症候群
 nando:1200967	爪膝蓋骨症候群
 nando:1200968	lmx1b-associated nephropathy
@@ -3091,11 +3352,12 @@ nando:1200969	carnitine cycle disorders
 nando:1200969	ｶﾙﾆﾁﾝ回路異常症
 nando:1200970	cpt1欠損症
 nando:1200970	carnitine palmitoyltransferase i deficiency
-nando:1200970	ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞⅰ欠損症
+nando:1200970	ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞi欠損症
 nando:1200971	cpt ii deficiency
 nando:1200971	cpt2欠損症
 nando:1200971	carnitine palmitoyltransferase ii deficiency
 nando:1200971	ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞii欠損症
+nando:1200972	cact deficiency
 nando:1200972	cact欠損症
 nando:1200972	carnitine-acylcarnitine translocase deficiency
 nando:1200972	ｶﾙﾆﾁﾝ/ｱｼﾙｶﾙﾆﾁﾝﾄﾗﾝｽﾛｶｰｾﾞ欠損症
@@ -3149,6 +3411,7 @@ nando:1200986	infantile nonketotic hyperglycinemia
 nando:1200986	乳児型非ｹﾄｰｼｽ型高ｸﾞﾘｼﾝ血症
 nando:1200987	beta-ketothiolase deficiency
 nando:1200987	β—ｹﾄﾁｵﾗｰｾﾞ欠損症
+nando:1200987	β-ketothiolase deficiency
 nando:1200988	aromatic l-amino acid decarboxylase deficiency
 nando:1200988	芳香族l-ｱﾐﾉ酸脱炭酸酵素欠損症
 nando:1200989	methylglutaconic aciduria
@@ -3165,22 +3428,27 @@ nando:1200992	3-methylglutaconic aciduria type iii
 nando:1200992	costeff syndrome
 nando:1200992	costeff症候群
 nando:1200992	ﾒﾁﾙｸﾞﾙﾀｺﾝ酸尿症iii型
-nando:1200993	hereditary autoinflammatory syndrome
 nando:1200993	hereditary autoinflammatory diseases
+nando:1200993	hereditary autoinflammatory syndrome
 nando:1200993	遺伝性自己炎症疾患
 nando:1200994	nlrc4 mutation
 nando:1200994	nlrc4異常症
+nando:1200995	ada2 deficiency
 nando:1200995	ada2欠損症
 nando:1200995	adenosine deaminase 2 deficiency
 nando:1200996	ags
+nando:1200996	aicardi-goutieres症候群
 nando:1200996	aicardi-goutières syndrome
+nando:1200996	aicardi-goutières症候群
 nando:1200996	ｴｶﾙﾃﾞｨ･ｸﾞﾃｨｴｰﾙ症候群
 nando:1200997	a20 haploinsufficiency
 nando:1200997	a20ﾊﾌﾟﾛ不全症
+nando:1200997	ha20
 nando:1200998	osteopetrosis
 nando:1200998	大理石骨病
 nando:1200999	idiopathic thrombosis (due to inherited predisposition to thrombosis) (neonates, infants)
 nando:1200999	特発性血栓症
+nando:1201000	asd
 nando:1201000	asgd1
 nando:1201000	anterior segment dysgenesis
 nando:1201000	前眼部形成異常
@@ -3195,8 +3463,11 @@ nando:1201004	congenital subglottic stenosis
 nando:1201004	先天性声門下狭窄症
 nando:1201005	idiopathic multicentric castleman's disease
 nando:1201005	特発性多中心性ｷｬｯｽﾙﾏﾝ病
+nando:1201006	gdld
 nando:1201006	gelatinous drop-like corneal dystrophy
 nando:1201006	膠様滴状角膜ｼﾞｽﾄﾛﾌｨｰ
+nando:1201007	hgps
+nando:1201007	hutchinson-gilford progeria syndrome
 nando:1201007	hutchinson-gilford syndrome
 nando:1201007	ﾊｯﾁﾝｿﾝ･ｷﾞﾙﾌｫｰﾄﾞ症候群
 nando:1201008	limited form of granulomatosis with polyangiitis
@@ -3267,6 +3538,175 @@ nando:1201030	chronic diffuse membranoproliferative glomerulonephritis type i
 nando:1201030	慢性･びまん型膜性増殖性糸球体腎炎
 nando:1201031	acute diffuse membranoproliferative glomerulonephritis type i
 nando:1201031	急性･びまん型膜性増殖性糸球体腎炎
+nando:1201032	ccdss
+nando:1201032	cerebral creatine deficiency syndromes
+nando:1201032	脳ｸﾚｱﾁﾝ欠乏症候群
+nando:1201033	agat deficiency
+nando:1201033	agat欠損症
+nando:1201033	arginine:glycine amidinotransferase deficiency
+nando:1201033	ｱﾙｷﾞﾆﾝ･ｸﾞﾘｼﾝｱﾐｼﾞﾉ基転移酵素欠損症
+nando:1201034	gamt deficiency
+nando:1201034	gamt欠損症
+nando:1201034	guanidinoacetate methyltransferase deficiency
+nando:1201034	ｸﾞｱﾆｼﾞﾉ酢酸ﾒﾁﾙ基転位酵素欠損症
+nando:1201035	creatine transporter deficiency
+nando:1201035	slc6a8 deficiency
+nando:1201035	ｸﾚｱﾁﾝﾄﾗﾝｽﾎﾟｰﾀｰ欠損症
+nando:1201036	nph
+nando:1201036	nephronophthisis
+nando:1201036	ﾈﾌﾛﾝ癆
+nando:1201037	homozygous familial hypobetalipoproteinemia 1
+nando:1201037	家族性低βﾘﾎﾟﾀﾝﾊﾟｸ血症1(ﾎﾓ接合体)
+nando:1201038	homocystinuria
+nando:1201038	ﾎﾓｼｽﾁﾝ尿症
+nando:1201039	cbs欠損症
+nando:1201039	homocystinuria type 1
+nando:1201039	ﾎﾓｼｽﾁﾝ尿症i型
+nando:1201040	homocystinuria type 2
+nando:1201040	homocystinuria type cblc
+nando:1201040	ｺﾊ゙ﾗﾐﾝ代謝異常症 cblc
+nando:1201040	ﾎﾓｼｽﾁﾝ尿症ii型
+nando:1201041	homocystinuria due to mthfr deficiency
+nando:1201041	homocystinuria due to methylene tetrahydrofolate reductase deficiency
+nando:1201041	homocystinuria type 3
+nando:1201041	mthfr 欠損症
+nando:1201041	ﾎﾓｼｽﾁﾝ尿症iii型
+nando:1201042	pfic
+nando:1201042	progressive familial intrahepatic cholestasis
+nando:1201042	進行性家族性肝内胆汁うっ滞症
+nando:1201043	fic1病
+nando:1201043	pfic type 1
+nando:1201043	pfic1
+nando:1201043	progressive familial intrahepatic cholestasis type 1
+nando:1201043	進行性家族性肝内胆汁うっ滞症1型
+nando:1201044	bsep病
+nando:1201044	pfic type 2
+nando:1201044	pfic2
+nando:1201044	progressive familial intrahepatic cholestasis type 2
+nando:1201044	進行性家族性肝内胆汁うっ滞症2型
+nando:1201045	mdr3病
+nando:1201045	pfic type 3
+nando:1201045	pfic3
+nando:1201045	progressive familial intrahepatic cholestasis type 3
+nando:1201045	進行性家族性肝内胆汁うっ滞症3型
+nando:1201046	pfic4
+nando:1201046	progressive familial intrahepatic cholestasis type 4
+nando:1201046	進行性家族性肝内胆汁うっ滞症4型
+nando:1201047	pfic5
+nando:1201047	progressive familial intrahepatic cholestasis type 5
+nando:1201047	進行性家族性肝内胆汁うっ滞症5型
+nando:1201048	acquired factor x inhibitor
+nando:1201048	自己免疫性後天性凝固第x因子欠乏症
+nando:1201049	sls
+nando:1201049	senior-loken syndrome
+nando:1201049	ｾﾆｵｰﾙ･ﾛｰｹﾝ症候群
+nando:1201050	coach syndrome
+nando:1201050	coach症候群
+nando:1201051	oral-facial-digital syndrome
+nando:1201051	orofaciodigital syndrome
+nando:1201051	口-顔-指症候群
+nando:1201052	end-plate acetylcholine receptor deficiency
+nando:1201052	endplate acetylcholine receptor deficiency
+nando:1201052	endplate achr deficiency
+nando:1201052	終板ｱｾﾁﾙｺﾘﾝ受容体欠損症
+nando:1201053	sccms
+nando:1201053	slow-channel congenital myasthenic syndrome
+nando:1201053	slow-channel cms
+nando:1201053	ｽﾛｰﾁｬﾝﾈﾙ症候群
+nando:1201054	fast-channel congenital myasthenic syndrome
+nando:1201054	ﾌｧｰｽﾄﾁｬﾝﾈﾙ症候群
+nando:1201055	sodium channel myasthenia
+nando:1201055	ﾅﾄﾘｳﾑﾁｬﾝﾈﾙ筋無力症
+nando:1201056	end-plate acetylcholine esterase deficiency
+nando:1201056	endplate acetylcholinesterase deficiency
+nando:1201056	終板ｱｾﾁﾙｺﾘﾝｴｽﾃﾗｰｾﾞ欠損症
+nando:1201057	congenital myasthenic syndrome with episodic apnea
+nando:1201057	congenital myasthenic syndrome with episodic apnoea
+nando:1201057	発作性無呼吸を伴う先天性筋無力症
+nando:1201058	rapadilino syndrome
+nando:1201058	rapadilino症候群
+nando:1201058	ﾗﾊﾟﾃﾞﾘﾉ症候群
+nando:1201059	bgs
+nando:1201059	baller-gerold syndrome
+nando:1201059	baller-gerold症候群
+nando:1201059	ﾊﾞﾚｰ･ｼﾞｪﾛﾙﾄﾞ症候群
+nando:1201060	fap 1
+nando:1201060	familial amyloid polyneuropathy type 1
+nando:1201060	type i fap
+nando:1201060	type i familial amyloid polyneuropathy
+nando:1201060	家族性ｱﾐﾛｲﾄﾞﾆｭｰﾛﾊﾟﾁｰi型
+nando:1201061	amyloid polyneuropathy, swiss type
+nando:1201061	fap ii
+nando:1201061	familial amyloid polyneuropathy type 2
+nando:1201061	家族性ｱﾐﾛｲﾄﾞﾆｭｰﾛﾊﾟﾁｰii型
+nando:1201062	fap iii
+nando:1201062	familial amyloid polyneuropathy type 3
+nando:1201062	familial amyloid polyneuropathy, iowa type
+nando:1201062	家族性ｱﾐﾛｲﾄﾞﾆｭｰﾛﾊﾟﾁｰiii型
+nando:1201063	fap iv
+nando:1201063	familial amyloid polyneuropathy type 4
+nando:1201063	家族性ｱﾐﾛｲﾄﾞﾆｭｰﾛﾊﾟﾁｰiv型
+nando:1201064	kearns-sayre syndrome
+nando:1201064	kearns-sayre症候群
+nando:1201064	ｶｰﾝｽﾞ･ｾｲﾔｰ症候群
+nando:1201065	hjeb
+nando:1201065	herlitz junctional epidermolysis bullosa
+nando:1201065	接合部型表皮水疱症(ﾍﾙﾘｯﾂ型)
+nando:1201066	non-herlitz junctional epidermolysis bullosa
+nando:1201066	nh-jeb
+nando:1201066	接合部型表皮水疱症(非ﾍﾙﾘｯﾂ型)
+nando:1201067	nlphl
+nando:1201067	nodular lymphocyte predominance hodgkin lymphoma
+nando:1201067	nodular lymphocyte predominance hodgkin's lymphoma
+nando:1201067	obsolete 結節性ﾘﾝﾊﾟ球優位型ﾎｼﾞｷﾝﾘﾝﾊﾟ腫
+nando:1201067	結節性ﾘﾝﾊﾟ球優位型hodgkinﾘﾝﾊﾟ腫
+nando:1201068	agyria
+nando:1201068	無脳回
+nando:1201069	pachygyria
+nando:1201069	厚脳回
+nando:1201070	sbh
+nando:1201070	subcortical band heterotopia
+nando:1201070	皮質下帯状異所性灰白質
+nando:1201071	polymicrogyria
+nando:1201071	多小脳回
+nando:1201072	cob
+nando:1201072	cobblestone brain malformation
+nando:1201072	敷石様皮質異形成
+nando:1201073	cleft brain
+nando:1201073	schizencephaly
+nando:1201073	裂脳症
+nando:1201074	porencephaly
+nando:1201074	孔脳症
+nando:1201075	php1a
+nando:1201075	pseudohypoparathyroidism type 1a
+nando:1201075	偽性副甲状腺機能低下症ia型
+nando:1201076	php1b
+nando:1201076	pseudohypoparathyroidism type 1b
+nando:1201076	偽性副甲状腺機能低下症ib型
+nando:1201077	phpic
+nando:1201077	pseudohypoparathyroidism type 1c
+nando:1201077	偽性副甲状腺機能低下症ic型
+nando:1201078	pseudohypoparathyroidism type 2
+nando:1201078	偽性副甲状腺機能低下症ii型
+nando:1201079	pnh
+nando:1201079	periventricular nodular heterotopia
+nando:1201079	脳室周囲結節状異所性灰白質
+nando:1201080	congenital protein c deficiency
+nando:1201080	heritable thrombophilia
+nando:1201080	protein c deficiency
+nando:1201080	先天性ﾌﾟﾛﾃｲﾝc欠乏症 
+nando:1201081	congenital protein s deficiency
+nando:1201081	heritable thrombophilia
+nando:1201081	protein s deficiency
+nando:1201081	先天性ﾌﾟﾛﾃｲﾝs欠乏症
+nando:1201082	antithrombin deficiency
+nando:1201082	heritable thrombophilia
+nando:1201082	inherited antithrombin deficiency
+nando:1201082	先天性ｱﾝﾁﾄﾛﾝﾋﾞﾝ欠乏症
+nando:1201083	miller dieker syndrome
+nando:1201083	miller-dieker syndrome
+nando:1201083	miller-dieker症候群
+nando:1201083	ﾐﾗｰ･ﾃﾞｨｶｰ症候群
 nando:2000001	specific pediatric chronic disease
 nando:2000001	小児慢性特定疾病
 nando:2100001	malignant neoplasms
@@ -3295,7 +3735,7 @@ nando:2100009	ﾈﾌﾛｰｾﾞ症候群
 nando:2100010	chronic glomerulonephritis
 nando:2100010	慢性糸球体腎炎
 nando:2100011	chronic tubulointerstitial nephritis (excluding urinary tract malformation)
-nando:2100011	慢性尿細管間質性腎炎(尿路奇形が原因のものを除く｡)
+nando:2100011	慢性尿細管間質性腎炎
 nando:2100012	chronic pyelonephritis
 nando:2100012	慢性腎盂腎炎
 nando:2100013	amyloid nephropathy
@@ -3304,11 +3744,13 @@ nando:2100014	fjhn
 nando:2100014	familial juvenile hyperuricaemic nephropathy
 nando:2100014	familial juvenile hyperuricemic nephropathy
 nando:2100014	家族性若年性高尿酸血症性腎症
+nando:2100015	juvenile nephronophthisis
 nando:2100015	nph
 nando:2100015	nephronophthisis
 nando:2100015	ﾈﾌﾛﾝ癆
 nando:2100016	renovascular hypertension
 nando:2100016	腎血管性高血圧
+nando:2100017	rvt
 nando:2100017	renal vein thrombosis
 nando:2100017	腎静脈血栓症
 nando:2100018	renal arteriovenous fistula
@@ -3316,15 +3758,18 @@ nando:2100018	腎動静脈瘻
 nando:2100019	rta
 nando:2100019	renal tubular acidosis
 nando:2100019	尿細管性ｱｼﾄﾞｰｼｽ
+nando:2100020	gs
 nando:2100020	gitelman syndrome
 nando:2100020	gitelman症候群
 nando:2100020	ｷﾞｯﾃﾙﾏﾝ症候群
+nando:2100021	bs
 nando:2100021	bartter syndrome
 nando:2100021	bartter症候群
 nando:2100021	ﾊﾞｰﾀｰ症候群
 nando:2100022	nephro- and urolithiasis
 nando:2100022	nephro-urolithiasis
 nando:2100022	腎尿管結石
+nando:2100023	crf
 nando:2100023	chronic renal failure
 nando:2100023	慢性腎不全
 nando:2100024	renal malformation
@@ -3338,6 +3783,8 @@ nando:2100027	fanconi症候群
 nando:2100027	ﾌｧﾝｺｰﾆ症候群
 nando:2100028	lowe syndrome
 nando:2100028	lowe症候群
+nando:2100028	ocrl
+nando:2100028	oculocerebrorenal syndrome of lowe
 nando:2100028	ﾛｳ症候群
 nando:2100029	chronic respiratory disease
 nando:2100029	慢性呼吸器疾患
@@ -3348,6 +3795,7 @@ nando:2100031	気管支喘息
 nando:2100032	cchs
 nando:2100032	congenital central hypoventilation syndrome
 nando:2100032	先天性中枢性低換気症候群
+nando:2100033	ip
 nando:2100033	interstitial pneumonia
 nando:2100033	間質性肺疾患
 nando:2100034	primary ciliary dyskinesia
@@ -3361,10 +3809,12 @@ nando:2100036	気管支拡張症
 nando:2100037	idiopathic pulmonary haemosiderosis
 nando:2100037	idiopathic pulmonary hemosiderosis
 nando:2100037	特発性肺ﾍﾓｼﾞﾃﾞﾛｰｼｽ
+nando:2100038	cld
 nando:2100038	chronic lung disease
 nando:2100038	慢性肺疾患
 nando:2100039	bo
 nando:2100039	bronchiolitis obliterans
+nando:2100039	obliterating bronchiolitis
 nando:2100039	閉塞性細気管支炎
 nando:2100040	cdh
 nando:2100040	congenital diaphragmatic hernia
@@ -3396,6 +3846,7 @@ nando:2100051	atrial fibrillation
 nando:2100051	心房細動
 nando:2100052	ventricular fibrillation
 nando:2100052	心室細動
+nando:2100053	lqts
 nando:2100053	long qt syndrome
 nando:2100053	qt延長症候群
 nando:2100054	hcm
@@ -3408,9 +3859,11 @@ nando:2100056	心筋緻密化障害
 nando:2100057	dcm
 nando:2100057	dilated cardiomyopathy
 nando:2100057	拡張型心筋症
+nando:2100058	restricted cardiomyopathy
 nando:2100058	restrictive cardiomyopathy
 nando:2100058	拘束型心筋症
 nando:2100059	aneurysm of ventricle
+nando:2100059	diverticulum of ventricle
 nando:2100059	心室瘤
 nando:2100060	endocardial fibroelastosis
 nando:2100060	心内膜線維弾性症
@@ -3445,6 +3898,7 @@ nando:2100073	三尖弁閉鎖症
 nando:2100074	pa
 nando:2100074	pulmonary atresia
 nando:2100074	肺動脈閉鎖症 
+nando:2100075	fallot's tetralogy
 nando:2100075	fallot四徴症
 nando:2100075	tetralogy of fallot
 nando:2100075	ﾌｧﾛｰ四徴症
@@ -3453,12 +3907,16 @@ nando:2100076	double outlet right ventricle
 nando:2100076	両大血管右室起始症
 nando:2100077	double-outlet left ventricle
 nando:2100077	両大血管左室起始症
-nando:2100078	complete transposition of the great arteries
 nando:2100078	complete tga
+nando:2100078	complete transposition of the great arteries
 nando:2100078	完全大血管転位症
 nando:2100079	congenitally corrected transposition of the great arteries
 nando:2100079	先天性修正大血管転位症
+nando:2100080	ebstein anomaly
+nando:2100080	ebstein malformation
 nando:2100080	ebstein's anomaly
+nando:2100080	ebstein's malformation
+nando:2100080	ebstein奇形
 nando:2100080	ebstein病
 nando:2100080	ｴﾌﾟｽﾀｲﾝ病
 nando:2100081	truncus arteriosus communis
@@ -3532,6 +3990,7 @@ nando:2100111	下垂体性巨人症
 nando:2100112	acromegaly
 nando:2100112	先端巨大症
 nando:2100113	ghd
+nando:2100113	gh分泌不全性低身長症
 nando:2100113	growth hormone deficiency
 nando:2100113	成長ﾎﾙﾓﾝ分泌不全性低身長症
 nando:2100114	growth hormone insensitivity
@@ -3568,12 +4027,14 @@ nando:2100125	自己免疫性多内分泌腺症候群
 nando:2100126	pseudohypoparathyroidism
 nando:2100126	偽性副甲状腺機能低下症
 nando:2100127	cushing (cushing) syndrome
+nando:2100127	cushing's syndrome
 nando:2100127	cushing症候群
 nando:2100127	ｸｯｼﾝｸﾞ症候群
 nando:2100128	chronic adrenal insufficiency
 nando:2100128	慢性副腎皮質機能低下症
 nando:2100129	aldosteronism
 nando:2100129	ｱﾙﾄﾞｽﾃﾛﾝ症
+nando:2100130	ame syndrome
 nando:2100130	ame症候群
 nando:2100130	apparent mineralocorticoid excess syndrome
 nando:2100130	見かけの鉱質ｺﾙﾁｺｲﾄﾞ過剰症候群
@@ -3590,9 +4051,9 @@ nando:2100134	先天性副腎過形成症
 nando:2100135	precocious puberty
 nando:2100135	思春期早発症
 nando:2100136	hyperestrogenism (excluding precocious puberty)
-nando:2100136	ｴｽﾄﾛｹﾞﾝ過剰症(思春期早発症を除く｡)
+nando:2100136	ｴｽﾄﾛｹﾞﾝ過剰症
 nando:2100137	hyperandrogenism (excluding precocious puberty)
-nando:2100137	ｱﾝﾄﾞﾛｹﾞﾝ過剰症(思春期早発症を除く｡)
+nando:2100137	ｱﾝﾄﾞﾛｹﾞﾝ過剰症
 nando:2100138	hypogonadotropic hypogonadism
 nando:2100138	低ｺﾞﾅﾄﾞﾄﾛﾋﾟﾝ性性腺機能低下症
 nando:2100139	hypergonadotropic hypogonadism
@@ -3616,6 +4077,7 @@ nando:2100146	原発性低ﾘﾝ血症性くる病
 nando:2100147	lipodystrophy
 nando:2100147	脂肪異栄養症
 nando:2100147	脂肪萎縮症
+nando:2100148	men
 nando:2100148	multiple endocrine neoplasia
 nando:2100148	多発性内分泌腫瘍
 nando:2100149	polycystic ovary syndrome
@@ -3635,8 +4097,10 @@ nando:2100155	皮膚･結合組織疾患
 nando:2100156	autoinflammatory disease
 nando:2100156	自己炎症性疾患
 nando:2100157	diabetes
+nando:2100157	diabetes mellitus
 nando:2100157	糖尿病
 nando:2100158	diabetes
+nando:2100158	diabetes mellitus
 nando:2100158	糖尿病
 nando:2100159	inborn errors of metabolism
 nando:2100159	先天性代謝異常
@@ -3653,6 +4117,7 @@ nando:2100164	disorder of carbohydrate metabolism
 nando:2100164	糖質代謝異常症
 nando:2100165	lysosomal storage disease
 nando:2100165	ﾗｲｿｿﾞｰﾑ病
+nando:2100166	peroxisomal disease
 nando:2100166	peroxisomal disorder
 nando:2100166	ﾍﾟﾙｵｷｼｿｰﾑ病
 nando:2100167	disorder of metal metabolism
@@ -3668,14 +4133,18 @@ nando:2100171	脂質代謝異常症
 nando:2100172	connective tissue disorder
 nando:2100172	結合組織異常症
 nando:2100173	porphyria
+nando:2100173	congenital porphyria
 nando:2100173	先天性ﾎﾟﾙﾌｨﾘﾝ症
+nando:2100174	aatd
 nando:2100174	alpha-1-antitrypsin deficiency
+nando:2100174	α-1-antitrypsin deficiency
 nando:2100174	α1-ｱﾝﾁﾄﾘﾌﾟｼﾝ欠損症
 nando:2100175	blood disease
 nando:2100175	血液疾患
 nando:2100176	megaloblastic anaemia
 nando:2100176	megaloblastic anemia
 nando:2100176	巨赤芽球性貧血
+nando:2100177	prca
 nando:2100177	pure red cell aplasia
 nando:2100177	赤芽球癆
 nando:2100178	cda
@@ -3717,7 +4186,7 @@ nando:2100188	血小板減少性紫斑病
 nando:2100189	ttp
 nando:2100189	thrombotic thrombocytopenic purpura
 nando:2100189	血栓性血小板減少性紫斑病
-nando:2100190	thrombocytopenia (limited to those caused by hypersplenism.)
+nando:2100190	thrombocytopenia (limited to those caused by hypersplenism;)
 nando:2100190	血小板減少症(脾機能亢進症によるものに限る｡)
 nando:2100191	 congenital bone marrow failure syndrome
 nando:2100191	先天性骨髄不全症候群
@@ -3732,13 +4201,17 @@ nando:2100194	essential thrombocythemia
 nando:2100194	本態性血小板血症
 nando:2100195	platelet dysfunction
 nando:2100195	血小板機能異常症
-nando:2100196	inherited bleeding disorder
+nando:2100196	inherited bleeding disorder 
 nando:2100196	先天性血液凝固因子異常
+nando:2100197	congenital protein c deficiency
+nando:2100197	heritable thrombophilia
 nando:2100197	protein c deficiency
 nando:2100197	先天性ﾌﾟﾛﾃｲﾝc欠乏症
+nando:2100198	heritable thrombophilia
 nando:2100198	protein s deficiency
 nando:2100198	先天性ﾌﾟﾛﾃｲﾝs欠乏症
 nando:2100199	antithrombin deficiency
+nando:2100199	heritable thrombophilia
 nando:2100199	先天性ｱﾝﾁﾄﾛﾝﾋﾞﾝ欠乏症
 nando:2100200	mf
 nando:2100200	myelofibrosis
@@ -3765,12 +4238,14 @@ nando:2100209	先天性補体欠損症
 nando:2100210	hes
 nando:2100210	hyper eosinophilic syndrome
 nando:2100210	好酸球増加症
+nando:2100211	caebv
 nando:2100211	chronic active eb virus infection
 nando:2100211	慢性活動性ebｳｲﾙｽ感染症
 nando:2100212	aids
 nando:2100212	acquired immune deficiency syndrome
 nando:2100212	aquired immunodeficiency
 nando:2100212	後天性免疫不全症
+nando:2100213	chronic gvhd
 nando:2100213	chronic graft-versus-host disease
 nando:2100213	慢性移植片対宿主病
 nando:2100214	neuromuscular disease
@@ -3795,12 +4270,14 @@ nando:2100222	leukoencephalopathy caused by genetic abnormalities
 nando:2100222	遺伝子異常による白質脳症
 nando:2100223	atr-x syndrome
 nando:2100223	atr-x症候群
+nando:2100223	x-linked a-thalassemia/intellectual disability syndrome
+nando:2100223	x連鎖αｻﾗｾﾐｱ･精神遅滞症候群
 nando:2100224	fragile x syndrome
 nando:2100224	脆弱x症候群
 nando:2100225	igd
 nando:2100225	inherited glycosylphosphatidylinositol deficiency
+nando:2100225	obsolete 先天性ｸﾞﾘｺｼﾙﾎｽﾌｧﾁｼﾞﾙｲﾉｼﾄｰﾙ欠損症
 nando:2100225	先天性gpi欠損
-nando:2100225	先天性ｸﾞﾘｺｼﾙﾎｽﾌｧﾁｼﾞﾙｲﾉｼﾄｰﾙ欠損症
 nando:2100226	ccdss
 nando:2100226	cerebral creatine deficiency syndromes
 nando:2100226	脳ｸﾚｱﾁﾝ欠乏症候群
@@ -3809,6 +4286,7 @@ nando:2100227	頭蓋骨縫合早期癒合症
 nando:2100228	moyamoya disease
 nando:2100228	もやもや病
 nando:2100228	ｳｨﾘｽ動脈輪閉塞症
+nando:2100229	cerebral avm
 nando:2100229	cerebral arteriovenous malformation
 nando:2100229	脳動静脈奇形
 nando:2100230	cavernous angioma of the brain and spinal cord
@@ -3822,6 +4300,7 @@ nando:2100233	muscular dystrophy
 nando:2100233	筋ｼﾞｽﾄﾛﾌｨｰ
 nando:2100234	congenital myopathy
 nando:2100234	先天性ﾐｵﾊﾟﾁｰ
+nando:2100235	sjs
 nando:2100235	schwartz-jampel syndrome
 nando:2100235	schwartz-jampel症候群
 nando:2100235	ｼｭﾜﾙﾂ･ﾔﾝﾍﾟﾙ症候群
@@ -3841,12 +4320,15 @@ nando:2100240	変形性筋ｼﾞｽﾄﾆｰ
 nando:2100241	nbia
 nando:2100241	neurodegeneration with brain iron accumulation
 nando:2100241	脳の鉄沈着を伴う神経変性疾患
+nando:2100242	ibsn
 nando:2100242	infantile bilateral striatal necrosis
 nando:2100242	乳児両側線条体壊死
 nando:2100243	congenital infections
 nando:2100243	先天性感染症
+nando:2100244	ags
 nando:2100244	aicardi-goutieres症候群
 nando:2100244	aicardi-goutières syndrome
+nando:2100244	aicardi-goutières症候群
 nando:2100244	ｴｶﾙﾃﾞｨ･ｸﾞﾃｨｴｰﾙ症候群
 nando:2100245	sspe
 nando:2100245	subacute sclerosing panencephalitis
@@ -3855,6 +4337,7 @@ nando:2100246	rasmussen encephalitis
 nando:2100246	rasmussen's encephalitis
 nando:2100246	rasmussen脳炎
 nando:2100246	ﾗｽﾑｯｾﾝ脳炎
+nando:2100247	aesd
 nando:2100247	acute encephalopathy with biphasic seizures and late reduced diffusion
 nando:2100247	痙攣重積型急性脳症
 nando:2100248	autoimmune encephalitis
@@ -3874,28 +4357,31 @@ nando:2100252	重症筋無力症
 nando:2100253	chronic digestive disease
 nando:2100253	慢性消化器疾患
 nando:2100254	congenital malabsorption
-nando:2100254	先天性吸収不全症
+nando:2100254	難治性下痢症
+nando:2100255	congenital microvillus atrophy
 nando:2100255	microvillus inclusion disease
+nando:2100255	先天性微絨毛萎縮症
 nando:2100255	微絨毛封入体病
 nando:2100256	intestinal lymphangiectasia
 nando:2100256	腸ﾘﾝﾊﾟ管拡張症
 nando:2100257	polyposis
 nando:2100257	ﾎﾟﾘﾎﾟｰｼｽ
+nando:2100258	cvs
 nando:2100258	cyclic vomiting syndrome
 nando:2100258	周期性嘔吐症候群
+nando:2100259	ibd
 nando:2100259	inflammatory bowel disease
 nando:2100259	炎症性腸疾患
-nando:2100260	autoimmune enteropathy (including ipex syndrome.)
+nando:2100260	autoimmune enteropathy (including ipex syndrome)
 nando:2100260	自己免疫性腸症(ipex症候群を含む｡)
 nando:2100261	ceas
 nando:2100261	chronic enteropathy associated with slco2a1
 nando:2100261	chronic nonspecific multiple ulcers of the small intestine
 nando:2100261	非特異性多発性小腸潰瘍症
 nando:2100262	acute liver failure with hepatic coma
+nando:2100262	hepatic coma
 nando:2100262	急性肝不全(昏睡型)
-nando:2100263	neonatal haemochromatosis
-nando:2100263	neonatal hemochromatosis
-nando:2100263	新生児ﾍﾓｸﾛﾏﾄｰｼｽ
+nando:2100263	免疫性肝疾患
 nando:2100264	aih
 nando:2100264	autoimmune hepatitis
 nando:2100264	自己免疫性肝炎
@@ -3904,12 +4390,13 @@ nando:2100265	primary sclerosing cholangitis
 nando:2100265	原発性硬化性胆管炎
 nando:2100266	intrahepatic cholestatic disorders
 nando:2100266	肝内胆汁うっ滞性疾患
+nando:2100267	chf
 nando:2100267	congenital hepatic fibrosis
 nando:2100267	先天性肝線維症
 nando:2100268	liver cirrhosis
 nando:2100268	肝硬変症
-nando:2100269	portal hypertension
-nando:2100269	門脈圧亢進症
+nando:2100269	肝血行異常症
+nando:2100270	capv
 nando:2100270	congenital absence of portal vein
 nando:2100270	先天性門脈欠損症
 nando:2100271	congenital hepatoportal arteriovenous fistula
@@ -3921,6 +4408,7 @@ nando:2100273	intractable pancreatitis
 nando:2100273	難治性膵炎
 nando:2100274	short bowel syndrome
 nando:2100274	短腸症
+nando:2100275	allied disorders of hirschsprung's disease
 nando:2100275	hirschsprung disease and related disease
 nando:2100275	hirschsprung病及び類縁疾患
 nando:2100275	ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病及び類縁疾患
@@ -3939,6 +4427,7 @@ nando:2100280	chromosome abnormality
 nando:2100280	染色体または遺伝子に変化を伴う症候群
 nando:2100281	skin disease
 nando:2100281	皮膚疾患群
+nando:2100282	oca
 nando:2100282	oculocutaneous albinism (congenital albinism)
 nando:2100282	眼皮膚白皮症(先天性白皮症)
 nando:2100283	congenital ichthyosis
@@ -3952,16 +4441,22 @@ nando:2100285	膿疱性乾癬(汎発型)
 nando:2100286	xp
 nando:2100286	xeroderma pigmentosum
 nando:2100286	色素性乾皮症
+nando:2100287	neurofibromatosis type 1
 nando:2100287	recklinghausen病
 nando:2100287	von recklinghausen's disease
 nando:2100287	ﾚｯｸﾘﾝｸﾞﾊｳｾﾞﾝ病
 nando:2100287	神経線維腫症ⅰ型
+nando:2100288	pdp
 nando:2100288	pachydermoperiostosis
 nando:2100288	肥厚性皮膚骨膜症
 nando:2100289	ectodermal dysplsia
 nando:2100289	外胚葉形成不全
+nando:2100290	sjs
 nando:2100290	stevens-johnson syndrome
+nando:2100290	stevens-johnson症候群
+nando:2100290	toxic epidermal necrolysis
 nando:2100290	ｽﾃｨｰｳﾞﾝｽ･ｼﾞｮﾝｿﾝ症候群
+nando:2100290	皮膚粘膜眼症候群
 nando:2100291	bone disease
 nando:2100291	骨系統疾患
 nando:2100292	thoracic insufficiency syndrome
@@ -3984,12 +4479,18 @@ nando:2100297	ｶｻﾊﾞｯﾊ･ﾒﾘｯﾄ症候群
 nando:2200001	b-cell precursor lymphoblastic leukaemia
 nando:2200001	b-cell precursor lymphoblastic leukemia
 nando:2200001	前駆b細胞急性ﾘﾝﾊﾟ性白血病
-nando:2200002	mature b-cell lymphoblastic leukaemia
+nando:2200002	all
+nando:2200002	acute lymphoblastic leukemia
+nando:2200002	mature b-cell acute lymphoblastic leukemia
 nando:2200002	mature b-cell lymphoblastic leukemia
+nando:2200002	急性ﾘﾝﾊﾟ芽球性白血病
 nando:2200002	成熟b細胞急性ﾘﾝﾊﾟ性白血病
+nando:2200003	all
+nando:2200003	acute lymphoblastic leukemia
 nando:2200003	t-cell lymphoblastic leukaemia
 nando:2200003	t-cell lymphoblastic leukemia
 nando:2200003	t細胞急性ﾘﾝﾊﾟ性白血病
+nando:2200003	急性ﾘﾝﾊﾟ芽球性白血病
 nando:2200004	acute myeloid leukaemia with minimal differentiation
 nando:2200004	acute myeloid leukemia with minimal differentiation
 nando:2200004	急性骨髄性白血病､最未分化
@@ -4010,6 +4511,7 @@ nando:2200009	acute monocytic leukemia
 nando:2200009	急性単球性白血病
 nando:2200010	acute erythraemia
 nando:2200010	acute erythremia
+nando:2200010	di guglielmo's disease
 nando:2200010	急性赤白血病
 nando:2200011	acute megakaryoblastic leukaemia
 nando:2200011	acute megakaryoblastic leukemia
@@ -4018,13 +4520,16 @@ nando:2200012	nk cell leukaemia
 nando:2200012	nk cell leukemia
 nando:2200012	nk細胞白血病
 nando:2200012	ﾅﾁｭﾗﾙｷﾗｰ細胞白血病
+nando:2200013	 chronic myelogenous leukemia
 nando:2200013	cml
 nando:2200013	chronic myeloid leukaemia
 nando:2200013	chronic myeloid leukemia
 nando:2200013	慢性骨髄性白血病
+nando:2200014	cmml
 nando:2200014	chronic myelomonocytic leukaemia
 nando:2200014	chronic myelomonocytic leukemia
 nando:2200014	慢性骨髄単球性白血病
+nando:2200015	jmml
 nando:2200015	juvenile myelomonocytic leukaemia
 nando:2200015	juvenile myelomonocytic leukemia
 nando:2200015	若年性骨髄単球性白血病
@@ -4041,10 +4546,13 @@ nando:2200018	mpal
 nando:2200018	mixed phenotype acute leukaemia
 nando:2200018	mixed phenotype acute leukemia
 nando:2200018	混合型急性白血病
+nando:2200019	mds
 nando:2200019	myelodysplastic syndrome
 nando:2200019	骨髄異形成症候群
+nando:2200020	b-nhl
 nando:2200020	mature b-cell lymphoma
 nando:2200020	成熟b細胞ﾘﾝﾊﾟ腫
+nando:2200021	alcl
 nando:2200021	anaplastic large cell lymphoma
 nando:2200021	未分化大細胞ﾘﾝﾊﾟ腫
 nando:2200022	bﾘﾝﾊﾟ芽球性ﾘﾝﾊﾟ腫
@@ -4057,8 +4565,11 @@ nando:2200024	hodgkinﾘﾝﾊﾟ腫
 nando:2200024	ﾎｼﾞｷﾝﾘﾝﾊﾟ腫
 nando:2200025	18から22までに掲げるもののほか､ﾘﾝﾊﾟ腫
 nando:2200025	other malignant lymphomas
+nando:2200026	fl
+nando:2200026	pfl
 nando:2200026	pediatric follicular lymphoma
 nando:2200026	小児濾胞性ﾘﾝﾊﾟ腫
+nando:2200027	enktl
 nando:2200027	extranodal nk/t-cell lymphoma, nasal type
 nando:2200027	節外性nk/t細胞ﾘﾝﾊﾟ腫-鼻型
 nando:2200028	peripheral t-cell lymphoma, not otherwise specified
@@ -4100,7 +4611,7 @@ nando:2200042	retinoblastoma
 nando:2200042	網膜芽細胞腫
 nando:2200043	nephroblastoma
 nando:2200043	wilms tumour
-nando:2200043	ｳｨﾙﾑｽ腫瘍
+nando:2200043	wilms腫瘍
 nando:2200043	ｳｨﾙﾑｽ腫瘍/腎芽腫
 nando:2200043	腎芽腫
 nando:2200044	clear cell sarcoma of the kidney
@@ -4121,6 +4632,7 @@ nando:2200051	chondroblastoma
 nando:2200051	軟骨芽細胞腫
 nando:2200052	malignancy in giant cell tumour of bone
 nando:2200052	悪性骨巨細胞腫
+nando:2200053	ewing sarcoma
 nando:2200053	ewing's sarcoma
 nando:2200053	ewing肉腫
 nando:2200053	ﾕｰｲﾝｸﾞ肉腫
@@ -4135,7 +4647,6 @@ nando:2200057	悪性ﾗﾌﾞﾄﾞｲﾄﾞ腫瘍
 nando:2200058	undifferentiated sarcoma
 nando:2200058	未分化肉腫
 nando:2200059	dsrct
-nando:2200059	dermatofibrosarcoma protuberans
 nando:2200059	desmoplastic small round cell tumors
 nando:2200059	線維形成性小円形細胞腫瘍
 nando:2200060	fibrosarcoma
@@ -4224,6 +4735,7 @@ nando:2200099	central nervous system primitive neuroectodermal tumor
 nando:2200099	primitive neuroectodermal tumour of the central nervous system
 nando:2200099	中枢神経系原始神経外胚葉性腫瘍
 nando:2200099	未分化神経外胚葉性腫瘍(中枢性のものに限る｡)
+nando:2200100	central nervous system primitive neuroectodermal tumor
 nando:2200100	primitive neuroectodermal tumour of the central nervous system
 nando:2200100	obsolete 中枢神経系原始神経外胚葉性腫瘍
 nando:2200101	at/rt
@@ -4261,11 +4773,12 @@ nando:2200113	focal segmental glomerulosclerosis
 nando:2200113	巣状分節性糸球体硬化症
 nando:2200114	membranous nephropathy
 nando:2200114	膜性腎症
-nando:2200115	1から5までに掲げるもののほか､ﾈﾌﾛｰｾﾞ症候群
+nando:2200115	1から6までに掲げるもののほか､ﾈﾌﾛｰｾﾞ症候群
 nando:2200115	other nephrotic syndromes
+nando:2200116	dds
 nando:2200116	denys-drash syndrome
 nando:2200116	denys-drash症候群
-nando:2200117	pearson syndrome
+nando:2200117	pierson syndrome
 nando:2200117	pierson症候群
 nando:2200118	central nervous system malformation syndrome
 nando:2200118	中枢神経奇形症候群
@@ -4275,6 +4788,7 @@ nando:2200119	herlitz型表皮水泡症
 nando:2200119	herlitz致死型表皮水疱症
 nando:2200119	ﾍﾙﾘｯﾂ型表皮水疱症
 nando:2200120	galloway-mowat syndrome
+nando:2200120	galloway-mowat症候群
 nando:2200120	ｷﾞｬﾛｳｪｲ･ﾓﾜﾄ症候群
 nando:2200121	iga nephropathy
 nando:2200121	iga腎症
@@ -4286,13 +4800,17 @@ nando:2200123	membranoproliferative glomerulonephritis
 nando:2200123	膜性増殖性糸球体腎炎
 nando:2200124	hspn
 nando:2200124	henoch-schonlein purpura nephritis
+nando:2200124	henoch-schönlein purpura nephritis
 nando:2200124	紫斑病性腎炎
 nando:2200125	anti-gbm nephritis
 nando:2200125	anti-glomerular basement membrane disease
 nando:2200125	goodpasture syndrome
+nando:2200125	goodpasture症候群
 nando:2200125	ｸﾞｯﾄﾞﾊﾟｽﾁｬｰ症候群
 nando:2200125	抗糸球体基底膜腎炎
+nando:2200126	as
 nando:2200126	alport syndrome
+nando:2200126	alport's syndrome
 nando:2200126	慢性糸球体腎炎(ｱﾙﾎﾟｰﾄ 症候群によるものに限る｡)
 nando:2200127	epstein syndrome
 nando:2200127	epstein症候群
@@ -4303,20 +4821,23 @@ nando:2200128	ﾙｰﾌﾟｽ腎炎
 nando:2200129	rapidly progressive glomerulonephritis due to mpa
 nando:2200129	rapidly progressive glomerulonephritis due to microscopic poly-angitis
 nando:2200129	急速進行性糸球体腎炎(顕微鏡的多発血管炎によるものに限る｡)
+nando:2200130	rapidly progressive glomerulonephritis due to gpa
 nando:2200130	rapidly progressive glomerulonephritis due to granulomatosis with polyangiitis
 nando:2200130	急速進行性糸球体腎炎(多発血管炎性肉芽腫症によるものに限る｡)
 nando:2200131	atypical haemolytic uraemic syndrome
 nando:2200131	atypical hemolytic uremic syndrome
 nando:2200131	ahus
 nando:2200131	非典型溶血性尿毒症症候群
+nando:2200132	nail-patella症候群
 nando:2200132	nail-patella syndrome
 nando:2200132	ﾈｲﾙ･ﾊﾟﾃﾗ症候群
 nando:2200132	爪膝蓋骨症候群
 nando:2200133	glomerulopathy with fibronectin deposits, fibronectin nephropathy
 nando:2200133	ﾌｨﾌﾞﾛﾈｸﾁﾝ腎症
+nando:2200134	lpg
 nando:2200134	lipoprotein glomerulopathy
 nando:2200134	ﾘﾎﾟﾀﾝﾊﾟｸ糸球体症
-nando:2200135	7から20までに掲げるもののほか､慢性糸球体腎炎
+nando:2200135	8から21までに掲げるもののほか､慢性糸球体腎炎
 nando:2200135	other chronic glomerulonephritis
 nando:2200136	tin
 nando:2200136	tubulointerstitial nephritis
@@ -4329,9 +4850,9 @@ nando:2200139	fjhn
 nando:2200139	familial juvenile hyperuricaemic nephropathy
 nando:2200139	familial juvenile hyperuricemic nephropathy
 nando:2200139	家族性若年性高尿酸血症性腎症
+nando:2200140	juvenile nephronophthisis
 nando:2200140	nph
 nando:2200140	nephronophthisis
-nando:2200140	juvenile nephronophthisis
 nando:2200140	ﾈﾌﾛﾝ癆
 nando:2200141	renovascular hypertension
 nando:2200141	腎血管性高血圧
@@ -4343,9 +4864,11 @@ nando:2200143	腎動静脈瘻
 nando:2200144	rta
 nando:2200144	renal tubular acidosis
 nando:2200144	尿細管性ｱｼﾄﾞｰｼｽ
+nando:2200145	gs
 nando:2200145	gitelman syndrome
 nando:2200145	gitelman症候群
 nando:2200145	ｷﾞｯﾃﾙﾏﾝ症候群
+nando:2200146	bs
 nando:2200146	bartter syndrome
 nando:2200146	bartter症候群
 nando:2200146	ﾊﾞｰﾀｰ症候群
@@ -4371,6 +4894,7 @@ nando:2200153	autosomal dominant pkd
 nando:2200153	autosomal dominant polycystic kidney disease
 nando:2200153	常染色体優性多発性嚢胞腎
 nando:2200154	arpkd
+nando:2200154	autosomal recessive pkd
 nando:2200154	autosomal recessive polycystic kidney disease
 nando:2200154	常染色体劣性多発性嚢胞腎
 nando:2200155	hypoplastic kidney
@@ -4386,7 +4910,7 @@ nando:2200158	multicystic dysplastic kidney
 nando:2200158	多嚢胞性異形成腎
 nando:2200159	oligomeganephronia
 nando:2200159	寡巨大糸球体症
-nando:2200160	36から41までに掲げるもののほか､腎奇形
+nando:2200160	38から44までに掲げるもののほか､腎奇形
 nando:2200160	other renal malformations
 nando:2200161	renal dysplasia
 nando:2200161	腎異形成
@@ -4400,7 +4924,6 @@ nando:2200164	crossed renal ectopia without fusion
 nando:2200164	交差性変位腎
 nando:2200164	非融合性交叉性腎変位
 nando:2200165	lumber ectopic kidney
-nando:2200165	lumber kidney
 nando:2200165	腰部変位腎
 nando:2200166	throacic kidney
 nando:2200166	胸部腎
@@ -4426,7 +4949,7 @@ nando:2200174	後天性嚢胞性腎疾患
 nando:2200174	多嚢胞化萎縮腎 
 nando:2200175	calyceal diverticulum
 nando:2200175	腎杯憩室
-nando:2200176	 congenital hydronephrosis
+nando:2200176	congenital hydronephrosis
 nando:2200176	ureteropelvic junction obstruction
 nando:2200176	腎盂尿管移行部通過障害
 nando:2200176	先天性水腎症
@@ -4438,7 +4961,7 @@ nando:2200178	閉塞性尿路疾患
 nando:2200179	vur
 nando:2200179	vesicoureteral reflux
 nando:2200179	膀胱尿管逆流
-nando:2200180	43及び44に掲げるもののほか､尿路奇形
+nando:2200180	46及び47に掲げるもののほか､尿路奇形
 nando:2200180	other urinary tract malformations
 nando:2200181	duplex collecting system
 nando:2200181	duplication of the renal pelvis and ureter
@@ -4460,6 +4983,7 @@ nando:2200187	fanconi症候群
 nando:2200187	ﾌｧﾝｺｰﾆ症候群
 nando:2200188	lowe syndrome
 nando:2200188	lowe症候群
+nando:2200188	ocrl
 nando:2200188	oculocerebrorenal syndrome of lowe
 nando:2200188	ﾛｳ症候群
 nando:2200189	airway obstruction and stenosis
@@ -4474,8 +4998,8 @@ nando:2200193	subglottic stenosis
 nando:2200193	声門下狭窄症
 nando:2200194	tracheal stenosis
 nando:2200194	気管狭窄
-nando:2200195	tracheobronchial malacia
 nando:2200195	tracheomalacia
+nando:2200195	tracheobronchial malacia
 nando:2200195	気管軟化症
 nando:2200196	obsolete bronchial stenosis and bronchomalacia
 nando:2200196	obsolete 気管支狭窄症･軟化症
@@ -4487,11 +5011,16 @@ nando:2200198	先天性中枢性低換気症候群
 nando:2200199	iips
 nando:2200199	idiopathic interstitial pneumonia
 nando:2200199	特発性間質性肺炎
+nando:2200200	c-pap
+nando:2200200	congenital pap
 nando:2200200	congenital alveolar proteinosis
+nando:2200200	congenital pulmonary alveolar proteinosis
+nando:2200200	hereditary pulmonary alveolar proteinosis
+nando:2200200	先天性pap
 nando:2200200	先天性肺胞蛋白症
+nando:2200201	familial interstitial pneumonia
 nando:2200201	hild
-nando:2200201	hereditary interstitial lung disease
-nando:2200201	遺伝性間質性肺疾患
+nando:2200201	遺伝性間質性肺炎
 nando:2200202	pam
 nando:2200202	pulmonary alveolar microlithiasis
 nando:2200202	肺胞微石症
@@ -4512,11 +5041,14 @@ nando:2200208	cld
 nando:2200208	chronic lung disease
 nando:2200208	慢性肺疾患
 nando:2200209	bronchiolitis obliterans
+nando:2200209	obliterating bronchiolitis
 nando:2200209	閉塞性細気管支炎
+nando:2200210	cdh
 nando:2200210	congenital diaphragmatic hernia
 nando:2200210	先天性横隔膜ﾍﾙﾆｱ
 nando:2200211	congenital cystic lung disease
 nando:2200211	先天性嚢胞性肺疾患
+nando:2200212	sss
 nando:2200212	sick sinus syndrome
 nando:2200212	洞不全症候群
 nando:2200213	mobitz type ii second degree atrioventricular block
@@ -4541,14 +5073,15 @@ nando:2200221	catecholaminergic polymorphic ventricular tachycardia
 nando:2200221	ｶﾃｺﾗﾐﾝ誘発多形性心室頻拍
 nando:2200222	9及び10に掲げるもののほか､心室頻拍
 nando:2200222	other ventricular tachycardia
-nando:2200223	adenosine-sensitive ventricular tachycardia
 nando:2200223	adenosine sensitive vt
+nando:2200223	adenosine-sensitive ventricular tachycardia
 nando:2200223	ｱﾃﾞﾉｼﾝ感受性vt
 nando:2200223	ｱﾃﾞﾉｼﾝ感受性心室頻拍
 nando:2200224	propranolol sensitive vt
 nando:2200224	ﾌﾟﾛﾌﾟﾗﾉﾛｰﾙ感受性心室頻拍
 nando:2200225	atrial flutter
 nando:2200225	心房粗動
+nando:2200226	af
 nando:2200226	atrial fibrillation
 nando:2200226	心房細動
 nando:2200227	ventricular fibrillation
@@ -4556,12 +5089,14 @@ nando:2200227	心室細動
 nando:2200228	lqts
 nando:2200228	long qt syndrome
 nando:2200228	qt延長症候群
+nando:2200229	hcm
 nando:2200229	hypertrophic cardiomyopathy
 nando:2200229	肥大型心筋症
 nando:2200230	arrhythmogenic right ventricular cardiomyopathy or dysplasia
 nando:2200230	不整脈源性右室心筋症
 nando:2200231	non-compaction of the ventricle
 nando:2200231	心筋緻密化障害
+nando:2200232	dcm
 nando:2200232	dilated cardiomyopathy
 nando:2200232	拡張型心筋症
 nando:2200233	restricted cardiomyopathy
@@ -4609,6 +5144,7 @@ nando:2200252	極型ﾌｧﾛｰ四徴症
 nando:2200252	心室中隔欠損を伴う肺動脈閉鎖症
 nando:2200253	pulmonary atresia with intact ventricular septum
 nando:2200253	心室中隔欠損を伴わない肺動脈閉鎖症
+nando:2200254	fallot's tetralogy
 nando:2200254	fallot四徴症
 nando:2200254	tetralogy of fallot
 nando:2200254	ﾌｧﾛｰ四徴症
@@ -4619,12 +5155,16 @@ nando:2200256	double outlet right ventricle
 nando:2200256	両大血管右室起始症
 nando:2200257	double-outlet left ventricle
 nando:2200257	両大血管左室起始症
-nando:2200258	complete transposition of the great arteries
 nando:2200258	complete tga
+nando:2200258	complete transposition of the great arteries
 nando:2200258	完全大血管転位症
 nando:2200259	congenitally corrected transposition of the great arteries
 nando:2200259	先天性修正大血管転位症
+nando:2200260	ebstein anomaly
+nando:2200260	ebstein malformation
 nando:2200260	ebstein's anomaly
+nando:2200260	ebstein's malformation
+nando:2200260	ebstein奇形
 nando:2200260	ebstein病
 nando:2200260	ｴﾌﾟｽﾀｲﾝ病
 nando:2200261	truncus arteriosus communis
@@ -4690,6 +5230,8 @@ nando:2200289	aortic arch occlusive disease
 nando:2200289	大動脈弓閉塞症
 nando:2200290	double aortic arch disease
 nando:2200290	重複大動脈弓症
+nando:2200291	pa sling
+nando:2200291	pulmonary artery sling
 nando:2200291	vascular sling
 nando:2200291	左肺動脈右肺動脈起始症
 nando:2200292	77及び78に掲げるもののほか､血管輪
@@ -4746,6 +5288,7 @@ nando:2200316	gh分泌不全性低身長症(脳の器質的原因によるもの
 nando:2200316	growth hormone deficiency caused by cerebral organic disorders
 nando:2200316	成長ﾎﾙﾓﾝ分泌不全性低身長症(脳の器質的原因によるものに限る｡)
 nando:2200317	congenital growth hormone deficiency
+nando:2200317	器質性ghd
 nando:2200317	器質的ghd
 nando:2200317	器質的成長ﾎﾙﾓﾝ分泌不全性低身長症
 nando:2200318	gh分泌不全性低身長症(脳の器質的原因によるものを除く｡)
@@ -4787,8 +5330,8 @@ nando:2200329	hyperthyroidism
 nando:2200329	甲状腺機能亢進症
 nando:2200330	ectoic thyroid
 nando:2200330	異所性甲状腺
-nando:2200331	thyroid agenesis
 nando:2200331	athyreosis
+nando:2200331	thyroid agenesis
 nando:2200331	無甲状腺症
 nando:2200332	tsh分泌低下症
 nando:2200332	thyroid-stimulating hormone deficiency
@@ -4796,12 +5339,15 @@ nando:2200332	甲状腺刺激ﾎﾙﾓﾝ分泌低下症
 nando:2200333	congenital hypothyroidism
 nando:2200333	先天性甲状腺機能低下症
 nando:2200334	17から19までに掲げるもののほか､先天性甲状腺機能低下症
+nando:2200334	ch
 nando:2200334	other congenital hypothyroidism
 nando:2200335	hashimoto disease
+nando:2200335	hashimoto's thyroiditis
 nando:2200335	橋本病
 nando:2200336	atrophic thyroiditis
 nando:2200336	primary myxedema
 nando:2200336	萎縮性甲状腺炎
+nando:2200336	特発性粘液水腫
 nando:2200337	21及び22に掲げるもののほか､後天性甲状腺機能低下症
 nando:2200337	other acquired hypothyroidism
 nando:2200338	radiation-induced hypothyroidism
@@ -4824,7 +5370,7 @@ nando:2200344	副甲状腺欠損症
 nando:2200345	hypoparathyroidism
 nando:2200345	副甲状腺機能低下症
 nando:2200346	autoimmune polyendocrinopathy type 1
-nando:2200346	自己免疫性多内分泌腺症候群 1型
+nando:2200346	自己免疫性多内分泌腺症候群1型
 nando:2200347	autoimmune polyendocrinopathy type 2
 nando:2200347	自己免疫性多内分泌腺症候群 2型
 nando:2200348	pseudopseudohypoparathyroidism
@@ -4883,7 +5429,7 @@ nando:2200366	other hypoaldosteronism
 nando:2200367	pseudohypoaldosteronism
 nando:2200367	偽性低ｱﾙﾄﾞｽﾃﾛﾝ症
 nando:2200368	pseudohypoaldosteronism type i
-nando:2200368	偽性低ｱﾙﾄﾞｽﾃﾛﾝ症ⅰ型
+nando:2200368	偽性低ｱﾙﾄﾞｽﾃﾛﾝ症i型
 nando:2200369	gordon syndrome
 nando:2200369	gordon 症候群 
 nando:2200369	pseudohypoaldosteronism type ii
@@ -4892,6 +5438,7 @@ nando:2200370	congenital lipoid adrenal hyperplasia
 nando:2200370	ﾘﾎﾟｲﾄﾞ副腎過形成症
 nando:2200370	先天性ﾘﾎﾟｲﾄﾞ過形成症
 nando:2200371	3 beta-hydroxysteroid dehydrogenase deficiency
+nando:2200371	3β-hydroxysteroid dehydrogenase deficiency
 nando:2200371	3β-ﾋﾄﾞﾛｷｼｽﾃﾛｲﾄﾞ脱水素酵素欠損症
 nando:2200372	11-beta-hydroxylase deficiency
 nando:2200372	11-β-hydroxylase deficiency
@@ -4930,6 +5477,8 @@ nando:2200385	63及び64に掲げるもののほか､高ｺﾞﾅﾄﾞﾄﾛ�
 nando:2200385	hypergonadotropic hypogonadism of other etiologies
 nando:2200386	klinefelter syndrome
 nando:2200386	klinefelter症候群
+nando:2200386	ｸﾗｲﾝﾌｪﾙﾀｰ症候群
+nando:2200387	ovotesticular disorder of sex development
 nando:2200387	ovotesticular dsd
 nando:2200387	卵精巣性性分化疾患
 nando:2200388	mixed gonadal dysgenesis
@@ -4944,7 +5493,7 @@ nando:2200392	68から70までに掲げるもののほか､46,xy性分化疾患
 nando:2200392	other disorders of sex development of 46,xy
 nando:2200393	46,xx性分化疾患
 nando:2200393	46,xy dsd
-nando:2200393	disorders of sex development of 46,xy
+nando:2200393	disorders of sex development of 46,xx
 nando:2200394	vip産生腫瘍
 nando:2200394	vipoma
 nando:2200395	gastrinoma
@@ -5011,6 +5560,7 @@ nando:2200416	sle
 nando:2200416	systemic lupus erythematosus
 nando:2200416	全身性ｴﾘﾃﾏﾄｰﾃﾞｽ
 nando:2200417	juvenile dermatomyositis, polymyositis
+nando:2200417	pm/dm
 nando:2200417	皮膚筋炎/多発性筋炎
 nando:2200418	jdm
 nando:2200418	juvenile dermatomyositis
@@ -5025,7 +5575,8 @@ nando:2200420	ｼｪｰｸﾞﾚﾝ症候群
 nando:2200421	anti-phospholipid antibody syndrome
 nando:2200421	抗ﾘﾝ脂質抗体症候群
 nando:2200422	behcet's disease
-nando:2200422	behcet病
+nando:2200422	behçet disease
+nando:2200422	behçet病
 nando:2200422	ﾍﾞｰﾁｪｯﾄ病
 nando:2200423	aortitis syndrome
 nando:2200423	takayasu arteritis
@@ -5045,6 +5596,7 @@ nando:2200426	顕微鏡的多発血管炎
 nando:2200427	egpa
 nando:2200427	eosinophilic granulomatosis with polyangiitis
 nando:2200427	好酸球性多発血管炎性肉芽腫症
+nando:2200428	rp
 nando:2200428	relapsing polychondritis
 nando:2200428	再発性多発軟骨炎
 nando:2200429	ssc
@@ -5053,6 +5605,7 @@ nando:2200429	全身性強皮症
 nando:2200430	mctd
 nando:2200430	mixed connective tissue disease
 nando:2200430	混合性結合組織病
+nando:2200431	fmf
 nando:2200431	familial mediterranean fever
 nando:2200431	家族性地中海熱
 nando:2200432	cryopyrin associated periodic fever syndrome
@@ -5067,24 +5620,34 @@ nando:2200434	blau症候群
 nando:2200434	early onset sarcoidosis
 nando:2200434	ﾌﾞﾗｳ症候群
 nando:2200434	若年発症ｻﾙｺｲﾄﾞｰｼｽ
+nando:2200435	autoinflammation, lipodystrophy, and dermatosis syndrome
+nando:2200435	candle syndrome
+nando:2200435	chronic atypical neutrophilic dermatosis with lipodystrophy and elevated temperature syndrome
+nando:2200435	jmp syndrome
+nando:2200435	joint contractures, muscle atrophy, microcytic anemia, and panniculitis induced lipodystrophy
 nando:2200435	nakajo-nishimura syndrome
 nando:2200435	関節拘縮､筋委縮､小球性貧血､脂肪異栄養症誘因性脂肪織炎
 nando:2200435	脂肪異栄養症および発熱を伴う慢性非典型的好中球性皮膚疾患症候群
 nando:2200435	中條･西村症候群
+nando:2200436	hids
 nando:2200436	hyper igd syndrome
+nando:2200436	mkd
 nando:2200436	mevalonate kinase deficiency
 nando:2200436	ﾒﾊﾞﾛﾝ酸ｷﾅｰｾﾞ欠損症
 nando:2200436	高igd症候群
 nando:2200437	papa syndrome
 nando:2200437	papa症候群
+nando:2200437	pyogenic arthritis, pyoderma gangrenosum and acne syndrome
 nando:2200437	pyogenic arthritis, pyoderma gangrenosum, acne syndrome
 nando:2200437	化膿性無菌性関節炎･壊疽性膿皮症･ｱｸﾈ症候群
+nando:2200438	crmo
 nando:2200438	chronic recurrent multifocal osteomyelitis
 nando:2200438	慢性再発性多発性骨髄炎
 nando:2200439	deficiency of the interleukin-1-receptor antagonist
-nando:2200439	ｲﾝﾀｰﾛｲｷﾝⅰ受容体拮抗分子欠損症
+nando:2200439	ｲﾝﾀｰﾛｲｷﾝi受容体拮抗分子欠損症
 nando:2200440	15から23までに掲げるもののほか､自己炎症性疾患
 nando:2200440	other autoinflammatory diseases
+nando:2200441	ada2 deficiency
 nando:2200441	ada2欠損症
 nando:2200441	adenosine deaminase 2 deficiency
 nando:2200442	aplaid
@@ -5097,37 +5660,47 @@ nando:2200443	caspase recruitment domain-containing protein 14 deficiency
 nando:2200443	caspase recruitment domain-containing protein 14異常症
 nando:2200444	cherubism
 nando:2200444	ｹﾙﾋﾞｽﾞﾑ
+nando:2200445	il-10/il-10 receptor deficiency
 nando:2200445	il-10/il-10受容体遺伝子異常症
 nando:2200445	interleukin-10/interleukin-10 receptor deficiency
 nando:2200446	il10 deficiency
 nando:2200446	il10欠損症
+nando:2200446	interleukin-10 deficiency
 nando:2200447	il-10ra deficiency
 nando:2200447	il-10ra欠損症
 nando:2200448	il-10rb deficiency
 nando:2200448	il-10rb欠損症
 nando:2200449	fcas2
+nando:2200449	familial cold autoinflammatory syndrome
 nando:2200449	nlrp-12関連周期性症候群
 nando:2200449	nlrp12-associated periodic syndrome
-nando:2200449	familial cold autoinflammatory syndrome
 nando:2200449	家族性寒冷自己炎症症候群2型
 nando:2200450	adenosine deaminase 2 deficiency
 nando:2200450	dada2
+nando:2200450	deficiency of adenosine deaminase 2
 nando:2200450	deficiency of the enzyme ada2
+nando:2200451	plcg2-associated antibody deficiency
 nando:2200451	plcg2異常症
 nando:2200451	plcg2 deficiency
+nando:2200451	plcγ2 deficiency
+nando:2200451	plcγ2-associated antibody deficiency
+nando:2200452	ditra
+nando:2200452	deficiency of interleukin thirty-six receptor antagonist
+nando:2200452	deficiency of interleukin-36 receptor antagonist
 nando:2200452	il36rn deficiency
 nando:2200452	il36rn欠損症
-nando:2200453	chronic recurrent multifocal osteomyelitis, congenital dyserythropoietic anemia, and neutropilic dermatosis
+nando:2200453	chronic recurrent multifocal osteomyelitis, congenital dyserythropoietic anemia, and neutrophilic dermatosis
 nando:2200453	mjds
 nando:2200453	majeed syndrome
 nando:2200453	majeed症候群
 nando:2200454	fcas2
+nando:2200454	familial cold autoinflammatory syndrome
 nando:2200454	nlrp-12関連周期性症候群
 nando:2200454	nlrp12-associated periodic syndrome
-nando:2200454	familial cold autoinflammatory syndrome
 nando:2200454	家族性寒冷自己炎症症候群2型
 nando:2200455	plaid
 nando:2200455	plcg2-associated antibody deficiency and immune dysregulation
+nando:2200455	phospholipase cγ2-associated antibody deficiency and immune dysregulation
 nando:2200455	ﾌｫｽﾌｫﾘﾊﾟｰｾﾞcγ2関連抗体欠損免疫異常症
 nando:2200456	rbck1 deficiency
 nando:2200456	rbck1欠損症
@@ -5135,13 +5708,15 @@ nando:2200457	slc29a3 deficiency
 nando:2200457	slc29a3異常症
 nando:2200458	a20 haploinsufficiency
 nando:2200458	a20ﾊﾌﾟﾛ不全症
-nando:2200459	fcas4
+nando:2200458	ha20
 nando:2200459	nlrc4 mutation
 nando:2200459	nlrc4異常症
 nando:2200460	1型糖尿病
 nando:2200460	diabetes mellitus type 1
+nando:2200460	type 1 diabetes mellitus
 nando:2200461	2型糖尿病
 nando:2200461	diabetes mellitus type 2
+nando:2200461	type 2 diabetes mellitus
 nando:2200462	mody
 nando:2200462	maturity-onset diabetes of the young
 nando:2200462	若年発症成人型糖尿病
@@ -5174,6 +5749,7 @@ nando:2200471	高ﾌﾟﾛﾘﾝ血症
 nando:2200472	hyperimidodipeptiduria
 nando:2200472	prolidase deficiency
 nando:2200472	ﾌﾟﾛﾘﾀﾞｰｾﾞ欠損症
+nando:2200473	msud
 nando:2200473	maple syrup urine disease
 nando:2200473	ﾒｰﾌﾟﾙｼﾛｯﾌﾟ尿症
 nando:2200474	homocystinuria
@@ -5196,6 +5772,8 @@ nando:2200479	ｵﾙﾆﾁﾝﾄﾗﾝｽｶﾙﾊﾞﾐﾗｰｾﾞ欠損症
 nando:2200480	argininosuccinate synthetase deficiency
 nando:2200480	ctln1
 nando:2200480	citrullinaemia type 1
+nando:2200480	citrullinemia type 1
+nando:2200480	type i citrullinaemia
 nando:2200480	ｱﾙｷﾞﾆﾉｺﾊｸ酸合成酵素欠損症
 nando:2200480	ｼﾄﾙﾘﾝ血症i型
 nando:2200481	argininosuccinic aciduria
@@ -5217,6 +5795,7 @@ nando:2200486	gacr
 nando:2200486	gyrate atrophy of choroid and retina
 nando:2200486	脳回転状脈絡膜網膜萎縮症
 nando:2200486	脳回転状脈絡膜網膜萎縮症を伴う高ｵﾙﾆﾁﾝ血症
+nando:2200486	脳回転状網脈絡膜萎縮症
 nando:2200487	hartnup disease
 nando:2200487	hartnup病
 nando:2200487	ﾊｰﾄﾅｯﾌﾟ病
@@ -5236,20 +5815,24 @@ nando:2200492	propionic acidemia
 nando:2200492	ﾌﾟﾛﾋﾟｵﾝ酸血症
 nando:2200493	beta-ketothiolase deficiency
 nando:2200493	β—ｹﾄﾁｵﾗｰｾﾞ欠損症
+nando:2200493	β-ketothiolase deficiency
 nando:2200494	isovaleric acidaemia
 nando:2200494	isovaleric acidemia
 nando:2200494	ｲｿ吉草酸血症
 nando:2200495	3-methylcrotonyl-coa carboxylase deficiency
 nando:2200495	3-ﾒﾁﾙｸﾛﾄﾆﾙcoaｶﾙﾎﾞｷｼﾗｰｾﾞ欠損症
+nando:2200495	ﾒﾁﾙｸﾛﾄﾆﾙｸﾞﾘｼﾝ尿症
 nando:2200496	methylglutaconic aciduria
 nando:2200496	ﾒﾁﾙｸﾞﾙﾀｺﾝ酸尿症
 nando:2200497	3-hydroxy-3-methylglutaric acidaemia
 nando:2200497	3-hydroxy-3-methylglutaric acidemia
 nando:2200497	3-ﾋﾄﾞﾛｷｼ-3-ﾒﾁﾙｸﾞﾙﾀﾙ酸血症
 nando:2200497	hmg-coa lyase deficiency
+nando:2200497	hmg血症
 nando:2200498	3-hydroxy-3-methylglutaryl-coa synthase deficiency
 nando:2200498	3-ﾋﾄﾞﾛｷｼ-3-ﾒﾁﾙｸﾞﾙﾀﾘﾙcoa合成酵素欠損症
 nando:2200498	hmg-coa synthase deficiency
+nando:2200499	scot deficiency
 nando:2200499	scot欠損症
 nando:2200499	succinyl-coa:3-ketoacid coa transferase deficiency
 nando:2200499	ｽｸｼﾆﾙ-coa:3-ｹﾄ酸coaﾄﾗﾝｽﾌｪﾗｰｾﾞ欠損症
@@ -5278,6 +5861,7 @@ nando:2200506	先天性胆汁酸代謝異常症
 nando:2200507	23から38までに掲げるもののほか､有機酸代謝異常症
 nando:2200507	other disorders of organic acid metabolism
 nando:2200508	carnitine uptake defect
+nando:2200508	octn2 deficiency
 nando:2200508	organic cation transporter 2 deficiency
 nando:2200508	全身性ｶﾙﾆﾁﾝ欠損症
 nando:2200509	cpt1欠損症
@@ -5298,6 +5882,7 @@ nando:2200512	極長鎖ｱｼﾙcoa脱水素酵素欠損症
 nando:2200513	mcad deficiency
 nando:2200513	medium-chain acyl-coa dehydrogenase deficiency
 nando:2200513	中鎖ｱｼﾙcoa脱水素酵素欠損症
+nando:2200514	scad deficiency
 nando:2200514	short-chain acyl-coa dehydrogenase deficiency
 nando:2200514	短鎖ｱｼﾙcoa脱水素酵素欠損症
 nando:2200515	tfp deficiency
@@ -5306,6 +5891,7 @@ nando:2200515	mitochondrial trifunctional protein deficiency
 nando:2200515	三頭酵素欠損症
 nando:2200516	3-hydroxy acyl-coa dehydrogenase deficiency
 nando:2200516	3-ﾋﾄﾞﾛｷｼｱｼﾙcoa脱水素酵素欠損症
+nando:2200516	hadh deficiency
 nando:2200517	40から48までに掲げるもののほか､脂肪酸代謝異常症
 nando:2200517	other disorders of fatty-acid metabolism
 nando:2200518	pyruvate dehydrogenase complex deficiency
@@ -5326,6 +5912,7 @@ nando:2200525	melas
 nando:2200525	mitochondrial myopathy, encephalopathy, lactic acidosis, and stroke-like episodes)
 nando:2200525	ﾐﾄｺﾝﾄﾞﾘｱ脳筋症･乳酸ｱｼﾄﾞｰｼｽ･脳卒中様発作症候群
 nando:2200526	merrf
+nando:2200526	myoclonic epilepsy associated with ragged-red fibers
 nando:2200526	myoclonus epilepsy associated with ragged-red fibers
 nando:2200526	赤色ぼろ線維･ﾐｵｸﾛｰﾇｽてんかん症候群
 nando:2200527	leigh syndrome
@@ -5334,13 +5921,17 @@ nando:2200527	ﾘｰ症候群
 nando:2200528	diseases due to mitochondrial dna deletion
 nando:2200528	ﾐﾄｺﾝﾄﾞﾘｱdna欠失
 nando:2200529	kearns-sayre syndrome
+nando:2200529	kearns-sayre症候群
 nando:2200529	ｶｰﾝｽﾞ･ｾｲﾔｰ症候群
 nando:2200530	50から57までに掲げるもののほか､ﾐﾄｺﾝﾄﾞﾘｱ病
 nando:2200530	other mitochondrial diseases
 nando:2200531	hfi
 nando:2200531	hereditary fructose intolerance
 nando:2200531	遺伝性ﾌﾙｸﾄｰｽ不耐症
+nando:2200532	galt deficiency
 nando:2200532	galactose-1-phosphate uridyltransferase deficiency
+nando:2200532	galactose-1-phosphate uridylyltransferase deficiency
+nando:2200532	galactosemia type 1
 nando:2200532	ｶﾞﾗｸﾄｰｽ-1-ﾘﾝ酸ｳﾘｼﾞﾙﾄﾗﾝｽﾌｪﾗｰｾﾞ欠損症
 nando:2200533	galactokinase deficiency
 nando:2200533	ｶﾞﾗｸﾄｷﾅｰｾﾞ欠損症
@@ -5350,6 +5941,8 @@ nando:2200535	fructose-1,6-bisphosphatase deficiency
 nando:2200535	ﾌﾙｸﾄｰｽ-1,6-ﾋﾞｽﾎｽﾌｧﾀｰｾﾞ欠損症
 nando:2200536	phosphoenolpyruvate carboxykinase deficiency
 nando:2200536	ﾎｽﾎｴﾉｰﾙﾋﾟﾙﾋﾞﾝ酸ｶﾙﾎﾞｷｼｷﾅｰｾﾞ欠損症
+nando:2200537	gsd0
+nando:2200537	glycogen storage disease type 0
 nando:2200537	glycogen synthase deficiency
 nando:2200537	ｸﾞﾘｺｰｹﾞﾝ合成酵素欠損症
 nando:2200537	糖原病0型
@@ -5358,18 +5951,26 @@ nando:2200538	糖原病i型
 nando:2200539	cori disease
 nando:2200539	cori病
 nando:2200539	glycogen storage disease type iii
+nando:2200539	ｺｰﾘｰ病
 nando:2200539	糖原病iii型
+nando:2200540	andersen disease
 nando:2200540	glycogen storage disease type iv
 nando:2200540	糖原病iv型
 nando:2200541	glycogen storage disease type v
+nando:2200541	mcardle disease
+nando:2200541	mcardle病
+nando:2200541	ﾏｯｶｰﾄﾞﾙ病
 nando:2200541	糖原病v型
 nando:2200542	glycogen storage disease type vi
 nando:2200542	ﾊｰｽ病
 nando:2200542	糖原病vi型
 nando:2200543	glycogen storage disease type vii
+nando:2200543	tarui disease
 nando:2200543	糖原病vii型
 nando:2200544	glycogen storage disease type ix
 nando:2200544	糖原病ix型
+nando:2200545	glut-1 ds
+nando:2200545	glut-1 deficiency
 nando:2200545	glut1欠損症
 nando:2200545	glucose transporter 1 deficiency
 nando:2200545	ｸﾞﾙｺｰｽﾄﾗﾝｽﾎﾟｰﾀｰ1欠損症
@@ -5468,9 +6069,12 @@ nando:2200572	free sialic acid storage disease
 nando:2200572	遊離ｼｱﾙ酸蓄積症
 nando:2200573	ncl
 nando:2200573	neuronal ceroid lipofuscinoses
+nando:2200573	ｾﾛｲﾄﾞﾘﾎﾟﾌｽﾁﾉｰｼｽ
 nando:2200573	神経ｾﾛｲﾄﾞﾘﾎﾟﾌｽﾁﾝ症
 nando:2200574	75から101までに掲げるもののほか､ﾗｲｿｿﾞｰﾑ病
 nando:2200574	other lysosomal diseases
+nando:2200575	pbd
+nando:2200575	pex遺伝子異常症
 nando:2200575	peroxisome biogenesis disorders
 nando:2200575	ﾍﾟﾙｵｷｼｿｰﾑ形成異常症
 nando:2200576	adrenoleukodystrophy
@@ -5497,10 +6101,10 @@ nando:2200584	acrodermatitis enteropathica
 nando:2200584	先天性腸性肢端皮膚炎
 nando:2200585	107から112までに掲げるもののほか､金属代謝異常症
 nando:2200585	other disorders of metal metabolism
-nando:2200586	hprt
-nando:2200586	hypoxanthine-guanine phosphoribosyltransferase
+nando:2200586	hprt deficiency
 nando:2200586	hypoxanthine-guanine phosphoribosyltransferase deficiency
 nando:2200586	lesch-nyhan syndrome
+nando:2200586	lesch-nyhan症候群
 nando:2200586	ﾋﾎﾟｷｻﾝﾁﾝｸﾞｱﾆﾝﾎｽﾎﾘﾎﾞｼﾙﾄﾗﾝｽﾌｪﾗｰｾﾞ欠損症
 nando:2200586	ﾚｯｼｭ･ﾅｲﾊﾝ症候群
 nando:2200587	adenine phosphoribosyltransferase deficiency
@@ -5510,9 +6114,11 @@ nando:2200588	ｷｻﾝﾁﾝ尿症
 nando:2200589	genetic defects in urate transporters
 nando:2200589	尿酸ﾄﾗﾝｽﾎﾟｰﾀｰ異常症
 nando:2200590	orotic aciduria
+nando:2200590	ｵﾛﾁﾝ酸尿症
 nando:2200590	ｵﾛﾄ酸尿症
 nando:2200591	114から118までに掲げるもののほか､ﾌﾟﾘﾝﾋﾟﾘﾐｼﾞﾝ代謝異常症
 nando:2200591	other disorders of purine and pyrimidine metabolism
+nando:2200592	congenital folate malabsorption
 nando:2200592	hereditary folate malabsorption
 nando:2200592	先天性葉酸吸収不全症
 nando:2200593	120に掲げるもののほか､ﾋﾞﾀﾐﾝ代謝異常症
@@ -5525,9 +6131,13 @@ nando:2200595	ﾁﾛｼﾝ水酸化酵素欠損症
 nando:2200596	aromatic l-amino acid decarboxylase deficiency
 nando:2200596	芳香族l-ｱﾐﾉ酸脱炭酸酵素欠損症
 nando:2200597	dopamine beta hydroxylase deficiency
+nando:2200597	dopamine-β-hydroxylase deficiency
 nando:2200597	ﾄﾞｰﾊﾟﾐﾝβ-水酸化酵素欠損症
 nando:2200598	gabaｱﾐﾉ基転移酵素欠損症
 nando:2200598	gamma-amino butyrate aminotransferase deficiency
+nando:2200599	ssadh deficiency
+nando:2200599	ssadhd
+nando:2200599	ssadh欠損症
 nando:2200599	succinic semialdehyde dehydrogenase deficiency
 nando:2200599	ｺﾊｸ酸ｾﾐｱﾙﾃﾞﾋﾄﾞ脱水素酵素欠損症
 nando:2200600	122から127までに掲げるもののほか､神経伝達物質異常症
@@ -5548,6 +6158,7 @@ nando:2200604	abetalipoproteinemia
 nando:2200604	無βﾘﾎﾟﾀﾝﾊﾟｸ血症
 nando:2200605	hdl deficiency
 nando:2200605	hdl欠乏症
+nando:2200605	high density lipoprotein deficiency
 nando:2200605	高比重ﾘﾎﾟﾀﾝﾊﾟｸ欠乏症
 nando:2200606	129から133までに掲げるもののほか､脂質代謝異常症
 nando:2200606	other disorder of lipid metabolism
@@ -5561,15 +6172,18 @@ nando:2200609	135及び136に掲げるもののほか､結合組織異常症
 nando:2200609	other connective tissue disorder
 nando:2200610	congenital porphyria
 nando:2200610	先天性ﾎﾟﾙﾌｨﾘﾝ症
+nando:2200611	aatd
 nando:2200611	alpha-1-antitrypsin deficiency
+nando:2200611	α-1-antitrypsin deficiency
 nando:2200611	α1-ｱﾝﾁﾄﾘﾌﾟｼﾝ欠損症
 nando:2200612	megaloblastic anaemia
 nando:2200612	megaloblastic anemia
 nando:2200612	巨赤芽球性貧血
 nando:2200613	acquired pure red cell aplasia
 nando:2200613	後天性赤芽球癆
-nando:2200614	diamond-blackfan anaemia
 nando:2200614	congenital red cell aplasia
+nando:2200614	diamond-blackfan anaemia
+nando:2200614	diamond-blackfan貧血
 nando:2200614	ﾀﾞｲｱﾓﾝﾄﾞ･ﾌﾞﾗｯｸﾌｧﾝ貧血
 nando:2200614	先天性赤芽球癆
 nando:2200615	cda
@@ -5618,14 +6232,23 @@ nando:2200628	ﾋﾟﾙﾋﾞﾝ酸ｷﾅｰｾﾞ欠乏性貧血
 nando:2200629	11から17までに掲げるもののほか､遺伝性溶血性貧血
 nando:2200629	other hereditary haemolytic anaemia
 nando:2200629	other hereditary hemolytic anemia
+nando:2200630	he
 nando:2200630	hereditary elliptocytosis
 nando:2200630	遺伝性楕円赤血球症
+nando:2200631	hpp
 nando:2200631	hereditary pyropoikilocytosis
 nando:2200631	遺伝性熱変形赤血球症
 nando:2200632	classic hereditary xerocytosis
+nando:2200632	classic hereditary xerocytosis
+nando:2200632	dhst
+nando:2200632	dehydrated hereditary stomatocytosis
+nando:2200632	hx
+nando:2200632	hereditary xerocytosis
 nando:2200632	古典的遺伝性乾燥赤血球症
 nando:2200633	stomatocytic xerocytosis
+nando:2200633	stomatocytic xerocytosis
 nando:2200634	hpcha
+nando:2200634	hx with hyperphosphatidylcholine hemolytic anemia
 nando:2200634	xerocytosis with high phosphatidylcholine haemolytic anaemia
 nando:2200634	xerocytosis with high phosphatidylcholine hemolytic anemia
 nando:2200634	遺伝性高赤血球膜ﾎｽﾌｧﾁｼﾞﾙｺﾘﾝ溶血性貧血
@@ -5666,8 +6289,12 @@ nando:2200645	immune thrombocytopenic purpura
 nando:2200645	免疫性血小板減少性紫斑病
 nando:2200646	23に掲げるもののほか､血小板減少性紫斑病
 nando:2200646	other thrombocytopenic purpura
+nando:2200647	nait
+nando:2200647	neonatal alloimmune thrombocytopaenia
 nando:2200647	neonatal alloimmune thrombocytopenia
 nando:2200647	新生児同種免疫性血小板減少症
+nando:2200648	hit
+nando:2200648	heparin-induced thrombocytopaenia
 nando:2200648	heparin-induced thrombocytopenia
 nando:2200648	ﾍﾊﾟﾘﾝ起因性血小板減少症
 nando:2200649	thrombotic thrombocytopenic purpura
@@ -5675,6 +6302,7 @@ nando:2200649	血栓性血小板減少性紫斑病
 nando:2200650	thrombocytopenia due to hypersplenism
 nando:2200650	血小板減少症
 nando:2200651	camt
+nando:2200651	congenital amegakaryocytic thrombocytopaenia
 nando:2200651	congenital amegakaryocytic thrombocytopenia
 nando:2200651	先天性無巨核球性血小板減少症
 nando:2200652	fanconi anaemia
@@ -5697,23 +6325,28 @@ nando:2200657	thrombasthenia
 nando:2200657	血小板無力症
 nando:2200658	platelet secretion defects
 nando:2200658	血小板放出機構異常症
-nando:2200659	33から35までに掲げるもののほか､血小板機能異常症
+nando:2200659	32から34までに掲げるもののほか､血小板機能異常症
 nando:2200659	other platelet dysfunction
-nando:2200660	congenital thrombocytopenia with radio- ulnar synostosis
+nando:2200660	congenital thrombocytopaenia with radio-ulnar synostosis
+nando:2200660	congenital thrombocytopenia with radio-ulnar synostosis
 nando:2200660	橈骨尺骨融合を伴う血小板減少症
-nando:2200661	tar 症候群
+nando:2200661	tar syndrome
+nando:2200661	tar症候群
 nando:2200661	thrombocytopenia with absent radii
 nando:2200661	橈骨欠損を伴う血小板減少症
 nando:2200662	fpdmm
-nando:2200662	familial platelet disorder with associated myeloid malignancy
-nando:2200662	familial platelet disorder with propensity to myeloid.
+nando:2200662	familial platelet disorder with propensity to myeloid malignancy
+nando:2200662	familial platelet disorder with propensity to myeloid;
 nando:2200662	骨髄悪性腫瘍傾向を伴う家族性血小板減少症
 nando:2200663	autosomal dominant thrombocytopenia 2
 nando:2200663	thc2
+nando:2200663	thrombocytopenia 2
 nando:2200663	常染色体優性遺伝性血小板減少症
+nando:2200664	gpiib/iiia mutations
 nando:2200664	gpiib/iiia異常症
 nando:2200664	itga2b/itgb3 mutations
 nando:2200665	actn1 mutations
+nando:2200665	α-actinin-1異常症
 nando:2200665	αｱｸﾁﾆﾝ1異常症
 nando:2200666	paris-trousseau/jacobsen症候群
 nando:2200666	paris-trousseau/jacobsen syndrome
@@ -5722,6 +6355,9 @@ nando:2200667	β-1 tubulin disorders
 nando:2200667	β1 tubulin 異常症
 nando:2200667	β1-ﾁｭｰﾌﾞﾘﾝ遺伝子異常症
 nando:2200668	platelet-type von willebrand disease
+nando:2200668	pseudo vwd
+nando:2200668	pseudo von willebrand disease
+nando:2200668	血小板型vwd
 nando:2200668	血小板型ﾌｫﾝ･ﾋﾞﾙﾌﾞﾗﾝﾄﾞ病
 nando:2200668	血小板型ﾌｫﾝｳｨﾙﾌﾞﾗﾝﾄﾞ病
 nando:2200669	adp receptor deficiencies
@@ -5735,20 +6371,29 @@ nando:2200671	scott症候群
 nando:2200671	ｽｺｯﾄ症候群
 nando:2200672	afibrinogenaemia
 nando:2200672	afibrinogenemia
+nando:2200672	congenital afibrinogenaemia
+nando:2200672	congenital afibrinogenemia
 nando:2200672	先天性ﾌｨﾌﾞﾘﾉｰｹﾞﾝ欠乏症
+nando:2200672	先天性ﾌｨﾌﾞﾘﾉｹﾞﾝ欠損症
+nando:2200673	congenital hypoprothrombinaemia
+nando:2200673	congenital hypoprothrombinemia
 nando:2200673	hypoprothrombinaemia
 nando:2200673	hypoprothrombinemia
 nando:2200673	先天性ﾌﾟﾛﾄﾛﾝﾋﾞﾝ欠乏症
 nando:2200674	factor v deficiency
-nando:2200674	第ⅴ因子欠乏症
+nando:2200674	第v因子欠乏症
 nando:2200675	factor vii deficiency
 nando:2200675	第vii因子欠乏症
+nando:2200676	factor viii deficiency
 nando:2200676	haemophilia a
 nando:2200676	hemophilia a
 nando:2200676	血友病a
+nando:2200676	第viii因子欠乏症
+nando:2200677	factor ix deficiency
 nando:2200677	haemophilia b
 nando:2200677	hemophilia b
 nando:2200677	血友病b
+nando:2200677	第ix因子欠乏症
 nando:2200678	factor x deficiency
 nando:2200678	第ⅹ因子欠乏症
 nando:2200679	factor xi deficiency
@@ -5761,27 +6406,37 @@ nando:2200682	vwd
 nando:2200682	von willebrand disease
 nando:2200682	von willebrand病
 nando:2200682	ﾌｫﾝｳｨﾙﾌﾞﾗﾝﾄﾞ病
-nando:2200683	37から47までに掲げるもののほか､先天性血液凝固因子異常
+nando:2200683	36から46までに掲げるもののほか､先天性血液凝固因子異常
 nando:2200683	other inherited bleeding disorder
 nando:2200684	congenital prekallikrein deficiency
 nando:2200684	prekallikrein deficiency
 nando:2200684	先天性ﾌﾟﾚｶﾘｸﾚｲﾝ欠乏症
-nando:2200685	high molecular weight kininogen deficiency
 nando:2200685	congenital high molecular weight kininogen deficiency
+nando:2200685	high molecular weight kininogen deficiency
 nando:2200685	先天性高分子ｷﾆﾉｹﾞﾝ欠乏症
 nando:2200686	combined deficiency of coagulation factors v and viii
+nando:2200686	f5f8d
 nando:2200686	先天性第vおよびviii因子合併欠乏症
 nando:2200687	alpha-2-plasmin inhibitor deficiency
+nando:2200687	congenital alpha 2-plasmin inhibitor deficiency
 nando:2200687	先天性α2-ﾌﾟﾗｽﾐﾝｲﾝﾋﾋﾞﾀｰ欠乏症
 nando:2200688	congenital plasminogen activator inhibitor-1 deficiency
+nando:2200688	pai-1 deficiency
+nando:2200688	pai-1欠損症
 nando:2200688	plasminogen activator inhibitor-1 deficiency
+nando:2200688	先天性pai-1欠乏症
 nando:2200688	先天性ﾌﾟﾗｽﾐﾉｹﾞﾝｱｸﾁﾍﾞｰﾀｲﾝﾋﾋﾞﾀｰ1欠乏症
+nando:2200689	congenital protein c deficiency
+nando:2200689	heritable thrombophilia
 nando:2200689	protein c deficiency
 nando:2200689	先天性ﾌﾟﾛﾃｲﾝc欠乏症
+nando:2200690	heritable thrombophilia
 nando:2200690	protein s deficiency
 nando:2200690	先天性ﾌﾟﾛﾃｲﾝs欠乏症
 nando:2200691	antithrombin deficiency
+nando:2200691	heritable thrombophilia
 nando:2200691	先天性ｱﾝﾁﾄﾛﾝﾋﾞﾝ欠乏症
+nando:2200692	mf
 nando:2200692	myelofibrosis
 nando:2200692	骨髄線維症
 nando:2200693	aplastic anaemia
@@ -5835,8 +6490,8 @@ nando:2200710	radiosensitivity, immunodeficiency dysmorphic features and learnin
 nando:2200711	schimke syndrome
 nando:2200711	schimke症候群
 nando:2200711	ｼﾑｹ症候群
-nando:2200712	22q11.2 deletion syndrome
-nando:2200712	22q11.2欠失症候群
+nando:2200712	22q11;2 deletion syndrome
+nando:2200712	22q11;2欠失症候群
 nando:2200712	digeorge syndrome
 nando:2200712	thymus hypoplasia
 nando:2200712	ﾃﾞｨ･ｼﾞｮｰｼﾞ症候群
@@ -5902,7 +6557,9 @@ nando:2200731	familial hemophagocytic lymphohistiocytosis 5
 nando:2200731	stxbp2/munc18-2 deficiency
 nando:2200731	stxbp2/munc18-2欠損症
 nando:2200732	griscelli syndrome type 2
+nando:2200732	griscelli syndrome type ii
 nando:2200732	griscelli症候群2型
+nando:2200732	griscelli症候群ii型
 nando:2200733	hps-2
 nando:2200733	hermansky-pudlak syndrome type 2
 nando:2200733	hermansky-pudlak症候群2型
@@ -5912,9 +6569,10 @@ nando:2200734	itk欠損症
 nando:2200735	cd27 deficiency
 nando:2200735	cd27欠損症
 nando:2200735	combined immunodeficiency due to cd27 deficiency
+nando:2200736	cd25 deficiency
 nando:2200736	cd25欠損症
 nando:2200736	immunodeficiency 41 with lymphoproliferation and autoimmunity
-nando:2200737	growth hormone insensitivity with immunodeficiency
+nando:2200736	immunodeficiency due to cd25 deficiency
 nando:2200737	stat5b deficiency
 nando:2200737	stat5b欠損症
 nando:2200738	apeced
@@ -5939,8 +6597,10 @@ nando:2200743	pkc-delta deficiency
 nando:2200743	pkc-δ deficiency
 nando:2200743	pkcδ欠損症
 nando:2200743	prkcδ欠損症
+nando:2200744	spencd
 nando:2200744	spencdi
 nando:2200744	spondylo enchondro-dysplasiawith immune dysregulation
+nando:2200744	spondyloenchondrodysplasia with immune dysregulation
 nando:2200745	severe congenital neutropenia
 nando:2200745	重症先天性好中球減少症
 nando:2200746	cyclic neutropenia
@@ -5953,8 +6613,8 @@ nando:2200748	自己免疫性好中球減少症
 nando:2200749	clericuzio-type poikiloderma with neutropenia syndrome
 nando:2200749	pn
 nando:2200749	好中球減少を伴うclericuzio型多形皮膚萎縮症
-nando:2200750	cohen症候群
 nando:2200750	cohen syndrome
+nando:2200750	cohen症候群
 nando:2200751	barth syndrome
 nando:2200751	barth症候群
 nando:2200752	p14 deficiency
@@ -5996,7 +6656,7 @@ nando:2200766	hoil-1 deficiency
 nando:2200766	hoil1欠損症
 nando:2200767	whim syndrome
 nando:2200767	whim症候群
-nando:2200767	warts, hypogammaglobulinemia, infections, and myelokathexis
+nando:2200767	warts, hypogammaglobulinemia, infections, and myelokathexis syndrome
 nando:2200768	epidermodysplasia verruciformis
 nando:2200768	疣贅状表皮発育異常症
 nando:2200769	severe viral infection
@@ -6066,8 +6726,8 @@ nando:2200797	factor b欠損症
 nando:2200797	factor b deficiency
 nando:2200798	factor i 欠損症
 nando:2200798	factor i deficiency
-nando:2200799	factor h-related protein欠損症
 nando:2200799	complement factor h related protein 1 deficiency
+nando:2200799	factor h-related protein欠損症
 nando:2200800	thrombomodulin deficiency
 nando:2200800	thrombomodulin欠損症
 nando:2200801	cd21 deficiency
@@ -6095,6 +6755,7 @@ nando:2200809	aids
 nando:2200809	acquired immune deficiency syndrome
 nando:2200809	後天性免疫不全症候群
 nando:2200810	hiv infection
+nando:2200810	human immunodeficiency virus infection
 nando:2200810	ﾋﾄ免疫不全ｳｲﾙｽ
 nando:2200811	phenocopies of primary immunodeficiency
 nando:2200811	後天的な免疫系障害による免疫不全症
@@ -6116,8 +6777,12 @@ nando:2200818	裂脳症
 nando:2200819	holoprosencephaly
 nando:2200819	全前脳胞症
 nando:2200820	de morsier syndrome
+nando:2200820	sod
 nando:2200820	septo-optic dysplasia
+nando:2200820	de morsier症候群
 nando:2200820	ﾄﾞﾓﾙｼｱ症候群
+nando:2200820	中隔視神経異形成症
+nando:2200820	中隔視神経異常症
 nando:2200820	中隔視神経形成異常症
 nando:2200821	dandy-walker syndrome
 nando:2200821	dandy-walker症候群
@@ -6134,13 +6799,14 @@ nando:2200825	rett syndrome
 nando:2200825	rett症候群
 nando:2200825	ﾚｯﾄ症候群
 nando:2200826	tsc
+nando:2200826	tuberous sclerosis
 nando:2200826	tuberous sclerosis complex
 nando:2200826	結節性硬化症
 nando:2200827	neurocutaneous melanosis
 nando:2200827	神経皮膚黒色症
+nando:2200828	basal cell nevus syndrome
 nando:2200828	gorlin syndrome
 nando:2200828	gorlin症候群
-nando:2200828	basal cell nevus syndrome
 nando:2200828	ｺﾞｰﾘﾝ症候群
 nando:2200828	基底細胞母斑症候群
 nando:2200829	von hippel-lindau disease
@@ -6173,12 +6839,10 @@ nando:2200838	vanishing white matter disease
 nando:2200838	白質消失病
 nando:2200839	atr-x syndrome
 nando:2200839	atr-x症候群
+nando:2200839	x-linked a-thalassemia/intellectual disability syndrome
+nando:2200839	x連鎖αｻﾗｾﾐｱ･精神遅滞症候群
 nando:2200840	fragile x syndrome
 nando:2200840	脆弱x症候群
-nando:2200841	igd
-nando:2200841	inherited glycosylphosphatidylinositol deficiency
-nando:2200841	先天性gpi欠損症
-nando:2200841	先天性ｸﾞﾘｺｼﾙﾎｽﾌｧﾁｼﾞﾙｲﾉｼﾄｰﾙ欠損症
 nando:2200842	cerebral creatine deficiency syndrome
 nando:2200842	脳ｸﾚｱﾁﾝ欠乏症候群
 nando:2200843	non-syndromic craniosynostosis
@@ -6189,7 +6853,7 @@ nando:2200844	ｱﾍﾟｰﾙ症候群
 nando:2200845	crouzon disease
 nando:2200845	crouzon病
 nando:2200845	ｸﾙｰｿﾞﾝ病
-nando:2200846	30から32までに掲げるもののほか､重度の頭蓋骨早期癒合症
+nando:2200846	35から37までに掲げるもののほか､重度の頭蓋骨早期癒合症
 nando:2200846	other craniosynostosis
 nando:2200847	carpenter syndrome
 nando:2200847	carpenter症候群
@@ -6201,6 +6865,7 @@ nando:2200849	unclassifiable multiple suture craniosynostosis
 nando:2200849	分類不能の多縫合早期癒合症
 nando:2200850	moyamoya disease
 nando:2200850	もやもや病
+nando:2200850	ｳｨﾘｽ動脈輪閉塞症
 nando:2200851	cerebral avm
 nando:2200851	cerebral arteriovenous malformation
 nando:2200851	脳動静脈奇形
@@ -6208,6 +6873,7 @@ nando:2200852	cavernous angioma of the brain and spinal cord
 nando:2200852	海綿状血管腫(脳脊髄)
 nando:2200853	spinal muscular atrophy
 nando:2200853	脊髄性筋萎縮症
+nando:2200854	cipa
 nando:2200854	congenital insensitivity to pain with anhidrosis
 nando:2200854	先天性無痛無汗症
 nando:2200855	charcot-marie-tooth disease
@@ -6235,7 +6901,7 @@ nando:2200862	ullrich's disease
 nando:2200862	ullrich型先天性筋ｼﾞｽﾄﾛﾌｨｰ
 nando:2200862	ｳﾙﾘｯﾋ病
 nando:2200862	ｳﾙﾘﾋ型先天性筋ｼﾞｽﾄﾛﾌｨｰ
-nando:2200863	38から44に掲げるもののほか､筋ｼﾞｽﾄﾛﾌｨｰ
+nando:2200863	45から51に掲げるもののほか､筋ｼﾞｽﾄﾛﾌｨｰ
 nando:2200863	other muscular dystrophy
 nando:2200864	myotonic dystrophy
 nando:2200864	筋強直性ｼﾞｽﾄﾛﾌｨｰ
@@ -6262,7 +6928,7 @@ nando:2200871	ﾏﾙﾁｺｱ病
 nando:2200872	mini core disease
 nando:2200872	minicore myopathy
 nando:2200872	ﾐﾆｺｱ病
-nando:2200873	46から51までに掲げるもののほか､先天性ﾐｵﾊﾟﾁｰ
+nando:2200873	53から58までに掲げるもののほか､先天性ﾐｵﾊﾟﾁｰ
 nando:2200873	other congenital structural myopathy
 nando:2200874	cnmdu1
 nando:2200874	congenital neuromuscular disease with uniform type 1 fiber
@@ -6278,12 +6944,15 @@ nando:2200877	dravet症候群
 nando:2200877	severe myoclonic epilepsy in infancy
 nando:2200877	ﾄﾞﾗﾍﾞ症候群
 nando:2200877	乳児重症ﾐｵｸﾛﾆｰてんかん
+nando:2200878	infantile spasms
 nando:2200878	west syndrome
+nando:2200878	west症候群
 nando:2200878	ｳｴｽﾄ症候群
 nando:2200878	点頭てんかん
 nando:2200879	lennox-gastaut syndrome
 nando:2200879	lennox-gastaut症候群
 nando:2200879	ﾚﾉｯｸｽ･ｶﾞｽﾄｰ症候群
+nando:2200880	uld
 nando:2200880	unverricht-lundborg disease
 nando:2200880	unverricht-lundborg病
 nando:2200880	ｳﾝﾌｪﾙﾘﾋﾄ･ﾙﾝﾄﾎﾞﾙｸ病
@@ -6321,9 +6990,10 @@ nando:2200891	congenital cytomegalovirus infection
 nando:2200891	先天性ｻｲﾄﾒｶﾞﾛｳｲﾙｽ感染症
 nando:2200892	congenital toxoplasmosis
 nando:2200892	先天性ﾄｷｿﾌﾟﾗｽﾞﾏ感染症
-nando:2200893	ags1
+nando:2200893	ags
 nando:2200893	aicardi-goutieres症候群
 nando:2200893	aicardi-goutières syndrome
+nando:2200893	aicardi-goutières症候群
 nando:2200893	trex1欠損症
 nando:2200893	ｴｶﾙﾃﾞｨ･ｸﾞﾃｨｴｰﾙ症候群
 nando:2200894	ags2
@@ -6385,7 +7055,9 @@ nando:2200911	amylase deficiency
 nando:2200911	ｱﾐﾗｰｾﾞ欠損症
 nando:2200912	lipase deficiency
 nando:2200912	ﾘﾊﾟｰｾﾞ欠損症
+nando:2200913	congenital microvillus atrophy
 nando:2200913	microvillus inclusion disease
+nando:2200913	先天性微絨毛萎縮症
 nando:2200913	微絨毛封入体病
 nando:2200914	intestinal lymphangiectasia
 nando:2200914	腸ﾘﾝﾊﾟ管拡張症
@@ -6400,6 +7072,7 @@ nando:2200917	ﾎﾟｲﾂ･ｼﾞｪｶﾞｰｽ症候群
 nando:2200918	cowden syndrome
 nando:2200918	cowden症候群
 nando:2200918	ｶｳﾃﾞﾝ症候群
+nando:2200919	cvs
 nando:2200919	cyclic vomiting syndrome
 nando:2200919	周期性嘔吐症候群
 nando:2200920	ulcerative colitis
@@ -6409,8 +7082,8 @@ nando:2200921	crohn病
 nando:2200921	ｸﾛｰﾝ病
 nando:2200922	early-onset inflammatory bowel disease
 nando:2200922	早期発症型炎症性腸疾患
-nando:2200923	ipex症候群
 nando:2200923	autoimmune enteropathy
+nando:2200923	ipex症候群
 nando:2200923	自己免疫性腸症
 nando:2200924	ipex syndrome
 nando:2200924	ipex症候群
@@ -6419,16 +7092,8 @@ nando:2200925	chronic enteropathy associated with slco2a1
 nando:2200925	chronic nonspecific multiple ulcers of the small intestine
 nando:2200925	非特異性多発性小腸潰瘍症
 nando:2200926	acute liver failure with hepatic coma
+nando:2200926	hepatic coma
 nando:2200926	急性肝不全(昏睡型)
-nando:2200927	neonatal haemochromatosis
-nando:2200927	neonatal hemochromatosis
-nando:2200927	新生児ﾍﾓｸﾛﾏﾄｰｼｽ
-nando:2200928	aih
-nando:2200928	autoimmune hepatitis
-nando:2200928	自己免疫性肝炎
-nando:2200929	psc
-nando:2200929	primary sclerosing cholangitis
-nando:2200929	原発性硬化性胆管炎
 nando:2200930	ba
 nando:2200930	biliary atresia
 nando:2200930	胆道閉鎖症
@@ -6442,6 +7107,7 @@ nando:2200933	pfic
 nando:2200933	progressive familial intrahepatic cholestasis
 nando:2200933	進行性家族性肝内胆汁うっ滞症
 nando:2200934	caroli disease
+nando:2200934	caroli病
 nando:2200934	ｶﾛﾘ病
 nando:2200934	先天性多発肝内胆管拡張症
 nando:2200935	congenital biliary dilatation
@@ -6451,13 +7117,6 @@ nando:2200936	congenital hepatic fibrosis
 nando:2200936	先天性肝線維症
 nando:2200937	liver cirrhosis
 nando:2200937	肝硬変症
-nando:2200938	banti syndrome
-nando:2200938	portal hypertension
-nando:2200938	門脈圧亢進症
-nando:2200939	congenital absence of portal vein
-nando:2200939	先天性門脈欠損症
-nando:2200940	congenital hepatoportal arteriovenous fistula
-nando:2200940	門脈･肝動脈瘻
 nando:2200941	crigler-najjar syndrome
 nando:2200941	crigler-najjar症候群
 nando:2200941	ｸﾘｸﾞﾗｰ･ﾅｼﾞｬｰ症候群
@@ -6468,6 +7127,7 @@ nando:2200943	自己免疫性膵炎
 nando:2200944	short bowel syndrome
 nando:2200944	短腸症
 nando:2200945	hirschsprung disease
+nando:2200945	hirschsprung's disease
 nando:2200945	hirschsprung病
 nando:2200945	ﾋﾙｼｭｽﾌﾟﾙﾝｸﾞ病
 nando:2200946	ciip
@@ -6519,8 +7179,8 @@ nando:2200961	5p-症候群
 nando:2200961	5p欠失症候群
 nando:2200962	4p deletion syndrome
 nando:2200962	4p- syndrome
+nando:2200962	4p-症候群
 nando:2200962	4p欠失症候群
-nando:2200962	4p症候群
 nando:2200963	18 trisomy syndrome
 nando:2200963	18ﾄﾘｿﾐｰ症候群
 nando:2200963	chromosome 18 duplication
@@ -6574,15 +7234,17 @@ nando:2200976	ﾌｧｲﾌｧｰ症候群
 nando:2200977	coffin-siris syndrome
 nando:2200977	coffin-siris症候群
 nando:2200977	ｺﾌｨﾝ･ｼﾘｽ症候群
+nando:2200978	sgbs
+nando:2200978	sgs
 nando:2200978	simpson-golabi-behmel syndrome
 nando:2200978	simpson-golabi-behmel症候群
 nando:2200978	ｼﾝﾌﾟｿﾝ･ｺﾞﾗﾋﾞ･ﾍﾞｰﾒﾙ症候群
 nando:2200979	smith-lemli-opitz syndrome
 nando:2200979	smith-lemli-opitz症候群
 nando:2200979	ｽﾐｽ･ﾚﾑﾘ･ｵﾋﾟｯﾂ症候群
-nando:2200980	mobius syndrome
 nando:2200980	moebius syndrome
 nando:2200980	moebius症候群
+nando:2200980	möbius syndrome
 nando:2200980	ﾒﾋﾞｳｽ症候群
 nando:2200981	mowat-wilson syndrome
 nando:2200981	mowat-wilson症候群
@@ -6600,7 +7262,6 @@ nando:2200986	oca
 nando:2200986	oculocutaneous albinism
 nando:2200986	眼皮膚白皮症
 nando:2200986	先天性白皮症
-nando:2200987	epidermolytic ichthyosis and superficial epidermolytic ichthyos
 nando:2200987	keratinopathic ichthyosis
 nando:2200987	ｹﾗﾁﾝ症性魚鱗癬
 nando:2200988	autosomal dominant epidermolytic ichthyosis
@@ -6617,21 +7278,25 @@ nando:2200993	netherton syndrome
 nando:2200993	netherton症候群
 nando:2200993	ﾈｻﾞｰﾄﾝ症候群
 nando:2200994	sjogren-larsson syndrome
-nando:2200994	sjogren-larsson症候群
 nando:2200994	sjögren-larsson syndrome
+nando:2200994	sjögren-larsson症候群
 nando:2200994	ｼｪｰｸﾞﾚﾝ･ﾗﾙｿﾝ症候群
 nando:2200995	2から6までに掲げるもののほか､先天性魚鱗癬
 nando:2200995	other congenital ichthyoses
 nando:2200996	kid syndrome
 nando:2200996	kid症候群
 nando:2200996	keratitis-ichthyosis-deafness syndrome
+nando:2200997	chanarin-dorfman syndrome
 nando:2200997	dorfman-chanarin syndrome
+nando:2200997	dorfman-chanarin症候群
 nando:2200997	neutral lipid storage disease
 nando:2200997	ﾄﾞﾙﾌﾏﾝ･ｼｬﾅﾘﾝ症候群
 nando:2200998	child syndrome
 nando:2200998	child症候群
 nando:2200998	congenital hemidysplasia with ichthyosiform nevus and limb defects
+nando:2200999	ifap syndrome
 nando:2200999	ifap症候群
+nando:2200999	ichthyosis follicularis, alopecia, and photophobia syndrome
 nando:2200999	ichthyosis-follicularis-atrichia-photophobia syndrome
 nando:2201000	epidermolysis bullosa
 nando:2201000	表皮水疱症
@@ -6643,16 +7308,21 @@ nando:2201002	xp
 nando:2201002	xeroderma pigmentosum
 nando:2201002	色素性乾皮症
 nando:2201003	neurofibromatosis type 1
+nando:2201003	recklinghausen病
 nando:2201003	von recklinghausen's disease
 nando:2201003	ﾚｯｸﾘﾝｸﾞﾊｳｾﾞﾝ病
-nando:2201003	神経線維腫症ⅰ型
+nando:2201003	神経線維腫症i型
+nando:2201004	pdp
 nando:2201004	pachydermoperiostosis
 nando:2201004	肥厚性皮膚骨膜症
 nando:2201005	anhidrotic ectodermal dysplasia
 nando:2201005	無汗性外胚葉形成不全
+nando:2201006	sjs
 nando:2201006	stevens-johnson syndrome
 nando:2201006	stevens-johnson症候群
+nando:2201006	toxic epidermal necrolysis
 nando:2201006	ｽﾃｨｰｳﾞﾝｽ･ｼﾞｮﾝｿﾝ症候群
+nando:2201006	皮膚粘膜眼症候群
 nando:2201007	ten
 nando:2201007	toxic epidermal necrolysis
 nando:2201007	中毒性表皮壊死症
@@ -6685,8 +7355,10 @@ nando:2201018	偽性軟骨無形成症
 nando:2201019	larsen syndrome
 nando:2201019	larsen症候群
 nando:2201019	ﾗｰｾﾝ症候群
+nando:2201020	fop
 nando:2201020	fibrodysplasia ossificans progressiva
 nando:2201020	進行性骨化性線維異形成症
+nando:2201021	trpv4-associated disorders
 nando:2201021	transient receptor potential cation channel, vanilloid subfamily, member 4 -associated disorders
 nando:2201021	trpv4異常症
 nando:2201022	osteosclerotic diseases
@@ -6702,9 +7374,11 @@ nando:2201026	beals症候群
 nando:2201026	congenital contractural arachnodactyly
 nando:2201026	ﾋﾞｰﾙｽﾞ症候群
 nando:2201026	遠位型多発性関節拘縮症9型
+nando:2201027	bean症候群
 nando:2201027	blue rubber bleb nevus syndrome
 nando:2201027	青色ｺﾞﾑまり様母斑症候群
 nando:2201028	gigantic venous malformation
+nando:2201028	huge venous malformation
 nando:2201028	巨大静脈奇形
 nando:2201029	gigantic arteriovenous malformation
 nando:2201029	huge arteriovenous malformation
@@ -6779,8 +7453,8 @@ nando:2201055	systemic juvenile idiopathic arthritis
 nando:2201055	sjia
 nando:2201055	若年性特発性関節炎(全身型)
 nando:2201055	全身型若年性特発性関節炎
-nando:2201056	oligoarthritis
 nando:2201056	oligoarticular juvenile idiopathic arthritis
+nando:2201056	oligoarthritis
 nando:2201056	若年性特発性関節炎(少関節炎)
 nando:2201056	少関節型若年性特発性関節炎
 nando:2201057	rheumatoid factor-negative juvenile idiopathic arthritis
@@ -6803,6 +7477,7 @@ nando:2201064	混合型高安動脈炎
 nando:2201065	dilated type takayasu arteritis
 nando:2201065	拡張型高安動脈炎
 nando:2201065	高安動脈炎(動脈瘤型)
+nando:2201066	cinca syndrome
 nando:2201066	cinca症候群
 nando:2201066	chronic infantile neurological cutaneous articular syndrome
 nando:2201066	慢性乳児神経皮膚関節症候群
@@ -6846,8 +7521,8 @@ nando:2201077	bh4-responsive hyperphenylalaninaemia
 nando:2201077	bh4-responsive hyperphenylalaninemia
 nando:2201077	bh4反応性高ﾌｪﾆﾙｱﾗﾆﾝ血症
 nando:2201077	tetrahydrobiopterin-responsive hyperphenylalaninemia
-nando:2201078	classic msud
 nando:2201078	classic form maple syrup urine disease
+nando:2201078	classic msud
 nando:2201078	古典型ﾒｰﾌﾟﾙｼﾛｯﾌﾟ尿症
 nando:2201079	intermediate maple syrup urine disease
 nando:2201079	中間型ﾒｰﾌﾟﾙｼﾛｯﾌﾟ尿症
@@ -6882,8 +7557,8 @@ nando:2201092	late-onset ornitine transcarbamylase deficiency
 nando:2201092	遅発型ｵﾙﾆﾁﾝﾄﾗﾝｽｶﾙﾊﾞﾐﾗｰｾﾞ欠損症
 nando:2201093	presymptomatic argininosuccinate synthetase deficiency
 nando:2201093	発症前型ｱﾙｷﾞﾆﾉｺﾊｸ酸合成酵素欠損症
-nando:2201094	neonatal-onset asd
 nando:2201094	neonatal-onset argininosuccinate synthetase deficiency
+nando:2201094	neonatal-onset asd
 nando:2201094	新生児期発症型ｱﾙｷﾞﾆﾉｺﾊｸ酸合成酵素欠損症
 nando:2201095	late-onset argininosuccinate synthetase deficiency
 nando:2201095	遅発型ｱﾙｷﾞﾆﾉｺﾊｸ酸合成酵素欠損症
@@ -6891,8 +7566,8 @@ nando:2201096	presymptomatic argininosuccinic aciduria
 nando:2201096	発症前型ｱﾙｷﾞﾆﾉｺﾊｸ酸尿症
 nando:2201097	neonatal-onset argininosuccinic aciduria
 nando:2201097	新生児期発症型ｱﾙｷﾞﾆﾉｺﾊｸ酸尿症
-nando:2201098	late-onset asa
 nando:2201098	late-onset argininosuccinic aciduria
+nando:2201098	late-onset asa
 nando:2201098	遅発型ｱﾙｷﾞﾆﾉｺﾊｸ酸尿症
 nando:2201099	presymptomatic hyperargininaemia
 nando:2201099	presymptomatic hyperargininemia
@@ -6974,13 +7649,13 @@ nando:2201126	glutaric acidaemia type 1, chronic progressive form
 nando:2201126	glutaric acidemia type 1, chronic progressive form
 nando:2201126	慢性進行型ｸﾞﾙﾀﾙ酸血症1型
 nando:2201127	presymptomatic carnitine palmitoyltransferase i deficiency
-nando:2201127	発症前型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞⅰ欠損症
+nando:2201127	発症前型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞi欠損症
 nando:2201128	neonatal-onset carnitine palmitoyltransferase i deficiency
-nando:2201128	新生児期発症型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞⅰ欠損症
+nando:2201128	新生児期発症型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞi欠損症
 nando:2201129	infantile-onset carnitine palmitoyl transferase i deficiency
-nando:2201129	乳児期発症型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞⅰ欠損症
+nando:2201129	乳児期発症型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞi欠損症
 nando:2201130	late-onset carnitine palmitoyltransferase i deficiency
-nando:2201130	遅発型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞⅰ欠損症
+nando:2201130	遅発型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞi欠損症
 nando:2201131	presymptomatic carnitine palmitoyltransferase ii deficiency
 nando:2201131	発症前型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞii欠損症
 nando:2201132	neonatal-onset carnitine palmitoyltransferase ii deficiency
@@ -6992,15 +7667,15 @@ nando:2201134	late-onset carnitine palmitoyltransferase ii deficiency
 nando:2201134	遅発型ｶﾙﾆﾁﾝﾊﾟﾙﾐﾄｲﾙﾄﾗﾝｽﾌｪﾗｰｾﾞii欠損症
 nando:2201135	presymptomatic carnitine-acylcarnitine translocase deficiency
 nando:2201135	発症前型ｶﾙﾆﾁﾝｱｼﾙｶﾙﾆﾁﾝﾄﾗﾝｽﾛｶｰｾﾞ欠損症
-nando:2201136	neonatal-onset cact deficiency
 nando:2201136	neonatal-onset carnitine-acylcarnitine translocase deficiency
+nando:2201136	neonatal-onset cact deficiency
 nando:2201136	新生児期発症型ｶﾙﾆﾁﾝｱｼﾙｶﾙﾆﾁﾝﾄﾗﾝｽﾛｶｰｾﾞ欠損症
 nando:2201137	infantile-onset carnitine-acylcarnitine translocase deficiency
 nando:2201137	乳児期発症型ｶﾙﾆﾁﾝｱｼﾙｶﾙﾆﾁﾝﾄﾗﾝｽﾛｶｰｾﾞ欠損症
 nando:2201138	late-onset carnitine-acylcarnitine translocase deficiency
 nando:2201138	遅発型ｶﾙﾆﾁﾝｱｼﾙｶﾙﾆﾁﾝﾄﾗﾝｽﾛｶｰｾﾞ欠損症
-nando:2201139	presymptomatic vlcad deficiency
 nando:2201139	presymptomatic very-long-chain acyl-coa dehydrogenase deficiency
+nando:2201139	presymptomatic vlcad deficiency
 nando:2201139	発症前型極長鎖ｱｼﾙcoa脱水素酵素欠損症
 nando:2201140	neonatal-onset very-long-chain acyl-coa dehydrogenase deficiency
 nando:2201140	新生児期発症型極長鎖ｱｼﾙcoa脱水素酵素欠損症
@@ -7060,7 +7735,7 @@ nando:2201158	糖原病iiid型
 nando:2201159	glycogen storage disease type iv, hepatic form
 nando:2201159	hepatic type of gsd iv
 nando:2201159	肝型糖原病iv型
-nando:2201159	重症肝硬変型糖原病ⅳ型
+nando:2201159	重症肝硬変型糖原病iv型
 nando:2201160	glycogen storage disease type iv, non-progressive hepatic form
 nando:2201160	non-progressive hepatic type of gsd iv
 nando:2201160	非進行性肝型糖原病iv型
@@ -7178,11 +7853,11 @@ nando:2201190	beta-mannosidosis
 nando:2201190	β-mannosidosis
 nando:2201190	β-ﾏﾝﾉｼﾄﾞｰｼｽ
 nando:2201191	sialidosis type 1
-nando:2201191	ｼｱﾘﾄﾞｰｼｽⅰ型
+nando:2201191	ｼｱﾘﾄﾞｰｼｽi型
 nando:2201192	sialidosis type 2
 nando:2201192	ｼｱﾘﾄﾞｰｼｽii型
-nando:2201193	sialidosis type ii
 nando:2201193	galactosialidosis, early infantile form
+nando:2201193	sialidosis type ii
 nando:2201193	新生児及び早期乳児型ｶﾞﾗｸﾄｼｱﾘﾄﾞｰｼｽ
 nando:2201194	galactosialidosis, late infantile form
 nando:2201194	晩期乳児型ｶﾞﾗｸﾄｼｱﾘﾄﾞｰｼｽ
@@ -7236,8 +7911,8 @@ nando:2201212	gaucher病3型
 nando:2201212	ｺﾞｰｼｪ病3型
 nando:2201213	classical fabry disease
 nando:2201213	古典型ﾌｧﾌﾞﾘｰ病
-nando:2201214	late-onset fabry disease
 nando:2201214	variant fabry disease
+nando:2201214	late-onset fabry disease
 nando:2201214	亜型ﾌｧﾌﾞﾘｰ病
 nando:2201215	heterozygous fabry disease
 nando:2201215	ﾌｧﾌﾞﾘｰ病顕性ﾍﾃﾛ接合体
@@ -7397,20 +8072,28 @@ nando:2201261	ehlers-danlos syndrome, dermatosparaxis type
 nando:2201261	皮膚脆弱型ｴｰﾗｽ･ﾀﾞﾝﾛｽ症候群
 nando:2201262	dermatan 4-o-sulfotransferase 1 deficient ehlers-danlos syndrome
 nando:2201262	ﾃﾞﾙﾏﾀﾝ4-o-硫酸基転移酵素-1欠損型ｴｰﾗｽ･ﾀﾞﾝﾛｽ症候群
+nando:2201263	aip
 nando:2201263	acute intermittent porphyria
 nando:2201263	急性間欠性ﾎﾟﾙﾌｨﾘﾝ症
+nando:2201264	hcp
 nando:2201264	hereditary coproporphyria
 nando:2201264	遺伝性ｺﾌﾟﾛﾎﾟﾙﾌｨﾘﾝ症
+nando:2201265	vp
 nando:2201265	variegate porphyria
 nando:2201265	異型ﾎﾟﾙﾌｨﾘﾝ症
+nando:2201266	epp
 nando:2201266	erythropoietic protoporphyria
 nando:2201266	赤芽球性ﾌﾟﾛﾄﾎﾟﾙﾌｨﾘﾝ症
+nando:2201267	pct
 nando:2201267	porphyria cutanea tarda
 nando:2201267	晩発性皮膚ﾎﾟﾙﾌｨﾘﾝ症
+nando:2201268	cep
 nando:2201268	congenital erythropoietic porphyria
 nando:2201268	先天性骨髄性ﾎﾟﾙﾌｨﾘﾝ症
 nando:2201269	x-linked dominant protoporphyria
+nando:2201269	xldpp
 nando:2201269	x連鎖優性ﾌﾟﾛﾄﾎﾟﾙﾌｨﾘﾝ症
+nando:2201270	hep
 nando:2201270	hepatoerythropoietic porphyria
 nando:2201270	肝性骨髄性ﾎﾟﾙﾌｨﾘﾝ症
 nando:2201271	idiopathic aiha
@@ -7454,7 +8137,7 @@ nando:2201282	p67phox欠損慢性肉芽腫症
 nando:2201283	p40phox-deficient chronic granulomatous disease
 nando:2201283	p40phox欠損慢性肉芽腫症
 nando:2201284	altman type i sacrococcygeal teratoma
-nando:2201284	仙尾部奇形腫(altman ⅰ型)
+nando:2201284	仙尾部奇形腫(altman i型)
 nando:2201285	altman type ii sacrococcygeal teratoma
 nando:2201285	仙尾部奇形腫(altman ii型)
 nando:2201286	altman type iii sacrococcygeal teratoma
@@ -7462,9 +8145,14 @@ nando:2201286	仙尾部奇形腫(altman iii型)
 nando:2201287	altman type iv sacrococcygeal teratoma
 nando:2201287	presacral teratoma
 nando:2201287	仙尾部奇形腫(altman iv型)
+nando:2201288	pmd
 nando:2201288	pelizaeus-merzbacher disease
+nando:2201288	pelizaeus-merzbacher病
 nando:2201288	ﾍﾟﾘﾂｪｳｽ･ﾒﾙﾂﾊﾞｯﾊ病
+nando:2201289	pmld1
 nando:2201289	pelizaeus-merzbacher like disease
+nando:2201289	pelizaeus-merzbacher like disease 1
+nando:2201289	pelizaeus-merzbacher様病1
 nando:2201289	ﾍﾟﾘﾂｪｳｽ･ﾒﾙﾂﾊﾞｯﾊ様病1
 nando:2201290	habc
 nando:2201290	hypomyelination with atrophy of the basal ganglia and cerebellum
@@ -7541,19 +8229,19 @@ nando:2201317	抗nmda受容体脳炎
 nando:2201318	anti-vgkc complex antibody encephalitis
 nando:2201318	抗vgkc複合体抗体陽性脳炎
 nando:2201319	rrms
-nando:2201319	relapsing-remitting ms
 nando:2201319	relapsing-remitting multiple sclerosis
+nando:2201319	relapsing-remitting ms
 nando:2201319	再発寛解型ms
 nando:2201319	再発寛解型多発性硬化症
 nando:2201319	再発型ms
 nando:2201320	ppms
-nando:2201320	primary progressive ms
 nando:2201320	primary progressive multiple sclerosis
+nando:2201320	primary progressive ms
 nando:2201320	一次性進行型多発性硬化症
 nando:2201320	一次性慢性進行型多発性硬化症
 nando:2201321	spms
-nando:2201321	secondary progressive
 nando:2201321	secondary progressive multiple sclerosis
+nando:2201321	secondary progressive
 nando:2201321	二次性進行型ms
 nando:2201321	二次性進行型多発性硬化症
 nando:2201321	二次性慢性進行型多発性硬化症
@@ -7568,9 +8256,9 @@ nando:2201325	latent general myasthenia gravis
 nando:2201325	潜在性全身型重症筋無力症
 nando:2201326	generalized myasthenia gravis
 nando:2201326	全身型重症筋無力症
-nando:2201327	ⅰ型胆道閉鎖症
+nando:2201327	i型胆道閉鎖症
 nando:2201327	type i biliary atresia
-nando:2201328	ⅰcyst型胆道閉鎖症
+nando:2201328	icyst型胆道閉鎖症
 nando:2201328	type i cystic biliary atresia
 nando:2201329	ii型胆道閉鎖症
 nando:2201329	type ii biliary atresia
@@ -7670,6 +8358,7 @@ nando:2201366	craniometaphyseal dysplasia
 nando:2201366	頭蓋骨幹端異形成症
 nando:2201367	metaphyseal dysplasias
 nando:2201367	pyle disease
+nando:2201367	pyle氏病
 nando:2201367	pyle病
 nando:2201367	骨幹端異形成症
 nando:2201368	craniodiaphyseal dysplasia
@@ -7677,21 +8366,21 @@ nando:2201368	頭蓋骨幹異形成症
 nando:2201369	sost
 nando:2201369	sclerosteosis
 nando:2201369	硬化性骨症
+nando:2201370	stage i huge arteriovenous malformation
 nando:2201370	stage i avm
 nando:2201370	stage i gigantic arteriovenous malformation
-nando:2201370	stage i huge arteriovenous malformation
-nando:2201370	巨大動静脈奇形(stage ⅰ)
+nando:2201370	巨大動静脈奇形(stage i)
+nando:2201371	stage ii huge arteriovenous malformation
 nando:2201371	stage ii avm
 nando:2201371	stage ii gigantic arteriovenous malformation
-nando:2201371	stage ii huge arteriovenous malformation
 nando:2201371	巨大動静脈奇形(stage ii)
+nando:2201372	stage iii huge arteriovenous malformation
 nando:2201372	stage iii avm
 nando:2201372	stage iii gigantic arteriovenous malformation
-nando:2201372	stage iii huge arteriovenous malformation
 nando:2201372	巨大動静脈奇形(stage iii)
+nando:2201373	stage iv huge arteriovenous malformation
 nando:2201373	stage iv avm
 nando:2201373	stage iv gigantic arteriovenous malformation
-nando:2201373	stage iv huge arteriovenous malformation
 nando:2201373	巨大動静脈奇形(stage iv)
 nando:2201374	bulbar myasthenia gravis
 nando:2201374	球型重症筋無力症
@@ -7727,3 +8416,6 @@ nando:2201383	recessive dystrophic epidermolysis bullosa, generalized severe
 nando:2201383	劣性重症汎発型栄養障害型表皮水疱症
 nando:2201384	other dystrophic epidermolysis bullosa
 nando:2201384	栄養障害型表皮水疱症(その他)
+nando:2201385	galloway-mowat syndrome
+nando:2201385	galloway-mowat症候群
+nando:2201385	ｷﾞｬﾛｳｪｲ･ﾓﾜﾄ症候群

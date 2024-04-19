@@ -1,7 +1,7 @@
 # FILTER: Get ORPHA ID by HPO ID (inheritance) - https://pubcasefinder-rdf.dbcls.jp/sparql
 ## Parameters
 * `hpo_id` HPO ID
-  * default: 0001470
+  * default: 0001428
   * example: 0001428, 0003745
 
 ## Endpoint

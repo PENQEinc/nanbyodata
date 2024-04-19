@@ -3,6 +3,7 @@
   top: 76px;
 
   #sidebar {
+    display: none;
     position: fixed;
     overflow-y: auto;
     height: calc(100vh - 76px);
@@ -18,7 +19,6 @@
       }
 
       .sidebar-title {
-        font-size: 14px;
         font-weight: bold;
         color: var(--color-secondary);
         opacity: 0.6;
@@ -35,6 +35,7 @@
     width: calc(100% - 270px);
     padding: var(--spacing-disease-content);
     z-index: -1;
+    display: none;
 
     #data-wrapper {
       display: flex;
@@ -45,9 +46,9 @@
       }
 
       .temp-title {
+        font-size: var(--font-size-2xl);
         border-radius: var(--radius-base);
         color: var(--color-secondary);
-        font-size: 24px;
         white-space: nowrap;
         font-weight: 600;
         position: relative;
@@ -63,17 +64,21 @@
           background-color: var(--color-secondary);
         }
         .data-num {
-          padding: 0 6px 0 7px;
-          font-size: 15px;
+          font-size: var(--font-size-base);
+          padding: 0 5px;
           line-height: 1.5;
           position: absolute;
-          margin-top: 3px;
+          margin-top: 6px;
           margin-left: 5px;
           min-width: 22px;
         }
       }
 
       #temp-disease-definition {
+        .tab-content {
+          text-align: justify;
+        }
+
         a[target='_blank'] {
           color: var(--color-link);
           &::after {

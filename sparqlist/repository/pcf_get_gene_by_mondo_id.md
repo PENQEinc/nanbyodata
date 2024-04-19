@@ -1,8 +1,8 @@
 # [PCF] FILTER: GET GENE by MONDO ID - https://pubcasefinder-rdf.dbcls.jp/sparql
 ## Parameters
 * `mondo_id` MONDO ID
-  * default: 0018096
-  * example: 0003847, 0018096, 0007477
+  * default: 0017838
+  * example: 0018096, 0003847, 0018096, 0007477
 
 ## Endpoint
 https://pubcasefinder-rdf.dbcls.jp/sparql
@@ -20,6 +20,7 @@ https://pubcasefinder-rdf.dbcls.jp/sparql
 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
 PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 PREFIX dcterm: <http://purl.org/dc/terms/>
+PREFIX nando: <http://nanbyodata.jp/ontology/nando#>
 PREFIX ncit: <http://ncicb.nci.nih.gov/xml/owl/EVS/Thesaurus.owl#>
 PREFIX mondo: <http://purl.obolibrary.org/obo/>
 PREFIX sio: <http://semanticscience.org/resource/>
@@ -28,9 +29,10 @@ PREFIX skos: <http://www.w3.org/2004/02/skos/core#>
 SELECT
 ?hgnc_gene_symbol 
 ?gene_id
-#(GROUP_concat(distinct ?disease_name; separator = " | ") as ?disease_name)
 (GROUP_concat(distinct ?disease_info; separator = " | ") as ?disease_info)
 (GROUP_concat(distinct ?source_name; separator = " | ") as ?source_name)
+(GROUP_concat(distinct ?inheritance_en; separator = ", ") as ?inheritance_en)
+(GROUP_concat(distinct ?inheritance_ja; separator = ", ") as ?inheritance_ja)
 WHERE {
   {
     SELECT DISTINCT ?disease WHERE { 
@@ -49,6 +51,11 @@ WHERE {
   ?gene rdf:type ncit:C16612 ;
         sio:SIO_000205 [rdfs:label ?hgnc_gene_symbol] ;
         dcterm:identifier ?gene_id . 
+  OPTIONAL { 
+    ?disease nando:hasInheritance ?inheritance .
+    ?inheritance rdfs:label ?inheritance_en, ?inheritance_ja .
+    FILTER (lang(?inheritance_en) = "en") . FILTER (lang(?inheritance_ja) = "ja") . 
+  }
   
   BIND(CONCAT(?disease_name, IF(CONTAINS(STR(?disease), "Orphanet"), ", ORPHA:", ", OMIM:"), ?disease_id) AS ?disease_info)
   BIND(IF(STR(?source) = 'http://www.orphadata.org/data/xml/en_product6.xml', 'Orphadata',

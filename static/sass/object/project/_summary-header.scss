@@ -13,7 +13,7 @@ Disease page right top */
     border-bottom: 1px dashed var(--color-summary-border);
 
     > h3 {
-      font-size: 18px;
+      font-size: var(--font-size-medium);
       font-weight: bold;
 
       a.nando-link,
@@ -21,7 +21,7 @@ Disease page right top */
         position: relative;
         top: -2px;
         margin-left: 5px;
-        font-size: 12px;
+        font-size: var(--font-size-small);
         color: var(--color-summary-link);
         font-weight: normal;
         cursor: pointer;
@@ -61,17 +61,17 @@ Disease page right top */
       padding-top: 25px;
 
       ruby {
-        font-size: 36px;
+        font-size: var(--font-size-3xl);
 
         rt {
-          font-size: 10px;
+          font-size: var(--font-size-xs);
           font-weight: normal;
         }
       }
     }
 
     > h3#temp-label-en {
-      font-size: 26px;
+      font-size: var(--font-size-2xl);
       margin-top: 5px;
       overflow-wrap: break-word;
     }

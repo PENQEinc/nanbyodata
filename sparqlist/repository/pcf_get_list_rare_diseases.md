@@ -14,7 +14,8 @@ PREFIX ordo: <http://www.orpha.net/ORDO/>
 
 SELECT DISTINCT
 CONCAT('ORPHA:', STR(?orpha_id)) as ?orpha_id
-str(?ordo_id) as ?orpha_url
+#str(?ordo_id) as ?orpha_url
+str(?orpha_url) as ?orpha_url
 str(?disease_name_en) as ?orpha_disease_name_en
 str(?disease_name_ja) as ?orpha_disease_name_ja
 WHERE { 
@@ -36,6 +37,7 @@ WHERE {
   }
   
   BIND (replace(str(?ordo_id), 'http://www.orpha.net/ORDO/Orphanet_', '') AS ?orpha_id)
+  BIND (CONCAT('https://www.orpha.net/en/disease/detail/', ?orpha_id, '?name=', ?orpha_id, '&mode=orpha') AS ?orpha_url)
 }
 ```
 

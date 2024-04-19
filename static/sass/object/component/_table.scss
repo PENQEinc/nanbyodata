@@ -6,7 +6,7 @@
         border-top: none;
         border-bottom: 1px solid var(--color-black);
         color: var(--color-dataset-th);
-        font-size: 12px;
+        font-size: var(--font-size-small);
         white-space: nowrap;
         font-weight: 400;
       }
@@ -15,7 +15,6 @@
       tr {
         td {
           padding: 10px;
-          font-size: 14px;
           color: var(--color-black);
           border-bottom: 1px solid var(--color-table-dash);
           white-space: nowrap;

@@ -21,6 +21,7 @@
   .aliases > dl {
     margin: 0 0 4px;
     border-radius: var(--radius-base);
+    font-size: var(--font-size-small);
     > div {
       display: flex;
       flex-direction: row;
@@ -30,14 +31,12 @@
 
     > {
       dt {
-        font-size: 12px;
         font-weight: bold;
       }
 
       dd {
         -webkit-margin-start: 0;
         margin-inline-start: 0;
-        font-size: 14px;
         display: inline;
       }
     }

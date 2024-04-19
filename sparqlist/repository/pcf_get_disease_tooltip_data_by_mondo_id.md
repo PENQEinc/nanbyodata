@@ -51,10 +51,11 @@ WHERE {
                        dcterms:identifier ?omim_id .
             FILTER(CONTAINS(STR(?omim_url), "mim")) }
 
-  optional { ?orpha_url rdfs:seeAlso ?mondo_url ;
+  optional { ?ordo_id rdfs:seeAlso ?mondo_url ;
                         dcterms:identifier ?orpha_id .
-            FILTER(CONTAINS(STR(?orpha_url), "ORDO")) }
-
+            FILTER(CONTAINS(STR(?ordo_id), "ORDO")) }
+  
+  BIND (CONCAT('https://www.orpha.net/en/disease/detail/', ?orpha_id, '?name=', ?orpha_id, '&mode=orpha') AS ?orpha_url)
   BIND (replace(str(?mondo_url), 'http://purl.obolibrary.org/obo/MONDO_', 'https://monarchinitiative.org/disease/MONDO:') AS ?mondo)
   
 } order by ?mondo_url ?synonym
