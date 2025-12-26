@@ -1,4 +1,5 @@
 import { createObjectUrlFromData } from '../../utils/stanzaUtils.js';
+import { convertColumnToText } from '../../utils/stanzaColumns.js';
 
 export function makeNumOfPatients(data) {
   const chartTypeSelect = document.getElementById('num-of-patients-graph');
@@ -33,6 +34,13 @@ function initializeCharts(data) {
 
   const stanzaWidth = data.length * 100;
   const maxValue = Math.max(...data.map((item) => item.num_of_patients));
+
+  // テーブル用のカラム定義
+  const tableColumns = [
+    { id: 'year', label: 'Year' },
+    { id: 'num_of_patients', label: '# of certificate holders' },
+  ];
+  const columnsText = convertColumnToText(tableColumns);
 
   targetDiv.innerHTML = `
     <togostanza-barchart
@@ -91,6 +99,21 @@ function initializeCharts(data) {
       group-key="group"
       >
     </togostanza-linechart>
+
+    <togostanza-pagination-table
+      data-url="${objectUrl}"
+      data-type="json"
+      data-unavailable_message="No data found."
+      custom-css-url=""
+      width=""
+      fixed-columns="1"
+      padding-inner=".8"
+      padding-outer=".5"
+      page-size-option="100"
+      page-slider="false"
+      columns='${columnsText}'
+      style="display: none;">
+    </togostanza-pagination-table>
   `;
 
   // カスタムスタイルを適用
@@ -114,6 +137,7 @@ function initializeCharts(data) {
 
   addScript('https://togostanza.github.io/metastanza/barchart.js');
   addScript('https://togostanza.github.io/metastanza-devel/linechart.js');
+  addScript('https://togostanza.github.io/metastanza/pagination-table.js');
 }
 
 function addScript(src) {
@@ -127,12 +151,19 @@ function addScript(src) {
 function toggleChartDisplay(selectedChartType) {
   const barChart = document.querySelector('togostanza-barchart');
   const lineChart = document.querySelector('togostanza-linechart');
+  const tableChart = document.querySelector('togostanza-pagination-table');
 
   if (selectedChartType === 'bar') {
     barChart.style.display = 'block';
     lineChart.style.display = 'none';
-  } else {
+    tableChart.style.display = 'none';
+  } else if (selectedChartType === 'line') {
     barChart.style.display = 'none';
     lineChart.style.display = 'block';
+    tableChart.style.display = 'none';
+  } else if (selectedChartType === 'table') {
+    barChart.style.display = 'none';
+    lineChart.style.display = 'none';
+    tableChart.style.display = 'block';
   }
 }
