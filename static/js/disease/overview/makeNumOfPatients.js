@@ -1,4 +1,7 @@
-import { createObjectUrlFromData } from '../../utils/stanzaUtils.js';
+import {
+  createObjectUrlFromData,
+  updateElementWithTable,
+} from '../../utils/stanzaUtils.js';
 import { convertColumnToText } from '../../utils/stanzaColumns.js';
 
 export function makeNumOfPatients(data) {
@@ -100,21 +103,14 @@ function initializeCharts(data) {
       >
     </togostanza-linechart>
 
-    <togostanza-pagination-table
-      data-url="${objectUrl}"
-      data-type="json"
-      data-unavailable_message="No data found."
-      custom-css-url=""
-      width=""
-      fixed-columns="1"
-      padding-inner=".8"
-      padding-outer=".5"
-      page-size-option="100"
-      page-slider="false"
-      columns='${columnsText}'
-      style="display: none;">
-    </togostanza-pagination-table>
+    <div id="num-of-patients-table-view" style="display: none;"></div>
   `;
+
+  // テーブル用の要素にupdateElementWithTableを使用（デフォルトでDEFAULT_TOGOSTANZA_THEME_URLが適用される）
+  const tableElement = document.getElementById('num-of-patients-table-view');
+  if (tableElement) {
+    updateElementWithTable(tableElement, objectUrl, columnsText);
+  }
 
   // カスタムスタイルを適用
   const barChart = targetDiv.querySelector('togostanza-barchart');
@@ -149,21 +145,24 @@ function addScript(src) {
 }
 
 function toggleChartDisplay(selectedChartType) {
-  const barChart = document.querySelector('togostanza-barchart');
-  const lineChart = document.querySelector('togostanza-linechart');
-  const tableChart = document.querySelector('togostanza-pagination-table');
+  const targetDiv = document.getElementById('temp-num-of-patients');
+  if (!targetDiv) return;
+
+  const barChart = targetDiv.querySelector('togostanza-barchart');
+  const lineChart = targetDiv.querySelector('togostanza-linechart');
+  const tableChart = document.getElementById('num-of-patients-table-view');
 
   if (selectedChartType === 'bar') {
-    barChart.style.display = 'block';
-    lineChart.style.display = 'none';
-    tableChart.style.display = 'none';
+    if (barChart) barChart.style.display = 'block';
+    if (lineChart) lineChart.style.display = 'none';
+    if (tableChart) tableChart.style.display = 'none';
   } else if (selectedChartType === 'line') {
-    barChart.style.display = 'none';
-    lineChart.style.display = 'block';
-    tableChart.style.display = 'none';
+    if (barChart) barChart.style.display = 'none';
+    if (lineChart) lineChart.style.display = 'block';
+    if (tableChart) tableChart.style.display = 'none';
   } else if (selectedChartType === 'table') {
-    barChart.style.display = 'none';
-    lineChart.style.display = 'none';
-    tableChart.style.display = 'block';
+    if (barChart) barChart.style.display = 'none';
+    if (lineChart) lineChart.style.display = 'none';
+    if (tableChart) tableChart.style.display = 'block';
   }
 }
