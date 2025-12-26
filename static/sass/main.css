@@ -688,8 +688,7 @@ Stats Overview Component
   text-decoration: none;
 }
 .stats-overview .section-title .section-title-link:hover {
-  color: var(--color-primary);
-  text-decoration: none;
+  text-decoration: underline;
 }
 
 .stats-grid {

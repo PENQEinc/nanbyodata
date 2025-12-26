@@ -93,11 +93,11 @@ def datasets():
     return render_template('datasets.html')
 
 #####
-# STATISTICSについて
+# NanbyoData in numbersについて
 ## GET: 
-@app.route('/stats')
+@app.route('/nanbyodata-in-numbers')
 def stats():
-    return render_template('stats.html')
+    return render_template('nanbyodata-in-numbers.html')
 
 #####
 # TEAM
