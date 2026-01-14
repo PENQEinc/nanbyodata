@@ -610,6 +610,8 @@ header.search-area .intro-text .keyword a {
   display: flex;
   flex-direction: column;
   align-items: baseline;
+  justify-self: center;
+  max-width: 580px;
   gap: 20px;
 }
 .news-summary .logdata {
@@ -619,11 +621,11 @@ header.search-area .intro-text .keyword a {
 }
 .news-summary .logdata dl {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   gap: 35px;
 }
 .news-summary .logdata dt {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-base);
   font-weight: normal;
   letter-spacing: 0.1rem;
 }
