@@ -17,8 +17,7 @@ services:
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
   mysql:
     container_name: ${CONTAINER_NAME_MYSQL:-nanbyodata-mysql}
-    image: mysql:5.7.13
-    user: "${UID}:${GID}"
+    image: mysql:8.0
     ports:
       - ${MYSQL_PORT:-3306}:3306
     environment:
