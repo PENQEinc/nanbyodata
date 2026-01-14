@@ -41,6 +41,27 @@
   <!-- SmartBox Style -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/PubCaseFinder/pubcasefinder_tools@main/smartbox/style.css">
 
+  <!-- zTree CSS for treeview -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/css/zTreeStyle/zTreeStyle.min.css" type="text/css">
+  <style>
+    .treeview-decendant-num{color:#787878;}
+    .ztree li a.curSelectedNode {
+        background-color: #B2B9C2 !important;
+        border-color: #B2B9C2 !important;
+    }
+    #treeview-container {
+      margin-top: 20px;
+      padding: 10px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+      max-height: 600px;
+      overflow-y: auto;
+    }
+    #treeview-container .ztree {
+      background-color: transparent;
+    }
+  </style>
+
   <!-- favicon -->
   <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
 
@@ -131,6 +152,17 @@
     <div class="content-wrapper">
       <!-- Sidebar -->
       <aside id="sidebar">
+        <!-- Treeview Section -->
+        <section id="treeview-container">
+          <h2 class="sidebar-title">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            疾患階層ツリー
+            {% else %}
+            Disease Hierarchy Tree
+            {% endif %}
+          </h2>
+          <ul id="treeview" class="ztree"></ul>
+        </section>
         <section class="breadcrumb-list">
           <h2 class="sidebar-title">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
@@ -945,6 +977,148 @@
   <script type="module" src="/static/js/disease/disease.js"></script>
   <script type="module"
     src="https://cdn.jsdelivr.net/gh/PubCaseFinder/pubcasefinder_tools@main/smartbox/smartbox.js"></script>
+  
+  <!-- zTree JavaScript for treeview -->
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/js/jquery.ztree.core.min.js"></script>
+  <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/js/jquery.ztree.excheck.min.js"></script>
+  
+  <!-- Treeview Script -->
+  <script>
+    const URL_GET_PANEL_UPSTREAM_HIERARCHY = '/common_nanbyo_get_panel_hierarchy';
+    const URL_GET_PANEL_DESCENDANT = '/common_nanbyo_get_panel_descendant';
+    const URL_NEW_PAGE = '/disease/NANDO:';
+
+    var lang = "{% if get_locale() == 'ja' or get_locale() == 'ja_JP' %}ja{% else %}en{% endif %}";
+    var nando_id = "NANDO:{{ id_nando }}";
+
+    const SKIP_LIST = [
+      'NANDO:0000001'
+    ];
+
+    function _sort_treeview_data_by_nando_id(data){
+      data.sort((a, b) => a.nando_id.localeCompare(b.nando_id));
+
+      data.forEach(node => {
+        if (node.children && node.children.length > 0) {
+          _sort_treeview_data_by_nando_id(node.children);
+        }
+      });
+    }
+
+    function _create_treeview_data(json_data){
+      let ret_arr = [];
+      for (let key in json_data){
+        let t = key.split('--');
+        let obj = {};
+        obj['isFirstTimeLoad'] = true;
+        obj['nando_id']        = t[0];
+        obj['num_child']       = t[1];
+        obj['name']            = t[0];
+        obj['lang']            = lang;
+        if(t.length > 2 && t[2].length > 0 ){
+          obj['name'] = t[2];
+        }
+        obj['displayName'] = obj['name'] + " <font class=\"treeview-decendant-num\">("+obj['num_child']+")</font>";
+        if(t[1] == 0){
+          obj['displayName'] = obj['name'];
+          obj['isParent'] = false;
+        }else{
+          obj['isParent'] = true;
+        }
+
+        if( typeof json_data[key] === 'object' ){
+          obj['open'] = true;
+          obj['children'] = _create_treeview_data(json_data[key]);
+        }
+        ret_arr.push(obj);
+      }
+      return ret_arr;
+    }
+
+    function _onClick_handler(nando_id){
+      let nando_id_only = nando_id.replace('NANDO:', '');
+      let url = `${URL_NEW_PAGE}${nando_id_only}?lang=${lang}`;
+      window.location.href = url;
+    }
+
+    function _highlight_upstream_treeview_startNode(zTree, nodes, nando_id) {
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].nando_id === nando_id) {
+          zTree.selectNode(nodes[i], true, true);
+        }
+        if (nodes[i].isParent && nodes[i].children) {
+          _highlight_upstream_treeview_startNode(zTree, nodes[i].children, nando_id);
+        }
+      }
+    }
+
+    var zTreeObj;
+    function init_ui_upstream_trace(nando_id, upstream_trace_data){
+      let treeview_data = _create_treeview_data(upstream_trace_data);
+      _sort_treeview_data_by_nando_id(treeview_data);
+
+      let setting = {
+        view: {dblClickExpand: false, showIcon: false, nameIsHTML: true},
+        async:{enable: true, type: "get", url: URL_GET_PANEL_DESCENDANT, autoParam: ["nando_id", "lang"]},
+        callback: {
+          beforeClick: function (treeId, treeNode, clickFlag) {
+            if (treeNode && event.target.className.indexOf("switch") > -1) {
+              if (treeNode.isParent){
+                if(!treeNode.open && treeNode.isFirstTimeLoad){
+                  zTreeObj.reAsyncChildNodes(treeNode, "refresh");
+                  treeNode.isFirstTimeLoad = false;
+                }
+                zTreeObj.expandNode(treeNode);
+              }
+              return false;
+            }
+            return true;
+          },
+          onClick: function (event, treeId, treeNode) {
+            if(!SKIP_LIST.includes(treeNode.nando_id)){
+              setTimeout(function () {_onClick_handler(treeNode.nando_id);}, 10);
+            }
+          },
+          beforeExpand: function (treeId, treeNode) {
+            if (treeNode.isFirstTimeLoad) {
+              zTreeObj.removeChildNodes(treeNode);
+              treeNode.isParent = true;
+              zTreeObj.reAsyncChildNodes(treeNode, "refresh");
+            }
+            return true;
+          },
+          onExpand: function (treeId, treeNode) {
+            treeNode.isFirstTimeLoad = false;
+          }
+        },
+        data: {
+          key: {name: "displayName", title:"nando_id"}
+        }
+      };
+
+      zTreeObj = $.fn.zTree.init($("#treeview"), setting, treeview_data);
+
+      let nodes = zTreeObj.getNodes();
+      _highlight_upstream_treeview_startNode(zTreeObj, nodes, nando_id);
+    }
+
+    $(document).ready(function(){
+      if(lang !== "ja") lang = "en";
+
+      if(!(nando_id)) nando_id = "NANDO:1200477";
+
+      let url_str = `${URL_GET_PANEL_UPSTREAM_HIERARCHY}?nando_id=${nando_id}&lang=${lang}`;
+
+      $.ajax({url: url_str, type: 'GET', async: true, dataType: 'text'})
+        .done(function (data, textStatus, jqXHR) {
+          let json_data = JSON.parse(data);
+          init_ui_upstream_trace(nando_id, json_data);
+        })
+        .fail(function (jqXHR, textStatus, errorThrown) {
+          console.error('Treeview ajax failed: ' + url_str);
+        });
+    });
+  </script>
   </script>
 </body>
 

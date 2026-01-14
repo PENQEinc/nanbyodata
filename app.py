@@ -269,31 +269,84 @@ def get_mysql_connection():
     finally:
         conn.close()
 
-@app.route('/mysql_test')
-def mysql_test():
 
+#####
+# API functions for treeview
+def api_nanbyo_get_panel_hierarchy(r_nando_id, r_lang):
     response_data = {}
-    try:
-        with get_mysql_connection() as OBJ_MYSQL:
-            print("MySQL connection established successfully")
-            sql = "select COUNT(*) from nanbyodata_nando_panel_upstream_trace"
-            cr = OBJ_MYSQL.cursor()
-            cr.execute(sql)
-            rows = cr.fetchall()
-            cr.close()
-            for row in rows:
-                response_data = row[0]
-            print(f"Query executed successfully. Result: {response_data}")
-        return jsonify({
-            "status": "success",
-            "message": "MySQL connection and query successful",
-            "count": response_data
-        }), 200
-    except Exception as e:
-        error_msg = str(e)
-        print(f"MySQL connection or query failed: {error_msg}")
-        return jsonify({
-            "status": "error",
-            "message": "MySQL connection or query failed",
-            "error": error_msg
-        }), 500
+    with get_mysql_connection() as OBJ_MYSQL:
+        col = "trace_ja" if r_lang == "ja" else "trace_en"
+        sql = u"select {col} from nanbyodata_nando_panel_upstream_trace where nando_id=%s".format(col=col)
+        cr = OBJ_MYSQL.cursor()
+        cr.execute(sql, (r_nando_id,))
+        rows = cr.fetchall()
+        cr.close()
+        for row in rows:
+            response_data = row[0]
+
+    return response_data
+
+
+def api_nanbyo_get_panel_descendant(r_nando_id, r_lang):
+    response_data = []
+    with get_mysql_connection() as OBJ_MYSQL:
+        sql = u"select B.OntoID, B.OntoName, B.OntoNameJa, B.OntoDescendantNum from nanbyodata_nando_panel_hierarchy as A, nanbyodata_nando_panel as B where A.nando_id=B.OntoID AND A.parent_nando_id=%s order by B.OntoID"
+        cr = OBJ_MYSQL.cursor()
+        cr.execute(sql, (r_nando_id,))
+        rows = cr.fetchall()
+        cr.close()
+        for row in rows:
+            ret_record = {}
+            ret_record['nando_id']  = row[0]
+            ret_record['name']      = row[1]
+            ret_record['name_ja']   = row[2]
+            ret_record['num_child'] = row[3]
+            ret_record['lang']      = r_lang
+            ret_record['displayName'] = row[1]+" <font class=\"treeview-decendant-num\">(" + str(row[3]) + ")</font>"
+            if r_lang == "ja" and len(ret_record['name_ja']) > 0:
+                ret_record['displayName'] = row[2]+ " <font class=\"treeview-decendant-num\">(" + str(row[3]) + ")</font>"
+            ret_record['isFirstTimeLoad'] = True
+            ret_record['isParent'] = False
+            if row[3] > 0:
+                ret_record['isParent'] = True
+            else:
+                ret_record['displayName'] = row[1]
+                if r_lang == "ja" and len(ret_record['name_ja']) > 0:
+                    ret_record['displayName'] = row[2]
+
+            response_data.append(ret_record)
+
+    return response_data
+
+
+#####
+# API: Get panel hierarchy
+## GET: get upstream hierarchy data
+@app.route('/common_nanbyo_get_panel_hierarchy', methods=['GET'])
+def common_nanbyo_get_panel_hierarchy():
+    r_nando_id = "NANDO:1200477"
+    if request.args.get('nando_id') is not None:
+        r_nando_id = request.args.get('nando_id')
+
+    r_lang = "ja"
+    if request.args.get('lang') is not None and request.args.get('lang') == "en":
+        r_lang = request.args.get('lang')
+
+    response_data = api_nanbyo_get_panel_hierarchy(r_nando_id, r_lang)
+
+    return response_data
+
+
+#####
+# API: Get panel descendant
+## GET: get descendant nodes data
+@app.route('/common_nanbyo_get_panel_descendant', methods=['GET'])
+def common_nanbyo_get_panel_descendant():
+    r_lang = "ja"
+    if request.args.get('lang'):
+        if request.args.get('lang') == "en":
+            r_lang = request.args.get('lang')
+    r_nando_id = request.args.get('nando_id')
+
+    response_data = api_nanbyo_get_panel_descendant(r_nando_id, r_lang)
+    return json.dumps(response_data, ensure_ascii=False)
