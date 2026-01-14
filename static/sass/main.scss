@@ -24,6 +24,7 @@ Component
 /* ---------- Top Page ---------- */
 @use './object/component/search-area';
 @use './object/component/news-summary';
+@use './object/component/stats-overview';
 @use './object/component/card-wrapper';
 @use './object/component/button';
 @use './object/component/modal';
@@ -48,3 +49,5 @@ Project
 @use './object/project/summary-header';
 @use './object/project/summary-wrapper';
 @use './object/project/team';
+/* ---------- Stats Page ---------- */
+@use './object/project/stats';

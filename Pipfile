@@ -12,7 +12,7 @@ nltk = "*"
 uwsgi = "*"
 flask-babel = "*"
 flask-cors = "*"
-pronto = "*"
+pronto = "~=2.5.0"
 markdown2 = "*"
 requests = "*"
 

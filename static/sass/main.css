@@ -34,7 +34,7 @@ Foundation
   --font-size-xl: 1.25rem; /* 20px */
   --font-size-2xl: 1.5rem; /* 24px */
   --font-size-3xl: 2rem; /* 32px */
-  --spacing-disease-content: 25px;
+  --spacing-disease-content: 27px;
   --spacing-inner-box: 10px;
   --spacing-heading-bottom: 8px;
   --radius-small: 2px;
@@ -474,7 +474,7 @@ footer .container .footer__bottom .footer__lisence small:before {
 .content-wrapper #sidebar {
   overflow-y: auto;
   height: calc(100vh - 76px);
-  width: 270px;
+  width: 285px;
   background-color: var(--color-background-gray);
 }
 .content-wrapper #sidebar > section {
@@ -670,6 +670,160 @@ header.search-area .intro-text .keyword a {
   left: 48%;
 }
 
+/* ================================================
+Stats Overview Component
+================================================ */
+.stats-overview {
+  margin: 60px 0;
+}
+.stats-overview .section-title {
+  text-align: center;
+  color: #2c3e50;
+  margin-bottom: 40px;
+  font-size: 2rem;
+  font-weight: 600;
+}
+.stats-overview .section-title .section-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+.stats-overview .section-title .section-title-link:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stats-card {
+  background: white;
+  padding: 24px 10px;
+  text-align: center;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.stats-icon {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0;
+}
+.stats-icon i {
+  font-size: 2.5rem;
+  color: #20b2aa;
+}
+.stats-icon .stats-icon-svg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.stats-number {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  margin: 0;
+  line-height: 1;
+}
+
+.stats-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  color: var(--color-secondary);
+  font-weight: 500;
+  line-height: 1.2;
+  width: calc(100% - 20px);
+  text-align: center;
+  min-height: 2.4em; /* 2行分の高さを確保 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+@media (max-width: 768px) {
+  .stats-overview {
+    margin: 40px 0;
+  }
+  .stats-overview .section-title {
+    font-size: 1.5rem;
+    margin-bottom: 30px;
+  }
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  .stats-card {
+    padding: 20px 16px;
+    height: 120px;
+  }
+  .stats-icon {
+    top: 16px;
+  }
+  .stats-icon i {
+    font-size: 2rem;
+  }
+  .stats-icon .stats-icon-svg {
+    width: 2rem;
+    height: 2rem;
+  }
+  .stats-label {
+    bottom: 12px;
+    font-size: 0.9rem;
+    min-height: 2.2em;
+  }
+}
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+  .stats-card {
+    padding: 16px 12px;
+    height: 100px;
+  }
+  .stats-icon {
+    top: 12px;
+  }
+  .stats-icon i {
+    font-size: 1.8rem;
+  }
+  .stats-icon .stats-icon-svg {
+    width: 1.8rem;
+    height: 1.8rem;
+  }
+  .stats-label {
+    bottom: 8px;
+    font-size: 0.85rem;
+    min-height: 2em;
+  }
+}
 .card-wrapper {
   display: flex;
   justify-content: space-between;
@@ -818,10 +972,10 @@ header.search-area .intro-text .keyword a {
   padding: 10px;
   border-top: none;
   border-bottom: 1px solid var(--color-black);
-  color: var(--color-dataset-th);
+  color: #444;
   font-size: var(--font-size-small);
   white-space: nowrap;
-  font-weight: 400;
+  font-weight: 700;
 }
 .table-contents .table tbody tr td {
   padding: 10px;
@@ -866,6 +1020,16 @@ header.search-area .intro-text .keyword a {
   width: 20px;
   height: 20px;
   opacity: 0.5;
+}
+.loading-spinner.-stats {
+  position: relative;
+  top: unset;
+  left: unset;
+  width: 24px;
+  height: 24px;
+  margin: 0 auto;
+  border: 3px #e9ecef solid;
+  border-top: 3px #20b2aa solid;
 }
 
 @keyframes sp-anime {
@@ -1055,28 +1219,33 @@ header.search-area .intro-text .keyword a {
   color: var(--color-secondary);
 }
 #temp-side-navigation > ul > li .bio-resource,
-#temp-side-navigation > ul > li .variant {
+#temp-side-navigation > ul > li .variant,
+#temp-side-navigation > ul > li .genes {
   color: var(--color-secondary);
   font-weight: bold;
   padding: 10px 0 20px 10px;
 }
 #temp-side-navigation > ul > li .bio-resource.-disabled,
-#temp-side-navigation > ul > li .variant.-disabled {
+#temp-side-navigation > ul > li .variant.-disabled,
+#temp-side-navigation > ul > li .genes.-disabled {
   color: rgba(19, 41, 90, 0.2705882353);
 }
 #temp-side-navigation > ul > li .bio-resource ul,
-#temp-side-navigation > ul > li .variant ul {
+#temp-side-navigation > ul > li .variant ul,
+#temp-side-navigation > ul > li .genes ul {
   position: relative;
   bottom: 6px;
 }
 #temp-side-navigation > ul > li .bio-resource ul li,
-#temp-side-navigation > ul > li .variant ul li {
+#temp-side-navigation > ul > li .variant ul li,
+#temp-side-navigation > ul > li .genes ul li {
   position: relative;
   margin-left: 20px;
   padding-top: 4px;
 }
 #temp-side-navigation > ul > li .bio-resource ul li::before,
-#temp-side-navigation > ul > li .variant ul li::before {
+#temp-side-navigation > ul > li .variant ul li::before,
+#temp-side-navigation > ul > li .genes ul li::before {
   content: "";
   display: block;
   width: 5px;
@@ -1088,12 +1257,14 @@ header.search-area .intro-text .keyword a {
   position: absolute;
 }
 #temp-side-navigation > ul > li .bio-resource ul li:first-child::before,
-#temp-side-navigation > ul > li .variant ul li:first-child::before {
+#temp-side-navigation > ul > li .variant ul li:first-child::before,
+#temp-side-navigation > ul > li .genes ul li:first-child::before {
   top: 8px;
   height: 26px;
 }
 #temp-side-navigation > ul > li .bio-resource ul li::after,
-#temp-side-navigation > ul > li .variant ul li::after {
+#temp-side-navigation > ul > li .variant ul li::after,
+#temp-side-navigation > ul > li .genes ul li::after {
   content: "";
   display: block;
   width: 1px;
@@ -1105,7 +1276,8 @@ header.search-area .intro-text .keyword a {
   position: absolute;
 }
 #temp-side-navigation > ul > li .bio-resource ul li a,
-#temp-side-navigation > ul > li .variant ul li a {
+#temp-side-navigation > ul > li .variant ul li a,
+#temp-side-navigation > ul > li .genes ul li a {
   display: block;
   text-decoration: none;
   position: relative;
@@ -1118,15 +1290,18 @@ header.search-area .intro-text .keyword a {
   background-color: transparent;
 }
 #temp-side-navigation > ul > li .bio-resource ul li a:hover,
-#temp-side-navigation > ul > li .variant ul li a:hover {
+#temp-side-navigation > ul > li .variant ul li a:hover,
+#temp-side-navigation > ul > li .genes ul li a:hover {
   background-color: var(--color-breadcrumb-hover);
 }
 #temp-side-navigation > ul > li .bio-resource ul li .-disabled:hover,
-#temp-side-navigation > ul > li .variant ul li .-disabled:hover {
+#temp-side-navigation > ul > li .variant ul li .-disabled:hover,
+#temp-side-navigation > ul > li .genes ul li .-disabled:hover {
   background-color: transparent;
 }
 #temp-side-navigation > ul > li .bio-resource ul li .selected,
-#temp-side-navigation > ul > li .variant ul li .selected {
+#temp-side-navigation > ul > li .variant ul li .selected,
+#temp-side-navigation > ul > li .genes ul li .selected {
   background-color: rgba(22, 35, 78, 0.2);
 }
 
@@ -1166,7 +1341,7 @@ header.search-area .intro-text .keyword a {
 .linked-items > dd {
   margin-inline-start: 0;
   display: inline-block;
-  margin: 0;
+  margin: 0 0 3px 0;
 }
 
 .data-num {
@@ -1550,4 +1725,31 @@ Disease page right top */
 .member-card .member-info .member-affiliation {
   font-size: 0.875rem;
   color: #666;
+}
+
+/* ---------- Stats Page ---------- */
+/* ================================================
+Stats Page Styles
+================================================ */
+.stats-section {
+  margin: 2rem 0;
+}
+.stats-section-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin-bottom: 1rem;
+  padding-left: 0.75rem;
+  border-left: 6px solid var(--color-secondary);
+}
+
+.stats-table tbody td:not(:first-child) {
+  text-align: right;
+}
+.stats-table tbody td:first-child {
+  font-weight: bold;
+  font-size: 0.75rem;
+}
+.stats-table thead th:not(:first-child) {
+  text-align: right;
 }/*# sourceMappingURL=main.css.map */

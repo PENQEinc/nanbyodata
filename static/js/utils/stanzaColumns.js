@@ -55,7 +55,7 @@ export const pediatricChronicSpecificDiseaseEnColumns = [
 export const referencesColumns = [
   { id: 'pmid', label: 'PMID', link: 'url', target: '_blank' },
   { id: 'title', label: 'Title' },
-  { id: 'magazine', label: 'Magazine' },
+  { id: 'magazine', label: 'Journal' },
   { id: 'date', label: 'Date', type: 'date' },
 ];
 
@@ -112,10 +112,9 @@ export const geneColumns = [
 
 export const glycanRelatedGeneColumns = [
   {
-    id: 'gene_id',
+    id: 'genesymbol',
     label: 'Glycan related gene (GlyCosmos)',
     link: 'glycosmosgene',
-    align: 'center',
     rowspan: true,
   },
   {
@@ -133,6 +132,36 @@ export const glycanRelatedGeneColumns = [
     id: 'pmid_num',
     label: 'References',
     link: 'pmid_link',
+  },
+];
+
+export const referenceGeneColumns = [
+  {
+    id: 'symbol',
+    label: 'Gene symbol',
+    link: 'hgnc',
+    target: '_blank',
+  },
+  {
+    id: 'ncbi_id',
+    label: 'NCBI gene ID',
+    link: 'ncbi',
+    target: '_blank',
+  },
+  {
+    id: 'hgnc_id',
+    label: 'HGNC ID',
+    link: 'hgnc',
+    target: '_blank',
+  },
+  {
+    id: 'gene_name',
+    label: 'Gene name',
+  },
+  {
+    id: 'gene_description',
+    label: 'Description',
+    lineClamp: 2,
   },
 ];
 
@@ -178,8 +207,7 @@ export const phenotypesEnColumns = [
   },
 ];
 
-export const humDataJaColumns = [
-  { id: 'label_ja', label: 'Name', rowspan: true },
+export const humanGenomicDatasetsJaColumns = [
   {
     id: 'hum_id',
     label: 'Hum ID',
@@ -187,11 +215,12 @@ export const humDataJaColumns = [
     target: '_blank',
     rowspan: true,
   },
-  { id: 'type_data_ja', label: 'Type' },
+  { id: 'label_ja', label: '研究題目' },
+  { id: 'type_study_ja', label: 'データの種類' },
+  { id: 'type_data_ja', label: 'アクセス制限' },
 ];
 
-export const humDataEnColumns = [
-  { id: 'label_en', label: 'Name', rowspan: true },
+export const humanGenomicDatasetsEnColumns = [
   {
     id: 'hum_id',
     label: 'Hum ID',
@@ -199,7 +228,9 @@ export const humDataEnColumns = [
     target: '_blank',
     rowspan: true,
   },
-  { id: 'type_data_en', label: 'Type' },
+  { id: 'label_en', label: 'Study Title' },
+  { id: 'type_study_en', label: 'Type of Study' },
+  { id: 'type_data_en', label: 'Type of Data' },
 ];
 
 export const bioResourceCellColumns = [
@@ -209,10 +240,30 @@ export const bioResourceCellColumns = [
   { id: 'Description_j', label: 'Description (JA)' },
 ];
 
-export const bioResourceMouseColumns = [
-  { id: 'mouse_id', label: 'RIKEN_BRC No.', link: 'hp', target: '_blank' },
-  { id: 'mouse_name', label: 'Strain name' },
-  { id: 'description', label: 'Strain description' },
+export const bioResourceMouseJaColumns = [
+  {
+    id: 'mouse_id',
+    label: 'RIKEN_BRC No.',
+    link: 'hp',
+    target: '_blank',
+    rowspan: true,
+  },
+  { id: 'mouse_name', label: 'Strain name', rowspan: true },
+  { id: 'description', label: 'Strain description', rowspan: true },
+  { id: 'label_ja', label: '表現型', link: 'mp', target: '_blank' },
+];
+
+export const bioResourceMouseEnColumns = [
+  {
+    id: 'mouse_id',
+    label: 'RIKEN_BRC No.',
+    link: 'hp',
+    target: '_blank',
+    rowspan: true,
+  },
+  { id: 'mouse_name', label: 'Strain name', rowspan: true },
+  { id: 'description', label: 'Strain description', rowspan: true },
+  { id: 'label_en', label: 'Phenotype', link: 'mp', target: '_blank' },
 ];
 
 export const bioResourceDnaColumns = [
@@ -263,20 +314,19 @@ export const facialFeaturesColumns = [
   {
     id: 'id',
     label: 'Patient ID',
-    rowspan: true,
     link: 'person',
     target: '_blank',
+    rowspan: true,
   },
-  { id: 'gender', label: 'Gender', rowspan: true },
+  { id: 'gender', label: 'Gender' },
   {
     id: 'gene',
     label: 'Gene symbol',
-    rowspan: true,
     link: 'ncbi',
     target: '_blank',
   },
-  { id: 'minzoku', label: 'Ethnicity', rowspan: true },
-  { id: 'minzokumemo', label: 'Ethnicity note', rowspan: true },
+  { id: 'minzoku', label: 'Ethnicity' },
+  { id: 'minzokumemo', label: 'Ethnicity note' },
   { id: 'image_id', label: 'Image ID' },
   { id: 'image_desc', label: 'Type' },
   { id: 'age_year', label: 'Age (at photo)' },
@@ -287,6 +337,23 @@ export const facialFeaturesColumns = [
     label: 'PMID',
     rowspan: true,
     link: 'pmid_url',
+    target: '_blank',
+  },
+];
+
+export const compoundsColumns = [
+  {
+    id: 'id',
+    label: 'Compound CID',
+    link: 'id_url',
+    target: '_blank',
+    rowspan: true,
+  },
+  { id: 'label', label: 'Chemical Name', rowspan: true },
+  {
+    id: 'title',
+    label: 'Reference Title',
+    link: 'ref_url',
     target: '_blank',
   },
 ];

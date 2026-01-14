@@ -5,6 +5,7 @@ import {
   drawDesignatedIntractableDiseaseColumnsTable,
   drawPediatricChronicSpecificDiseaseColumnsTable,
 } from './epidemiology/epidemiology.js';
+import { StatsOverview } from './stats-overview.js';
 
 navToggle();
 focusInput();
@@ -16,6 +17,10 @@ if (window.location.pathname === '/epidemiology') {
 
 // smartbox
 if (window.location.pathname === '/') {
+  // 統計情報を初期化
+  const statsOverview = new StatsOverview();
+  statsOverview.init();
+
   document.addEventListener('selectedSmartBoxLabel', function (event) {
     const labelInfo = event.detail.labelInfo;
     window.location.href = `${location.origin}/disease/${labelInfo.id}`;

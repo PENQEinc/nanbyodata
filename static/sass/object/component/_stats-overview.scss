@@ -1,0 +1,176 @@
+/* ================================================
+Stats Overview Component
+================================================ */
+
+.stats-overview {
+  margin: 60px 0;
+
+  .section-title {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    font-weight: 600;
+
+    .section-title-link {
+      color: inherit;
+      text-decoration: none;
+
+      &:hover {
+        color: var(--color-primary);
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.stats-card {
+  background: white;
+  padding: 24px 10px;
+  text-align: center;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.1);
+  height: 170px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.stats-icon {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-bottom: 0;
+
+  i {
+    font-size: 2.5rem;
+    color: #20b2aa;
+  }
+
+  .stats-icon-svg {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+}
+
+.stats-number {
+  position: absolute;
+  top: 55%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.5rem;
+  color: var(--color-secondary);
+  margin: 0;
+  line-height: 1;
+}
+
+.stats-label {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  color: var(--color-secondary);
+  font-weight: 500;
+  line-height: 1.2;
+  width: calc(100% - 20px);
+  text-align: center;
+  min-height: 2.4em; /* 2行分の高さを確保 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+// レスポンシブデザイン
+@media (max-width: 1200px) {
+  .stats-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 992px) {
+  .stats-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+}
+
+@media (max-width: 768px) {
+  .stats-overview {
+    margin: 40px 0;
+
+    .section-title {
+      font-size: 1.5rem;
+      margin-bottom: 30px;
+    }
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .stats-card {
+    padding: 20px 16px;
+    height: 120px;
+  }
+
+  .stats-icon {
+    top: 16px;
+
+    i {
+      font-size: 2rem;
+    }
+
+    .stats-icon-svg {
+      width: 2rem;
+      height: 2rem;
+    }
+  }
+
+  .stats-label {
+    bottom: 12px;
+    font-size: 0.9rem;
+    min-height: 2.2em;
+  }
+}
+
+@media (max-width: 576px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .stats-card {
+    padding: 16px 12px;
+    height: 100px;
+  }
+
+  .stats-icon {
+    top: 12px;
+
+    i {
+      font-size: 1.8rem;
+    }
+
+    .stats-icon-svg {
+      width: 1.8rem;
+      height: 1.8rem;
+    }
+  }
+
+  .stats-label {
+    bottom: 8px;
+    font-size: 0.85rem;
+    min-height: 2em;
+  }
+}

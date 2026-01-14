@@ -1,0 +1,39 @@
+/* ================================================
+Stats Page Styles
+================================================ */
+
+// Stats Section
+.stats-section {
+  margin: 2rem 0;
+
+  &-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-secondary);
+    margin-bottom: 1rem;
+    padding-left: 0.75rem;
+    border-left: 6px solid var(--color-secondary);
+  }
+}
+
+// Stats Table
+.stats-table {
+  // 数値セルを右寄せにする
+  tbody td {
+    &:not(:first-child) {
+      text-align: right;
+    }
+
+    &:first-child {
+      font-weight: bold;
+      font-size: 0.75rem;
+    }
+  }
+
+  // ヘッダーも右寄せにする（区分列以外）
+  thead th {
+    &:not(:first-child) {
+      text-align: right;
+    }
+  }
+}

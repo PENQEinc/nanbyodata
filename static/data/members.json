@@ -197,7 +197,7 @@
           "en": "DBCLS"
         },
         "location": "domestic",
-        "image_name": "yasunori_yamamoto.jpg",
+        "image_name": "yasunori_yamamoto.png",
         "url": ""
       },
       {
@@ -212,20 +212,6 @@
         },
         "location": "domestic",
         "image_name": "shuichi_kawashima.jpg",
-        "url": ""
-      },
-      {
-        "name": {
-          "ja": "片山 俊明",
-          "en": "Toshiaki Katayama",
-          "yomi": "かたやま としあき"
-        },
-        "affiliation": {
-          "ja": "DBCLS",
-          "en": "DBCLS"
-        },
-        "location": "domestic",
-        "image_name": "toshiaki_katayama.jpg",
         "url": ""
       },
       {
@@ -255,6 +241,33 @@
         "location": "domestic",
         "image_name": "hideki_hatanaka.jpg",
         "url": ""
+      },
+      {
+        "name": {
+          "ja": "池田 秀也",
+          "en": "Shuya Ikeda",
+          "yomi": "いけだ しゅうや"
+        },
+        "affiliation": {
+          "ja": "DBCLS",
+          "en": "DBCLS"
+        },
+        "location": "domestic",
+        "image_name": "shuya_ikeda.jpg",
+        "url": ""
+      },
+      {
+        "name": {
+          "ja": "",
+          "en": "Evan Bolton"
+        },
+        "affiliation": {
+          "ja": "",
+          "en": "NIH/NLM/NCBI"
+        },
+        "location": "international",
+        "image_name": "evan_bolton.png",
+        "url": ""
       }
     ]
   },
@@ -272,6 +285,20 @@
         },
         "location": "",
         "image_name": "orion_buske.jpg",
+        "url": ""
+      },
+      {
+        "name": {
+          "ja": "片山 俊明",
+          "en": "Toshiaki Katayama",
+          "yomi": "かたやま としあき"
+        },
+        "affiliation": {
+          "ja": "DBCLS",
+          "en": "DBCLS"
+        },
+        "location": "",
+        "image_name": "toshiaki_katayama.png",
         "url": ""
       },
       {

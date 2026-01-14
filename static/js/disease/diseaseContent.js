@@ -1,19 +1,22 @@
 import { makeSideNavigation } from './diseaseSideNavigation.js';
 import {
   geneColumns,
+  referenceGeneColumns,
   glycanRelatedGeneColumns,
   geneticTestingColumns,
   phenotypesJaColumns,
   phenotypesEnColumns,
-  humDataJaColumns,
-  humDataEnColumns,
+  humanGenomicDatasetsJaColumns,
+  humanGenomicDatasetsEnColumns,
   referencesColumns,
   bioResourceCellColumns,
-  bioResourceMouseColumns,
+  bioResourceMouseJaColumns,
+  bioResourceMouseEnColumns,
   bioResourceDnaColumns,
   variantClinvarColumns,
   variantMgendColumns,
   facialFeaturesColumns,
+  compoundsColumns,
   convertColumnToText,
 } from '../utils/stanzaColumns.js';
 
@@ -24,8 +27,12 @@ import {
 
 makeSideNavigation();
 
-// genes(疾患関連遺伝子)
-export function makeGenes(geneData) {
+// internationallyCuratedGenes(国際リソース由来の疾患関連遺伝子)
+export function makeInternationallyCuratedGenes(geneData) {
+  const genes = document.getElementById('genes');
+  const tabWrap = genes.querySelector('.tab-wrap');
+
+  const genesDataset = processData(geneData);
   // gene_symbolの重複を除外したユニークな値の数を計算
   let uniqueGeneSymbolCount = 0;
   if (geneData && Array.isArray(geneData) && geneData.length > 0) {
@@ -38,17 +45,68 @@ export function makeGenes(geneData) {
     uniqueGeneSymbolCount = uniqueGeneSymbols.size;
   }
 
-  makeData(
-    geneData,
-    'genes',
-    'genes-table',
-    convertColumnToText(geneColumns),
-    uniqueGeneSymbolCount // 重複のないgene_symbolの数を渡す
-  );
+  const items = {
+    id: 'internationally-curated',
+    columns: convertColumnToText(geneColumns),
+    data: geneData,
+    object: genesDataset.dataObject,
+  };
+
+  processTabs(items, 'genes', tabWrap, uniqueGeneSymbolCount);
   if (geneData?.length > 0 && geneData !== null) {
-    const navLink = document.querySelector('.nav-link.genes');
+    const navLink = document.querySelector('.nav-link.internationally-curated');
+    const genesWrapper = document.querySelector('.genes');
     navLink.style.cursor = 'pointer';
     navLink.classList.remove('-disabled');
+    genesWrapper.classList.remove('-disabled');
+  } else {
+    document.querySelector('#genes-internationally-curated').remove();
+    document.querySelector('.tab-label.genes-internationally-curated').remove();
+    document.querySelector('.tab-content.internationally-curated').remove();
+  }
+}
+
+// japanCuratedGenes(国内基準由来の疾患関連遺伝子)
+export function makeJapanCuratedGenes(japanCuratedGeneData) {
+  const genes = document.getElementById('genes');
+  const tabWrap = genes.querySelector('.tab-wrap');
+
+  const japanCuratedGenesDataset = processData(japanCuratedGeneData);
+
+  // symbolの重複を除外したユニークな値の数を計算
+  let uniqueJapanCuratedSymbolCount = 0;
+  if (
+    japanCuratedGeneData &&
+    Array.isArray(japanCuratedGeneData) &&
+    japanCuratedGeneData.length > 0
+  ) {
+    const uniqueJapanCuratedSymbols = new Set();
+    japanCuratedGeneData.forEach((gene) => {
+      if (gene.symbol) {
+        uniqueJapanCuratedSymbols.add(gene.symbol);
+      }
+    });
+    uniqueJapanCuratedSymbolCount = uniqueJapanCuratedSymbols.size;
+  }
+
+  const items = {
+    id: 'japan-curated',
+    columns: convertColumnToText(referenceGeneColumns),
+    data: japanCuratedGeneData,
+    object: japanCuratedGenesDataset.dataObject,
+  };
+
+  processTabs(items, 'genes', tabWrap, uniqueJapanCuratedSymbolCount);
+  if (japanCuratedGeneData?.length > 0 && japanCuratedGeneData !== null) {
+    const navLink = document.querySelector('.nav-link.japan-curated');
+    const genesWrapper = document.querySelector('.genes');
+    navLink.style.cursor = 'pointer';
+    navLink.classList.remove('-disabled');
+    genesWrapper.classList.remove('-disabled');
+  } else {
+    document.querySelector('#genes-japan-curated').remove();
+    document.querySelector('.tab-label.genes-japan-curated').remove();
+    document.querySelector('.tab-content.japan-curated').remove();
   }
 }
 
@@ -75,7 +133,8 @@ export function makeGlycanRelatedGene(glycanRelatedGeneData) {
     'glycan-related-genes',
     'glycan-related-genes-table',
     convertColumnToText(glycanRelatedGeneColumns),
-    uniqueGeneIdCount // 重複のないgene_idの数を渡す
+    uniqueGeneIdCount, // 重複のないgene_idの数を渡す
+    'https://togostanza.github.io/togostanza-themes/contrib/nanbyodata-glycan.css'
   );
   if (glycanRelatedGeneData?.length > 0 && glycanRelatedGeneData !== null) {
     const navLink = document.querySelector('.nav-link.glycan-related-genes');
@@ -84,7 +143,7 @@ export function makeGlycanRelatedGene(glycanRelatedGeneData) {
   }
 }
 
-// geneticTesting(診療用遺伝学的検査情報)
+// geneticTesting(診療用遺伝学的検査)
 export function makeGeneticTesting(geneticTestingData) {
   makeData(
     geneticTestingData,
@@ -125,35 +184,41 @@ export function makePhenotypes(phenotypesData) {
   };
   makeData(
     phenotypesData,
-    'phenotypes',
+    'clinical-features',
     phenotypeLang,
     columns[currentLang],
     uniqueHpoIdCount
   );
   if (phenotypesData?.length > 0 && phenotypesData !== null) {
-    const navLink = document.querySelector('.nav-link.phenotypes');
+    const navLink = document.querySelector('.nav-link.clinical-features');
     navLink.style.cursor = 'pointer';
     navLink.classList.remove('-disabled');
   }
 }
 
-// humData(Hum Data)
-export function makeHumData(humData) {
+// humanGenomicDatasets(ヒトゲノムデータセット)
+export function makeHumanGenomicDatasets(humanGenomicDatasetsData) {
   const currentLang = document.querySelector('.language-select').value;
-  const humDataLang = currentLang === 'ja' ? 'hum-data-ja' : 'hum-data-en';
+  const humanGenomicDatasetsLang =
+    currentLang === 'ja'
+      ? 'human-genomic-datasets-ja'
+      : 'human-genomic-datasets-en';
   const columns = {
-    ja: convertColumnToText(humDataJaColumns),
-    en: convertColumnToText(humDataEnColumns),
+    ja: convertColumnToText(humanGenomicDatasetsJaColumns),
+    en: convertColumnToText(humanGenomicDatasetsEnColumns),
   };
   makeData(
-    humData,
-    'hum-data',
-    humDataLang,
+    humanGenomicDatasetsData,
+    'human-genomic-datasets',
+    humanGenomicDatasetsLang,
     columns[currentLang],
-    humData?.length || 0
+    humanGenomicDatasetsData?.length || 0
   );
-  if (humData?.length > 0 && humData !== null) {
-    const navLink = document.querySelector('.nav-link.hum-data');
+  if (
+    humanGenomicDatasetsData?.length > 0 &&
+    humanGenomicDatasetsData !== null
+  ) {
+    const navLink = document.querySelector('.nav-link.human-genomic-datasets');
     navLink.style.cursor = 'pointer';
     navLink.classList.remove('-disabled');
   }
@@ -191,7 +256,7 @@ export function makeCell(cellData) {
     object: cellDataset.dataObject,
   };
 
-  processTabs(items, 'bio-resource', tabWrap);
+  processTabs(items, 'bio-resources', tabWrap);
   if (cellData?.length > 0 && cellData !== null) {
     const navLink = document.querySelector('.nav-link.cell');
     const bioResource = document.querySelector('.bio-resource');
@@ -199,8 +264,8 @@ export function makeCell(cellData) {
     navLink.classList.remove('-disabled');
     bioResource.classList.remove('-disabled');
   } else {
-    document.querySelector('#bio-resource-cell').remove();
-    document.querySelector('.tab-label.bio-resource-cell').remove();
+    document.querySelector('#bio-resources-cell').remove();
+    document.querySelector('.tab-label.bio-resources-cell').remove();
     document.querySelector('.tab-content.cell').remove();
   }
 }
@@ -210,16 +275,33 @@ export function makeMouse(mouseData) {
   const bioResource = document.getElementById('bio-resource');
   const tabWrap = bioResource.querySelector('.tab-wrap');
 
+  // mouse_idの重複を除外したユニークな値の数を計算
+  let uniqueMouseIdCount = 0;
+  if (mouseData && Array.isArray(mouseData) && mouseData.length > 0) {
+    const uniqueMouseIds = new Set();
+    mouseData.forEach((mouse) => {
+      if (mouse.mouse_id) {
+        uniqueMouseIds.add(mouse.mouse_id);
+      }
+    });
+    uniqueMouseIdCount = uniqueMouseIds.size;
+  }
+
   const mouseDataset = processData(mouseData);
+  const currentLang = document.querySelector('.language-select').value;
+  const mouseColumns =
+    currentLang === 'ja'
+      ? bioResourceMouseJaColumns
+      : bioResourceMouseEnColumns;
 
   const items = {
     id: 'mouse',
-    columns: convertColumnToText(bioResourceMouseColumns),
+    columns: convertColumnToText(mouseColumns),
     data: mouseData,
     object: mouseDataset.dataObject,
   };
 
-  processTabs(items, 'bio-resource', tabWrap);
+  processTabs(items, 'bio-resources', tabWrap, uniqueMouseIdCount);
   if (mouseData?.length > 0 && mouseData !== null) {
     const navLink = document.querySelector('.nav-link.mouse');
     const bioResource = document.querySelector('.bio-resource');
@@ -227,8 +309,8 @@ export function makeMouse(mouseData) {
     navLink.classList.remove('-disabled');
     bioResource.classList.remove('-disabled');
   } else {
-    document.querySelector('#bio-resource-mouse').remove();
-    document.querySelector('.tab-label.bio-resource-mouse').remove();
+    document.querySelector('#bio-resources-mouse').remove();
+    document.querySelector('.tab-label.bio-resources-mouse').remove();
     document.querySelector('.tab-content.mouse').remove();
   }
 }
@@ -247,7 +329,7 @@ export function makeDNA(dnaData) {
     object: dnaDataset.dataObject,
   };
 
-  processTabs(items, 'bio-resource', tabWrap);
+  processTabs(items, 'bio-resources', tabWrap);
   if (dnaData?.length > 0 && dnaData !== null) {
     const navLink = document.querySelector('.nav-link.dna');
     const bioResource = document.querySelector('.bio-resource');
@@ -255,8 +337,8 @@ export function makeDNA(dnaData) {
     navLink.classList.remove('-disabled');
     bioResource.classList.remove('-disabled');
   } else {
-    document.querySelector('#bio-resource-dna').remove();
-    document.querySelector('.tab-label.bio-resource-dna').remove();
+    document.querySelector('#bio-resources-dna').remove();
+    document.querySelector('.tab-label.bio-resources-dna').remove();
     document.querySelector('.tab-content.dna').remove();
   }
 }
@@ -276,7 +358,7 @@ export function makeClinvar(clinvarData) {
     object: clinvarDataset.dataObject,
   };
 
-  processTabs(items, 'variant', tabWrap);
+  processTabs(items, 'variants', tabWrap);
   if (clinvarData?.length > 0 && clinvarData !== null) {
     const navLink = document.querySelector('.nav-link.clinvar');
     const variant = document.querySelector('.variant');
@@ -284,8 +366,8 @@ export function makeClinvar(clinvarData) {
     navLink.classList.remove('-disabled');
     variant.classList.remove('-disabled');
   } else {
-    document.querySelector('#variant-clinvar').remove();
-    document.querySelector('.tab-label.variant-clinvar').remove();
+    document.querySelector('#variants-clinvar').remove();
+    document.querySelector('.tab-label.variants-clinvar').remove();
     document.querySelector('.tab-content.clinvar').remove();
   }
 }
@@ -304,7 +386,7 @@ export function makeMgend(mgendData) {
     object: mgendDataset.dataObject,
   };
 
-  processTabs(items, 'variant', tabWrap);
+  processTabs(items, 'variants', tabWrap);
   if (mgendData?.length > 0 && mgendData !== null) {
     const navLink = document.querySelector('.nav-link.mgend');
     const variant = document.querySelector('.variant');
@@ -312,8 +394,8 @@ export function makeMgend(mgendData) {
     navLink.classList.remove('-disabled');
     variant.classList.remove('-disabled');
   } else {
-    document.querySelector('#variant-mgend').remove();
-    document.querySelector('.tab-label.variant-mgend').remove();
+    document.querySelector('#variants-mgend').remove();
+    document.querySelector('.tab-label.variants-mgend').remove();
     document.querySelector('.tab-content.mgend').remove();
   }
 }
@@ -338,19 +420,45 @@ export function makeFacialFeatures(facialFeaturesData) {
   }
 }
 
+// Compounds
+export function makeCompounds(compoundsData) {
+  const currentLang = document.querySelector('.language-select').value;
+  const compoundsLang = currentLang === 'ja' ? 'compounds-ja' : 'compounds-en';
+  const columns = convertColumnToText(compoundsColumns);
+  makeData(
+    compoundsData,
+    'compounds',
+    compoundsLang,
+    columns,
+    compoundsData?.length || 0
+  );
+  if (compoundsData?.length > 0 && compoundsData !== null) {
+    const navLink = document.querySelector('.nav-link.compounds');
+    navLink.style.cursor = 'pointer';
+    navLink.classList.remove('-disabled');
+  }
+}
+
 /**
- * Generates and updates data table for causalGene, geneticTesting and phenotypes.
- * @param {Array} data - Data from API (e.g., causalGeneData, geneticTestingData, phenotypesData).
- * @param {string} categoryName - Category name (e.g., 'causal-genes', 'genetic-testing', 'phenotypes').
- * @param {string} tableId - Table element ID (e.g., 'causal-genes-table', 'genetic-testing-table', 'phenotype-ja', 'phenotype-en').
+ * Generates and updates data table for genes, geneticTesting and phenotypes.
+ * @param {Array} data - Data from API (e.g., geneData, geneticTestingData, phenotypesData).
+ * @param {string} categoryName - Category name (e.g., 'genes', 'genetic-testing', 'phenotypes').
+ * @param {string} tableId - Table element ID (e.g., 'genes-table', 'genetic-testing-table', 'phenotype-ja', 'phenotype-en').
  * @param {string} columns - Columns for togostanza-pagination-table.
  * @param {number} customCount - Optional custom count for data-num (used for unique gene counts).
  */
-function makeData(data, categoryName, tableId, columns, customCount) {
+function makeData(
+  data,
+  categoryName,
+  tableId,
+  columns,
+  customCount,
+  customCssUrl
+) {
   const container = document.getElementById(categoryName);
   const tableView = container.querySelector(`#${tableId}`);
   const objectUrl = createObjectUrlFromData(data);
-  updateElementWithTable(tableView, objectUrl, columns);
+  updateElementWithTable(tableView, objectUrl, columns, customCssUrl);
 
   // カスタム数値が指定されていれば使用し、そうでなければデータの長さを使用
   const displayCount =

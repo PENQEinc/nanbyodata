@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% elif get_locale() == "ko" or get_locale() == "ko_KR" %}
+<html lang="ko">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <!-- SEO -->
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+  <title>Statistics | NanbyoData</title>
+  <meta name="description" content="NanbyoDataの統計情報ページです." />
+  <meta property="og:title" content="統計情報 | NanbyoData" />
+  <meta property="og:description" content="NanbyoDataの統計情報ページです." />
+  {% else %}
+  <title>Statistics | NanbyoData</title>
+  <meta name="description" content="Statistics page of NanbyoData." />
+  <meta property="og:title" content="Statistics | NanbyoData" />
+  <meta property="og:description" content="Statistics page of NanbyoData." />
+  {% endif %}
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanbyodata.jp/stats" />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" />
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
+
+  <!-- favicon -->
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+
+</head>
+
+<body>
+  <main>
+    <!-- Navigation -->
+    {% include 'component/navigation.html' %}
+
+    <!--- Stats page --->
+    <section class="page-layout">
+      <header class="page-title">
+
+        <h2>Statistics</h2>
+      </header>
+
+      <div class="contents-wrapper">
+        <div class="content-block">
+
+          <!-- 難病統計テーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">難病（NANDO）</h4>
+            {% else %}
+            <h4 class="stats-section-title">Nanbyo (NANDO)</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="nando-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="nando-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="nando-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>All</th>
+                      <th>Nanbyo group</th>
+                      <th>Nanbyo disease</th>
+                      <th>Nanbyo subtype</th>
+                      {% else %}
+                      <th>Category</th>
+                      <th>All</th>
+                      <th>Nanbyo group</th>
+                      <th>Nanbyo disease</th>
+                      <th>Nanbyo subtype</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-all">-</td>
+                      <td id="shitei-nanbyo-group">-</td>
+                      <td id="shitei-nanbyo-disease">-</td>
+                      <td id="shitei-nanbyo-subtype">-</td>
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-all">-</td>
+                      <td id="shoman-nanbyo-group">-</td>
+                      <td id="shoman-nanbyo-disease">-</td>
+                      <td id="shoman-nanbyo-subtype">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <!-- 疾患概要テーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">疾患概要</h4>
+            {% else %}
+            <h4 class="stats-section-title">Overview</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="disease-overview-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="disease-overview-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="disease-overview-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>疾患定義</th>
+                      <th>遺伝形式</th>
+                      <th>別疾患名</th>
+                      {% else %}
+                      <th>Category</th>
+                      <th>Disease Definition</th>
+                      <th>Inheritance</th>
+                      <th>Alternative Disease Names</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-definition">-</td>
+                      <td id="shitei-inheritance">-</td>
+                      <td id="shitei-alternative-names">-</td>
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-definition">-</td>
+                      <td id="shoman-inheritance">-</td>
+                      <td id="shoman-alternative-names">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <!-- リンクテーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">外部リンク</h4>
+            {% else %}
+            <h4 class="stats-section-title">External Links</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="links-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="links-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="links-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>Monarch Initiative (exact)</th>
+                      <th>Monarch Initiative (close)</th>
+                      <th>Orphanet</th>
+                      <th>MedGen</th>
+                      <th>KEGG</th>
+                      {% else %}
+                      <th>Category</th>
+                      <th>Monarch Initiative (exact)</th>
+                      <th>Monarch Initiative (close)</th>
+                      <th>Orphanet</th>
+                      <th>MedGen</th>
+                      <th>KEGG</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-monarch-exact">-</td>
+                      <td id="shitei-monarch-close">-</td>
+                      <td id="shitei-orphanet">-</td>
+                      <td id="shitei-medgen">-</td>
+                      <td id="shitei-kegg">-</td>
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-monarch-exact">-</td>
+                      <td id="shoman-monarch-close">-</td>
+                      <td id="shoman-orphanet">-</td>
+                      <td id="shoman-medgen">-</td>
+                      <td id="shoman-kegg">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <!-- 疾患関連データテーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">疾患関連データ</h4>
+            {% else %}
+            <h4 class="stats-section-title">Related Data</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="related-data-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="related-data-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="related-data-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>糖鎖関連遺伝子</th>
+                      <th>診療用遺伝学的検査</th>
+                      <th>臨床的特徴</th>
+                      <th>顔貌特徴</th>
+                      <th>ヒトゲノムデータセット</th>
+                      <th>化合物</th>
+                      <!-- <th>文献</th> -->
+                      {% else %}
+                      <th>Category</th>
+                      <th>Glycan-Related Genes</th>
+                      <th>Genetic Testings</th>
+                      <th>Clinical Features</th>
+                      <th>Facial Features</th>
+                      <th>Human Genomic Datasets</th>
+                      <th>Compounds</th>
+                      <!-- <th>References</th> -->
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-glycan-genes">-</td>
+                      <td id="shitei-genetic-testings">-</td>
+                      <td id="shitei-clinical-features">-</td>
+                      <td id="shitei-facial-features">-</td>
+                      <td id="shitei-human-data">-</td>
+                      <td id="shitei-chemicals">-</td>
+                      <!-- <td id="shitei-literature">-</td> -->
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-glycan-genes">-</td>
+                      <td id="shoman-genetic-testings">-</td>
+                      <td id="shoman-clinical-features">-</td>
+                      <td id="shoman-facial-features">-</td>
+                      <td id="shoman-human-data">-</td>
+                      <td id="shoman-chemicals">-</td>
+                      <!-- <td id="shoman-literature">-</td> -->
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <!-- 疾患関連遺伝子テーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">疾患関連遺伝子</h4>
+            {% else %}
+            <h4 class="stats-section-title">Genes</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="genes-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="genes-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="genes-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>国内基準由来</th>
+                      <th>国際リソース由来</th>
+                      {% else %}
+                      <th>Category</th>
+                      <th>Japan-curated</th>
+                      <th>Internationally curated</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-domestic-genes">-</td>
+                      <td id="shitei-international-genes">-</td>
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-domestic-genes">-</td>
+                      <td id="shoman-international-genes">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <!-- 難病特異的バイオリソーステーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">難病特異的バイオリソース</h4>
+            {% else %}
+            <h4 class="stats-section-title">Bioresources</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="bioresources-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="bioresources-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="bioresources-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>細胞</th>
+                      <th>マウス</th>
+                      <th>DNA</th>
+                      {% else %}
+                      <th>Category</th>
+                      <th>Cell</th>
+                      <th>Mouse</th>
+                      <th>DNA</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-cells">-</td>
+                      <td id="shitei-mouse">-</td>
+                      <td id="shitei-dna">-</td>
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-cells">-</td>
+                      <td id="shoman-mouse">-</td>
+                      <td id="shoman-dna">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+          <!-- バリアントテーブル -->
+          <div class="stats-section">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h4 class="stats-section-title">バリアント</h4>
+            {% else %}
+            <h4 class="stats-section-title">Variants</h4>
+            {% endif %}
+            <div class="table-contents">
+              <div id="variants-loading" class="loading-container" style="display: none;">
+                <div class="loading-spinner -stats"></div>
+              </div>
+              <div id="variants-error" class="error-container" style="display: none;">
+                <p>データの読み込みに失敗しました</p>
+              </div>
+              <section class="section" id="variants-content">
+                <table class="table stats-table">
+                  <thead>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <th>区分</th>
+                      <th>ClinVar</th>
+                      <th>MGeND</th>
+                      {% else %}
+                      <th>Category</th>
+                      <th>ClinVar</th>
+                      <th>MGeND</th>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>指定</td>
+                      {% else %}
+                      <td>Shitei</td>
+                      {% endif %}
+                      <td id="shitei-clinvar">-</td>
+                      <td id="shitei-mgend">-</td>
+                    </tr>
+                    <tr>
+                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                      <td>小慢</td>
+                      {% else %}
+                      <td>Shoman</td>
+                      {% endif %}
+                      <td id="shoman-clinvar">-</td>
+                      <td id="shoman-mgend">-</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </section>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!--- footer --->
+    {% include 'component/footer.html' %}
+
+    <!--- NanbyoData利用規約 modal -->
+    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+    {% include 'component/modal-tos.html' %}
+    {% else %}
+    {% include 'component/modal-tos_en.html' %}
+    {% endif %}
+
+  </main>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script src="/static/js/stats.js"></script>
+</body>
+
+</html>

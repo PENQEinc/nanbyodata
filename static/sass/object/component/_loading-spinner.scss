@@ -21,6 +21,16 @@
     height: 20px;
     opacity: 0.5;
   }
+  &.-stats {
+    position: relative;
+    top: unset;
+    left: unset;
+    width: 24px;
+    height: 24px;
+    margin: 0 auto;
+    border: 3px #e9ecef solid;
+    border-top: 3px #20b2aa solid;
+  }
 }
 
 @keyframes sp-anime {
