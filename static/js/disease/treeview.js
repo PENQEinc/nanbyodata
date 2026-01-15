@@ -742,7 +742,12 @@ $(document).ready(function () {
         alert('サーバー応答の形式が不正です。');
       }
     })
-    .fail(function () {
-      console.log('AJAXに失敗しました。\nURL: ' + url_str);
+    .fail(function (jqXHR, textStatus, errorThrown) {
+      console.error('AJAXに失敗しました。');
+      console.error('URL: ' + url_str);
+      console.error('Status: ' + textStatus);
+      console.error('Error: ' + errorThrown);
+      console.error('Response:', jqXHR.responseText);
+      alert('データの取得に失敗しました。ページを再読み込みしてください。');
     });
 });

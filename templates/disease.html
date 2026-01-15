@@ -41,6 +41,10 @@
   <!-- SmartBox Style -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/PubCaseFinder/pubcasefinder_tools@main/smartbox/style.css">
 
+  <!-- zTree CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/css/zTreeStyle/zTreeStyle.min.css"
+    type="text/css">
+
   <!-- favicon -->
   <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
 
@@ -132,168 +136,178 @@
     <div class="content-wrapper">
       <!-- Sidebar -->
       <aside id="sidebar">
-        <section class="breadcrumb-list">
-          <h2 class="sidebar-title">
+        <h2 class="sidebar-title">
+          <i class="fas fa-sitemap sitemap-icon"></i>
+          <span class="sidebar-title-text">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             疾患選択
             {% else %}
             Tree
             {% endif %}
-          </h2>
+          </span>
+        </h2>
+        <section class="breadcrumb-list">
           <!-- パンくずリスト -->
-          {{ breadcrumb_list_html |safe }}
+          {% include 'component/treeview_component.html' %}
+          <!-- {{ breadcrumb_list_html |safe }} -->
         </section>
-        <!-- Side Navigation -->
-        <section id="temp-side-navigation">
-          <h2 class="sidebar-title">
+        <div class="resize-handle" id="sidebar-resize-handle"></div>
+      </aside>
+
+      <!-- Side Navigation -->
+      <aside id="temp-side-navigation">
+        <h2 class="sidebar-title">
+          <i class="fas fa-solid fa-list list-icon"></i>
+          <span class="sidebar-title-text">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             目次
             {% else %}
             Contents
             {% endif %}
-          </h2>
-          <ul>
-            <li><a href="#overview" class="nav-link overview">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                概要
-                {% else %}
-                Overview
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-            </li>
-            <li>
-              <div class="genes -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                疾患関連遺伝子
-                {% else %}
-                Genes
-                {% endif %}
-                <ul>
-                  <li><a href="#genes" class="japan-curated nav-link -disabled">
-                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                      国内基準由来
-                      {% else %}
-                      Japan-curated
-                      {% endif %}
-                      <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-                  </li>
-                  <li><a href="#genes" class="internationally-curated nav-link -disabled">
-                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                      国際リソース由来
-                      {% else %}
-                      Internationally curated
-                      {% endif %}
-                      <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li><a href="#glycan-related-genes" class="nav-link glycan-related-genes -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                糖鎖関連遺伝子
-                {% else %}
-                Glycan-related Genes
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-            </li>
-            <li><a href="#genetic-testing" class="nav-link genetic-testing -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                診療用遺伝学的検査
-                {% else %}
-                Genetic Testings
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-            </li>
-            <li><a href="#clinical-features" class="nav-link clinical-features -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                臨床的特徴
-                {% else %}
-                Clinical Features
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-            </li>
-            <li><a href="#facial-features" class="nav-link facial-features -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                顔貌特徴
-                {% else %}
-                Facial Features
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span>
-              </a>
-            </li>
-            <li><a href="#human-genomic-datasets" class="nav-link human-genomic-datasets -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                ヒトゲノムデータセット
-                {% else %}
-                Human Genomic Datasets
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-            </li>
-            <li>
-              <div class="bio-resource -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                難病特異的バイオリソース
-                {% else %}
-                Bioresources
-                {% endif %}
-                <ul>
-                  <li><a href="#bio-resources-cell" class="cell nav-link -disabled">
-                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                      細胞
-                      {% else %}
-                      Cell
-                      {% endif %}
-                      <span class="data-num"><span class="loading-spinner -sidenav"></span></a>
-                  </li>
-                  <li><a href="#bio-resources-mouse" class="mouse nav-link -disabled">
-                      {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                      マウス
-                      {% else %}
-                      Mouse
-                      {% endif %}
-                      <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-                  </li>
-                  <li><a href="#bio-resources-dna" class="dna nav-link -disabled">DNA<span class="data-num"><span
-                          class="loading-spinner -sidenav"></span></span></a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li><a href="#compounds" class="nav-link compounds -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                化合物
-                {% else %}
-                Compounds
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span>
-              </a>
-            </li>
-            <li>
-              <div class="variant -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                バリアント
-                {% else %}
-                Variants
-                {% endif %}
-                <ul>
-                  <li><a href="#variants-clinvar" class="clinvar nav-link -disabled">ClinVar<span class="data-num"><span
-                          class="loading-spinner -sidenav"></span></span></a>
-                  </li>
-                  <li><a href="#variants-mgend" class="mgend nav-link -disabled">MGeND<span class="data-num"><span
-                          class="loading-spinner -sidenav"></span></span></a>
-                  </li>
-                </ul>
-              </div>
-            </li>
-            <li><a href="#references" class="nav-link references -disabled">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                文献
-                {% else %}
-                References
-                {% endif %}
-                <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
-            </li>
-          </ul>
+        </h2>
+        <ul>
+          <li><a href="#overview" class="nav-link overview">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              概要
+              {% else %}
+              Overview
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+          </li>
+          <li>
+            <div class="genes -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              疾患関連遺伝子
+              {% else %}
+              Genes
+              {% endif %}
+              <ul>
+                <li><a href="#genes" class="japan-curated nav-link -disabled">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    国内基準由来
+                    {% else %}
+                    Japan-curated
+                    {% endif %}
+                    <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+                </li>
+                <li><a href="#genes" class="internationally-curated nav-link -disabled">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    国際リソース由来
+                    {% else %}
+                    Internationally curated
+                    {% endif %}
+                    <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="#glycan-related-genes" class="nav-link glycan-related-genes -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              糖鎖関連遺伝子
+              {% else %}
+              Glycan-related Genes
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+          </li>
+          <li><a href="#genetic-testing" class="nav-link genetic-testing -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              診療用遺伝学的検査
+              {% else %}
+              Genetic Testings
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+          </li>
+          <li><a href="#clinical-features" class="nav-link clinical-features -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              臨床的特徴
+              {% else %}
+              Clinical Features
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+          </li>
+          <li><a href="#facial-features" class="nav-link facial-features -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              顔貌特徴
+              {% else %}
+              Facial Features
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span>
+            </a>
+          </li>
+          <li><a href="#human-genomic-datasets" class="nav-link human-genomic-datasets -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              ヒトゲノムデータセット
+              {% else %}
+              Human Genomic Datasets
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+          </li>
+          <li>
+            <div class="bio-resource -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              難病特異的バイオリソース
+              {% else %}
+              Bioresources
+              {% endif %}
+              <ul>
+                <li><a href="#bio-resources-cell" class="cell nav-link -disabled">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    細胞
+                    {% else %}
+                    Cell
+                    {% endif %}
+                    <span class="data-num"><span class="loading-spinner -sidenav"></span></a>
+                </li>
+                <li><a href="#bio-resources-mouse" class="mouse nav-link -disabled">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    マウス
+                    {% else %}
+                    Mouse
+                    {% endif %}
+                    <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+                </li>
+                <li><a href="#bio-resources-dna" class="dna nav-link -disabled">DNA<span class="data-num"><span
+                        class="loading-spinner -sidenav"></span></span></a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="#compounds" class="nav-link compounds -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              化合物
+              {% else %}
+              Compounds
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span>
+            </a>
+          </li>
+          <li>
+            <div class="variant -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              バリアント
+              {% else %}
+              Variants
+              {% endif %}
+              <ul>
+                <li><a href="#variants-clinvar" class="clinvar nav-link -disabled">ClinVar<span class="data-num"><span
+                        class="loading-spinner -sidenav"></span></span></a>
+                </li>
+                <li><a href="#variants-mgend" class="mgend nav-link -disabled">MGeND<span class="data-num"><span
+                        class="loading-spinner -sidenav"></span></span></a>
+                </li>
+              </ul>
+            </div>
+          </li>
+          <li><a href="#references" class="nav-link references -disabled">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              文献
+              {% else %}
+              References
+              {% endif %}
+              <span class="data-num"><span class="loading-spinner -sidenav"></span></span></a>
+          </li>
+        </ul>
+        <div class="resize-handle" id="toc-resize-handle"></div>
         </section>
       </aside>
 
@@ -944,10 +958,14 @@
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- zTree JavaScript -->
+  <script src="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/js/jquery.ztree.core.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/js/jquery.ztree.excheck.min.js"></script>
+  <script src="/static/js/disease/treeview.js"></script>
   <script type="module" src="/static/js/disease/disease.js"></script>
   <script type="module"
     src="https://cdn.jsdelivr.net/gh/PubCaseFinder/pubcasefinder_tools@main/smartbox/smartbox.js"></script>
-  </script>
+
 </body>
 
 </html>
