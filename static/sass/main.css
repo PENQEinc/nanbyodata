@@ -579,13 +579,13 @@ footer .container .footer__bottom .footer__lisence small:before {
   flex-direction: column;
   transition: none;
   position: relative;
-  -ms-overflow-style: none;
-  scrollbar-width: none;
+  -ms-overflow-style: none !important;
+  scrollbar-width: none !important;
 }
 .content-wrapper #temp-side-navigation::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  display: none !important;
 }
 .content-wrapper #temp-side-navigation.collapsed {
   width: auto;
@@ -633,7 +633,16 @@ footer .container .footer__bottom .footer__lisence small:before {
   gap: 0;
   flex: 1;
   min-width: 250px;
+  min-height: 0;
+  overflow-x: hidden;
   transition: all 0.3s ease;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.content-wrapper #temp-side-navigation > ul::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
 }
 .content-wrapper #temp-side-navigation > ul.collapsed {
   display: none;

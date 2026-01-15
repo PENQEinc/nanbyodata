@@ -146,13 +146,13 @@
     transition: none;
     position: relative;
     // スクロールバーを非表示（スクロールは有効）
-    -ms-overflow-style: none; // IE/Edge
-    scrollbar-width: none; // Firefox
+    -ms-overflow-style: none !important; // IE/Edge
+    scrollbar-width: none !important; // Firefox
     &::-webkit-scrollbar {
       // Chrome/Safari
-      width: 0;
-      height: 0;
-      display: none;
+      width: 0 !important;
+      height: 0 !important;
+      display: none !important;
     }
 
     &.collapsed {
@@ -210,7 +210,18 @@
       gap: 0;
       flex: 1;
       min-width: 250px;
+      min-height: 0; // flexboxでスクロール可能にするために必要
+      overflow-x: hidden; // 疾患選択と同じ設定
       transition: all 0.3s ease;
+      // スクロールバーを非表示（親要素でスクロールするため）
+      -ms-overflow-style: none; // IE/Edge
+      scrollbar-width: none; // Firefox
+      &::-webkit-scrollbar {
+        // Chrome/Safari
+        width: 0;
+        height: 0;
+        display: none;
+      }
 
       &.collapsed {
         display: none;

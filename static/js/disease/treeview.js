@@ -1,9 +1,5 @@
-// ===============================
-// 設定：API は外部、ページ遷移はローカル
-// ===============================
-const API_BASE = 'http://pubcasefinder.bits.cc'; // API のみ外部
-const URL_GET_PANEL_UPSTREAM_HIERARCHY = `${API_BASE}/common_nanbyo_get_panel_hierarchy`;
-const URL_GET_PANEL_DESCENDANT = `${API_BASE}/common_nanbyo_get_panel_descendant`;
+const URL_GET_PANEL_UPSTREAM_HIERARCHY = '/common_nanbyo_get_panel_hierarchy';
+const URL_GET_PANEL_DESCENDANT = '/common_nanbyo_get_panel_descendant';
 
 let lang = 'ja';
 let nando_id = '';
@@ -676,41 +672,61 @@ function adjustSidebarToContent() {
 // 起動処理
 // -------------------------------
 $(document).ready(function () {
-  const urlObj = new URL(window.location.href);
-  const q = urlObj.searchParams;
+  // data属性から取得を試みる（Jinja2テンプレート変数から）
+  const treeviewElement = $('#treeview');
+  const dataNandoId = treeviewElement.data('nando-id');
+  const dataLang = treeviewElement.data('lang');
 
-  const urlLang = q.get('lang');
-  if (urlLang === 'ja' || urlLang === 'en') {
-    lang = urlLang;
-  } else {
-    const languageSelect = document.querySelector('.language-select');
-    if (languageSelect && languageSelect.value) {
-      lang =
-        languageSelect.value === 'ja' || languageSelect.value === 'en'
-          ? languageSelect.value
-          : lang;
-    } else {
-      const htmlLang = document.documentElement.lang;
-      if (htmlLang === 'ja' || htmlLang === 'ja_JP') {
-        lang = 'ja';
-      } else if (htmlLang === 'en') {
-        lang = 'en';
+  if (dataNandoId) {
+    nando_id = dataNandoId;
+  }
+  if (dataLang && (dataLang === 'ja' || dataLang === 'en')) {
+    lang = dataLang;
+  }
+
+  // data属性がない場合はURLから取得
+  if (!nando_id || !lang) {
+    const urlObj = new URL(window.location.href);
+    const q = urlObj.searchParams;
+
+    if (!lang) {
+      const urlLang = q.get('lang');
+      if (urlLang === 'ja' || urlLang === 'en') {
+        lang = urlLang;
+      } else {
+        const languageSelect = document.querySelector('.language-select');
+        if (languageSelect && languageSelect.value) {
+          lang =
+            languageSelect.value === 'ja' || languageSelect.value === 'en'
+              ? languageSelect.value
+              : lang;
+        } else {
+          const htmlLang = document.documentElement.lang;
+          if (htmlLang === 'ja' || htmlLang === 'ja_JP') {
+            lang = 'ja';
+          } else if (htmlLang === 'en') {
+            lang = 'en';
+          }
+        }
+      }
+    }
+
+    if (!nando_id) {
+      const qNando = q.get('nando_id');
+      if (qNando) {
+        nando_id = qNando;
+      } else {
+        const path = urlObj.pathname;
+        const idx = path.indexOf('NANDO:');
+        if (idx !== -1) {
+          nando_id = decodeURIComponent(path.slice(idx));
+        }
       }
     }
   }
 
-  const qNando = q.get('nando_id');
-  if (qNando) {
-    nando_id = qNando;
-  } else {
-    const path = urlObj.pathname;
-    const idx = path.indexOf('NANDO:');
-    if (idx !== -1) {
-      nando_id = decodeURIComponent(path.slice(idx));
-    }
-  }
-
   if (lang !== 'ja') lang = 'en';
+  if (!nando_id) nando_id = 'NANDO:1200477'; // デフォルト値
 
   const url_str = `${URL_GET_PANEL_UPSTREAM_HIERARCHY}?nando_id=${encodeURIComponent(
     nando_id
