@@ -10,6 +10,27 @@ services:
     environment:
       - UWSGI_INI=uwsgi/uwsgi.ini
       - BASE_URI=${BASE_URI:-https://nanbyodata.jp/}
+      - MYSQL_HOST=mysql # service 名で接続
+      - MYSQL_INTERNAL_PORT=3306 # mysqlコンテナ内部ポート(3306固定)
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+  mysql:
+    container_name: ${CONTAINER_NAME_MYSQL:-nanbyodata-mysql}
+    image: mysql:8.0
+    ports:
+      - ${MYSQL_PORT:-3306}:3306
+    environment:
+      - TZ=Asia/Tokyo
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+      - ./mysql/my.cnf:/etc/mysql/conf.d/my.cnf
+      - ${MYSQL_DATA_DIR:-./mysql/data}:/var/lib/mysql
+      - ./mysql/logs:/var/log/mysql
+      - ./mysql/scripts:/scripts
   nginx:
     container_name: nanbyodata-nginx
     image: nginx:1.27.1

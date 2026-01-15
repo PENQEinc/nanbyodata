@@ -92,8 +92,15 @@ $ docker compose -f docker-compose_for_dev.yml up -d
 ```
 $ docker-compose -f docker-compose_for_dev.yml ps   
 NAME                 IMAGE            COMMAND                   SERVICE   CREATED         STATUS         PORTS
-nanbyodata-app       nanbyodata-app   "pipenv run uwsgi --…"   app       3 seconds ago   Up 2 seconds   0.0.0.0:8000->8000/tcp
-nanbyodata-nginx     nginx:1.27.1     "/docker-entrypoint.…"   nginx     3 seconds ago   Up 2 seconds   0.0.0.0:8888->80/tcp
+nanbyodata-app     nanbyodata-app   "pipenv run uwsgi --…"   app       15 hours ago   Up 9 minutes   0.0.0.0:8000->8000/tcp
+nanbyodata-mysql   mysql:5.7.13     "docker-entrypoint.s…"   mysql     15 hours ago   Up 15 hours    0.0.0.0:13306->3306/tcp
+nanbyodata-nginx   nginx:1.27.1     "/docker-entrypoint.…"   nginx     15 hours ago   Up 15 hours    0.0.0.0:8888->80/tcp
+```
+
+### Load db data
+```
+$ cp -a /your/path/nanbyodata_nando_panel.dump.sql mysql/sql/nanbyodata_nando_panel.dump.sql
+$ docker-compose exec -T mysql sh /scripts/exec_sql_file.sh /scripts/sql/nanbyodata_nando_panel.dump.sql
 ```
 
 ### Stop container

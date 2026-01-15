@@ -1,5 +1,8 @@
 /* Breadcrumb List */
 .breadcrumb-list {
+  section {
+    width: 200px;
+  }
   .breadcrumb-title {
     color: var(--color-secondary);
     font-weight: bold;
@@ -34,7 +37,7 @@
         width: 10px;
         border-top: 1px solid;
         margin-top: -1px;
-        background-color: var(--color-background-gray);
+        background-color: var(--color-sidebar-disease);
       }
 
       .wrapper {

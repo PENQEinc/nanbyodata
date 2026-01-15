@@ -1,5 +1,70 @@
+// 手動リサイズフラグ（グローバル）
+let sidebarManuallyResized = false;
+// windowオブジェクトに公開（treeview_component.htmlから参照するため）
+window.sidebarManuallyResized = false;
+
 export function makeSideNavigation() {
   const sideNavigation = document.getElementById('temp-side-navigation');
+
+  // 疾患選択の折り畳み機能
+  const sidebar = document.getElementById('sidebar');
+  const sidebarTitle = document.querySelector('#sidebar .sidebar-title');
+  const breadcrumbSection = document.querySelector('#sidebar > section');
+  if (sidebarTitle && breadcrumbSection && sidebar) {
+    // 初期状態：疾患選択を閉じた状態にする
+    breadcrumbSection.classList.add('collapsed');
+    sidebar.classList.add('collapsed');
+
+    sidebarTitle.addEventListener('click', function () {
+      const isCurrentlyCollapsed = sidebar.classList.contains('collapsed');
+
+      breadcrumbSection.classList.toggle('collapsed');
+      sidebar.classList.toggle('collapsed');
+
+      if (!isCurrentlyCollapsed) {
+        // これから閉じる場合：widthをリセット、フラグもリセット
+        sidebar.style.width = '';
+        sidebarManuallyResized = false;
+        window.sidebarManuallyResized = false;
+      } else {
+        // これから開く場合：フラグをリセット（自動調整を有効化）
+        sidebarManuallyResized = false;
+        window.sidebarManuallyResized = false;
+      }
+
+      // treeviewの幅を再調整するため、カスタムイベントを発火
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300); // CSSのtransitionが完了するまで待つ
+    });
+  }
+
+  // リサイズ機能
+  initSidebarResize();
+  initTocResize();
+
+  // 目次の折り畳み機能
+  const tempSideNav = document.getElementById('temp-side-navigation');
+  const navTitle = document.querySelector(
+    '#temp-side-navigation .sidebar-title'
+  );
+  const navList = document.querySelector('#temp-side-navigation > ul');
+  if (navTitle && navList && tempSideNav) {
+    navTitle.addEventListener('click', function () {
+      const isCurrentlyCollapsed = tempSideNav.classList.contains('collapsed');
+
+      navList.classList.toggle('collapsed');
+      tempSideNav.classList.toggle('collapsed');
+
+      if (!isCurrentlyCollapsed) {
+        // これから閉じる場合：widthをリセット
+        tempSideNav.style.width = '';
+      } else {
+        // これから開く場合：初期幅250pxに設定
+        tempSideNav.style.width = '250px';
+      }
+    });
+  }
 
   const items = [
     'overview',
@@ -43,7 +108,7 @@ export function makeSideNavigation() {
       }
       event.preventDefault();
       const classList = this.classList[0];
-      const selectName = 'bio-resource-' + classList;
+      const selectName = 'bio-resources-' + classList;
       window.location.hash = selectName;
       const checkBox = document.getElementById(selectName);
       if (checkBox && !checkBox.checked) {
@@ -77,7 +142,7 @@ export function makeSideNavigation() {
       }
       event.preventDefault();
       const classList = this.classList[0];
-      const selectName = 'variant-' + classList;
+      const selectName = 'variants-' + classList;
       window.location.hash = selectName;
       const checkBox = document.getElementById(selectName);
       if (checkBox && !checkBox.checked) {
@@ -185,8 +250,19 @@ export function switchingDisplayContents(selectedItemId) {
 
   // Hide all elements
   allContentSections.forEach((selector) => toggleDisplay(selector));
-  const currentItemEl = document.querySelector(`.${selectedItemId}`);
-  if (!currentItemEl.classList.contains('-disabled')) {
+
+  // タブIDと目次クラス名の整合を取る（genes-/bio-resources-/variants- を除去）
+  let modifiedSelectedId = selectedItemId;
+  if (modifiedSelectedId.startsWith('genes-')) {
+    modifiedSelectedId = modifiedSelectedId.substring('genes-'.length);
+  } else if (modifiedSelectedId.startsWith('bio-resources-')) {
+    modifiedSelectedId = modifiedSelectedId.substring('bio-resources-'.length);
+  } else if (modifiedSelectedId.startsWith('variants-')) {
+    modifiedSelectedId = modifiedSelectedId.substring('variants-'.length);
+  }
+
+  const currentItemEl = document.querySelector(`.${modifiedSelectedId}`);
+  if (currentItemEl && !currentItemEl.classList.contains('-disabled')) {
     // まず、全てのコンテンツを非表示にする
     const allContentSections = [
       '#overview',
@@ -328,4 +404,109 @@ function updateVariantSelection(selector) {
   if (checkedSwitch) {
     window.location.hash = checkedSwitch.id;
   }
+}
+
+// 疾患選択のリサイズ機能
+function initSidebarResize() {
+  const sidebar = document.getElementById('sidebar');
+  const resizeHandle = document.getElementById('sidebar-resize-handle');
+
+  if (!sidebar || !resizeHandle) return;
+
+  let isResizing = false;
+  let startX = 0;
+  let startWidth = 0;
+
+  resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    startX = e.clientX;
+    startWidth = sidebar.offsetWidth;
+
+    // リサイズ中はtransitionを無効化
+    sidebar.style.transition = 'none';
+
+    // ドラッグ中のカーソルを変更
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+
+    const deltaX = e.clientX - startX;
+    let newWidth = startWidth + deltaX;
+
+    // 最小・最大幅の制限
+    const minWidth = 250;
+    const maxWidth = 1200;
+    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+
+    sidebar.style.width = `${newWidth}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isResizing) return;
+
+    isResizing = false;
+
+    // 手動リサイズが行われたことを記録
+    sidebarManuallyResized = true;
+    window.sidebarManuallyResized = true;
+
+    // カーソルを元に戻す
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
+}
+
+// 目次のリサイズ機能
+function initTocResize() {
+  const tocNav = document.getElementById('temp-side-navigation');
+  const resizeHandle = document.getElementById('toc-resize-handle');
+
+  if (!tocNav || !resizeHandle) return;
+
+  let isResizing = false;
+  let startX = 0;
+  let startWidth = 0;
+
+  resizeHandle.addEventListener('mousedown', (e) => {
+    isResizing = true;
+    startX = e.clientX;
+    startWidth = tocNav.offsetWidth;
+
+    // リサイズ中はtransitionを無効化
+    tocNav.style.transition = 'none';
+
+    // ドラッグ中のカーソルを変更
+    document.body.style.cursor = 'col-resize';
+    document.body.style.userSelect = 'none';
+
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    if (!isResizing) return;
+
+    const deltaX = e.clientX - startX;
+    let newWidth = startWidth + deltaX;
+
+    // 最小幅の制限のみ（最大幅の制限を削除）
+    const minWidth = 250;
+    newWidth = Math.max(minWidth, newWidth);
+
+    tocNav.style.width = `${newWidth}px`;
+  });
+
+  document.addEventListener('mouseup', () => {
+    if (!isResizing) return;
+
+    isResizing = false;
+
+    // カーソルを元に戻す
+    document.body.style.cursor = '';
+    document.body.style.userSelect = '';
+  });
 }
