@@ -1489,24 +1489,28 @@ Stats Overview Component
 
 .treeview-container {
   overflow-x: auto;
-  overflow-y: auto;
+  overflow-y: scroll;
   padding: 0;
   width: 100%;
   min-width: 250px;
   max-width: 100%;
   box-sizing: border-box;
-  /* スクロールバーを非表示 */
-  scrollbar-width: none;
-  /* Firefox */
-  -ms-overflow-style: none;
-  /* IE and Edge */
-  /* スクロール位置の変更を滑らかにする */
-  scroll-behavior: auto; /* 自動スクロールを無効化 */
+  scroll-behavior: auto;
+  -ms-overflow-style: none; /* IE and Edge */
 }
 
 .treeview-container::-webkit-scrollbar {
-  display: none;
-  /* Chrome, Safari, Opera */
+  width: 0px;
+  height: 8px;
+}
+
+.treeview-container::-webkit-scrollbar-thumb {
+  background: rgba(136, 136, 136, 0.4);
+  border-radius: 4px;
+}
+
+.treeview-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(136, 136, 136, 0.6);
 }
 
 /* 親要素の幅制限を考慮したスクロール設定 */
