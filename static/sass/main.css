@@ -476,7 +476,7 @@ footer .container .footer__bottom .footer__lisence small:before {
 }
 .content-wrapper #sidebar {
   overflow-y: auto;
-  overflow-x: visible;
+  overflow-x: hidden;
   height: calc(100vh - 76px);
   min-width: auto;
   max-width: 1200px;
@@ -1512,7 +1512,7 @@ Stats Overview Component
 /* 親要素の幅制限を考慮したスクロール設定 */
 .treeview-container .ztree {
   min-width: max-content;
-  width: 100%;
+  width: auto;
   padding: 0 15px;
 }
 
@@ -1642,7 +1642,7 @@ Stats Overview Component
 
 /* 子要素がないノードのテキスト位置調整 */
 .treeview-container .ztree li span.button.noline_docu + a {
-  margin-left: 0;
+  margin-left: 18px;
 }
 
 /* 選択されたノードのハイライト - テキスト部分のみ */
@@ -1663,11 +1663,11 @@ Stats Overview Component
 }
 
 /* 階層インデントの調整 */
+/* 各階層のul要素にインデントを設定（累積的に適用される） */
 .treeview-container .ztree li ul {
   margin: 0;
   padding: 0;
-  padding-left: 18px;
-  /* 子要素のインデント */
+  padding-left: 8px;
 }
 
 /* ルートレベルのインデントをリセット */
@@ -1680,9 +1680,10 @@ Stats Overview Component
   position: relative;
 }
 
-/* 子要素のインデントを統一 */
+/* 子要素のli要素のpadding-leftはリセット（ulのpadding-leftでインデントを制御） */
 .treeview-container .ztree li ul li {
   padding-left: 0;
+  margin-left: 0;
 }
 
 /* Link */

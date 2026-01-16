@@ -340,34 +340,18 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
           savedScrollLeft = container.scrollLeft();
         }
 
+        // クリックされた要素が展開/折りたたみアイコン（span.button）の場合は何もしない
+        // アイコンのクリックは別のイベントハンドラで処理される
+        if ($(event.target).closest('span.button').length > 0) {
+          return;
+        }
+
         if (treeNode.isParent) {
-          if (treeNode.isFirstTimeLoad) {
-            zTreeObj.reAsyncChildNodes(treeNode, 'refresh');
-            treeNode.isFirstTimeLoad = false;
-          }
-
-          const isExpanded = treeNode.open;
-
-          const currentScrollLeft = container.scrollLeft();
-
-          zTreeObj.expandNode(treeNode, !isExpanded, false, false);
-
-          if (container.length > 0) {
-            container.scrollLeft(currentScrollLeft);
-
-            requestAnimationFrame(() => {
-              container.scrollLeft(currentScrollLeft);
-              requestAnimationFrame(() => {
-                container.scrollLeft(currentScrollLeft);
-                requestAnimationFrame(() => {
-                  container.scrollLeft(currentScrollLeft);
-                });
-              });
-            });
-          }
-
+          // 親ノードをクリックした場合は選択のみ行い、展開/折りたたみは行わない
           zTreeObj.selectNode(treeNode, true, false);
           currentSelectedNandoId = treeNode.nando_id;
+
+          const currentScrollLeft = container.scrollLeft();
 
           if (container.length > 0) {
             container.scrollLeft(currentScrollLeft);
