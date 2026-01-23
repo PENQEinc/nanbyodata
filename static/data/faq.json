@@ -1,0 +1,80 @@
+{
+  "sections": [
+    {
+      "id": "frequently-asked-questions",
+      "title": {
+        "ja": "よくある質問",
+        "en": "Frequently Asked Questions"
+      },
+      "subsections": [
+        {
+          "id": "download",
+          "title": {
+            "ja": "ダウンロード",
+            "en": "Download"
+          },
+          "items": [
+            {
+              "question": {
+                "ja": "CSV形式でダウンロードするには？",
+                "en": "How do I download to CSV?"
+              },
+              "answer": {
+                "ja": "データセットをダウンロードするには、ダウンロードしたいデータセットのページに移動してください。データテーブルの右上にある「Download」ボタンを探してください。CSV形式を選択できます。大きなデータセットの場合は、生成に数秒かかる場合があります。",
+                "en": "To download a dataset, navigate to the specific dataset page you wish to download. Look for the \"Download\" button located in the top-right corner of the data table. You can choose CSV formats. Please note that large datasets may take a few moments to generate."
+              }
+            },
+            {
+              "question": {
+                "ja": "TSV形式でダウンロードするには？",
+                "en": "How do I download to TSV?"
+              },
+              "answer": {
+                "ja": "データセットをダウンロードするには、ダウンロードしたいデータセットのページに移動してください。データテーブルの右上にある「Download」ボタンを探してください。TSV形式を選択できます。大きなデータセットの場合は、生成に数秒かかる場合があります。",
+                "en": "To download a dataset, navigate to the specific dataset page you wish to download. Look for the \"Download\" button located in the top-right corner of the data table. You can choose TSV formats. Please note that large datasets may take a few moments to generate."
+              }
+            }
+          ]
+        },
+        {
+          "id": "team-page",
+          "title": {
+            "ja": "チームページ",
+            "en": "Team page"
+          },
+          "items": [
+            {
+              "question": {
+                "ja": "NanbyoDataチームに参加するには？",
+                "en": "How to join NanbyoData team?"
+              },
+              "answer": {
+                "ja": "NanbyoDataチームへの参加については、お問い合わせページからご連絡ください。",
+                "en": "To join the NanbyoData team, please contact us through the contact page."
+              }
+            }
+          ]
+        },
+        {
+          "id": "other",
+          "title": {
+            "ja": "その他",
+            "en": "Other"
+          },
+          "items": [
+            {
+              "question": {
+                "ja": "ユーザーマニュアル",
+                "en": "User manual"
+              },
+              "answer": {
+                "ja": "詳細な使用方法については、ユーザーマニュアルをご覧ください。",
+                "en": "For detailed usage instructions, please refer to the user manual."
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

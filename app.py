@@ -119,6 +119,14 @@ def team():
 
 
 #####
+# HELP
+## GET: 
+@app.route('/help')
+def help():
+    return render_template('help.html')
+
+
+#####
 # NANDOについて
 ## GET: 
 @app.route('/epidemiology')
