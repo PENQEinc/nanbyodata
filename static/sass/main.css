@@ -2180,6 +2180,7 @@ Help Page Styles
 }
 
 .faq-section {
+  margin: 0 76px;
   margin-bottom: 2rem;
 }
 .faq-section .faq-section-title {
