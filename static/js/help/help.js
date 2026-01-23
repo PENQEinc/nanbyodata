@@ -74,11 +74,11 @@ async function loadFAQ() {
               const itemId = `faq-${section.id}-${subsection.id}-${index}`;
               html += `
                 <div class="faq-item">
-                  <button class="faq-question" type="button" data-toggle="collapse" data-target="#${itemId}" aria-expanded="false" aria-controls="${itemId}">
+                  <button class="faq-question" type="button" data-target="#${itemId}" aria-expanded="false" aria-controls="${itemId}">
                     <span>${getLocalizedValue(item, 'question')}</span>
                     <i class="fas fa-chevron-right faq-icon"></i>
                   </button>
-                  <div class="faq-answer collapse" id="${itemId}">
+                  <div class="faq-answer" id="${itemId}">
                     ${getLocalizedValue(item, 'answer')}
                   </div>
                 </div>
@@ -94,11 +94,11 @@ async function loadFAQ() {
           const itemId = `faq-${section.id}-${index}`;
           html += `
             <div class="faq-item">
-              <button class="faq-question" type="button" data-toggle="collapse" data-target="#${itemId}" aria-expanded="false" aria-controls="${itemId}">
+              <button class="faq-question" type="button" data-target="#${itemId}" aria-expanded="false" aria-controls="${itemId}">
                 <span>${getLocalizedValue(item, 'question')}</span>
                 <i class="fas fa-chevron-right faq-icon"></i>
               </button>
-              <div class="faq-answer collapse" id="${itemId}">
+              <div class="faq-answer" id="${itemId}">
                 ${getLocalizedValue(item, 'answer')}
               </div>
             </div>
@@ -111,36 +111,31 @@ async function loadFAQ() {
 
     faqContainer.innerHTML = html;
 
-    // Bootstrapのcollapseイベントに合わせてアイコンの回転を制御
+    // シンプルな開閉処理（CSSでアニメーション）
     const faqQuestions = faqContainer.querySelectorAll('.faq-question');
     faqQuestions.forEach((question) => {
       const targetId = question.getAttribute('data-target');
       const targetElement = document.querySelector(targetId);
       const icon = question.querySelector('.faq-icon');
 
-      if (targetElement && icon && typeof $ !== 'undefined') {
-        // Bootstrapのcollapseイベントをリッスン
-        $(targetElement).on('show.bs.collapse', function () {
-          icon.classList.add('expanded');
-          question.setAttribute('aria-expanded', 'true');
-        });
+      if (!targetElement || !icon) return;
 
-        $(targetElement).on('hide.bs.collapse', function () {
-          icon.classList.remove('expanded');
-          question.setAttribute('aria-expanded', 'false');
-        });
-      } else if (targetElement && icon) {
-        // jQueryが利用できない場合のフォールバック
-        targetElement.addEventListener('show.bs.collapse', function () {
-          icon.classList.add('expanded');
-          question.setAttribute('aria-expanded', 'true');
-        });
+      question.addEventListener('click', function (e) {
+        e.preventDefault();
+        const isExpanded = question.getAttribute('aria-expanded') === 'true';
 
-        targetElement.addEventListener('hide.bs.collapse', function () {
-          icon.classList.remove('expanded');
+        if (isExpanded) {
+          // 閉じる
+          targetElement.classList.remove('open');
           question.setAttribute('aria-expanded', 'false');
-        });
-      }
+          icon.classList.remove('expanded');
+        } else {
+          // 開く
+          targetElement.classList.add('open');
+          question.setAttribute('aria-expanded', 'true');
+          icon.classList.add('expanded');
+        }
+      });
     });
   } catch (error) {
     console.error('Error loading FAQ:', error);

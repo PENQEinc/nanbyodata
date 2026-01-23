@@ -112,7 +112,7 @@ Help Page Styles
 
       .faq-icon {
         margin-left: 1rem;
-        transition: transform 0.35s ease;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
         color: var(--color-primary);
         flex-shrink: 0;
 
@@ -127,14 +127,15 @@ Help Page Styles
       color: var(--color-font);
       font-size: var(--font-size-small);
       line-height: 1.6;
-      padding: 1rem 1.25rem;
+      padding: 0 1.25rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s cubic-bezier(0.4, 0, 0.2, 1),
+        padding 0.35s cubic-bezier(0.4, 0, 0.2, 1);
 
-      &.collapse:not(.show) {
-        display: none;
-      }
-
-      &.collapsing {
-        transition: height 0.35s ease;
+      &.open {
+        max-height: 1000px;
+        padding: 1rem 1.25rem;
       }
     }
   }
@@ -153,7 +154,11 @@ Help Page Styles
     }
 
     .faq-answer {
-      padding: 0.75rem 1rem;
+      padding: 0 1rem;
+
+      &.open {
+        padding: 0.75rem 1rem;
+      }
     }
   }
 }
