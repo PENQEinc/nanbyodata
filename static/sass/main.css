@@ -1672,7 +1672,7 @@ Stats Overview Component
 .treeview-container .ztree li ul {
   margin: 0;
   padding: 0;
-  padding-left: 8px;
+  padding-left: 14px;
 }
 
 /* ルートレベルのインデントをリセット */
