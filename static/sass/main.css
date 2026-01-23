@@ -1576,7 +1576,7 @@ Stats Overview Component
 
 .treeview-container .ztree li span.button.switch {
   background-image: none;
-  left: 7px;
+  left: 4px;
 }
 
 /* デフォルトは右向き三角形 - CSS borderで作成 */
