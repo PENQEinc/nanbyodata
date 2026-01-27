@@ -5,3 +5,8 @@ cgi/log.txt
 *.pid
 .env
 memo.txt
+
+# DB data
+mysql/data
+mysql/logs
+mysql/scripts

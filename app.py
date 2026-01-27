@@ -17,10 +17,21 @@ from flask_babel import Babel
 from flask_cors import CORS
 import markdown2
 import requests
+import MySQLdb
+import MySQLdb.cursors
+from contextlib import contextmanager
 
 
 app = Flask(__name__)
 CORS(app)
+
+# DB設定
+db_host = os.getenv('MYSQL_HOST')
+db_port = os.getenv('MYSQL_PORT')
+db_name = os.getenv('MYSQL_DATABASE')
+db_user = os.getenv('MYSQL_USER')
+db_pw   = os.getenv('MYSQL_PASSWORD')
+
 
 app.secret_key = 'nanbyodata0824'
 app.config['BASE_URI'] = os.getenv('BASE_URI', 'https://nanbyodata.jp/')
@@ -93,11 +104,11 @@ def datasets():
     return render_template('datasets.html')
 
 #####
-# STATISTICSについて
+# NanbyoData in numbersについて
 ## GET: 
-@app.route('/stats')
+@app.route('/nanbyodata-in-numbers')
 def stats():
-    return render_template('stats.html')
+    return render_template('nanbyodata-in-numbers.html')
 
 #####
 # TEAM
@@ -249,3 +260,116 @@ def get_overview(id_nando):
 @app.route('/news')
 def page():
     return render_template('news.html')
+
+@contextmanager
+def get_mysql_connection():
+    conn = MySQLdb.connect(host=db_host, db=db_name, user=db_user, passwd=db_pw, charset="utf8")
+    try:
+        yield conn
+    finally:
+        conn.close()
+
+
+#####
+# API functions for treeview
+def api_nanbyo_get_panel_hierarchy(r_nando_id, r_lang):
+    response_data = {}
+    try:
+        with get_mysql_connection() as OBJ_MYSQL:
+            col = "trace_ja" if r_lang == "ja" else "trace_en"
+            sql = u"select {col} from nanbyodata_nando_panel_upstream_trace where nando_id=%s".format(col=col)
+            cr = OBJ_MYSQL.cursor()
+            cr.execute(sql, (r_nando_id,))
+            rows = cr.fetchall()
+            cr.close()
+            for row in rows:
+                response_data = row[0]
+    except Exception as e:
+        app.logger.error(f'Error in api_nanbyo_get_panel_hierarchy: {str(e)}')
+        raise
+
+    return response_data
+
+
+def api_nanbyo_get_panel_descendant(r_nando_id, r_lang):
+    response_data = []
+    with get_mysql_connection() as OBJ_MYSQL:
+        sql = u"select B.OntoID, B.OntoName, B.OntoNameJa, B.OntoDescendantNum from nanbyodata_nando_panel_hierarchy as A, nanbyodata_nando_panel as B where A.nando_id=B.OntoID AND A.parent_nando_id=%s order by B.OntoID"
+        cr = OBJ_MYSQL.cursor()
+        cr.execute(sql, (r_nando_id,))
+        rows = cr.fetchall()
+        cr.close()
+        for row in rows:
+            ret_record = {}
+            ret_record['nando_id']  = row[0]
+            ret_record['name']      = row[1]
+            ret_record['name_ja']   = row[2]
+            ret_record['num_child'] = row[3]
+            ret_record['lang']      = r_lang
+            ret_record['displayName'] = row[1]+" <font class=\"treeview-decendant-num\">(" + str(row[3]) + ")</font>"
+            if r_lang == "ja" and len(ret_record['name_ja']) > 0:
+                ret_record['displayName'] = row[2]+ " <font class=\"treeview-decendant-num\">(" + str(row[3]) + ")</font>"
+            ret_record['isFirstTimeLoad'] = True
+            ret_record['isParent'] = False
+            if row[3] > 0:
+                ret_record['isParent'] = True
+            else:
+                ret_record['displayName'] = row[1]
+                if r_lang == "ja" and len(ret_record['name_ja']) > 0:
+                    ret_record['displayName'] = row[2]
+
+            response_data.append(ret_record)
+
+    return response_data
+
+
+#####
+# API: Get panel hierarchy
+## GET: get upstream hierarchy data
+@app.route('/common_nanbyo_get_panel_hierarchy', methods=['GET'])
+def common_nanbyo_get_panel_hierarchy():
+    try:
+        r_nando_id = "NANDO:1200477"
+        if request.args.get('nando_id') is not None:
+            r_nando_id = request.args.get('nando_id')
+
+        r_lang = "ja"
+        if request.args.get('lang') is not None and request.args.get('lang') == "en":
+            r_lang = request.args.get('lang')
+
+        response_data = api_nanbyo_get_panel_hierarchy(r_nando_id, r_lang)
+
+        # response_dataが辞書または文字列の場合、JSONとして返す
+        if isinstance(response_data, dict):
+            return jsonify(response_data)
+        elif isinstance(response_data, str):
+            # JSON文字列の場合はそのまま返す
+            return response_data, 200, {'Content-Type': 'application/json; charset=utf-8'}
+        else:
+            # その他の場合は空の辞書を返す
+            return jsonify({})
+    except Exception as e:
+        app.logger.error(f'Error in common_nanbyo_get_panel_hierarchy: {str(e)}')
+        return jsonify({'error': str(e)}), 500
+
+
+#####
+# API: Get panel descendant
+## GET: get descendant nodes data
+@app.route('/common_nanbyo_get_panel_descendant', methods=['GET'])
+def common_nanbyo_get_panel_descendant():
+    try:
+        r_lang = "ja"
+        if request.args.get('lang'):
+            if request.args.get('lang') == "en":
+                r_lang = request.args.get('lang')
+        r_nando_id = request.args.get('nando_id')
+
+        if not r_nando_id:
+            return jsonify({'error': 'nando_id parameter is required'}), 400
+
+        response_data = api_nanbyo_get_panel_descendant(r_nando_id, r_lang)
+        return json.dumps(response_data, ensure_ascii=False), 200, {'Content-Type': 'application/json; charset=utf-8'}
+    except Exception as e:
+        app.logger.error(f'Error in common_nanbyo_get_panel_descendant: {str(e)}')
+        return jsonify({'error': str(e)}), 500

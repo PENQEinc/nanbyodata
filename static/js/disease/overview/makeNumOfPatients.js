@@ -1,4 +1,8 @@
-import { createObjectUrlFromData } from '../../utils/stanzaUtils.js';
+import {
+  createObjectUrlFromData,
+  updateElementWithTable,
+} from '../../utils/stanzaUtils.js';
+import { convertColumnToText } from '../../utils/stanzaColumns.js';
 
 export function makeNumOfPatients(data) {
   const chartTypeSelect = document.getElementById('num-of-patients-graph');
@@ -33,6 +37,13 @@ function initializeCharts(data) {
 
   const stanzaWidth = data.length * 100;
   const maxValue = Math.max(...data.map((item) => item.num_of_patients));
+
+  // テーブル用のカラム定義
+  const tableColumns = [
+    { id: 'year', label: 'Year' },
+    { id: 'num_of_patients', label: '# of certificate holders' },
+  ];
+  const columnsText = convertColumnToText(tableColumns);
 
   targetDiv.innerHTML = `
     <togostanza-barchart
@@ -91,7 +102,15 @@ function initializeCharts(data) {
       group-key="group"
       >
     </togostanza-linechart>
+
+    <div id="num-of-patients-table-view" style="display: none;"></div>
   `;
+
+  // テーブル用の要素にupdateElementWithTableを使用（デフォルトでDEFAULT_TOGOSTANZA_THEME_URLが適用される）
+  const tableElement = document.getElementById('num-of-patients-table-view');
+  if (tableElement) {
+    updateElementWithTable(tableElement, objectUrl, columnsText);
+  }
 
   // カスタムスタイルを適用
   const barChart = targetDiv.querySelector('togostanza-barchart');
@@ -114,6 +133,7 @@ function initializeCharts(data) {
 
   addScript('https://togostanza.github.io/metastanza/barchart.js');
   addScript('https://togostanza.github.io/metastanza-devel/linechart.js');
+  addScript('https://togostanza.github.io/metastanza/pagination-table.js');
 }
 
 function addScript(src) {
@@ -125,14 +145,24 @@ function addScript(src) {
 }
 
 function toggleChartDisplay(selectedChartType) {
-  const barChart = document.querySelector('togostanza-barchart');
-  const lineChart = document.querySelector('togostanza-linechart');
+  const targetDiv = document.getElementById('temp-num-of-patients');
+  if (!targetDiv) return;
+
+  const barChart = targetDiv.querySelector('togostanza-barchart');
+  const lineChart = targetDiv.querySelector('togostanza-linechart');
+  const tableChart = document.getElementById('num-of-patients-table-view');
 
   if (selectedChartType === 'bar') {
-    barChart.style.display = 'block';
-    lineChart.style.display = 'none';
-  } else {
-    barChart.style.display = 'none';
-    lineChart.style.display = 'block';
+    if (barChart) barChart.style.display = 'block';
+    if (lineChart) lineChart.style.display = 'none';
+    if (tableChart) tableChart.style.display = 'none';
+  } else if (selectedChartType === 'line') {
+    if (barChart) barChart.style.display = 'none';
+    if (lineChart) lineChart.style.display = 'block';
+    if (tableChart) tableChart.style.display = 'none';
+  } else if (selectedChartType === 'table') {
+    if (barChart) barChart.style.display = 'none';
+    if (lineChart) lineChart.style.display = 'none';
+    if (tableChart) tableChart.style.display = 'block';
   }
 }

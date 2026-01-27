@@ -17,8 +17,7 @@ Stats Overview Component
       text-decoration: none;
 
       &:hover {
-        color: var(--color-primary);
-        text-decoration: none;
+        text-decoration: underline;
       }
     }
   }
