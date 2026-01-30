@@ -14,6 +14,7 @@
   --tree-line-into: 9px; /* 横線をノード側へ伸ばす量 */
   --tree-line-y: 11px; /* 横線のY位置（ずれる場合はここを微調整） */
   --tree-line-x: 8px; /* 線全体のX位置（右に寄せたいなら増やす） */
+  --tree-line-end-gap: 6px; /* 横線の終端を短くして文字背景に被せない */
   --tree-line-thickness: 2px;
   --tree-line-color: rgba(22, 35, 78, 0.35);
   --tree-line-bg: var(--color-sidebar-disease, #fff); /* 最終行マスク用 */
@@ -64,6 +65,9 @@
   white-space: nowrap;
   overflow: visible;
   border-radius: 3px;
+  /* コネクタ線より前面に出して文字が線で潰れないようにする */
+  position: relative;
+  z-index: 2;
 }
 
 /* 外部CSSの::after疑似要素を無効化 */
@@ -100,7 +104,7 @@
   left: 4px;
   /* コネクタ線が▼を突き抜けて見えないように、背景でマスク */
   background-color: var(--tree-line-bg);
-  z-index: 1;
+  z-index: 2;
 }
 
 /* デフォルトは右向き三角形 - CSS borderで作成 */
@@ -212,8 +216,11 @@
   position: absolute;
   top: var(--tree-line-y);
   left: calc(-0.7 * var(--tree-line-indent) + var(--tree-line-x));
-  width: calc(var(--tree-line-indent) + var(--tree-line-into));
+  width: calc(
+    var(--tree-line-indent) + var(--tree-line-into) - var(--tree-line-end-gap)
+  );
   border-top: 1px solid var(--tree-line-color);
+  z-index: 0;
   pointer-events: none;
 }
 
@@ -227,6 +234,7 @@
   bottom: 0px;
   width: 0;
   border-left: 1px solid var(--tree-line-color);
+  z-index: 0;
   pointer-events: none;
 }
 
