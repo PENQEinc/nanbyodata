@@ -1588,7 +1588,7 @@ Stats Overview Component
 
 .treeview-container .ztree li span.button.switch {
   left: 4px;
-  /* コネクタ線が▼を突き抜けて見えないように、背景でマスク */
+  top: 1px;
   background-color: var(--tree-line-bg);
   z-index: 2;
 }
