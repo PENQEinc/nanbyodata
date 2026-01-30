@@ -1497,6 +1497,14 @@ Stats Overview Component
   box-sizing: border-box;
   scroll-behavior: auto;
   -ms-overflow-style: none; /* IE and Edge */
+  /* ツリー線の調整用（必要ならここだけ微調整） */
+  --tree-line-indent: 14px; /* ul の padding-left と揃える */
+  --tree-line-into: 9px; /* 横線をノード側へ伸ばす量 */
+  --tree-line-y: 11px; /* 横線のY位置（ずれる場合はここを微調整） */
+  --tree-line-x: 8px; /* 線全体のX位置（右に寄せたいなら増やす） */
+  --tree-line-thickness: 2px;
+  --tree-line-color: rgba(22, 35, 78, 0.35);
+  --tree-line-bg: var(--color-sidebar-disease, #fff); /* 最終行マスク用 */
 }
 
 .treeview-container::-webkit-scrollbar {
@@ -1575,8 +1583,10 @@ Stats Overview Component
 }
 
 .treeview-container .ztree li span.button.switch {
-  background-image: none;
   left: 4px;
+  /* コネクタ線が▼を突き抜けて見えないように、背景でマスク */
+  background-color: var(--tree-line-bg);
+  z-index: 1;
 }
 
 /* デフォルトは右向き三角形 - CSS borderで作成 */
@@ -1673,6 +1683,43 @@ Stats Overview Component
   margin: 0;
   padding: 0;
   padding-left: 14px;
+}
+
+/* 親子コネクタ線（縦・横） */
+/* showLine:false のまま、CSSでツリー線を描画する */
+.treeview-container .ztree li ul {
+  /* ul全体に縦線を引くと下まで伸び続けるので、縦線はli側で描画する */
+  border-left: none;
+}
+
+/* 子ノードへの横線 */
+.treeview-container .ztree li ul li::before {
+  content: "";
+  position: absolute;
+  top: var(--tree-line-y);
+  left: calc(-0.7 * var(--tree-line-indent) + var(--tree-line-x));
+  width: calc(var(--tree-line-indent) + var(--tree-line-into));
+  border-top: 1px solid var(--tree-line-color);
+  pointer-events: none;
+}
+
+/* 縦線（各行ごとに必要な分だけ） */
+.treeview-container .ztree li ul li::after {
+  content: "";
+  position: absolute;
+  left: calc(-0.7 * var(--tree-line-indent) + var(--tree-line-x));
+  /* 行の継ぎ目で切れて見えないように少しだけオーバーラップ */
+  top: 0px;
+  bottom: 0px;
+  width: 0;
+  border-left: 1px solid var(--tree-line-color);
+  pointer-events: none;
+}
+
+/* 最終行には下向きの縦線を出さない */
+.treeview-container .ztree li ul li:last-child::after {
+  bottom: auto;
+  height: calc(var(--tree-line-y) + 1px); /* 横線との接続を確実にする */
 }
 
 /* ルートレベルのインデントをリセット */
