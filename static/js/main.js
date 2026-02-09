@@ -29,13 +29,6 @@ if (window.location.pathname === '/') {
   // ニュースセクションの初期状態を設定
   const newsWrapperEl = document.querySelector('.news-summary > .news-wrapper');
   if (newsWrapperEl) {
-    // moreボタンを作成
-    const moreButtonEl = document.createElement('button');
-    moreButtonEl.className = 'more';
-    moreButtonEl.textContent = 'more';
-    moreButtonEl.style.display = 'none';
-    newsWrapperEl.appendChild(moreButtonEl);
-
     // キャッシュの確認
     const currentLang = document.documentElement.lang === 'en' ? 'en' : 'ja';
     const branch =
@@ -54,42 +47,14 @@ if (window.location.pathname === '/') {
       const loadingSpinner = document.createElement('div');
       loadingSpinner.className = 'loading-spinner news-loading';
       newsWrapperEl.appendChild(loadingSpinner);
-    } else {
-      moreButtonEl.style.display = 'block'; // キャッシュがある場合はmoreボタンを表示
     }
 
-    // loadNewsListの完了を待ってからmore buttonのイベントリスナーを設定
     loadNewsList().then(() => {
       // ローディングスピナーを削除
       const spinner = newsWrapperEl.querySelector('.loading-spinner');
       if (spinner) {
         spinner.remove();
       }
-
-      // moreボタンを表示
-      moreButtonEl.style.display = 'block';
-
-      // moreボタンのイベントリスナーを設定
-      moreButtonEl.addEventListener('click', async () => {
-        const isOpen = moreButtonEl.classList.toggle('open');
-        moreButtonEl.textContent = isOpen ? 'close' : 'more';
-
-        if (isOpen) {
-          // ローディングスピナーを表示
-          const loadingSpinner = document.createElement('div');
-          loadingSpinner.className = 'loading-spinner news-loading';
-          newsWrapperEl.appendChild(loadingSpinner);
-
-          // 全記事を読み込む
-          await loadNewsList(true);
-
-          // ローディングスピナーを削除
-          loadingSpinner.remove();
-        } else {
-          // 最初の5件のみ表示
-          renderNewsList(JSON.parse(localStorage.getItem(CACHE_KEY)), true);
-        }
-      });
     });
   }
 }
@@ -198,7 +163,7 @@ async function loadNewsList(loadAll = false) {
   renderNewsList(newsData, !loadAll);
 }
 
-function renderNewsList(newsData, limitTo5 = true) {
+function renderNewsList(newsData, limitTo3 = true) {
   const newsContainer = document.querySelector('.logdata');
   if (!newsContainer) return;
 
@@ -216,7 +181,7 @@ function renderNewsList(newsData, limitTo5 = true) {
       return new Date(b[1].date) - new Date(a[1].date);
     })
     .forEach(([filePath, info], index) => {
-      if (limitTo5 && index >= 5) return;
+      if (limitTo3 && index >= 3) return;
       if (!info.loaded) return;
 
       const itemDate = new Date(info.date.replace(/\./g, '-'));
