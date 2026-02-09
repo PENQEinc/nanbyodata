@@ -2004,7 +2004,7 @@ Stats Overview Component
   gap: 40px;
   max-width: 930px;
   margin: 0 auto;
-  padding: 40px 20px 60px;
+  padding: 40px 10px 60px;
   min-height: calc(100vh - 320px);
 }
 
@@ -2257,6 +2257,8 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
 .news-detail-body {
   font-size: var(--font-size-medium);
   line-height: 1.8;
+  max-width: 720px;
+  margin: 0 auto;
 }
 .news-detail-body p {
   margin-bottom: 1em;
@@ -2264,7 +2266,16 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
 .news-detail-body ul,
 .news-detail-body ol {
   margin-bottom: 1em;
-  padding-left: 1.5em;
+  padding-left: 1.75em;
+}
+.news-detail-body ul {
+  list-style: disc;
+}
+.news-detail-body ol {
+  list-style: decimal;
+}
+.news-detail-body li {
+  margin-bottom: 0.4em;
 }
 .news-detail-body h2 {
   font-size: var(--font-size-large);

@@ -7,7 +7,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p><br><br />\n本リリースでは、NanbyoData のトップページおよび疾患情報ページの UI/UX を改善し、より多角的に難病情報を閲覧できるようになりました。<br><br><br />\n主な更新内容は以下の通りです。<br><br />\n<br></p>\n\n<h2>アップデート内容</h2>\n\n<ul>\n\n<li>トップページに統計情報を追加\n  <ul>\n    <li>NanbyoData にどのような種類のデータが存在するかをデータ規模とあわせて分かりやすく表示</li>\n  </ul>\n</li>\n\n<li>疾患ページに新規データを追加\n  <ul>\n    <li>ヒトゲノムデータセット（Human Genomic Datasets）：NBDCヒトデータベースと連携して表示</li>\n    <li>顔貌特徴（Facial Features）：GestaltMatcher Database と連携して表示</li>\n    <li>化合物（Compounds）：PubChem と連携して表示</li>\n    <li>文献（References）：MedGen と連携して文献情報を表示</li>\n  </ul>\n</li>\n\n<li>遺伝子情報の表示を拡張\n  <ul>\n    <li>疾患原因遺伝子リストの表示を整理し、情報構成を改善</li>\n  </ul>\n</li>\n\n</ul>\n\n<p><br></p>\n\n<h2>今後について</h2>\n\n<p><br><br />\n今後も、NanbyoData のデータ拡充と UI 改善を継続し、難病研究・診療・国際連携を支える情報基盤としての機能強化を進めていきます。<br></p>\n"
+      "body": "<p>本リリースでは、NanbyoData のトップページおよび疾患情報ページの UI/UX を改善し、より多角的に難病情報を閲覧できるようになりました。</p>\n\n<p>主な更新内容は以下の通りです。</p>\n\n<h2>アップデート内容</h2>\n\n<ul>\n<li>トップページに統計情報を追加  \n<ul>\n<li>NanbyoData にどのような種類のデータが存在するかをデータ規模とあわせて分かりやすく表示</li>\n</ul></li>\n<li>疾患ページに新規データを追加  \n<ul>\n<li>ヒトゲノムデータセット（Human Genomic Datasets）：NBDCヒトデータベースと連携して表示</li>\n<li>顔貌特徴（Facial Features）：GestaltMatcher Database と連携して表示</li>\n<li>化合物（Compounds）：PubChem と連携して表示</li>\n<li>文献（References）：MedGen と連携して文献情報を表示</li>\n</ul></li>\n<li>遺伝子情報の表示を拡張  \n<ul>\n<li>疾患原因遺伝子リストの表示を整理し、情報構成を改善</li>\n</ul></li>\n</ul>\n\n<h2>今後について</h2>\n\n<p>今後も、NanbyoData のデータ拡充と UI 改善を継続し、難病研究・診療・国際連携を支える情報基盤としての機能強化を進めていきます。</p>\n"
     },
     {
       "id": "2025-08-26-post2",
@@ -16,7 +16,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>疾患情報ページを中心に以下の新情報を追加し、より直感的で閲覧しやすいユーザーインターフェース（UI）へと改善しました。<br></p>\n\n<ul>\n<li>・顔貌特徴：GestaltMatcher Databaseから取得した、207疾患に関連する2,447件の顔貌特徴データを統合</li>\n</ul>\n"
+      "body": "<p>疾患情報ページを中心に以下の新情報を追加し、より直感的で閲覧しやすいユーザーインターフェース（UI）へと改善しました。</p>\n\n<ul>\n<li>顔貌特徴：GestaltMatcher Database から取得した、207 疾患に関連する 2,447 件の顔貌特徴データを統合しました。</li>\n</ul>\n"
     },
     {
       "id": "2025-08-26-post1",
@@ -25,7 +25,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>難病オントロジー NANDO（Nanbyo Disease Ontology）の Version 2025-08-26 をリリースしました。新たに指定された指定難病7疾患を含む、55疾患を追加登録し、これにより指定難病は348疾患、小児慢性特定疾病は858疾患に対応する語彙集となりました。<br />\n<br><br><br />\n本サイトの<a href=\"/#download\">ダウンロード</a>から取得可能です．</p>\n"
+      "body": "<p>難病オントロジー NANDO（Nanbyo Disease Ontology）の Version 2025-08-26 をリリースしました。新たに指定された指定難病7疾患を含む、55疾患を追加登録し、これにより指定難病は348疾患、小児慢性特定疾病は858疾患に対応する語彙集となりました。</p>\n\n<p>本サイトの<a href=\"/#download\">ダウンロード</a>から取得可能です．</p>\n"
     },
     {
       "id": "2025-04-21-post1",
@@ -34,7 +34,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>疾患情報ページを中心に以下の新情報を追加し、より直感的で閲覧しやすいユーザーインターフェース（UI）へと改善しました。<br></p>\n\n<ul>\n<li>・糖鎖関連遺伝子</li>\n<li>・KEGGへの外部リンクを追加</li>\n<li>・OrphanetおよびKEGGの疾患定義を追加</li>\n</ul>\n"
+      "body": "<p>疾患情報ページを中心に以下の新情報を追加し、より直感的で閲覧しやすいユーザーインターフェース（UI）へと改善しました。</p>\n\n<ul>\n<li>糖鎖関連遺伝子</li>\n<li>KEGG への外部リンクを追加</li>\n<li>Orphanet および KEGG の疾患定義を追加</li>\n</ul>\n"
     },
     {
       "id": "2024-11-25-post2",
@@ -43,7 +43,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>疾患情報ページを中心に以下の新情報を追加し、より直感的で閲覧しやすいユーザーインターフェース（UI）へと改善しました。<br></p>\n\n<ul>\n<li>・外部リンクの詳細情報（フィードバック機能の追加）</li>\n<li>・日本の特定医療費受給者証所持者数</li>\n<li>・下位疾患情報</li>\n</ul>\n"
+      "body": "<p>疾患情報ページを中心に以下の新情報を追加し、より直感的で閲覧しやすいユーザーインターフェース（UI）へと改善しました。</p>\n\n<ul>\n<li>外部リンクの詳細情報（フィードバック機能の追加）</li>\n<li>日本の特定医療費受給者証所持者数</li>\n<li>下位疾患情報</li>\n</ul>\n"
     },
     {
       "id": "2024-11-25-post1",
@@ -52,7 +52,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>難病オントロジー NANDO（Nanbyo Disease Ontology）の Version 2023-11-28 をリリースしました。新たに91疾患を追加登録し、これにより指定難病は341疾患、小児慢性特定疾病は845疾患に対応する語彙集となりました。<br />\n<br><br><br />\n本サイトの<a href=\"/#download\">ダウンロード</a>から取得可能です．</p>\n"
+      "body": "<p>難病オントロジー NANDO（Nanbyo Disease Ontology）の Version 2023-11-28 をリリースしました。新たに91疾患を追加登録し、これにより指定難病は341疾患、小児慢性特定疾病は845疾患に対応する語彙集となりました。</p>\n\n<p>本サイトの<a href=\"/#download\">ダウンロード</a>から取得可能です．</p>\n"
     },
     {
       "id": "2024-02-29-post1",
@@ -61,7 +61,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>難病ポータルサイト NanbyoData Version 3.1.0 をリリースしました。<br><br />\nUIを微調整しました。</p>\n"
+      "body": "<p>難病ポータルサイト NanbyoData Version 3.1.0 をリリースしました。</p>\n\n<p>UI を微調整しました。</p>\n"
     },
     {
       "id": "2023-12-01-post1",
@@ -70,7 +70,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>難病ポータルサイト NanbyoData Version 3.0.0 をリリースしました.<br><br />\n新しいバリアント情報を追加し、UI を一新しました.</p>\n"
+      "body": "<p>難病ポータルサイト NanbyoData Version 3.0.0 をリリースしました。</p>\n\n<p>新しいバリアント情報を追加し、UI を一新しました。</p>\n"
     },
     {
       "id": "2023-11-28-post1",
@@ -79,7 +79,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>難病オントロジー NANDO の Version 2023-11-28 をリリースしました．<br><br />\n本サイトのダウンロードから取得可能です．</p>\n"
+      "body": "<p>難病オントロジー NANDO の Version 2023-11-28 をリリースしました．</p>\n\n<p>本サイトの<a href=\"/#download\">ダウンロード</a>から取得可能です．</p>\n"
     },
     {
       "id": "2022-04-27-post1",
@@ -88,7 +88,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>難病ポータルサイト NanbyoData Version 2.0.0 をリリースしました．<br><br />\n新たに，バイオリソース情報としてマウス・遺伝子項目を追加し，また診療用遺伝学的検査情報を追加しました．</p>\n"
+      "body": "<p>難病ポータルサイト NanbyoData Version 2.0.0 をリリースしました．</p>\n\n<p>新たに，バイオリソース情報としてマウス・遺伝子項目を追加し，また診療用遺伝学的検査情報を追加しました．</p>\n"
     },
     {
       "id": "2021-07-23-post2",
@@ -135,7 +135,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>We have enhanced the user interface (UI) to make it more intuitive and user-friendly, focusing on the disease information pages by adding the following new features:</p>\n\n<ul>\n<li>・Facial features: Integrated 2,447 facial feature data points related to 207 diseases obtained from the GestaltMatcher Database.</li>\n</ul>\n"
+      "body": "<p>We have enhanced the user interface (UI) to make it more intuitive and user-friendly, focusing on the disease information pages by adding the following new features:</p>\n\n<ul>\n<li>Facial features: Integrated 2,447 facial feature data points related to 207 diseases obtained from the GestaltMatcher Database.</li>\n</ul>\n"
     },
     {
       "id": "2025-08-26-post1",
@@ -144,7 +144,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>We are pleased to announce the release of the Nanbyo Disease Ontology (NANDO) Version 2025-08-26. This update includes the addition of 55 new diseases, expanding the vocabulary to cover 348 Designated Intractable Diseases and 858 Pediatric Chronic Specific Diseases.<br />\n<br><br><br />\nThe updated version is available for download from the <a href=\"/#download\">Download</a> page on this site.</p>\n"
+      "body": "<p>We are pleased to announce the release of the Nanbyo Disease Ontology (NANDO) Version 2025-08-26. This update includes the addition of 55 new diseases, expanding the vocabulary to cover 348 Designated Intractable Diseases and 858 Pediatric Chronic Specific Diseases.</p>\n\n<p>The updated version is available for download from the <a href=\"/#download\">Download</a> page on this site.</p>\n"
     },
     {
       "id": "2025-04-21-post1",
@@ -153,7 +153,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>We have released an updated version of the NanbyoData portal site (Version 2025-04-21), featuring an improved and more intuitive user interface (UI), especially on disease information pages.<br />\nThe following new content have been added:</p>\n\n<ul>\n<li>・Glycan-related genes</li>\n<li>・External links to KEGG</li>\n<li>・Disease definitions from Orphanet and KEGG</li>\n</ul>\n"
+      "body": "<p>We have released an updated version of the NanbyoData portal site (Version 2025-04-21), featuring an improved and more intuitive user interface (UI), especially on disease information pages.<br />\nThe following new content has been added:</p>\n\n<ul>\n<li>Glycan-related genes</li>\n<li>External links to KEGG</li>\n<li>Disease definitions from Orphanet and KEGG</li>\n</ul>\n"
     },
     {
       "id": "2024-11-25-post2",
@@ -162,7 +162,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>We have enhanced the user interface (UI) to make it more intuitive and user-friendly, focusing on the disease information pages by adding the following new features:</p>\n\n<ul>\n<li>・Detailed information with external links (including a feedback feature)</li>\n<li>・Number of Specified Medical Expense Beneficiary Certificate Holders (in Japan)</li>\n<li>・Sub-classes disease information</li>\n</ul>\n"
+      "body": "<p>We have enhanced the user interface (UI) to make it more intuitive and user-friendly, focusing on the disease information pages by adding the following new features:</p>\n\n<ul>\n<li>Detailed information with external links (including a feedback feature)</li>\n<li>Number of Specified Medical Expense Beneficiary Certificate Holders (in Japan)</li>\n<li>Sub-classes disease information</li>\n</ul>\n"
     },
     {
       "id": "2024-11-25-post1",
@@ -171,7 +171,7 @@
       "tags": [
         "services"
       ],
-      "body": "<p>We are pleased to announce the release of the Nanbyo Disease Ontology (NANDO) Version 2023-11-28. This update includes the addition of 91 new diseases, expanding the vocabulary to cover 341 Designated Intractable Diseases and 845 Pediatric Chronic Specific Diseases.<br />\n<br><br><br />\nThe updated version is available for download from the <a href=\"/#download\">Download</a> page on this site.</p>\n"
+      "body": "<p>We are pleased to announce the release of the Nanbyo Disease Ontology (NANDO) Version 2023-11-28. This update includes the addition of 91 new diseases, expanding the vocabulary to cover 341 Designated Intractable Diseases and 845 Pediatric Chronic Specific Diseases.</p>\n\n<p>The updated version is available for download from the <a href=\"/#download\">Download</a> page on this site.</p>\n"
     },
     {
       "id": "2024-02-29-post1",

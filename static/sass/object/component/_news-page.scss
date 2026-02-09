@@ -4,7 +4,7 @@
   gap: 40px;
   max-width: 930px;
   margin: 0 auto;
-  padding: 40px 20px 60px;
+  padding: 40px 10px 60px;
   min-height: calc(100vh - 320px);
 }
 
@@ -288,6 +288,8 @@
 .news-detail-body {
   font-size: var(--font-size-medium);
   line-height: 1.8;
+  max-width: 720px;
+  margin: 0 auto;
 
   p {
     margin-bottom: 1em;
@@ -296,7 +298,19 @@
   ul,
   ol {
     margin-bottom: 1em;
-    padding-left: 1.5em;
+    padding-left: 1.75em;
+  }
+
+  ul {
+    list-style: disc;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  li {
+    margin-bottom: 0.4em;
   }
 
   h2 {
