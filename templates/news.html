@@ -41,13 +41,43 @@
         <h2>News</h2>
       </header>
 
-      <div class="contents-wrapper">
-        <h3 class="news-title"></h3>
-        <hr />
-        <p class="post-date"></p>
-        <div class="post-content"></div>
-      </div>
+      <div class="news-page-container">
+        <aside class="news-sidebar">
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">
+              <i class="fas fa-calendar-alt sidebar-icon" aria-hidden="true"></i>
+              Year
+            </h3>
+            <ul class="sidebar-options" id="news-year-options"></ul>
+          </div>
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">
+              <i class="fas fa-tag sidebar-icon" aria-hidden="true"></i>
+              Tags
+            </h3>
+            <ul class="sidebar-options" id="news-tag-options"></ul>
+          </div>
+        </aside>
 
+        <div class="news-main">
+          <!-- 一覧表示エリア -->
+          <div id="news-list-view">
+            <h2 class="news-list-title" id="news-list-title"></h2>
+            <ul class="news-list" id="news-list"></ul>
+          </div>
+          <!-- 詳細表示エリア -->
+          <div id="news-detail-view" style="display: none;">
+            <h2 class="news-detail-title" id="news-detail-title"></h2>
+            <div class="news-detail-meta">
+              <span class="news-detail-date" id="news-detail-date"></span>
+              <div class="news-detail-tags" id="news-detail-tags"></div>
+            </div>
+            <div class="news-detail-body post-content" id="news-detail-body"></div>
+          </div>
+          <div id="news-loading" class="news-loading-state" style="display: none;"></div>
+          <div id="news-error" class="news-error-state" style="display: none;"></div>
+        </div>
+      </div>
     </div>
 
     {% include 'component/footer.html' %}
@@ -60,23 +90,15 @@
     {% endif %}
   </main>
 
-
-
-
-
-
   <!-- Optional JavaScript -->
-  <!-- jQuery first, then Bootstrap JS -->
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
     integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+  </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
-  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  </script>
   <script type="module" src="/static/js/main.js"></script>
-  <script type="module" src="/static/js/news/news.js"></script>]
-
+  <script type="module" src="/static/js/news/news.js"></script>
 </body>
 
 </html>

@@ -1,74 +1,296 @@
-document.addEventListener('DOMContentLoaded', () => {
-  const currentLang = document.querySelector('.language-select').value;
+/**
+ * ニュース一覧・詳細ページ
+ * news.json を取得して表示。サイドバーで Year / Tags フィルター。
+ */
+import { fetchNewsJson } from '../utils/newsJsonUrl.js';
+
+// タグ key → 表示ラベル（日本語・英語）
+const TAG_LABELS = {
+  ja: {
+    services: 'サービス',
+    pr: '広報',
+    public_relations: '広報',
+    event: 'イベント',
+    events: 'イベント',
+    recruitment: '募集',
+    other: 'その他',
+  },
+  en: {
+    services: 'Service',
+    pr: 'Public Relations',
+    public_relations: 'Public Relations',
+    event: 'Event',
+    events: 'Event',
+    recruitment: 'Recruitment',
+    other: 'Other',
+  },
+};
+
+// サイドバー用タグ定義（表示順・色クラス）
+const SIDEBAR_TAGS = [
+  { key: 'services', labelKey: 'services', dotClass: 'tag-services' },
+  { key: 'pr', labelKey: 'pr', dotClass: 'tag-pr' },
+  { key: 'event', labelKey: 'event', dotClass: 'tag-event' },
+  { key: 'recruitment', labelKey: 'recruitment', dotClass: 'tag-recruitment' },
+  { key: 'other', labelKey: 'other', dotClass: 'tag-other' },
+];
+
+function getLang() {
+  const el = document.querySelector('.language-select');
+  if (el && el.value) return el.value === 'en' ? 'en' : 'ja';
+  return document.documentElement.lang === 'en' ? 'en' : 'ja';
+}
+
+function getTagLabel(tagKey, lang) {
+  const map = TAG_LABELS[lang] || TAG_LABELS.ja;
+  return map[tagKey] || tagKey;
+}
+
+function getTagDotClass(tagKey) {
+  const t = SIDEBAR_TAGS.find((s) => s.key === tagKey);
+  return t ? t.dotClass : 'tag-other';
+}
+
+function parseYearFromDate(dateStr) {
+  // "2025.11.26" → 2025
+  const part = dateStr.split('.')[0];
+  return part ? parseInt(part, 10) : null;
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  const lang = getLang();
+  const listView = document.getElementById('news-list-view');
+  const detailView = document.getElementById('news-detail-view');
+  const loadingEl = document.getElementById('news-loading');
+  const errorEl = document.getElementById('news-error');
+  const yearOptionsEl = document.getElementById('news-year-options');
+  const tagOptionsEl = document.getElementById('news-tag-options');
+  const listTitleEl = document.getElementById('news-list-title');
+  const listEl = document.getElementById('news-list');
+
   const params = new URLSearchParams(window.location.search);
-  const postFilename = params.get('post');
+  const postId = params.get('post');
 
-  if (!postFilename) return;
-
-  // "nanbyodata.jp" なら master、それ以外は dev
-  const branch =
-    window.location.hostname === 'nanbyodata.jp' ? 'master' : 'dev';
-
-  // GitHubから取得するURL
-  const GITHUB_RAW_URL = `https://raw.githubusercontent.com/aidrd/nanbyodata/refs/heads/${branch}/posts/${currentLang}/${postFilename}.md`;
-
-  fetch(GITHUB_RAW_URL)
-    .then((res) => {
-      if (!res.ok) {
-        throw new Error(
-          `Failed to fetch post: ${res.status} ${res.statusText}`
-        );
-      }
-      return res.text();
-    })
-    .then((mdText) => {
-      // YAML Front Matter を解析
-      const metadata = extractFrontMatter(mdText);
-
-      // 'title' のクォートを削除
-      const extractedTitle = metadata.title
-        ? metadata.title.replace(/^['"](.*)['"]$/, '$1')
-        : '(No Title)';
-
-      // ファイル名から日付を取得 (例: "2024-11-25-post1" → "2024.11.25")
-      const datePart = postFilename.split('-post')[0].replace(/-/g, '.');
-
-      // Markdown 本文のみを抽出 (Front Matter 部分を削除)
-      const mdContent = mdText.replace(/^---\n[\s\S]+?\n---/, '').trim();
-
-      // Markdown → HTML変換
-      const html = marked.parse(mdContent);
-
-      document.querySelector('.news-title').textContent = extractedTitle;
-      document.querySelector('.post-date').textContent = datePart;
-      document.querySelector('.post-content').innerHTML = html;
-    })
-    .catch((err) => {
-      console.error('Error loading Markdown:', err);
-      document.querySelector('.news-title').textContent = 'Error';
-      document.querySelector('.post-date').textContent = '';
-      document.querySelector('.post-content').textContent =
-        'Could not load content.';
-    });
-});
-
-function extractFrontMatter(mdText) {
-  // YAML Front Matter のパターンを定義
-  const frontMatterPattern = /^---\n([\s\S]+?)\n---/;
-  const match = mdText.match(frontMatterPattern);
-
-  if (!match) return {}; // YAMLブロックがなければ空オブジェクトを返す
-
-  // 各行を解析
-  const lines = match[1].split('\n');
-  const frontMatter = {};
-
-  lines.forEach((line) => {
-    const [key, ...values] = line.split(': ');
-    if (key && values.length) {
-      frontMatter[key.trim()] = values.join(': ').trim();
+  function showLoading() {
+    listView.style.display = 'none';
+    detailView.style.display = 'none';
+    if (errorEl) errorEl.style.display = 'none';
+    if (loadingEl) {
+      loadingEl.innerHTML = '';
+      const wrap = document.createElement('div');
+      wrap.className = 'news-loading-spinner-wrap';
+      const spinner = document.createElement('div');
+      spinner.className = 'loading-spinner';
+      wrap.appendChild(spinner);
+      loadingEl.appendChild(wrap);
+      loadingEl.style.display = 'block';
     }
+  }
+
+  function showError(msg) {
+    listView.style.display = 'none';
+    detailView.style.display = 'none';
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (errorEl) {
+      errorEl.style.display = 'block';
+      errorEl.textContent =
+        msg || (lang === 'ja' ? '読み込みに失敗しました。' : 'Failed to load.');
+    }
+  }
+
+  let newsData = null;
+
+  try {
+    showLoading();
+    newsData = await fetchNewsJson();
+    if (!newsData[lang]) newsData[lang] = [];
+  } catch (e) {
+    console.error('News fetch error:', e);
+    showError();
+    return;
+  }
+
+  if (loadingEl) loadingEl.style.display = 'none';
+
+  const posts = newsData[lang] || [];
+
+  // 年リスト（重複なし・降順）
+  const years = [
+    ...new Set(posts.map((p) => parseYearFromDate(p.date)).filter(Boolean)),
+  ].sort((a, b) => b - a);
+
+  // サイドバー: Year
+  const yearAllLabel = lang === 'ja' ? '全期間' : 'All periods';
+  const yearAllSelectedClass = postId ? '' : ' class="is-selected"';
+  yearOptionsEl.innerHTML = [
+    `<li><label${yearAllSelectedClass} data-year=""><span class="option-check"></span><span>${yearAllLabel}</span></label></li>`,
+    ...years.map(
+      (y) =>
+        `<li><label data-year="${y}"><span class="option-check"></span><span>${y}</span></label></li>`,
+    ),
+  ].join('');
+
+  // サイドバー: Tags
+  const tagAllLabel = lang === 'ja' ? 'すべて' : 'All';
+  const tagAllSelectedClass = postId ? '' : ' class="is-selected"';
+  tagOptionsEl.innerHTML = [
+    `<li><label${tagAllSelectedClass} data-tag=""><span class="option-check"></span><span>${tagAllLabel}</span></label></li>`,
+    ...SIDEBAR_TAGS.map(
+      (t) =>
+        `<li><label data-tag="${t.key}"><span class="tag-dot ${t.dotClass}"></span><span>${getTagLabel(t.key, lang)}</span></label></li>`,
+    ),
+  ].join('');
+
+  let selectedYears = new Set();
+  let selectedTags = new Set();
+
+  function getFilteredPosts() {
+    return posts.filter((p) => {
+      if (selectedYears.size > 0) {
+        const y = parseYearFromDate(p.date);
+        if (!y || !selectedYears.has(y)) return false;
+      }
+      if (selectedTags.size > 0) {
+        if (!p.tags || !p.tags.some((t) => selectedTags.has(t))) return false;
+      }
+      return true;
+    });
+  }
+
+  function updateYearSelectionUI() {
+    const noFilter = selectedYears.size === 0;
+    const allYearsSelected =
+      years.length > 0 && years.every((y) => selectedYears.has(y));
+    const allSelected = noFilter || allYearsSelected;
+    yearOptionsEl.querySelectorAll('label').forEach((label) => {
+      const year = label.dataset.year;
+      const isAll = year === '';
+      const isSelected =
+        allSelected || (!isAll && selectedYears.has(parseInt(year, 10)));
+      label.classList.toggle('is-selected', isSelected);
+    });
+  }
+
+  function updateTagSelectionUI() {
+    const allTagKeys = SIDEBAR_TAGS.map((t) => t.key);
+    const noFilter = selectedTags.size === 0;
+    const allTagsSelected = allTagKeys.every((key) => selectedTags.has(key));
+    const allSelected = noFilter || allTagsSelected;
+    tagOptionsEl.querySelectorAll('label').forEach((label) => {
+      const tag = label.dataset.tag;
+      const isAll = tag === '';
+      const isSelected = allSelected || (!isAll && selectedTags.has(tag));
+      label.classList.toggle('is-selected', isSelected);
+    });
+  }
+
+  function renderList() {
+    const filtered = getFilteredPosts();
+    const now = new Date();
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(now.getMonth() - 3);
+
+    listTitleEl.textContent = lang === 'ja' ? 'ニュース一覧' : 'News list';
+    listEl.innerHTML = filtered
+      .map((p) => {
+        const itemDate = new Date(p.date.replace(/\./g, '-'));
+        const isRecent = itemDate > threeMonthsAgo;
+        const newBadge = isRecent
+          ? '<span class="news-item-new">new</span>'
+          : '';
+        const tagsHtml = (p.tags || [])
+          .map(
+            (t) =>
+              `<span class="news-tag"><span class="tag-dot ${getTagDotClass(t)}"></span>${escapeHtml(getTagLabel(t, lang))}</span>`,
+          )
+          .join('');
+        return `
+      <li class="news-list-item">
+        <div class="news-item-date"><time datetime="${p.date}">${p.date}</time></div>
+        <div class="news-item-body">
+          <div class="news-item-title-row"><span class="news-item-title"><a href="/news?post=${encodeURIComponent(p.id)}">${escapeHtml(p.title)}</a></span>${newBadge}</div>
+          ${tagsHtml ? `<div class="news-item-tags">${tagsHtml}</div>` : ''}
+        </div>
+      </li>`;
+      })
+      .join('');
+  }
+
+  function renderDetail(entry) {
+    if (!entry) {
+      showError(
+        lang === 'ja' ? '指定された記事は見つかりません。' : 'Post not found.',
+      );
+      return;
+    }
+    listView.style.display = 'none';
+    detailView.style.display = 'block';
+    document.getElementById('news-detail-title').textContent = entry.title;
+    document.getElementById('news-detail-date').textContent = entry.date;
+    document.getElementById('news-detail-tags').innerHTML = (entry.tags || [])
+      .map(
+        (t) =>
+          `<span class="news-tag"><span class="tag-dot ${getTagDotClass(t)}"></span>${escapeHtml(getTagLabel(t, lang))}</span>`,
+      )
+      .join('');
+    document.getElementById('news-detail-body').innerHTML = entry.body || '';
+  }
+
+  function escapeHtml(s) {
+    const div = document.createElement('div');
+    div.textContent = s;
+    return div.innerHTML;
+  }
+
+  // サイドバー選択（複数選択・トグル。フィルター変更時は一覧表示に切り替え）
+  yearOptionsEl.querySelectorAll('label').forEach((label) => {
+    label.addEventListener('click', () => {
+      const year = label.dataset.year;
+      if (year === '') {
+        selectedYears.clear();
+      } else {
+        const y = parseInt(year, 10);
+        if (selectedYears.has(y)) selectedYears.delete(y);
+        else selectedYears.add(y);
+      }
+      updateYearSelectionUI();
+      if (postId) window.history.replaceState({}, '', '/news');
+      listView.style.display = 'block';
+      detailView.style.display = 'none';
+      renderList();
+    });
   });
 
-  return frontMatter;
-}
+  tagOptionsEl.querySelectorAll('label').forEach((label) => {
+    label.addEventListener('click', () => {
+      const tag = label.dataset.tag;
+      if (tag === '') {
+        selectedTags.clear();
+      } else {
+        if (selectedTags.has(tag)) selectedTags.delete(tag);
+        else selectedTags.add(tag);
+      }
+      updateTagSelectionUI();
+      if (postId) window.history.replaceState({}, '', '/news');
+      listView.style.display = 'block';
+      detailView.style.display = 'none';
+      renderList();
+    });
+  });
+
+  // 一覧ページでは初期状態で「全期間」「すべて」＝全項目選択としてすべて濃く表示。
+  // 詳細ページ表示時（postId があるとき）はフィルタはすべて未選択状態の見た目にしておく。
+  if (!postId) {
+    updateYearSelectionUI();
+    updateTagSelectionUI();
+  }
+
+  if (postId) {
+    const entry = posts.find((p) => p.id === postId);
+    renderDetail(entry);
+  } else {
+    listView.style.display = 'block';
+    detailView.style.display = 'none';
+    renderList();
+  }
+});

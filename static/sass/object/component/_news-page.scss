@@ -1,0 +1,336 @@
+// ニュース一覧・詳細ページ（サイドバー + メイン）
+.news-page-container {
+  display: flex;
+  gap: 40px;
+  max-width: 930px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  min-height: calc(100vh - 320px);
+}
+
+.news-sidebar {
+  flex-shrink: 0;
+  width: 200px;
+
+  .sidebar-section {
+    margin-bottom: 32px;
+
+    .sidebar-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: var(--font-size-base);
+      font-weight: 700;
+      color: var(--color-secondary);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--color-table-border);
+
+      .sidebar-icon {
+        color: var(--color-primary);
+      }
+    }
+
+    .sidebar-options {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+
+      li {
+        margin-bottom: 6px;
+      }
+
+      label,
+      .sidebar-option-link {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        cursor: pointer;
+        font-size: var(--font-size-base);
+        text-decoration: none;
+        transition: color 0.15s ease;
+
+        /* 非選択：薄いグレー */
+        color: #b0b0b0;
+
+        &:hover {
+          color: var(--color-primary);
+        }
+
+        /* 選択中：濃い色（青系） */
+        &.is-selected {
+          color: var(--color-secondary);
+          font-weight: 600;
+        }
+      }
+
+      .tag-dot {
+        flex-shrink: 0;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        transition: opacity 0.15s ease;
+
+        /* 非選択：円を薄く */
+        label:not(.is-selected) & {
+          opacity: 0.35;
+        }
+
+        &.tag-services {
+          background: var(--color-primary);
+        }
+        &.tag-pr {
+          background: #22c55e;
+        }
+        &.tag-event {
+          background: #f97316;
+        }
+        &.tag-recruitment {
+          background: #ef4444;
+        }
+        &.tag-other {
+          background: #94a3b8;
+        }
+      }
+
+      input[type='radio'] {
+        margin: 0;
+        accent-color: var(--color-primary);
+      }
+
+      /* Year の全期間・Tags のすべて：選択時は濃い青、未選択は薄い青の塗りつぶし円 */
+      .option-check {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        flex-shrink: 0;
+        transition: background 0.15s ease;
+        background: #c5e5e8; /* 未選択：薄い青 */
+
+        .is-selected & {
+          background: var(--color-primary); /* 選択：濃い青 */
+        }
+      }
+    }
+  }
+}
+
+.news-main {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  min-height: 400px;
+  display: flex;
+  flex-direction: column;
+}
+
+.news-list-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-secondary);
+  padding-bottom: 12px;
+  margin-bottom: 24px;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.news-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+
+  .news-list-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 24px;
+    margin-bottom: 24px;
+
+    .news-item-date {
+      flex-shrink: 0;
+      font-size: var(--font-size-base);
+      letter-spacing: 0.05em;
+      color: var(--color-font);
+    }
+
+    .news-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .news-item-title-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 4px;
+    }
+
+    .news-item-title {
+      font-size: var(--font-size-medium);
+      font-weight: 600;
+
+      a {
+        color: var(--color-link);
+        text-decoration: underline;
+
+        &:hover {
+          opacity: 0.8;
+        }
+      }
+    }
+
+    .news-item-new {
+      display: inline-block;
+      background: #f93759;
+      color: #fff;
+      font-size: var(--font-size-small);
+      font-weight: 700;
+      padding: 2px 10px;
+      border-radius: 999px;
+    }
+
+    .news-item-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: var(--font-size-small);
+      color: var(--color-black);
+
+      .news-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+
+        .tag-dot {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          flex-shrink: 0;
+
+          &.tag-services {
+            background: var(--color-primary);
+          }
+          &.tag-pr {
+            background: #22c55e;
+          }
+          &.tag-event {
+            background: #f97316;
+          }
+          &.tag-recruitment {
+            background: #ef4444;
+          }
+          &.tag-other {
+            background: #94a3b8;
+          }
+        }
+      }
+    }
+  }
+}
+
+// 詳細ページ
+.news-detail-title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-secondary);
+  padding-bottom: 12px;
+  margin-bottom: 12px;
+  border-bottom: 2px solid var(--color-primary);
+}
+
+.news-detail-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  font-size: var(--font-size-base);
+
+  .news-detail-date {
+    color: var(--color-font);
+  }
+
+  .news-detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    color: var(--color-black);
+
+    .news-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+
+      .tag-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        flex-shrink: 0;
+
+        &.tag-services {
+          background: var(--color-primary);
+        }
+        &.tag-pr {
+          background: #22c55e;
+        }
+        &.tag-event {
+          background: #f97316;
+        }
+        &.tag-recruitment {
+          background: #ef4444;
+        }
+        &.tag-other {
+          background: #94a3b8;
+        }
+      }
+    }
+  }
+}
+
+.news-detail-body {
+  font-size: var(--font-size-medium);
+  line-height: 1.8;
+
+  p {
+    margin-bottom: 1em;
+  }
+
+  ul,
+  ol {
+    margin-bottom: 1em;
+    padding-left: 1.5em;
+  }
+
+  h2 {
+    font-size: var(--font-size-large);
+    font-weight: 700;
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+  }
+}
+
+// ローディング・エラー時は本文エリア全体を覆い、中央に表示
+.news-loading-state,
+.news-error-state {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  text-align: center;
+  color: var(--color-font);
+
+  .news-loading-spinner-wrap {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .loading-spinner {
+    position: relative;
+    top: unset;
+    left: unset;
+    margin: 0;
+  }
+}
