@@ -292,12 +292,13 @@
   margin: 0 auto;
 
   p {
-    margin-bottom: 1em;
+    margin-bottom: 0.75em;
   }
 
   ul,
   ol {
-    margin-bottom: 1em;
+    margin-top: 0.25em;
+    margin-bottom: 0.5em;
     padding-left: 1.75em;
   }
 
@@ -310,14 +311,14 @@
   }
 
   li {
-    margin-bottom: 0.4em;
+    margin-bottom: 0.2em;
   }
 
   h2 {
     font-size: var(--font-size-large);
     font-weight: 700;
-    margin-top: 1.5em;
-    margin-bottom: 0.5em;
+    margin-top: 1em;
+    margin-bottom: 0.35em;
   }
 }
 

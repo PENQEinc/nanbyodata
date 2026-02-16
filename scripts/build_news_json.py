@@ -61,12 +61,12 @@ def extract_front_matter(md_text):
 
 def md_to_html(md_text):
     """Markdown を HTML に変換。"""
-    if markdown2:
-        return markdown2.markdown(
-            md_text,
-            extras=['break-on-newline', 'fenced-code-blocks', 'tables']
-        )
-    return md_text.replace('\n', '<br>\n')
+    if markdown2 is None:
+        raise ImportError('markdown2 が必要です。pip install markdown2 でインストールしてください。')
+    return markdown2.markdown(
+        md_text,
+        extras=['break-on-newline', 'fenced-code-blocks', 'tables']
+    )
 
 
 def filename_to_date(filename):
