@@ -1,0 +1,105 @@
+<!doctype html>
+
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% elif get_locale() == "ko" or get_locale() == "ko_KR" %}
+<html lang="ko">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- SEO -->
+  <title>Help | NanbyoData</title>
+  <meta name="description" content="NanbyoData Help Page" />
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="Help | NanbyoData" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanbyodata.jp/help" />
+  <meta property="og:description" content="NanbyoData Help Page" />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css">
+
+  <!-- favicon -->
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+
+</head>
+
+<body>
+  <main>
+
+    <!-- Navigation -->
+    {% include 'component/navigation.html' %}
+
+    <!--- Help page -->
+    <div class="page-layout">
+      <header class="page-title">
+        <h2>Help</h2>
+      </header>
+
+      <div class="contents-wrapper">
+        <!-- How to use NanbyoData section -->
+        <section class="help-section section-block">
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+          <h2 class="section-title">NanbyoDataの使い方</h2>
+          {% else %}
+          <h2 class="section-title">How to use NanbyoData</h2>
+          {% endif %}
+
+          <div class="video-wrapper">
+            <div class="video-container">
+              <iframe src="https://www.youtube.com/embed/vyd_qz-zfqA" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen class="youtube-embed">
+              </iframe>
+            </div>
+          </div>
+        </section>
+
+        <!-- FAQ section -->
+        <section class="help-section section-block">
+          <div id="faq-container">
+            <!-- FAQ content will be loaded here by JavaScript -->
+          </div>
+        </section>
+      </div>
+    </div>
+
+    <!--- footer --->
+    {% include 'component/footer.html' %}
+
+    <!--- NanbyoData利用規約 modal -->
+    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+    {% include 'component/modal-tos.html' %}
+    {% else %}
+    {% include 'component/modal-tos_en.html' %}
+    {% endif %}
+
+  </main>
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script type="module" src="/static/js/help/help.js"></script>
+</body>
+
+</html>
