@@ -94,7 +94,7 @@ function _applyHighlightFromUrl() {
     const targetNode = zTreeObj.getNodesByParam(
       'nando_id',
       currentNandoId,
-      null
+      null,
     )[0];
     if (targetNode) {
       zTreeObj.cancelSelectedNode();
@@ -148,7 +148,7 @@ function _expandParentNodesForSelectedNode(zTree, targetId) {
           const retryNode = zTree.getNodesByParam(
             'nando_id',
             targetId,
-            null
+            null,
           )[0];
           if (retryNode) {
             isExpandingParentNodes = true;
@@ -245,7 +245,7 @@ function _highlight_upstream_treeview_startNode(zTree, nodes, targetId) {
       _highlight_upstream_treeview_startNode(
         zTree,
         nodes[i].children,
-        targetId
+        targetId,
       );
     }
   }
@@ -433,10 +433,10 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
           const button = $('#' + treeNode.tId + '_switch');
           if (button.length) {
             button.removeClass(
-              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico'
+              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico',
             );
             button.addClass(
-              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico'
+              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico',
             );
             button.css('content', '"▼"');
             button.attr('data-icon', 'open');
@@ -472,7 +472,7 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
             const targetNode = zTreeObj.getNodesByParam(
               'nando_id',
               currentNandoId,
-              null
+              null,
             )[0];
             if (targetNode) {
               let parentNode = targetNode.getParentNode();
@@ -498,10 +498,10 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
           const button = $('#' + treeNode.tId + '_switch');
           if (button.length) {
             button.removeClass(
-              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico'
+              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico',
             );
             button.addClass(
-              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico'
+              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico',
             );
             button.css('content', '"▶"');
             button.attr('data-icon', 'close');
@@ -713,7 +713,7 @@ $(document).ready(function () {
   if (!nando_id) nando_id = 'NANDO:1200477'; // デフォルト値
 
   const url_str = `${URL_GET_PANEL_UPSTREAM_HIERARCHY}?nando_id=${encodeURIComponent(
-    nando_id
+    nando_id,
   )}&lang=${encodeURIComponent(lang)}`;
 
   $.ajax({ url: url_str, type: 'GET', async: true, dataType: 'text' })
