@@ -63,7 +63,8 @@ async function loadFAQ() {
       // サブセクションがある場合
       if (section.subsections && section.subsections.length > 0) {
         section.subsections.forEach((subsection) => {
-          html += `<div class="faq-subsection">`;
+          const subsectionId = subsection.id ? `faq-${subsection.id}` : '';
+          html += `<div class="faq-subsection"${subsectionId ? ` id="${subsectionId}"` : ''}>`;
           html += `<h3 class="faq-subsection-title">${getLocalizedValue(
             subsection,
             'title'
