@@ -207,3 +207,32 @@ To regenerate the JSON locally:
 python scripts/build_news_json.py      # → static/data/news.json
 python scripts/build_resources_json.py # → static/data/resources.json
 ```
+
+### FAQ (Help page)
+
+Edit `static/data/faq.json` directly. No build step or Actions; the Help page loads this file. Add a new Q&A by appending an object to the right `items` array.
+
+**Structure sample**:
+
+```json
+{
+  "sections": [
+    {
+      "id": "frequently-asked-questions",
+      "title": { "ja": "よくある質問", "en": "Frequently Asked Questions" },
+      "subsections": [
+        {
+          "id": "download",
+          "title": { "ja": "ダウンロード", "en": "Download" },
+          "items": [
+            {
+              "question": { "ja": "CSV形式でダウンロードするには？", "en": "How do I download to CSV?" },
+              "answer": { "ja": "データセットページの「Download」ボタンから…", "en": "Use the \"Download\" button on the dataset page…" }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
