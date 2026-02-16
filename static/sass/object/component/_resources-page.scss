@@ -6,6 +6,10 @@
   margin: 0 auto;
   padding: 40px 15px 60px;
   min-height: calc(100vh - 320px);
+  color: var(--color-black);
+  p {
+    color: inherit;
+  }
 }
 
 .resources-sidebar {
@@ -138,7 +142,7 @@
     .resource-item-meta {
       font-size: var(--font-size-base);
       letter-spacing: 0.05em;
-      color: var(--color-font);
+      color: var(--color-black);
       margin-bottom: 6px;
 
       .resource-item-date {
@@ -211,7 +215,7 @@
     .resource-item-description {
       font-size: var(--font-size-base);
       line-height: 1.6;
-      color: var(--color-font);
+      color: var(--color-black);
       margin-bottom: 8px;
     }
 
@@ -220,7 +224,7 @@
       align-items: center;
       gap: 6px;
       font-size: var(--font-size-small);
-      color: var(--color-font);
+      color: var(--color-black);
 
       .resource-author-icon {
         flex-shrink: 0;

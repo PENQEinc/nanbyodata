@@ -46,11 +46,11 @@ Foundation
   --zindex-disease-side-link: 1;
   --zindex-popup: 50;
   --zindex-sidebar-optionlist: 100;
-  --icon-link: "";
-  --icon-copy: "";
-  --icon-download: "";
-  --icon-book: "";
-  --icon-file: "";
+  --icon-link: '\f35d';
+  --icon-copy: '\f0c5';
+  --icon-download: '\f019';
+  --icon-book: '\f02d';
+  --icon-file: '\f15c';
 }
 
 body {
@@ -1406,11 +1406,11 @@ Stats Overview Component
   padding: 0;
   list-style-type: none;
 }
-#temp-side-navigation > ul > li {
-  border-bottom: 1px dashed var(--color-secondary);
-}
 #temp-side-navigation > ul > li:first-child {
   border-top: 1px dashed var(--color-secondary);
+}
+#temp-side-navigation > ul > li {
+  border-bottom: 1px dashed var(--color-secondary);
 }
 #temp-side-navigation > ul > li > a {
   display: flex;
@@ -1453,17 +1453,17 @@ Stats Overview Component
   background-color: rgba(22, 35, 78, 0.2);
   color: var(--color-secondary);
 }
+#temp-side-navigation > ul > li .bio-resource.-disabled,
+#temp-side-navigation > ul > li .variant.-disabled,
+#temp-side-navigation > ul > li .genes.-disabled {
+  color: rgba(19, 41, 90, 0.2705882353);
+}
 #temp-side-navigation > ul > li .bio-resource,
 #temp-side-navigation > ul > li .variant,
 #temp-side-navigation > ul > li .genes {
   color: var(--color-secondary);
   font-weight: bold;
   padding: 10px 0 20px 10px;
-}
-#temp-side-navigation > ul > li .bio-resource.-disabled,
-#temp-side-navigation > ul > li .variant.-disabled,
-#temp-side-navigation > ul > li .genes.-disabled {
-  color: rgba(19, 41, 90, 0.2705882353);
 }
 #temp-side-navigation > ul > li .bio-resource ul,
 #temp-side-navigation > ul > li .variant ul,
@@ -2006,6 +2006,10 @@ Stats Overview Component
   margin: 0 auto;
   padding: 40px 15px 60px;
   min-height: calc(100vh - 320px);
+  color: var(--color-black);
+}
+.news-page-container p {
+  color: inherit;
 }
 
 .news-sidebar {
@@ -2033,7 +2037,6 @@ Stats Overview Component
   list-style: none;
   padding: 0;
   margin: 0;
-  /* 全期間・すべて：タグと同じ 8px 円。選択時は濃い青、未選択は薄い青 */
 }
 .news-sidebar .sidebar-section .sidebar-options li {
   margin-bottom: 6px;
@@ -2049,11 +2052,14 @@ Stats Overview Component
   transition: color 0.15s ease;
   /* 非選択：薄いグレー */
   color: #b0b0b0;
-  /* 選択中：濃い色（青系） */
 }
 .news-sidebar .sidebar-section .sidebar-options label:hover,
 .news-sidebar .sidebar-section .sidebar-options .sidebar-option-link:hover {
   color: var(--color-primary);
+}
+.news-sidebar .sidebar-section .sidebar-options label,
+.news-sidebar .sidebar-section .sidebar-options .sidebar-option-link {
+  /* 選択中：濃い色（青系） */
 }
 .news-sidebar .sidebar-section .sidebar-options label.is-selected,
 .news-sidebar .sidebar-section .sidebar-options .sidebar-option-link.is-selected {
@@ -2089,6 +2095,9 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
 .news-sidebar .sidebar-section .sidebar-options input[type=radio] {
   margin: 0;
   accent-color: var(--color-primary);
+}
+.news-sidebar .sidebar-section .sidebar-options {
+  /* 全期間・すべて：タグと同じ 8px 円。選択時は濃い青、未選択は薄い青 */
 }
 .news-sidebar .sidebar-section .sidebar-options .option-check {
   width: 8px;
@@ -2319,6 +2328,10 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   margin: 0 auto;
   padding: 40px 15px 60px;
   min-height: calc(100vh - 320px);
+  color: var(--color-black);
+}
+.resources-page-container p {
+  color: inherit;
 }
 
 .resources-sidebar {
@@ -2346,7 +2359,6 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   list-style: none;
   padding: 0;
   margin: 0;
-  /* 全期間・すべて：タグ（サービス等）と同じ 8px 円 */
 }
 .resources-sidebar .sidebar-section .sidebar-options li {
   margin-bottom: 6px;
@@ -2396,6 +2408,9 @@ label:not(.is-selected) .resources-sidebar .sidebar-section .sidebar-options .ta
 .resources-sidebar .sidebar-section .sidebar-options .tag-dot.tag-other {
   background: #94a3b8;
 }
+.resources-sidebar .sidebar-section .sidebar-options {
+  /* 全期間・すべて：タグ（サービス等）と同じ 8px 円 */
+}
 .resources-sidebar .sidebar-section .sidebar-options .option-check {
   width: 8px;
   height: 8px;
@@ -2440,7 +2455,7 @@ label:not(.is-selected) .resources-sidebar .sidebar-section .sidebar-options .ta
 .resources-list .resources-list-item .resource-item-meta {
   font-size: var(--font-size-base);
   letter-spacing: 0.05em;
-  color: var(--color-font);
+  color: var(--color-black);
   margin-bottom: 6px;
 }
 .resources-list .resources-list-item .resource-item-meta .resource-item-date {
@@ -2502,7 +2517,7 @@ label:not(.is-selected) .resources-sidebar .sidebar-section .sidebar-options .ta
 .resources-list .resources-list-item .resource-item-description {
   font-size: var(--font-size-base);
   line-height: 1.6;
-  color: var(--color-font);
+  color: var(--color-black);
   margin-bottom: 8px;
 }
 .resources-list .resources-list-item .resource-item-authors {
@@ -2510,7 +2525,7 @@ label:not(.is-selected) .resources-sidebar .sidebar-section .sidebar-options .ta
   align-items: center;
   gap: 6px;
   font-size: var(--font-size-small);
-  color: var(--color-font);
+  color: var(--color-black);
 }
 .resources-list .resources-list-item .resource-item-authors .resource-author-icon {
   flex-shrink: 0;
@@ -2948,7 +2963,6 @@ Stats Page Styles
   transform: rotate(90deg);
 }
 .faq-section .faq-item .faq-answer {
-  background-color: var(--color-sidebar-toc);
   color: var(--color-font);
   font-size: var(--font-size-base);
   line-height: 1.65;

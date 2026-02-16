@@ -6,6 +6,11 @@
   margin: 0 auto;
   padding: 40px 15px 60px;
   min-height: calc(100vh - 320px);
+  color: var(--color-black);
+
+  p {
+    color: inherit;
+  }
 }
 
 .news-sidebar {
