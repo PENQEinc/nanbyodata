@@ -2160,6 +2160,7 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
 .news-list .news-list-item .news-item-title {
   font-size: var(--font-size-medium);
   font-weight: 600;
+  text-box-trim: trim-start;
 }
 .news-list .news-list-item .news-item-title a {
   color: var(--color-link);

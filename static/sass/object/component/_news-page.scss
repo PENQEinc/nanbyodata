@@ -172,6 +172,7 @@
     .news-item-title {
       font-size: var(--font-size-medium);
       font-weight: 600;
+      text-box-trim: trim-start;
 
       a {
         color: var(--color-link);
