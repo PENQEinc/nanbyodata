@@ -1,19 +1,6 @@
 {
   "ja": [
     {
-      "id": "2026-02-16-resource1",
-      "date": "2026.02.16",
-      "publisher": "JOURNAL OF TEST",
-      "title": "テストタイトル",
-      "url": "https://example.com/paper1",
-      "tags": [
-        "services",
-        "pr"
-      ],
-      "description": "[Sample Resource] Sample sample.",
-      "authors": "H. Test, G. Test"
-    },
-    {
       "id": "2025-12-10-resource1",
       "date": "2025.12.10",
       "publisher": "JOURNAL OF CELL BIOLOGY",
