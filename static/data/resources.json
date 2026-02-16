@@ -1,0 +1,82 @@
+{
+  "ja": [
+    {
+      "id": "2025-12-10-resource1",
+      "date": "2025.12.10",
+      "publisher": "JOURNAL OF CELL BIOLOGY",
+      "title": "未診断希少疾患の同定に向けた機械学習アプローチ",
+      "url": "https://example.com/paper1",
+      "tags": [
+        "services",
+        "pr"
+      ],
+      "description": "[Sample Resource] EHRデータにおけるパターン認識のための新規MLアルゴリズムにより、未診断の希少疾患患者をスクリーニング対象としてフラグ付けする手法を検討。検出率の15%向上が示唆された。",
+      "authors": "R. Smith, M. Jones, S. Chen"
+    },
+    {
+      "id": "2025-11-01-resource1",
+      "date": "2025.11.01",
+      "publisher": "Nature Genetics",
+      "title": "精密医療のための希少疾患オントロジー統合",
+      "url": "https://example.com/paper2",
+      "tags": [
+        "services"
+      ],
+      "description": "[Sample Resource] NANDOと国際オントロジーリソースの統合により、横断検索と表現型に基づく診断を支援。",
+      "authors": "A. Tanaka, B. Suzuki, C. Watanabe"
+    },
+    {
+      "id": "2024-08-15-resource1",
+      "date": "2024.08.15",
+      "publisher": "学会発表",
+      "title": "NanbyoData: 難病情報ポータル",
+      "url": "https://example.com/paper1",
+      "tags": [
+        "event",
+        "pr"
+      ],
+      "description": "[Sample Resource] 希少疾患情報学分野の年次大会での発表。NanbyoDataの機能と利用統計の概要。",
+      "authors": "NanbyoData Team"
+    }
+  ],
+  "en": [
+    {
+      "id": "2025-12-10-resource1",
+      "date": "2025.12.10",
+      "publisher": "JOURNAL OF CELL BIOLOGY",
+      "title": "Machine Learning Approaches to Identifying Undiagnosed Rare Conditions",
+      "url": "https://example.com/paper1",
+      "tags": [
+        "services",
+        "pr"
+      ],
+      "description": "[Sample Resource] Exploring novel ML algorithms for pattern recognition in EHR data to flag potential undiagnosed rare disease patients for screening. Results suggest a 15% increase in detection rates.",
+      "authors": "R. Smith, M. Jones, S. Chen"
+    },
+    {
+      "id": "2025-11-01-resource1",
+      "date": "2025.11.01",
+      "publisher": "Nature Genetics",
+      "title": "Rare Disease Ontology Integration for Precision Medicine",
+      "url": "https://example.com/paper2",
+      "tags": [
+        "services"
+      ],
+      "description": "[Sample Resource] Integration of NANDO with international ontology resources to support cross-database queries and phenotype-driven diagnosis.",
+      "authors": "A. Tanaka, B. Suzuki, C. Watanabe"
+    },
+    {
+      "id": "2024-08-15-resource1",
+      "date": "2024.08.15",
+      "publisher": "Conference Proceedings",
+      "title": "NanbyoData: A Portal for Intractable Disease Information",
+      "url": "https://example.com/paper1",
+      "tags": [
+        "event",
+        "pr"
+      ],
+      "description": "[Sample Resource] Presentation at the annual rare disease informatics conference. Overview of NanbyoData features and usage statistics.",
+      "authors": "NanbyoData Team"
+    }
+  ]
+}

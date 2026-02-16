@@ -261,6 +261,13 @@ def get_overview(id_nando):
 def page():
     return render_template('news.html')
 
+
+# Resourcesページ
+@app.route('/resources')
+def resources_page():
+    return render_template('resources.html')
+
+
 @contextmanager
 def get_mysql_connection():
     conn = MySQLdb.connect(host=db_host, db=db_name, user=db_user, passwd=db_pw, charset="utf8")
