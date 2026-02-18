@@ -819,7 +819,6 @@ header.search-area .intro-text .keyword a {
   min-width: 0;
 }
 .news-summary .logdata dd .news-item-title-row {
-  display: flex;
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
