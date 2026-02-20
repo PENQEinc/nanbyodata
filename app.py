@@ -133,6 +133,13 @@ def help():
 def epidemiology():
     return render_template('epidemiology.html')
 
+#####
+# Disease list page
+## GET:
+@app.route('/disease-list')
+def disease_list():
+    return render_template('disease-list.html')
+
 
 #####
 # NANDO語彙一覧

@@ -3064,4 +3064,307 @@ Stats Page Styles
   .faq-item .faq-answer.open {
     padding: 12px 14px;
   }
+}
+/* ---------- Disease List Page ---------- */
+#disease-list-page {
+  overflow-x: hidden;
+  overflow-y: visible;
+  background: #fff;
+  padding: 0 0 100px;
+}
+#disease-list-page .disease-list-layout {
+  width: 920px;
+  margin: 55px auto 0;
+  display: grid;
+  grid-template-columns: 200px 1fr;
+  gap: 14px;
+  color: #333;
+}
+#disease-list-page .disease-list-layout * {
+  box-sizing: border-box;
+}
+#disease-list-page .sidebar-title {
+  margin: 0 0 8px;
+  padding: 0 0 6px;
+  border-bottom: 1px solid #c8c8c8;
+  font-size: 20px;
+  font-weight: 400;
+  color: #303030;
+}
+#disease-list-page .card {
+  border: 1px solid #c8c8c8;
+  background: #efefef;
+  overflow: hidden;
+  margin-bottom: 8px;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.45);
+}
+#disease-list-page .card-header {
+  background: #0f7f8d;
+  color: #fff;
+  padding: 5px 9px;
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.2;
+}
+#disease-list-page .card-body {
+  padding: 7px 9px 8px;
+  background: #fff;
+}
+#disease-list-page .list-scroll {
+  max-height: 250px;
+  overflow: auto;
+  padding-right: 2px;
+}
+#disease-list-page .card-body label {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 2px 0;
+  font-size: 16px;
+  line-height: 1.3;
+  color: #2b4551;
+  word-break: break-word;
+}
+#disease-list-page input[type=checkbox] {
+  accent-color: #0f7f8d;
+  width: 12px;
+  height: 12px;
+  margin-top: 4px;
+  flex: 0 0 12px;
+}
+#disease-list-page .kana-tree,
+#disease-list-page .group-tree {
+  font-size: 16px;
+}
+#disease-list-page .kana-all,
+#disease-list-page .group-all {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin-bottom: 4px;
+  color: #2b4551;
+}
+#disease-list-page .kana-row,
+#disease-list-page .group-row {
+  margin-bottom: 2px;
+}
+#disease-list-page .kana-row-head,
+#disease-list-page .group-row-head {
+  display: flex;
+  align-items: flex-start;
+  gap: 4px;
+}
+#disease-list-page .group-children {
+  margin: 2px 0 4px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#disease-list-page .group-children[hidden] {
+  display: none;
+}
+#disease-list-page .group-row-head label {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  flex: 1 1 auto;
+  min-width: 0;
+  color: #2b4551;
+  word-break: break-word;
+}
+#disease-list-page .group-row-head label > span {
+  display: block;
+  min-width: 0;
+}
+#disease-list-page .kana-toggle {
+  width: 14px;
+  height: 14px;
+  border: 0;
+  background: transparent;
+  color: #5b5b5b;
+  font-size: 11px;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 3px;
+}
+#disease-list-page .kana-toggle.empty {
+  cursor: default;
+  opacity: 0.4;
+}
+#disease-list-page .kana-toggle i {
+  pointer-events: none;
+}
+#disease-list-page .toggle-spacer {
+  width: 14px;
+  height: 14px;
+  display: inline-block;
+  flex: 0 0 14px;
+}
+#disease-list-page .kana-row-head label {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  margin: 0;
+  color: #2b4551;
+}
+#disease-list-page .group-row-head .kana-toggle,
+#disease-list-page .group-row-head .toggle-spacer {
+  margin-top: 3px;
+}
+#disease-list-page .kana-children {
+  margin: 2px 0 4px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#disease-list-page .kana-children[hidden] {
+  display: none;
+}
+#disease-list-page .kana-children label {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin: 0;
+  color: #2b4551;
+  font-size: 16px;
+}
+#disease-list-page .group-children label {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin: 0;
+  color: #2b4551;
+}
+#disease-list-page .range-wrap {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 16px;
+}
+#disease-list-page .range-wrap input {
+  width: 64px;
+  height: 28px;
+  padding: 4px 8px;
+  border: 1px solid #c8c8c8;
+  border-radius: 4px;
+  font-size: 14px;
+  color: #555;
+  background: #f9f9f9;
+}
+#disease-list-page .range-wrap input::placeholder {
+  color: #b2b2b2;
+}
+#disease-list-page .table-wrap {
+  background: transparent;
+  padding-top: 2px;
+}
+#disease-list-page table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  font-size: 15px;
+}
+#disease-list-page thead th {
+  text-align: left;
+  font-size: 15px;
+  font-weight: 400;
+  color: #3a3a3a;
+  border-bottom: 1px solid #9f9f9f;
+  padding: 8px 10px;
+  white-space: nowrap;
+}
+#disease-list-page thead th.sortable {
+  cursor: pointer;
+  user-select: none;
+}
+#disease-list-page thead th .th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+#disease-list-page thead th .sort-icon {
+  font-size: 12px;
+  color: #8a8a8a;
+  line-height: 1;
+}
+#disease-list-page tbody td {
+  border-bottom: 1px solid #b7b7b7;
+  padding: 9px 10px;
+  color: #444;
+  vertical-align: top;
+  line-height: 1.35;
+}
+#disease-list-page tbody tr:hover {
+  background: transparent;
+}
+#disease-list-page .disease-link {
+  color: inherit;
+  text-decoration: underline;
+}
+#disease-list-page .disease-link:hover, #disease-list-page .disease-link:visited, #disease-list-page .disease-link:active {
+  color: inherit;
+  text-decoration: underline;
+}
+#disease-list-page .col-id {
+  width: 25%;
+}
+#disease-list-page .col-name {
+  width: 59%;
+}
+#disease-list-page .col-notice {
+  width: 16%;
+}
+#disease-list-page .muted {
+  color: #666;
+  font-size: 13px;
+  margin: 4px 0 0;
+}
+#disease-list-page .pager {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  margin: 8px 0 0;
+}
+#disease-list-page .pager button {
+  min-width: 30px;
+  height: 30px;
+  border: 1px solid #b3b3b3;
+  border-radius: 9px;
+  background: #f2f2f2;
+  color: #474747;
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+#disease-list-page .pager button.pager-arrow {
+  min-width: 30px;
+  width: 30px;
+  font-size: 14px;
+}
+#disease-list-page .pager button.active {
+  background: #1a818f;
+  border-color: #1a818f;
+  color: #fff;
+  font-weight: 700;
+}
+#disease-list-page .pager button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+#disease-list-page .empty {
+  padding: 18px 8px;
+  color: #666;
+  text-align: center;
+  font-size: 12px;
 }/*# sourceMappingURL=main.css.map */

@@ -252,10 +252,4 @@ class StatsOverview {
   }
 }
 
-// ページ読み込み時に統計情報を初期化
-document.addEventListener('DOMContentLoaded', () => {
-  const statsOverview = new StatsOverview();
-  statsOverview.init();
-});
-
 export { StatsOverview };

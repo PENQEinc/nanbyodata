@@ -1,0 +1,130 @@
+<!doctype html>
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% elif get_locale() == "ko" or get_locale() == "ko_KR" %}
+<html lang="ko">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <title>Disease List | NanbyoData</title>
+  <meta name="description" content="NanbyoDataのDisease Listページです." />
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="Disease List | NanbyoData" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nanbyodata.jp/disease-list" />
+  <meta property="og:description" content="NanbyoDataのDisease Listページです." />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" />
+
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico" />
+</head>
+
+<body>
+  <main>
+    {% include 'component/navigation.html' %}
+
+    <div class="page-layout" id="disease-list-page">
+      <header class="page-title">
+        <h2>Disease List</h2>
+      </header>
+
+      <div class="disease-list-layout">
+        <aside>
+          <h1 class="sidebar-title">フィルター</h1>
+
+          <section class="card">
+            <div class="card-header">カテゴリー</div>
+            <div class="card-body" id="categoryFilter"></div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">50音順</div>
+            <div class="card-body">
+              <div class="kana-tree" id="kanaFilter"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">告示番号</div>
+            <div class="card-body">
+              <div class="range-wrap">
+                <input id="noticeMin" type="number" min="1" placeholder="最小" />
+                <span>〜</span>
+                <input id="noticeMax" type="number" min="1" placeholder="最大" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">疾患群別一覧</div>
+            <div class="card-body list-scroll" id="groupFilter"></div>
+          </section>
+
+          <section class="card">
+            <div class="card-header">主な症状</div>
+            <div class="card-body list-scroll" id="symptomFilter"></div>
+          </section>
+        </aside>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-id sortable" data-sort-key="id">
+                  <span class="th-label">
+                    <span>NANDO ID</span>
+                    <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                  </span>
+                </th>
+                <th class="col-notice sortable" data-sort-key="notice">
+                  <span class="th-label">
+                    <span>告示番号</span>
+                    <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                  </span>
+                </th>
+                <th class="col-name sortable" data-sort-key="name">
+                  <span class="th-label">
+                    <span>疾患名</span>
+                    <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <div class="pager" id="pager"></div>
+        </div>
+      </div>
+    </div>
+
+    {% include 'component/footer.html' %}
+
+    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+    {% include 'component/modal-tos.html' %}
+    {% else %}
+    {% include 'component/modal-tos_en.html' %}
+    {% endif %}
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+    crossorigin="anonymous"></script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script type="module" src="/static/js/disease-list/disease-list.js"></script>
+</body>
+
+</html>
