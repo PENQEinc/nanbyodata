@@ -758,6 +758,45 @@ Component
 ----------------------------------- */
 /* ---------- Top Page ---------- */
 /* Top search window */
+header.search-area {
+  position: relative;
+}
+header.search-area .other-search-method {
+  position: fixed;
+  top: 20px;
+  right: 0px;
+  width: 50px;
+  border: 2px solid #fff;
+  border-right: none;
+  border-radius: 14px 0px 0 14px;
+  background: #f93759;
+  color: #fff;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 6px;
+  padding: 11px 8px 10px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+  z-index: 1100;
+}
+header.search-area .other-search-method i {
+  font-size: 14px;
+  line-height: 1;
+}
+header.search-area .other-search-method span {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1.1;
+  letter-spacing: 0.02em;
+}
+header.search-area .other-search-method:hover, header.search-area .other-search-method:active, header.search-area .other-search-method:visited {
+  color: #fff;
+  text-decoration: none;
+}
 header.search-area ul.token-input-list-facebook {
   padding: 5px 20px;
   margin: 10px auto 20px;
@@ -778,6 +817,21 @@ header.search-area .intro-text .keyword a {
   color: #fff;
 }
 
+@media (max-width: 768px) {
+  header.search-area .other-search-method {
+    top: 88px;
+    right: 8px;
+    width: 46px;
+    min-height: 150px;
+    border-width: 2px;
+    border-radius: 12px;
+    padding: 8px 6px;
+    gap: 8px;
+  }
+  header.search-area .other-search-method span {
+    font-size: 14px;
+  }
+}
 .news-summary {
   padding: 0 20px;
   position: relative;
@@ -3078,18 +3132,16 @@ Stats Page Styles
   display: grid;
   grid-template-columns: 200px 1fr;
   gap: 14px;
-  color: #333;
+  color: #444;
 }
 #disease-list-page .disease-list-layout * {
   box-sizing: border-box;
 }
 #disease-list-page .sidebar-title {
-  margin: 0 0 8px;
-  padding: 0 0 6px;
-  border-bottom: 1px solid #c8c8c8;
-  font-size: 20px;
-  font-weight: 400;
-  color: #303030;
+  padding: 2px 0 6px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #444;
 }
 #disease-list-page .card {
   border: 1px solid #c8c8c8;
@@ -3103,7 +3155,7 @@ Stats Page Styles
   color: #fff;
   padding: 5px 9px;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 700;
   letter-spacing: 0;
   line-height: 1.2;
 }
@@ -3123,7 +3175,7 @@ Stats Page Styles
   margin: 2px 0;
   font-size: 16px;
   line-height: 1.3;
-  color: #2b4551;
+  color: #444;
   word-break: break-word;
 }
 #disease-list-page input[type=checkbox] {
@@ -3143,7 +3195,7 @@ Stats Page Styles
   align-items: flex-start;
   gap: 6px;
   margin-bottom: 4px;
-  color: #2b4551;
+  color: #444;
 }
 #disease-list-page .kana-row,
 #disease-list-page .group-row {
@@ -3171,7 +3223,7 @@ Stats Page Styles
   margin: 0;
   flex: 1 1 auto;
   min-width: 0;
-  color: #2b4551;
+  color: #444;
   word-break: break-word;
 }
 #disease-list-page .group-row-head label > span {
@@ -3183,7 +3235,7 @@ Stats Page Styles
   height: 14px;
   border: 0;
   background: transparent;
-  color: #5b5b5b;
+  color: #444;
   font-size: 11px;
   cursor: pointer;
   padding: 0;
@@ -3211,7 +3263,7 @@ Stats Page Styles
   align-items: flex-start;
   gap: 6px;
   margin: 0;
-  color: #2b4551;
+  color: #444;
 }
 #disease-list-page .group-row-head .kana-toggle,
 #disease-list-page .group-row-head .toggle-spacer {
@@ -3231,7 +3283,7 @@ Stats Page Styles
   align-items: flex-start;
   gap: 5px;
   margin: 0;
-  color: #2b4551;
+  color: #444;
   font-size: 16px;
 }
 #disease-list-page .group-children label {
@@ -3239,7 +3291,7 @@ Stats Page Styles
   align-items: flex-start;
   gap: 5px;
   margin: 0;
-  color: #2b4551;
+  color: #444;
 }
 #disease-list-page .range-wrap {
   display: flex;
@@ -3254,7 +3306,7 @@ Stats Page Styles
   border: 1px solid #c8c8c8;
   border-radius: 4px;
   font-size: 14px;
-  color: #555;
+  color: #444;
   background: #f9f9f9;
 }
 #disease-list-page .range-wrap input::placeholder {
@@ -3268,15 +3320,15 @@ Stats Page Styles
   width: 100%;
   border-collapse: collapse;
   table-layout: fixed;
-  font-size: 15px;
+  font-size: 14px;
 }
 #disease-list-page thead th {
   text-align: left;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 400;
-  color: #3a3a3a;
+  color: #444;
   border-bottom: 1px solid #9f9f9f;
-  padding: 8px 10px;
+  padding: 3px 10px;
   white-space: nowrap;
 }
 #disease-list-page thead th.sortable {
@@ -3287,6 +3339,7 @@ Stats Page Styles
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-weight: bold;
 }
 #disease-list-page thead th .sort-icon {
   font-size: 12px;
@@ -3337,9 +3390,9 @@ Stats Page Styles
   height: 30px;
   border: 1px solid #b3b3b3;
   border-radius: 9px;
-  background: #f2f2f2;
-  color: #474747;
-  font-size: 16px;
+  background: #fff;
+  color: #444;
+  font-size: 14px;
   line-height: 1;
   cursor: pointer;
   padding: 0;

@@ -1,7 +1,5 @@
-//TODO: API_URLを本番環境に変更？　速度を考えるとjson利用が良い？
-const API_URL =
-  'https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_disease_search';
-const LOCAL_URL = '/static/data/disease_list.json';
+import { fetchDiseaseListJson } from '../utils/diseaseListJsonUrl.js';
+
 const PAGE_SIZE = 40;
 const categoryLabel = {
   shitei: '指定難病',
@@ -865,26 +863,7 @@ function initFilters(records) {
 }
 
 async function fetchDiseaseData() {
-  // TODO: API_URLを使わない場合
-  const localRes = await fetch(LOCAL_URL);
-  if (!localRes.ok) {
-    throw new Error(`local status ${localRes.status}`);
-  }
-  return await localRes.json();
-  // TODO: API_URLを使う場合
-  // try {
-  //   const apiRes = await fetch(API_URL);
-  //   if (!apiRes.ok) throw new Error(`API status ${apiRes.status}`);
-  //   return await apiRes.json();
-  // } catch (apiErr) {
-  //   const localRes = await fetch(LOCAL_URL);
-  //   if (!localRes.ok) {
-  //     throw new Error(
-  //       `API失敗(${apiErr.message}) / local status ${localRes.status}`,
-  //     );
-  //   }
-  //   return await localRes.json();
-  // }
+  return await fetchDiseaseListJson();
 }
 
 async function boot() {

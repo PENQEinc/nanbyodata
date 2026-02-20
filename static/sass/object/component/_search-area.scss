@@ -1,5 +1,49 @@
 /* Top search window */
 header.search-area {
+  position: relative;
+
+  .other-search-method {
+    position: fixed;
+    top: 20px;
+    right: 0px;
+    width: 50px;
+    border: 2px solid #fff;
+    border-right: none;
+    border-radius: 14px 0px 0 14px;
+    background: #f93759;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 6px;
+    padding: 11px 8px 10px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    z-index: 1100;
+
+    i {
+      font-size: 14px;
+      line-height: 1;
+    }
+
+    span {
+      writing-mode: vertical-rl;
+      text-orientation: mixed;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1.1;
+      letter-spacing: 0.02em;
+    }
+
+    &:hover,
+    &:active,
+    &:visited {
+      color: #fff;
+      text-decoration: none;
+    }
+  }
+
   ul.token-input-list-facebook {
     padding: 5px 20px;
     margin: 10px auto 20px;
@@ -22,6 +66,23 @@ header.search-area {
       a {
         color: #fff;
       }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  header.search-area .other-search-method {
+    top: 88px;
+    right: 8px;
+    width: 46px;
+    min-height: 150px;
+    border-width: 2px;
+    border-radius: 12px;
+    padding: 8px 6px;
+    gap: 8px;
+
+    span {
+      font-size: 14px;
     }
   }
 }
