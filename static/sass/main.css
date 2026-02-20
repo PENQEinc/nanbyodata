@@ -3189,6 +3189,28 @@ Stats Page Styles
 #disease-list-page .group-tree {
   font-size: 16px;
 }
+#disease-list-page .filter-children {
+  margin-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+#disease-list-page .filter-children[hidden] {
+  display: none;
+}
+#disease-list-page .filter-children label {
+  display: flex;
+  align-items: flex-start;
+  gap: 5px;
+  margin: 0;
+  color: #444;
+  font-size: 16px;
+  word-break: break-word;
+}
+html[lang=ja] #disease-list-page #categoryFilter .filter-children label > span:last-child, html[lang=ja-JP] #disease-list-page #categoryFilter .filter-children label > span:last-child {
+  white-space: nowrap;
+  font-size: 15px;
+}
 #disease-list-page .kana-all,
 #disease-list-page .group-all {
   display: flex;

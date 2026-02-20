@@ -1,6 +1,5 @@
 import { fetchDiseaseListJson } from '../utils/diseaseListJsonUrl.js';
 
-const PAGE_SIZE = 40;
 const currentLang = document.documentElement.lang === 'en' ? 'en' : 'ja';
 const isEnglish = currentLang === 'en';
 
@@ -164,6 +163,12 @@ const state = {
   groupTree: null,
   allSelectableGroupIds: new Set(),
   allSymptoms: new Set(),
+  expandedFilterPanels: {
+    category: true,
+    kana: true,
+    group: true,
+    symptom: true,
+  },
 };
 
 const el = {
@@ -360,6 +365,16 @@ function normalizeSymptomList(values) {
 function buildGroupTree(records, idToLabelMap) {
   const usedGroupIds = new Set(records.map((r) => r.groupId).filter(Boolean));
   const byId = new Map(records.map((r) => [r.id, r]));
+  const categoryGroupIds = {
+    shitei: new Set(),
+    syoman: new Set(),
+  };
+
+  records.forEach((r) => {
+    if (!r.groupId) return;
+    if (r.category === 'shitei') categoryGroupIds.shitei.add(r.groupId);
+    if (r.category === 'syoman') categoryGroupIds.syoman.add(r.groupId);
+  });
 
   const parentByChild = new Map();
   usedGroupIds.forEach((gid) => {
@@ -399,21 +414,50 @@ function buildGroupTree(records, idToLabelMap) {
   rootIds.sort(sortByLabel);
   nodes.forEach((node) => node.children.sort(sortByLabel));
 
-  return { rootIds, nodes, usedGroupIds };
+  return { rootIds, nodes, usedGroupIds, categoryGroupIds };
 }
 
-function renderCheckboxList(container, items, selectedSet, onToggle) {
+function createChevronToggle(isExpanded, onClick) {
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.className = 'kana-toggle';
+  toggle.innerHTML = isExpanded
+    ? '<i class="fas fa-angle-down" aria-hidden="true"></i>'
+    : '<i class="fas fa-angle-right" aria-hidden="true"></i>';
+  toggle.addEventListener('click', onClick);
+  return toggle;
+}
+
+function renderCheckboxList(container, items, selectedSet, onToggle, panelKey) {
   container.innerHTML = '';
   const itemCheckboxes = [];
+  const expanded = state.expandedFilterPanels[panelKey] !== false;
 
+  const allWrap = document.createElement('div');
+  allWrap.className = 'kana-row';
+  const allHead = document.createElement('div');
+  allHead.className = 'kana-row-head';
+  const allToggle = createChevronToggle(expanded, () => {
+    state.expandedFilterPanels[panelKey] = !expanded;
+    renderFilters();
+  });
   const allLabel = document.createElement('label');
+  allLabel.className = 'kana-all';
   const allCheckbox = document.createElement('input');
   allCheckbox.type = 'checkbox';
   const allSpan = document.createElement('span');
   allSpan.textContent = t.all;
   allLabel.appendChild(allCheckbox);
   allLabel.appendChild(allSpan);
-  container.appendChild(allLabel);
+  allHead.appendChild(allToggle);
+  allHead.appendChild(allLabel);
+  allWrap.appendChild(allHead);
+  container.appendChild(allWrap);
+
+  const childrenWrap = document.createElement('div');
+  childrenWrap.className = 'filter-children';
+  childrenWrap.hidden = !expanded;
+  container.appendChild(childrenWrap);
 
   function syncAllState() {
     const count = items.reduce(
@@ -439,6 +483,9 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
 
   items.forEach((item) => {
     const label = document.createElement('label');
+    const spacer = document.createElement('span');
+    spacer.className = 'toggle-spacer';
+    spacer.setAttribute('aria-hidden', 'true');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = selectedSet.has(item.value);
@@ -452,9 +499,10 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
     const span = document.createElement('span');
     span.textContent = item.label;
 
+    label.appendChild(spacer);
     label.appendChild(checkbox);
     label.appendChild(span);
-    container.appendChild(label);
+    childrenWrap.appendChild(label);
     itemCheckboxes.push(checkbox);
   });
 
@@ -462,87 +510,16 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
 }
 
 function renderKanaFilter() {
-  if (isEnglish) {
-    el.kanaFilter.innerHTML = '';
-
-    const allWrap = document.createElement('div');
-    allWrap.className = 'kana-row';
-
-    const allHead = document.createElement('div');
-    allHead.className = 'kana-row-head';
-
-    const toggle = document.createElement('button');
-    toggle.type = 'button';
-    toggle.className = 'kana-toggle';
-    const expanded = state.expandedKanaRows.has('alphabet');
-    toggle.innerHTML = expanded
-      ? '<i class="fas fa-angle-down" aria-hidden="true"></i>'
-      : '<i class="fas fa-angle-right" aria-hidden="true"></i>';
-    toggle.addEventListener('click', () => {
-      if (state.expandedKanaRows.has('alphabet'))
-        state.expandedKanaRows.delete('alphabet');
-      else state.expandedKanaRows.add('alphabet');
-      renderKanaFilter();
-    });
-
-    const allLabel = document.createElement('label');
-    allLabel.className = 'kana-all';
-    const allCheckbox = document.createElement('input');
-    allCheckbox.type = 'checkbox';
-    const count = alphabetKeys.reduce(
-      (n, k) => n + (state.selectedKana.has(k) ? 1 : 0),
-      0,
-    );
-    allCheckbox.checked = count === alphabetKeys.length;
-    allCheckbox.indeterminate = count > 0 && count < alphabetKeys.length;
-    allCheckbox.addEventListener('change', () => {
-      if (allCheckbox.checked) alphabetKeys.forEach((k) => state.selectedKana.add(k));
-      else state.selectedKana.clear();
-      renderKanaFilter();
-      state.page = 1;
-      applyFilters();
-    });
-
-    const allSpan = document.createElement('span');
-    allSpan.textContent = t.all;
-    allLabel.appendChild(allCheckbox);
-    allLabel.appendChild(allSpan);
-
-    const childrenWrap = document.createElement('div');
-    childrenWrap.className = 'kana-children';
-    childrenWrap.hidden = !expanded;
-    alphabetKeys.forEach((key) => {
-      const label = document.createElement('label');
-      const spacer = document.createElement('span');
-      spacer.className = 'toggle-spacer';
-      spacer.setAttribute('aria-hidden', 'true');
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.checked = state.selectedKana.has(key);
-      checkbox.addEventListener('change', () => {
-        if (checkbox.checked) state.selectedKana.add(key);
-        else state.selectedKana.delete(key);
-        renderKanaFilter();
-        state.page = 1;
-        applyFilters();
-      });
-      const span = document.createElement('span');
-      span.textContent = key;
-      label.appendChild(spacer);
-      label.appendChild(checkbox);
-      label.appendChild(span);
-      childrenWrap.appendChild(label);
-    });
-
-    allHead.appendChild(toggle);
-    allHead.appendChild(allLabel);
-    allWrap.appendChild(allHead);
-    allWrap.appendChild(childrenWrap);
-    el.kanaFilter.appendChild(allWrap);
-    return;
-  }
-
   el.kanaFilter.innerHTML = '';
+  const panelExpanded = state.expandedFilterPanels.kana !== false;
+  const panelRow = document.createElement('div');
+  panelRow.className = 'kana-row';
+  const panelHead = document.createElement('div');
+  panelHead.className = 'kana-row-head';
+  const panelToggle = createChevronToggle(panelExpanded, () => {
+    state.expandedFilterPanels.kana = !panelExpanded;
+    renderFilters();
+  });
   const allLabel = document.createElement('label');
   allLabel.className = 'kana-all';
   const allCheckbox = document.createElement('input');
@@ -551,7 +528,15 @@ function renderKanaFilter() {
   allSpan.textContent = t.all;
   allLabel.appendChild(allCheckbox);
   allLabel.appendChild(allSpan);
-  el.kanaFilter.appendChild(allLabel);
+  panelHead.appendChild(panelToggle);
+  panelHead.appendChild(allLabel);
+  panelRow.appendChild(panelHead);
+  el.kanaFilter.appendChild(panelRow);
+
+  const panelChildren = document.createElement('div');
+  panelChildren.className = 'filter-children';
+  panelChildren.hidden = !panelExpanded;
+  el.kanaFilter.appendChild(panelChildren);
 
   function syncAllState() {
     const count = initialKeys.reduce(
@@ -568,10 +553,37 @@ function renderKanaFilter() {
     } else {
       state.selectedKana.clear();
     }
-    renderKanaFilter();
+    renderFilters();
     state.page = 1;
     applyFilters();
   });
+
+  if (isEnglish) {
+    alphabetKeys.forEach((key) => {
+      const label = document.createElement('label');
+      const spacer = document.createElement('span');
+      spacer.className = 'toggle-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = state.selectedKana.has(key);
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) state.selectedKana.add(key);
+        else state.selectedKana.delete(key);
+        renderFilters();
+        state.page = 1;
+        applyFilters();
+      });
+      const span = document.createElement('span');
+      span.textContent = key;
+      label.appendChild(spacer);
+      label.appendChild(checkbox);
+      label.appendChild(span);
+      panelChildren.appendChild(label);
+    });
+    syncAllState();
+    return;
+  }
 
   kanaTree.forEach((group) => {
     const rowWrap = document.createElement('div');
@@ -604,7 +616,7 @@ function renderKanaFilter() {
       } else {
         group.children.forEach((child) => state.selectedKana.delete(child.key));
       }
-      renderKanaFilter();
+      renderFilters();
       state.page = 1;
       applyFilters();
     });
@@ -621,7 +633,7 @@ function renderKanaFilter() {
       if (state.expandedKanaRows.has(group.row))
         state.expandedKanaRows.delete(group.row);
       else state.expandedKanaRows.add(group.row);
-      renderKanaFilter();
+      renderFilters();
     });
 
     group.children.forEach((child) => {
@@ -635,7 +647,7 @@ function renderKanaFilter() {
       childCheckbox.addEventListener('change', () => {
         if (childCheckbox.checked) state.selectedKana.add(child.key);
         else state.selectedKana.delete(child.key);
-        renderKanaFilter();
+        renderFilters();
         state.page = 1;
         applyFilters();
       });
@@ -652,7 +664,7 @@ function renderKanaFilter() {
     rowHead.appendChild(rowLabel);
     rowWrap.appendChild(rowHead);
     rowWrap.appendChild(childrenWrap);
-    el.kanaFilter.appendChild(rowWrap);
+    panelChildren.appendChild(rowWrap);
   });
 
   syncAllState();
@@ -664,6 +676,15 @@ function renderGroupFilter() {
   el.groupFilter.innerHTML = '';
   el.groupFilter.classList.add('group-tree');
 
+  const panelExpanded = state.expandedFilterPanels.group !== false;
+  const allWrap = document.createElement('div');
+  allWrap.className = 'kana-row';
+  const allHead = document.createElement('div');
+  allHead.className = 'kana-row-head';
+  const panelToggle = createChevronToggle(panelExpanded, () => {
+    state.expandedFilterPanels.group = !panelExpanded;
+    renderFilters();
+  });
   const allLabel = document.createElement('label');
   allLabel.className = 'group-all';
   const allCheckbox = document.createElement('input');
@@ -672,16 +693,29 @@ function renderGroupFilter() {
   allSpan.textContent = t.all;
   allLabel.appendChild(allCheckbox);
   allLabel.appendChild(allSpan);
-  el.groupFilter.appendChild(allLabel);
+  allHead.appendChild(panelToggle);
+  allHead.appendChild(allLabel);
+  allWrap.appendChild(allHead);
+  el.groupFilter.appendChild(allWrap);
 
-  function collectSelectableIds(id, visited = new Set()) {
+  const childrenWrap = document.createElement('div');
+  childrenWrap.className = 'filter-children';
+  childrenWrap.hidden = !panelExpanded;
+  el.groupFilter.appendChild(childrenWrap);
+
+  function collectSelectableIds(id, visited = new Set(), allowedSet = null) {
     if (visited.has(id)) return [];
     visited.add(id);
     const node = tree.nodes.get(id);
     if (!node) return [];
-    const own = tree.usedGroupIds.has(id) ? [id] : [];
+    const own =
+      tree.usedGroupIds.has(id) && (!allowedSet || allowedSet.has(id))
+        ? [id]
+        : [];
     return own.concat(
-      node.children.flatMap((cid) => collectSelectableIds(cid, visited)),
+      node.children.flatMap((cid) =>
+        collectSelectableIds(cid, visited, allowedSet),
+      ),
     );
   }
 
@@ -700,13 +734,16 @@ function renderGroupFilter() {
     if (allCheckbox.checked)
       allSelectableIds.forEach((id) => state.selectedGroups.add(id));
     else allSelectableIds.forEach((id) => state.selectedGroups.delete(id));
-    renderGroupFilter();
+    renderFilters();
     state.page = 1;
     applyFilters();
   });
 
-  function renderNode(id, container) {
+  function renderNode(id, container, allowedSet = null, expandPrefix = '') {
     const node = tree.nodes.get(id);
+    if (!node) return;
+    const selectableIds = collectSelectableIds(id, new Set(), allowedSet);
+    if (selectableIds.length === 0) return;
     const row = document.createElement('div');
     row.className = 'group-row';
 
@@ -714,7 +751,8 @@ function renderGroupFilter() {
     head.className = 'group-row-head';
 
     const hasChildren = node.children.length > 0;
-    const expanded = state.expandedGroupRows.has(id);
+    const expandKey = `${expandPrefix}${id}`;
+    const expanded = state.expandedGroupRows.has(expandKey);
     let toggleOrSpacer;
     if (hasChildren) {
       const toggle = document.createElement('button');
@@ -724,9 +762,9 @@ function renderGroupFilter() {
         ? '<i class="fas fa-angle-down" aria-hidden="true"></i>'
         : '<i class="fas fa-angle-right" aria-hidden="true"></i>';
       toggle.addEventListener('click', () => {
-        if (expanded) state.expandedGroupRows.delete(id);
-        else state.expandedGroupRows.add(id);
-        renderGroupFilter();
+        if (expanded) state.expandedGroupRows.delete(expandKey);
+        else state.expandedGroupRows.add(expandKey);
+        renderFilters();
       });
       toggleOrSpacer = toggle;
     } else {
@@ -739,7 +777,6 @@ function renderGroupFilter() {
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    const selectableIds = collectSelectableIds(id);
     const checkedNum = selectableIds.reduce(
       (n, gid) => n + (state.selectedGroups.has(gid) ? 1 : 0),
       0,
@@ -752,7 +789,7 @@ function renderGroupFilter() {
       if (checkbox.checked)
         selectableIds.forEach((gid) => state.selectedGroups.add(gid));
       else selectableIds.forEach((gid) => state.selectedGroups.delete(gid));
-      renderGroupFilter();
+      renderFilters();
       state.page = 1;
       applyFilters();
     });
@@ -769,14 +806,112 @@ function renderGroupFilter() {
       const childrenWrap = document.createElement('div');
       childrenWrap.className = 'group-children';
       childrenWrap.hidden = !expanded;
-      node.children.forEach((cid) => renderNode(cid, childrenWrap));
+      node.children.forEach((cid) =>
+        renderNode(cid, childrenWrap, allowedSet, expandPrefix),
+      );
       row.appendChild(childrenWrap);
     }
 
     container.appendChild(row);
   }
 
-  tree.rootIds.forEach((rid) => renderNode(rid, el.groupFilter));
+  const categories = [
+    { key: 'shitei', label: categoryLabel[currentLang].shitei },
+    { key: 'syoman', label: categoryLabel[currentLang].syoman },
+  ];
+
+  categories.forEach((category) => {
+    const allowedSet = tree.categoryGroupIds[category.key];
+    if (!allowedSet || allowedSet.size === 0) return;
+
+    const categorySelectableIds = tree.rootIds.flatMap((rid) =>
+      collectSelectableIds(rid, new Set(), allowedSet),
+    );
+    if (categorySelectableIds.length === 0) return;
+
+    const row = document.createElement('div');
+    row.className = 'group-row';
+
+    const head = document.createElement('div');
+    head.className = 'group-row-head';
+
+    const expandKey = `category:${category.key}`;
+    const expanded = state.expandedGroupRows.has(expandKey);
+    const toggle = createChevronToggle(expanded, () => {
+      if (expanded) state.expandedGroupRows.delete(expandKey);
+      else state.expandedGroupRows.add(expandKey);
+      renderFilters();
+    });
+
+    const label = document.createElement('label');
+    const checkbox = document.createElement('input');
+    checkbox.type = 'checkbox';
+    const checkedNum = categorySelectableIds.reduce(
+      (n, gid) => n + (state.selectedGroups.has(gid) ? 1 : 0),
+      0,
+    );
+    checkbox.checked =
+      categorySelectableIds.length > 0 &&
+      checkedNum === categorySelectableIds.length;
+    checkbox.indeterminate =
+      checkedNum > 0 && checkedNum < categorySelectableIds.length;
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked)
+        categorySelectableIds.forEach((gid) => state.selectedGroups.add(gid));
+      else categorySelectableIds.forEach((gid) => state.selectedGroups.delete(gid));
+      renderFilters();
+      state.page = 1;
+      applyFilters();
+    });
+
+    const span = document.createElement('span');
+    span.textContent = category.label;
+    label.appendChild(checkbox);
+    label.appendChild(span);
+    head.appendChild(toggle);
+    head.appendChild(label);
+    row.appendChild(head);
+
+    const categoryChildren = document.createElement('div');
+    categoryChildren.className = 'group-children';
+    categoryChildren.hidden = !expanded;
+    tree.rootIds.forEach((rid) =>
+      renderNode(rid, categoryChildren, allowedSet, `${category.key}:`),
+    );
+    row.appendChild(categoryChildren);
+    childrenWrap.appendChild(row);
+  });
+}
+
+function renderFilters() {
+  renderCheckboxList(
+    el.categoryFilter,
+    [
+      { value: 'shitei', label: categoryLabel[currentLang].shitei },
+      { value: 'syoman', label: categoryLabel[currentLang].syoman },
+    ],
+    state.selectedCategories,
+    () => {
+      state.page = 1;
+      applyFilters();
+    },
+    'category',
+  );
+
+  renderKanaFilter();
+  renderGroupFilter();
+
+  const symptoms = Array.from(state.allSymptoms);
+  renderCheckboxList(
+    el.symptomFilter,
+    symptoms.map((s) => ({ value: s, label: s })),
+    state.selectedSymptoms,
+    () => {
+      state.page = 1;
+      applyFilters();
+    },
+    'symptom',
+  );
 }
 
 function parseNoticeInput() {
@@ -821,10 +956,8 @@ function applyFilters() {
   });
 
   sortFiltered();
-  const maxPage = Math.max(1, Math.ceil(state.filtered.length / PAGE_SIZE));
-  state.page = Math.min(state.page, maxPage);
   renderTable();
-  renderPager();
+  el.pager.innerHTML = '';
 }
 
 function renderTable() {
@@ -840,8 +973,7 @@ function renderTable() {
     return;
   }
 
-  const start = (state.page - 1) * PAGE_SIZE;
-  const pageRows = state.filtered.slice(start, start + PAGE_SIZE);
+  const pageRows = state.filtered;
 
   pageRows.forEach((d) => {
     const tr = document.createElement('tr');
@@ -871,107 +1003,19 @@ function renderTable() {
   });
 }
 
-function renderPager() {
-  el.pager.innerHTML = '';
-  const total = Math.max(1, Math.ceil(state.filtered.length / PAGE_SIZE));
-
-  const first = document.createElement('button');
-  first.className = 'pager-arrow';
-  first.innerHTML =
-    '<i class="fas fa-angle-double-left" aria-hidden="true"></i>';
-  first.disabled = state.page <= 1;
-  first.addEventListener('click', () => {
-    state.page = 1;
-    renderTable();
-    renderPager();
-  });
-  el.pager.appendChild(first);
-
-  const prev = document.createElement('button');
-  prev.className = 'pager-arrow';
-  prev.innerHTML = '<i class="fas fa-angle-left" aria-hidden="true"></i>';
-  prev.disabled = state.page <= 1;
-  prev.addEventListener('click', () => {
-    state.page -= 1;
-    renderTable();
-    renderPager();
-  });
-  el.pager.appendChild(prev);
-
-  const start = Math.max(1, state.page - 2);
-  const end = Math.min(total, start + 4);
-  for (let p = start; p <= end; p += 1) {
-    const btn = document.createElement('button');
-    btn.textContent = String(p);
-    if (p === state.page) btn.classList.add('active');
-    btn.addEventListener('click', () => {
-      state.page = p;
-      renderTable();
-      renderPager();
-    });
-    el.pager.appendChild(btn);
-  }
-
-  const next = document.createElement('button');
-  next.className = 'pager-arrow';
-  next.innerHTML = '<i class="fas fa-angle-right" aria-hidden="true"></i>';
-  next.disabled = state.page >= total;
-  next.addEventListener('click', () => {
-    state.page += 1;
-    renderTable();
-    renderPager();
-  });
-  el.pager.appendChild(next);
-
-  const last = document.createElement('button');
-  last.className = 'pager-arrow';
-  last.innerHTML =
-    '<i class="fas fa-angle-double-right" aria-hidden="true"></i>';
-  last.disabled = state.page >= total;
-  last.addEventListener('click', () => {
-    state.page = total;
-    renderTable();
-    renderPager();
-  });
-  el.pager.appendChild(last);
-}
-
 function initFilters(records) {
-  renderCheckboxList(
-    el.categoryFilter,
-    [
-      { value: 'shitei', label: categoryLabel[currentLang].shitei },
-      { value: 'syoman', label: categoryLabel[currentLang].syoman },
-    ],
-    state.selectedCategories,
-    () => {
-      state.page = 1;
-      applyFilters();
-    },
-  );
-
-  renderKanaFilter();
-
   state.groupTree = buildGroupTree(
     records,
     new Map(records.map((r) => [r.id, getDisplayName(r) || r.id])),
   );
   state.allSelectableGroupIds = new Set(state.groupTree.usedGroupIds);
   state.groupTree.usedGroupIds.forEach((gid) => state.selectedGroups.add(gid));
-  renderGroupFilter();
 
   const symptoms = uniqSorted(records.flatMap((r) => r.symptoms_list || []));
   state.allSymptoms = new Set(symptoms);
   symptoms.forEach((s) => state.selectedSymptoms.add(s));
-  renderCheckboxList(
-    el.symptomFilter,
-    symptoms.map((s) => ({ value: s, label: s })),
-    state.selectedSymptoms,
-    () => {
-      state.page = 1;
-      applyFilters();
-    },
-  );
+
+  renderFilters();
 
   const noticeNums = records
     .map((r) => r.noticeNum)

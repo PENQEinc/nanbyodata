@@ -77,6 +77,38 @@
     font-size: 16px;
   }
 
+  .filter-children {
+    margin-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+
+    &[hidden] {
+      display: none;
+    }
+
+    label {
+      display: flex;
+      align-items: flex-start;
+      gap: 5px;
+      margin: 0;
+      color: #444;
+      font-size: 16px;
+      word-break: break-word;
+    }
+  }
+
+  html[lang='ja'] & #categoryFilter .filter-children label > span:last-child,
+  html[lang='ja-JP']
+    &
+    #categoryFilter
+    .filter-children
+    label
+    > span:last-child {
+    white-space: nowrap;
+    font-size: 15px;
+  }
+
   .kana-all,
   .group-all {
     display: flex;
