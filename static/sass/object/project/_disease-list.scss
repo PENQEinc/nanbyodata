@@ -241,7 +241,7 @@
     color: #444;
     border-bottom: 1px solid #9f9f9f;
     padding: 3px 10px;
-    white-space: nowrap;
+    white-space: normal;
 
     &.sortable {
       cursor: pointer;
@@ -249,15 +249,24 @@
     }
 
     .th-label {
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 6px;
       font-weight: bold;
+      min-width: 0;
+    }
+
+    .th-label span:first-child {
+      min-width: 0;
+      white-space: normal;
+      overflow-wrap: anywhere;
+      line-height: 1.2;
     }
 
     .sort-icon {
       font-size: 12px;
       color: #8a8a8a;
+      flex-shrink: 0;
       line-height: 1;
     }
   }
@@ -290,12 +299,12 @@
     width: 25%;
   }
 
-  .col-name {
-    width: 59%;
+  .col-notice {
+    width: 20%;
   }
 
-  .col-notice {
-    width: 16%;
+  .col-name {
+    width: 55%;
   }
 
   .muted {

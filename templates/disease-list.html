@@ -12,12 +12,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
   <title>Disease List | NanbyoData</title>
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
   <meta name="description" content="NanbyoDataのDisease Listページです." />
+  {% else %}
+  <meta name="description" content="This is the Disease List page of NanbyoData." />
+  {% endif %}
   <meta property="og:site_name" content="NanbyoData" />
   <meta property="og:title" content="Disease List | NanbyoData" />
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://nanbyodata.jp/disease-list" />
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
   <meta property="og:description" content="NanbyoDataのDisease Listページです." />
+  {% else %}
+  <meta property="og:description" content="This is the Disease List page of NanbyoData." />
+  {% endif %}
   <meta property="og:image" content="/static/img/ogp_img.png" />
 
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -41,22 +49,38 @@
 
       <div class="disease-list-layout">
         <aside>
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
           <h1 class="sidebar-title">フィルター</h1>
+          {% else %}
+          <h1 class="sidebar-title">Filters</h1>
+          {% endif %}
 
           <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <div class="card-header">カテゴリー</div>
+            {% else %}
+            <div class="card-header">Category</div>
+            {% endif %}
             <div class="card-body" id="categoryFilter"></div>
           </section>
 
           <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <div class="card-header">50音順</div>
+            {% else %}
+            <div class="card-header">Alphabetical</div>
+            {% endif %}
             <div class="card-body">
               <div class="kana-tree" id="kanaFilter"></div>
             </div>
           </section>
 
           <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <div class="card-header">告示番号</div>
+            {% else %}
+            <div class="card-header">Notification Number</div>
+            {% endif %}
             <div class="card-body">
               <div class="range-wrap">
                 <input id="noticeMin" type="number" min="1" placeholder="min" />
@@ -67,12 +91,20 @@
           </section>
 
           <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <div class="card-header">疾患群別一覧</div>
+            {% else %}
+            <div class="card-header">Disease Groups</div>
+            {% endif %}
             <div class="card-body list-scroll" id="groupFilter"></div>
           </section>
 
           <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <div class="card-header">主な症状</div>
+            {% else %}
+            <div class="card-header">Main Symptoms</div>
+            {% endif %}
             <div class="card-body list-scroll" id="symptomFilter"></div>
           </section>
         </aside>
@@ -89,13 +121,21 @@
                 </th>
                 <th class="col-notice sortable" data-sort-key="notice">
                   <span class="th-label">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
                     <span>告示番号</span>
+                    {% else %}
+                    <span>Notification Number</span>
+                    {% endif %}
                     <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
                   </span>
                 </th>
                 <th class="col-name sortable" data-sort-key="name">
                   <span class="th-label">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
                     <span>疾患名</span>
+                    {% else %}
+                    <span>Disease Name</span>
+                    {% endif %}
                     <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
                   </span>
                 </th>

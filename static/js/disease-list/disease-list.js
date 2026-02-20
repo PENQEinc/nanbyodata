@@ -1,9 +1,38 @@
 import { fetchDiseaseListJson } from '../utils/diseaseListJsonUrl.js';
 
 const PAGE_SIZE = 40;
+const currentLang = document.documentElement.lang === 'en' ? 'en' : 'ja';
+const isEnglish = currentLang === 'en';
+
+const UI_LABELS = {
+  ja: {
+    all: 'すべて',
+    ungrouped: '未分類',
+    diseaseGroup: '疾患群',
+    noData: '該当データがありません',
+    loadFailed: '読み込みに失敗しました',
+    noticeMax: '最大',
+  },
+  en: {
+    all: 'All',
+    ungrouped: 'Ungrouped',
+    diseaseGroup: 'Disease group',
+    noData: 'No matching data found',
+    loadFailed: 'Failed to load',
+    noticeMax: 'max',
+  },
+};
+const t = UI_LABELS[currentLang];
+
 const categoryLabel = {
-  shitei: '指定難病',
-  syoman: '小児慢性特定疾病',
+  ja: {
+    shitei: '指定難病',
+    syoman: '小児慢性特定疾病',
+  },
+  en: {
+    shitei: 'Designated Intractable Diseases',
+    syoman: 'Specified Chronic Pediatric Diseases',
+  },
 };
 
 const kanaTree = [
@@ -108,6 +137,8 @@ const kanaTree = [
 const allKanaKeys = kanaTree.flatMap((group) =>
   group.children.map((child) => child.key),
 );
+const alphabetKeys = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '#'];
+const initialKeys = isEnglish ? alphabetKeys : allKanaKeys;
 const kanaCharToKey = new Map(
   kanaTree.flatMap((group) =>
     group.children.flatMap((child) =>
@@ -123,7 +154,7 @@ const state = {
   sortKey: null,
   sortOrder: 'asc',
   selectedCategories: new Set(['shitei', 'syoman']),
-  selectedKana: new Set(allKanaKeys),
+  selectedKana: new Set(initialKeys),
   expandedKanaRows: new Set(),
   selectedGroups: new Set(),
   selectedSymptoms: new Set(),
@@ -160,9 +191,9 @@ function compareBySortKey(a, b) {
     return (a.noticeNum || 0) - (b.noticeNum || 0);
   }
   if (state.sortKey === 'name') {
-    return String(a.label_ja || '').localeCompare(
-      String(b.label_ja || ''),
-      'ja',
+    return String(getDisplayName(a)).trim().localeCompare(
+      String(getDisplayName(b)).trim(),
+      currentLang,
     );
   }
   return extractNandoNum(a.id) - extractNandoNum(b.id);
@@ -226,9 +257,9 @@ function groupIdFromUri(uri) {
 }
 
 function groupLabelFromId(groupId, idToLabelMap) {
-  if (!groupId) return '未分類';
+  if (!groupId) return t.ungrouped;
   if (idToLabelMap.has(groupId)) return idToLabelMap.get(groupId);
-  return `疾患群 (${groupId})`;
+  return `${t.diseaseGroup} (${groupId})`;
 }
 
 function groupLabelFromUri(uri, idToLabelMap) {
@@ -244,15 +275,26 @@ function normalizeToHiraganaChar(c) {
 }
 
 function getKanaKey(yomigana) {
-  if (!yomigana) return 'わ';
-  const c = normalizeToHiraganaChar(String(yomigana).trim().charAt(0));
+  if (isEnglish) {
+    const name = String(getDisplayName(yomigana)).trim();
+    const c = name.charAt(0).toUpperCase();
+    return /^[A-Z]$/.test(c) ? c : '#';
+  }
+  if (!yomigana?.yomigana) return 'わ';
+  const c = normalizeToHiraganaChar(String(yomigana.yomigana).trim().charAt(0));
   return kanaCharToKey.get(c) || 'わ';
 }
 
 function uniqSorted(values) {
   return Array.from(new Set(values)).sort((a, b) =>
-    String(a).localeCompare(String(b), 'ja'),
+    String(a).localeCompare(String(b), currentLang),
   );
+}
+
+function getDisplayName(record) {
+  if (!record) return '';
+  if (isEnglish) return record.label_en || record.label_ja || '';
+  return record.label_ja || record.label_en || '';
 }
 
 function normalizeSymptomList(values) {
@@ -350,7 +392,10 @@ function buildGroupTree(records, idToLabelMap) {
   const rootIds = Array.from(nodes.keys()).filter((id) => !childSet.has(id));
 
   const sortByLabel = (a, b) =>
-    String(nodes.get(a).label).localeCompare(String(nodes.get(b).label), 'ja');
+    String(nodes.get(a).label).localeCompare(
+      String(nodes.get(b).label),
+      currentLang,
+    );
   rootIds.sort(sortByLabel);
   nodes.forEach((node) => node.children.sort(sortByLabel));
 
@@ -365,7 +410,7 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
   const allCheckbox = document.createElement('input');
   allCheckbox.type = 'checkbox';
   const allSpan = document.createElement('span');
-  allSpan.textContent = 'すべて';
+  allSpan.textContent = t.all;
   allLabel.appendChild(allCheckbox);
   allLabel.appendChild(allSpan);
   container.appendChild(allLabel);
@@ -417,29 +462,109 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
 }
 
 function renderKanaFilter() {
+  if (isEnglish) {
+    el.kanaFilter.innerHTML = '';
+
+    const allWrap = document.createElement('div');
+    allWrap.className = 'kana-row';
+
+    const allHead = document.createElement('div');
+    allHead.className = 'kana-row-head';
+
+    const toggle = document.createElement('button');
+    toggle.type = 'button';
+    toggle.className = 'kana-toggle';
+    const expanded = state.expandedKanaRows.has('alphabet');
+    toggle.innerHTML = expanded
+      ? '<i class="fas fa-angle-down" aria-hidden="true"></i>'
+      : '<i class="fas fa-angle-right" aria-hidden="true"></i>';
+    toggle.addEventListener('click', () => {
+      if (state.expandedKanaRows.has('alphabet'))
+        state.expandedKanaRows.delete('alphabet');
+      else state.expandedKanaRows.add('alphabet');
+      renderKanaFilter();
+    });
+
+    const allLabel = document.createElement('label');
+    allLabel.className = 'kana-all';
+    const allCheckbox = document.createElement('input');
+    allCheckbox.type = 'checkbox';
+    const count = alphabetKeys.reduce(
+      (n, k) => n + (state.selectedKana.has(k) ? 1 : 0),
+      0,
+    );
+    allCheckbox.checked = count === alphabetKeys.length;
+    allCheckbox.indeterminate = count > 0 && count < alphabetKeys.length;
+    allCheckbox.addEventListener('change', () => {
+      if (allCheckbox.checked) alphabetKeys.forEach((k) => state.selectedKana.add(k));
+      else state.selectedKana.clear();
+      renderKanaFilter();
+      state.page = 1;
+      applyFilters();
+    });
+
+    const allSpan = document.createElement('span');
+    allSpan.textContent = t.all;
+    allLabel.appendChild(allCheckbox);
+    allLabel.appendChild(allSpan);
+
+    const childrenWrap = document.createElement('div');
+    childrenWrap.className = 'kana-children';
+    childrenWrap.hidden = !expanded;
+    alphabetKeys.forEach((key) => {
+      const label = document.createElement('label');
+      const spacer = document.createElement('span');
+      spacer.className = 'toggle-spacer';
+      spacer.setAttribute('aria-hidden', 'true');
+      const checkbox = document.createElement('input');
+      checkbox.type = 'checkbox';
+      checkbox.checked = state.selectedKana.has(key);
+      checkbox.addEventListener('change', () => {
+        if (checkbox.checked) state.selectedKana.add(key);
+        else state.selectedKana.delete(key);
+        renderKanaFilter();
+        state.page = 1;
+        applyFilters();
+      });
+      const span = document.createElement('span');
+      span.textContent = key;
+      label.appendChild(spacer);
+      label.appendChild(checkbox);
+      label.appendChild(span);
+      childrenWrap.appendChild(label);
+    });
+
+    allHead.appendChild(toggle);
+    allHead.appendChild(allLabel);
+    allWrap.appendChild(allHead);
+    allWrap.appendChild(childrenWrap);
+    el.kanaFilter.appendChild(allWrap);
+    return;
+  }
+
   el.kanaFilter.innerHTML = '';
   const allLabel = document.createElement('label');
   allLabel.className = 'kana-all';
   const allCheckbox = document.createElement('input');
   allCheckbox.type = 'checkbox';
   const allSpan = document.createElement('span');
-  allSpan.textContent = 'すべて';
+  allSpan.textContent = t.all;
   allLabel.appendChild(allCheckbox);
   allLabel.appendChild(allSpan);
   el.kanaFilter.appendChild(allLabel);
 
   function syncAllState() {
-    const count = allKanaKeys.reduce(
+    const count = initialKeys.reduce(
       (n, k) => n + (state.selectedKana.has(k) ? 1 : 0),
       0,
     );
-    allCheckbox.checked = count === allKanaKeys.length;
-    allCheckbox.indeterminate = count > 0 && count < allKanaKeys.length;
+    allCheckbox.checked = count === initialKeys.length;
+    allCheckbox.indeterminate = count > 0 && count < initialKeys.length;
   }
 
   allCheckbox.addEventListener('change', () => {
     if (allCheckbox.checked) {
-      allKanaKeys.forEach((k) => state.selectedKana.add(k));
+      initialKeys.forEach((k) => state.selectedKana.add(k));
     } else {
       state.selectedKana.clear();
     }
@@ -544,7 +669,7 @@ function renderGroupFilter() {
   const allCheckbox = document.createElement('input');
   allCheckbox.type = 'checkbox';
   const allSpan = document.createElement('span');
-  allSpan.textContent = 'すべて';
+  allSpan.textContent = t.all;
   allLabel.appendChild(allCheckbox);
   allLabel.appendChild(allSpan);
   el.groupFilter.appendChild(allLabel);
@@ -686,7 +811,7 @@ function applyFilters() {
       return false;
 
     if (!allSymptomsSelected && state.selectedSymptoms.size > 0) {
-      const hasSymptom = d.symptoms_ja_list.some((s) =>
+      const hasSymptom = d.symptoms_list.some((s) =>
         state.selectedSymptoms.has(s),
       );
       if (!hasSymptom) return false;
@@ -709,7 +834,7 @@ function renderTable() {
     const td = document.createElement('td');
     td.colSpan = 3;
     td.className = 'empty';
-    td.textContent = '該当データがありません';
+    td.textContent = t.noData;
     tr.appendChild(td);
     el.rows.appendChild(tr);
     return;
@@ -730,14 +855,15 @@ function renderTable() {
     tr.appendChild(noticeTd);
 
     const nameTd = document.createElement('td');
-    if (d.id && d.label_ja) {
+    const displayName = getDisplayName(d);
+    if (d.id && displayName) {
       const link = document.createElement('a');
       link.className = 'disease-link';
       link.href = `/disease/${d.id}`;
-      link.textContent = d.label_ja;
+      link.textContent = displayName;
       nameTd.appendChild(link);
     } else {
-      nameTd.textContent = d.label_ja || '-';
+      nameTd.textContent = displayName || '-';
     }
     tr.appendChild(nameTd);
 
@@ -814,8 +940,8 @@ function initFilters(records) {
   renderCheckboxList(
     el.categoryFilter,
     [
-      { value: 'shitei', label: '指定難病' },
-      { value: 'syoman', label: '小児慢性特定疾病' },
+      { value: 'shitei', label: categoryLabel[currentLang].shitei },
+      { value: 'syoman', label: categoryLabel[currentLang].syoman },
     ],
     state.selectedCategories,
     () => {
@@ -828,13 +954,13 @@ function initFilters(records) {
 
   state.groupTree = buildGroupTree(
     records,
-    new Map(records.map((r) => [r.id, r.label_ja || r.label_en || r.id])),
+    new Map(records.map((r) => [r.id, getDisplayName(r) || r.id])),
   );
   state.allSelectableGroupIds = new Set(state.groupTree.usedGroupIds);
   state.groupTree.usedGroupIds.forEach((gid) => state.selectedGroups.add(gid));
   renderGroupFilter();
 
-  const symptoms = uniqSorted(records.flatMap((r) => r.symptoms_ja_list || []));
+  const symptoms = uniqSorted(records.flatMap((r) => r.symptoms_list || []));
   state.allSymptoms = new Set(symptoms);
   symptoms.forEach((s) => state.selectedSymptoms.add(s));
   renderCheckboxList(
@@ -855,7 +981,7 @@ function initFilters(records) {
     const max = Math.max(...noticeNums);
     el.noticeMax.placeholder = String(max);
   } else {
-    el.noticeMax.placeholder = '最大';
+    el.noticeMax.placeholder = t.noticeMax;
   }
 
   el.noticeMin.addEventListener('input', parseNoticeInput);
@@ -871,17 +997,20 @@ async function boot() {
   const raw = await fetchDiseaseData();
 
   const idToLabelMap = new Map(
-    raw.map((r) => [r.id, r.label_ja || r.label_en || r.id]),
+    raw.map((r) => [r.id, getDisplayName(r) || r.id]),
   );
 
   state.all = raw.map((r) => {
     const noticeNum = Number.parseInt(r.notificationNumber, 10);
     const symptomsJaList = normalizeSymptomList(r.symptoms_ja_list);
+    const symptomsEnList = normalizeSymptomList(r.symptoms_en_list);
     return {
       ...r,
       symptoms_ja_list: symptomsJaList,
+      symptoms_en_list: symptomsEnList,
+      symptoms_list: isEnglish ? symptomsEnList : symptomsJaList,
       noticeNum: Number.isNaN(noticeNum) ? 0 : noticeNum,
-      kanaKey: getKanaKey(r.yomigana),
+      kanaKey: getKanaKey(r),
       groupId: groupIdFromUri(r.group),
       groupLabel: groupLabelFromUri(r.group, idToLabelMap),
       mainSymptom: symptomsJaList[0] || '-',
@@ -898,7 +1027,7 @@ boot().catch((err) => {
   const td = document.createElement('td');
   td.colSpan = 3;
   td.className = 'empty';
-  td.textContent = `読み込みに失敗しました: ${err.message}`;
+  td.textContent = `${t.loadFailed}: ${err.message}`;
   tr.appendChild(td);
   el.rows.appendChild(tr);
 });
