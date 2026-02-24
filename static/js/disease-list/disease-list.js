@@ -196,10 +196,7 @@ function compareBySortKey(a, b) {
     return (a.noticeNum || 0) - (b.noticeNum || 0);
   }
   if (state.sortKey === 'name') {
-    return String(getDisplayName(a)).trim().localeCompare(
-      String(getDisplayName(b)).trim(),
-      currentLang,
-    );
+    return getSortName(a).localeCompare(getSortName(b), currentLang);
   }
   return extractNandoNum(a.id) - extractNandoNum(b.id);
 }
@@ -300,6 +297,14 @@ function getDisplayName(record) {
   if (!record) return '';
   if (isEnglish) return record.label_en || record.label_ja || '';
   return record.label_ja || record.label_en || '';
+}
+
+/** 名前列ソート用：日本語のときはよみがな、英語のときは表示名 */
+function getSortName(record) {
+  if (!record) return '';
+  if (isEnglish) return String(getDisplayName(record)).trim();
+  const y = String(record.yomigana || '').trim();
+  return y || String(getDisplayName(record)).trim();
 }
 
 function normalizeSymptomList(values) {
