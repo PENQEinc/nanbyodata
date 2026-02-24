@@ -1790,7 +1790,7 @@ Stats Overview Component
 .treeview-container .ztree li ul {
   margin: 0;
   padding: 0;
-  padding-left: 14px;
+  padding-left: 30px;
 }
 
 /* 親子コネクタ線（縦・横） */
@@ -3088,7 +3088,7 @@ Stats Page Styles
 #disease-list-page .card-header {
   background: #0f7f8d;
   color: #fff;
-  padding: 5px 9px;
+  padding: 10px 9px;
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 0;
@@ -3113,7 +3113,7 @@ Stats Page Styles
   background: rgba(255, 255, 255, 0.16);
 }
 #disease-list-page .card-body {
-  padding: 7px 9px 8px;
+  padding: 12px 9px 13px;
   background: #fff;
 }
 #disease-list-page .list-scroll {

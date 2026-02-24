@@ -439,9 +439,6 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
 
   items.forEach((item) => {
     const label = document.createElement('label');
-    const spacer = document.createElement('span');
-    spacer.className = 'toggle-spacer';
-    spacer.setAttribute('aria-hidden', 'true');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = selectedSet.has(item.value);
@@ -454,7 +451,6 @@ function renderCheckboxList(container, items, selectedSet, onToggle) {
     const span = document.createElement('span');
     span.textContent = item.label;
 
-    label.appendChild(spacer);
     label.appendChild(checkbox);
     label.appendChild(span);
     container.appendChild(label);
