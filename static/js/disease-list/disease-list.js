@@ -5,7 +5,6 @@ const isEnglish = currentLang === 'en';
 
 const UI_LABELS = {
   ja: {
-    all: 'すべて',
     ungrouped: '未分類',
     diseaseGroup: '疾患群',
     noData: '該当データがありません',
@@ -13,7 +12,6 @@ const UI_LABELS = {
     noticeMax: '最大',
   },
   en: {
-    all: 'All',
     ungrouped: 'Ungrouped',
     diseaseGroup: 'Disease group',
     noData: 'No matching data found',
@@ -133,11 +131,7 @@ const kanaTree = [
   },
 ];
 
-const allKanaKeys = kanaTree.flatMap((group) =>
-  group.children.map((child) => child.key),
-);
 const alphabetKeys = [...'ABCDEFGHIJKLMNOPQRSTUVWXYZ', '#'];
-const initialKeys = isEnglish ? alphabetKeys : allKanaKeys;
 const kanaCharToKey = new Map(
   kanaTree.flatMap((group) =>
     group.children.flatMap((child) =>
@@ -152,8 +146,7 @@ const state = {
   page: 1,
   sortKey: null,
   sortOrder: 'asc',
-  selectedCategories: new Set(['shitei', 'syoman']),
-  selectedKana: new Set(initialKeys),
+  selectedKana: new Set(),
   expandedKanaRows: new Set(),
   selectedGroups: new Set(),
   selectedSymptoms: new Set(),
@@ -163,19 +156,17 @@ const state = {
   groupTree: null,
   allSelectableGroupIds: new Set(),
   allSymptoms: new Set(),
-  expandedFilterPanels: {
-    category: true,
-    kana: true,
-    group: true,
-    symptom: true,
-  },
+  noticeInputTimer: null,
 };
 
 const el = {
-  categoryFilter: document.getElementById('categoryFilter'),
   kanaFilter: document.getElementById('kanaFilter'),
   noticeMin: document.getElementById('noticeMin'),
   noticeMax: document.getElementById('noticeMax'),
+  clearGroupFilter: document.getElementById('clearGroupFilter'),
+  clearNoticeFilter: document.getElementById('clearNoticeFilter'),
+  clearKanaFilter: document.getElementById('clearKanaFilter'),
+  clearSymptomFilter: document.getElementById('clearSymptomFilter'),
   groupFilter: document.getElementById('groupFilter'),
   symptomFilter: document.getElementById('symptomFilter'),
   rows: document.getElementById('rows'),
@@ -426,6 +417,7 @@ function createChevronToggle(isExpanded, onClick) {
   const toggle = document.createElement('button');
   toggle.type = 'button';
   toggle.className = 'kana-toggle';
+  toggle.setAttribute('aria-expanded', String(isExpanded));
   toggle.innerHTML = isExpanded
     ? '<i class="fas fa-angle-down" aria-hidden="true"></i>'
     : '<i class="fas fa-angle-right" aria-hidden="true"></i>';
@@ -433,58 +425,17 @@ function createChevronToggle(isExpanded, onClick) {
   return toggle;
 }
 
-function renderCheckboxList(container, items, selectedSet, onToggle, panelKey) {
+function setChevronExpanded(toggle, isExpanded) {
+  toggle.setAttribute('aria-expanded', String(isExpanded));
+  const icon = toggle.querySelector('i');
+  if (!icon) return;
+  icon.className = isExpanded
+    ? 'fas fa-angle-down'
+    : 'fas fa-angle-right';
+}
+
+function renderCheckboxList(container, items, selectedSet, onToggle) {
   container.innerHTML = '';
-  const itemCheckboxes = [];
-  const expanded = state.expandedFilterPanels[panelKey] !== false;
-
-  const allWrap = document.createElement('div');
-  allWrap.className = 'kana-row';
-  const allHead = document.createElement('div');
-  allHead.className = 'kana-row-head';
-  const allToggle = createChevronToggle(expanded, () => {
-    state.expandedFilterPanels[panelKey] = !expanded;
-    renderFilters();
-  });
-  const allLabel = document.createElement('label');
-  allLabel.className = 'kana-all';
-  const allCheckbox = document.createElement('input');
-  allCheckbox.type = 'checkbox';
-  const allSpan = document.createElement('span');
-  allSpan.textContent = t.all;
-  allLabel.appendChild(allCheckbox);
-  allLabel.appendChild(allSpan);
-  allHead.appendChild(allToggle);
-  allHead.appendChild(allLabel);
-  allWrap.appendChild(allHead);
-  container.appendChild(allWrap);
-
-  const childrenWrap = document.createElement('div');
-  childrenWrap.className = 'filter-children';
-  childrenWrap.hidden = !expanded;
-  container.appendChild(childrenWrap);
-
-  function syncAllState() {
-    const count = items.reduce(
-      (n, item) => n + (selectedSet.has(item.value) ? 1 : 0),
-      0,
-    );
-    allCheckbox.checked = count === items.length && items.length > 0;
-    allCheckbox.indeterminate = count > 0 && count < items.length;
-  }
-
-  allCheckbox.addEventListener('change', () => {
-    if (allCheckbox.checked) {
-      items.forEach((item) => selectedSet.add(item.value));
-    } else {
-      selectedSet.clear();
-    }
-    itemCheckboxes.forEach((cb) => {
-      cb.checked = allCheckbox.checked;
-    });
-    syncAllState();
-    onToggle();
-  });
 
   items.forEach((item) => {
     const label = document.createElement('label');
@@ -497,7 +448,6 @@ function renderCheckboxList(container, items, selectedSet, onToggle, panelKey) {
     checkbox.addEventListener('change', () => {
       if (checkbox.checked) selectedSet.add(item.value);
       else selectedSet.delete(item.value);
-      syncAllState();
       onToggle();
     });
 
@@ -507,61 +457,12 @@ function renderCheckboxList(container, items, selectedSet, onToggle, panelKey) {
     label.appendChild(spacer);
     label.appendChild(checkbox);
     label.appendChild(span);
-    childrenWrap.appendChild(label);
-    itemCheckboxes.push(checkbox);
+    container.appendChild(label);
   });
-
-  syncAllState();
 }
 
 function renderKanaFilter() {
   el.kanaFilter.innerHTML = '';
-  const panelExpanded = state.expandedFilterPanels.kana !== false;
-  const panelRow = document.createElement('div');
-  panelRow.className = 'kana-row';
-  const panelHead = document.createElement('div');
-  panelHead.className = 'kana-row-head';
-  const panelToggle = createChevronToggle(panelExpanded, () => {
-    state.expandedFilterPanels.kana = !panelExpanded;
-    renderFilters();
-  });
-  const allLabel = document.createElement('label');
-  allLabel.className = 'kana-all';
-  const allCheckbox = document.createElement('input');
-  allCheckbox.type = 'checkbox';
-  const allSpan = document.createElement('span');
-  allSpan.textContent = t.all;
-  allLabel.appendChild(allCheckbox);
-  allLabel.appendChild(allSpan);
-  panelHead.appendChild(panelToggle);
-  panelHead.appendChild(allLabel);
-  panelRow.appendChild(panelHead);
-  el.kanaFilter.appendChild(panelRow);
-
-  const panelChildren = document.createElement('div');
-  panelChildren.className = 'filter-children';
-  panelChildren.hidden = !panelExpanded;
-  el.kanaFilter.appendChild(panelChildren);
-
-  function syncAllState() {
-    const count = initialKeys.reduce(
-      (n, k) => n + (state.selectedKana.has(k) ? 1 : 0),
-      0,
-    );
-    allCheckbox.checked = count === initialKeys.length;
-    allCheckbox.indeterminate = count > 0 && count < initialKeys.length;
-  }
-
-  allCheckbox.addEventListener('change', () => {
-    if (allCheckbox.checked) {
-      initialKeys.forEach((k) => state.selectedKana.add(k));
-    } else {
-      state.selectedKana.clear();
-    }
-    renderFilters();
-    state.page = 1;
-    applyFilters();
-  });
 
   if (isEnglish) {
     alphabetKeys.forEach((key) => {
@@ -575,7 +476,6 @@ function renderKanaFilter() {
       checkbox.addEventListener('change', () => {
         if (checkbox.checked) state.selectedKana.add(key);
         else state.selectedKana.delete(key);
-        renderFilters();
         state.page = 1;
         applyFilters();
       });
@@ -584,9 +484,8 @@ function renderKanaFilter() {
       label.appendChild(spacer);
       label.appendChild(checkbox);
       label.appendChild(span);
-      panelChildren.appendChild(label);
+      el.kanaFilter.appendChild(label);
     });
-    syncAllState();
     return;
   }
 
@@ -615,13 +514,24 @@ function renderKanaFilter() {
     rowCheckbox.checked = selectedCount === group.children.length;
     rowCheckbox.indeterminate =
       selectedCount > 0 && selectedCount < group.children.length;
+    const childCheckboxes = [];
+
+    function syncRowCheckboxState() {
+      const count = childCheckboxes.reduce((n, cb) => n + (cb.checked ? 1 : 0), 0);
+      rowCheckbox.checked = count === childCheckboxes.length && childCheckboxes.length > 0;
+      rowCheckbox.indeterminate = count > 0 && count < childCheckboxes.length;
+    }
+
     rowCheckbox.addEventListener('change', () => {
       if (rowCheckbox.checked) {
         group.children.forEach((child) => state.selectedKana.add(child.key));
       } else {
         group.children.forEach((child) => state.selectedKana.delete(child.key));
       }
-      renderFilters();
+      childCheckboxes.forEach((cb) => {
+        cb.checked = rowCheckbox.checked;
+      });
+      rowCheckbox.indeterminate = false;
       state.page = 1;
       applyFilters();
     });
@@ -635,10 +545,11 @@ function renderKanaFilter() {
     childrenWrap.className = 'kana-children';
     childrenWrap.hidden = !isExpanded;
     toggle.addEventListener('click', () => {
-      if (state.expandedKanaRows.has(group.row))
-        state.expandedKanaRows.delete(group.row);
-      else state.expandedKanaRows.add(group.row);
-      renderFilters();
+      const nextExpanded = childrenWrap.hidden;
+      childrenWrap.hidden = !nextExpanded;
+      setChevronExpanded(toggle, nextExpanded);
+      if (nextExpanded) state.expandedKanaRows.add(group.row);
+      else state.expandedKanaRows.delete(group.row);
     });
 
     group.children.forEach((child) => {
@@ -652,7 +563,7 @@ function renderKanaFilter() {
       childCheckbox.addEventListener('change', () => {
         if (childCheckbox.checked) state.selectedKana.add(child.key);
         else state.selectedKana.delete(child.key);
-        renderFilters();
+        syncRowCheckboxState();
         state.page = 1;
         applyFilters();
       });
@@ -663,16 +574,16 @@ function renderKanaFilter() {
       childLabel.appendChild(childCheckbox);
       childLabel.appendChild(childSpan);
       childrenWrap.appendChild(childLabel);
+      childCheckboxes.push(childCheckbox);
     });
 
     rowHead.appendChild(toggle);
     rowHead.appendChild(rowLabel);
     rowWrap.appendChild(rowHead);
     rowWrap.appendChild(childrenWrap);
-    panelChildren.appendChild(rowWrap);
+    el.kanaFilter.appendChild(rowWrap);
+    syncRowCheckboxState();
   });
-
-  syncAllState();
 }
 
 function renderGroupFilter() {
@@ -680,33 +591,37 @@ function renderGroupFilter() {
   if (!tree) return;
   el.groupFilter.innerHTML = '';
   el.groupFilter.classList.add('group-tree');
+  const groupControls = [];
 
-  const panelExpanded = state.expandedFilterPanels.group !== false;
-  const allWrap = document.createElement('div');
-  allWrap.className = 'kana-row';
-  const allHead = document.createElement('div');
-  allHead.className = 'kana-row-head';
-  const panelToggle = createChevronToggle(panelExpanded, () => {
-    state.expandedFilterPanels.group = !panelExpanded;
-    renderFilters();
-  });
-  const allLabel = document.createElement('label');
-  allLabel.className = 'group-all';
-  const allCheckbox = document.createElement('input');
-  allCheckbox.type = 'checkbox';
-  const allSpan = document.createElement('span');
-  allSpan.textContent = t.all;
-  allLabel.appendChild(allCheckbox);
-  allLabel.appendChild(allSpan);
-  allHead.appendChild(panelToggle);
-  allHead.appendChild(allLabel);
-  allWrap.appendChild(allHead);
-  el.groupFilter.appendChild(allWrap);
+  function syncGroupControl({ checkbox, selectableIds }) {
+    const checkedNum = selectableIds.reduce(
+      (n, gid) => n + (state.selectedGroups.has(gid) ? 1 : 0),
+      0,
+    );
+    checkbox.checked =
+      selectableIds.length > 0 && checkedNum === selectableIds.length;
+    checkbox.indeterminate =
+      checkedNum > 0 && checkedNum < selectableIds.length;
+  }
 
-  const childrenWrap = document.createElement('div');
-  childrenWrap.className = 'filter-children';
-  childrenWrap.hidden = !panelExpanded;
-  el.groupFilter.appendChild(childrenWrap);
+  function syncAllGroupControls() {
+    groupControls.forEach(syncGroupControl);
+  }
+
+  function bindGroupControl(checkbox, selectableIds) {
+    groupControls.push({ checkbox, selectableIds });
+    syncGroupControl({ checkbox, selectableIds });
+    checkbox.addEventListener('change', () => {
+      if (checkbox.checked) {
+        selectableIds.forEach((gid) => state.selectedGroups.add(gid));
+      } else {
+        selectableIds.forEach((gid) => state.selectedGroups.delete(gid));
+      }
+      syncAllGroupControls();
+      state.page = 1;
+      applyFilters();
+    });
+  }
 
   function collectSelectableIds(id, visited = new Set(), allowedSet = null) {
     if (visited.has(id)) return [];
@@ -724,26 +639,6 @@ function renderGroupFilter() {
     );
   }
 
-  const allSelectableIds = tree.rootIds.flatMap((rid) =>
-    collectSelectableIds(rid),
-  );
-  const selectedCount = allSelectableIds.reduce(
-    (n, id) => n + (state.selectedGroups.has(id) ? 1 : 0),
-    0,
-  );
-  allCheckbox.checked =
-    allSelectableIds.length > 0 && selectedCount === allSelectableIds.length;
-  allCheckbox.indeterminate =
-    selectedCount > 0 && selectedCount < allSelectableIds.length;
-  allCheckbox.addEventListener('change', () => {
-    if (allCheckbox.checked)
-      allSelectableIds.forEach((id) => state.selectedGroups.add(id));
-    else allSelectableIds.forEach((id) => state.selectedGroups.delete(id));
-    renderFilters();
-    state.page = 1;
-    applyFilters();
-  });
-
   function renderNode(id, container, allowedSet = null, expandPrefix = '') {
     const node = tree.nodes.get(id);
     if (!node) return;
@@ -759,17 +654,21 @@ function renderGroupFilter() {
     const expandKey = `${expandPrefix}${id}`;
     const expanded = state.expandedGroupRows.has(expandKey);
     let toggleOrSpacer;
+    let childrenWrap = null;
     if (hasChildren) {
-      const toggle = document.createElement('button');
-      toggle.type = 'button';
-      toggle.className = 'kana-toggle';
-      toggle.innerHTML = expanded
-        ? '<i class="fas fa-angle-down" aria-hidden="true"></i>'
-        : '<i class="fas fa-angle-right" aria-hidden="true"></i>';
-      toggle.addEventListener('click', () => {
-        if (expanded) state.expandedGroupRows.delete(expandKey);
-        else state.expandedGroupRows.add(expandKey);
-        renderFilters();
+      childrenWrap = document.createElement('div');
+      childrenWrap.className = 'group-children';
+      childrenWrap.hidden = !expanded;
+      node.children.forEach((cid) =>
+        renderNode(cid, childrenWrap, allowedSet, expandPrefix),
+      );
+
+      const toggle = createChevronToggle(expanded, () => {
+        const nextExpanded = childrenWrap.hidden;
+        childrenWrap.hidden = !nextExpanded;
+        setChevronExpanded(toggle, nextExpanded);
+        if (nextExpanded) state.expandedGroupRows.add(expandKey);
+        else state.expandedGroupRows.delete(expandKey);
       });
       toggleOrSpacer = toggle;
     } else {
@@ -782,22 +681,7 @@ function renderGroupFilter() {
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    const checkedNum = selectableIds.reduce(
-      (n, gid) => n + (state.selectedGroups.has(gid) ? 1 : 0),
-      0,
-    );
-    checkbox.checked =
-      selectableIds.length > 0 && checkedNum === selectableIds.length;
-    checkbox.indeterminate =
-      checkedNum > 0 && checkedNum < selectableIds.length;
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked)
-        selectableIds.forEach((gid) => state.selectedGroups.add(gid));
-      else selectableIds.forEach((gid) => state.selectedGroups.delete(gid));
-      renderFilters();
-      state.page = 1;
-      applyFilters();
-    });
+    bindGroupControl(checkbox, selectableIds);
 
     const span = document.createElement('span');
     span.textContent = node.label;
@@ -807,13 +691,7 @@ function renderGroupFilter() {
     head.appendChild(label);
     row.appendChild(head);
 
-    if (hasChildren) {
-      const childrenWrap = document.createElement('div');
-      childrenWrap.className = 'group-children';
-      childrenWrap.hidden = !expanded;
-      node.children.forEach((cid) =>
-        renderNode(cid, childrenWrap, allowedSet, expandPrefix),
-      );
+    if (childrenWrap) {
       row.appendChild(childrenWrap);
     }
 
@@ -842,32 +720,24 @@ function renderGroupFilter() {
 
     const expandKey = `category:${category.key}`;
     const expanded = state.expandedGroupRows.has(expandKey);
+    const categoryChildren = document.createElement('div');
+    categoryChildren.className = 'group-children';
+    categoryChildren.hidden = !expanded;
+    tree.rootIds.forEach((rid) =>
+      renderNode(rid, categoryChildren, allowedSet, `${category.key}:`),
+    );
     const toggle = createChevronToggle(expanded, () => {
-      if (expanded) state.expandedGroupRows.delete(expandKey);
-      else state.expandedGroupRows.add(expandKey);
-      renderFilters();
+      const nextExpanded = categoryChildren.hidden;
+      categoryChildren.hidden = !nextExpanded;
+      setChevronExpanded(toggle, nextExpanded);
+      if (nextExpanded) state.expandedGroupRows.add(expandKey);
+      else state.expandedGroupRows.delete(expandKey);
     });
 
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    const checkedNum = categorySelectableIds.reduce(
-      (n, gid) => n + (state.selectedGroups.has(gid) ? 1 : 0),
-      0,
-    );
-    checkbox.checked =
-      categorySelectableIds.length > 0 &&
-      checkedNum === categorySelectableIds.length;
-    checkbox.indeterminate =
-      checkedNum > 0 && checkedNum < categorySelectableIds.length;
-    checkbox.addEventListener('change', () => {
-      if (checkbox.checked)
-        categorySelectableIds.forEach((gid) => state.selectedGroups.add(gid));
-      else categorySelectableIds.forEach((gid) => state.selectedGroups.delete(gid));
-      renderFilters();
-      state.page = 1;
-      applyFilters();
-    });
+    bindGroupControl(checkbox, categorySelectableIds);
 
     const span = document.createElement('span');
     span.textContent = category.label;
@@ -877,32 +747,12 @@ function renderGroupFilter() {
     head.appendChild(label);
     row.appendChild(head);
 
-    const categoryChildren = document.createElement('div');
-    categoryChildren.className = 'group-children';
-    categoryChildren.hidden = !expanded;
-    tree.rootIds.forEach((rid) =>
-      renderNode(rid, categoryChildren, allowedSet, `${category.key}:`),
-    );
     row.appendChild(categoryChildren);
-    childrenWrap.appendChild(row);
+    el.groupFilter.appendChild(row);
   });
 }
 
 function renderFilters() {
-  renderCheckboxList(
-    el.categoryFilter,
-    [
-      { value: 'shitei', label: categoryLabel[currentLang].shitei },
-      { value: 'syoman', label: categoryLabel[currentLang].syoman },
-    ],
-    state.selectedCategories,
-    () => {
-      state.page = 1;
-      applyFilters();
-    },
-    'category',
-  );
-
   renderKanaFilter();
   renderGroupFilter();
 
@@ -915,8 +765,43 @@ function renderFilters() {
       state.page = 1;
       applyFilters();
     },
-    'symptom',
   );
+}
+
+function initClearButtons() {
+  el.clearKanaFilter?.addEventListener('click', () => {
+    state.selectedKana.clear();
+    renderFilters();
+    state.page = 1;
+    applyFilters();
+  });
+
+  el.clearGroupFilter?.addEventListener('click', () => {
+    state.selectedGroups.clear();
+    renderFilters();
+    state.page = 1;
+    applyFilters();
+  });
+
+  el.clearSymptomFilter?.addEventListener('click', () => {
+    state.selectedSymptoms.clear();
+    renderFilters();
+    state.page = 1;
+    applyFilters();
+  });
+
+  el.clearNoticeFilter?.addEventListener('click', () => {
+    el.noticeMin.value = '';
+    el.noticeMax.value = '';
+    if (state.noticeInputTimer !== null) {
+      clearTimeout(state.noticeInputTimer);
+      state.noticeInputTimer = null;
+    }
+    state.noticeMin = null;
+    state.noticeMax = null;
+    state.page = 1;
+    applyFilters();
+  });
 }
 
 function parseNoticeInput() {
@@ -925,10 +810,18 @@ function parseNoticeInput() {
   state.noticeMin = Number.isFinite(minVal) && minVal > 0 ? minVal : null;
   state.noticeMax = Number.isFinite(maxVal) && maxVal > 0 ? maxVal : null;
   state.page = 1;
-  applyFilters();
+  if (state.noticeInputTimer !== null) {
+    clearTimeout(state.noticeInputTimer);
+  }
+  state.noticeInputTimer = setTimeout(() => {
+    state.noticeInputTimer = null;
+    applyFilters();
+  }, 120);
 }
 
 function applyFilters() {
+  const isNoticeFilterActive = state.noticeMin !== null || state.noticeMax !== null;
+  const hasKanaFilter = state.selectedKana.size > 0;
   const allGroupsSelected =
     state.allSelectableGroupIds.size > 0 &&
     state.selectedGroups.size === state.allSelectableGroupIds.size;
@@ -937,8 +830,11 @@ function applyFilters() {
     state.selectedSymptoms.size === state.allSymptoms.size;
 
   state.filtered = state.all.filter((d) => {
-    if (!state.selectedCategories.has(d.category)) return false;
-    if (!state.selectedKana.has(d.kanaKey)) return false;
+    if (isNoticeFilterActive) {
+      if (d.category !== 'shitei') return false;
+      if (!d.hasNoticeNum) return false;
+    }
+    if (hasKanaFilter && !state.selectedKana.has(d.kanaKey)) return false;
 
     if (state.noticeMin !== null && d.noticeNum < state.noticeMin) return false;
     if (state.noticeMax !== null && d.noticeNum > state.noticeMax) return false;
@@ -1014,11 +910,9 @@ function initFilters(records) {
     new Map(records.map((r) => [r.id, getDisplayName(r) || r.id])),
   );
   state.allSelectableGroupIds = new Set(state.groupTree.usedGroupIds);
-  state.groupTree.usedGroupIds.forEach((gid) => state.selectedGroups.add(gid));
 
   const symptoms = uniqSorted(records.flatMap((r) => r.symptoms_list || []));
   state.allSymptoms = new Set(symptoms);
-  symptoms.forEach((s) => state.selectedSymptoms.add(s));
 
   renderFilters();
 
@@ -1042,6 +936,7 @@ async function fetchDiseaseData() {
 }
 
 async function boot() {
+  initClearButtons();
   initTableSort();
   const raw = await fetchDiseaseData();
 
@@ -1051,6 +946,7 @@ async function boot() {
 
   state.all = raw.map((r) => {
     const noticeNum = Number.parseInt(r.notificationNumber, 10);
+    const hasNoticeNum = Number.isFinite(noticeNum) && noticeNum > 0;
     const symptomsJaList = normalizeSymptomList(r.symptoms_ja_list);
     const symptomsEnList = normalizeSymptomList(r.symptoms_en_list);
     return {
@@ -1058,6 +954,7 @@ async function boot() {
       symptoms_ja_list: symptomsJaList,
       symptoms_en_list: symptomsEnList,
       symptoms_list: isEnglish ? symptomsEnList : symptomsJaList,
+      hasNoticeNum,
       noticeNum: Number.isNaN(noticeNum) ? 0 : noticeNum,
       kanaKey: getKanaKey(r),
       groupId: groupIdFromUri(r.group),
