@@ -208,6 +208,10 @@ python scripts/build_news_json.py      # → static/data/news.json
 python scripts/build_resources_json.py # → static/data/resources.json
 ```
 
+### Disease List
+
+The Disease List page displays data from `static/data/disease_list.json`. **When the table content is updated, replace this file** (`disease_list.json`) with the new data so that the list, filters, and sort order reflect the latest content.
+
 ### News / Resources tag configuration
 
 Tags used in the sidebar and list on the News and Resources pages are managed in `static/data/tags.json`. The `news` and `resources` sections each define their own tags, so you can use different tag sets for news and resources. As with the news list JSON, **dev and production load from GitHub raw** (dev → `dev` branch, production → `master`); **locally, the app reads this file directly**.
@@ -230,8 +234,14 @@ Edit `static/data/faq.json` directly. No build step or Actions; the Help page lo
           "title": { "ja": "ダウンロード", "en": "Download" },
           "items": [
             {
-              "question": { "ja": "CSV形式でダウンロードするには？", "en": "How do I download to CSV?" },
-              "answer": { "ja": "データセットページの「Download」ボタンから…", "en": "Use the \"Download\" button on the dataset page…" }
+              "question": {
+                "ja": "CSV形式でダウンロードするには？",
+                "en": "How do I download to CSV?"
+              },
+              "answer": {
+                "ja": "データセットページの「Download」ボタンから…",
+                "en": "Use the \"Download\" button on the dataset page…"
+              }
             }
           ]
         }
