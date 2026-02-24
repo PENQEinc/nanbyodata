@@ -3,11 +3,7 @@ let sidebarManuallyResized = false;
 // windowオブジェクトに公開（treeview_component.htmlから参照するため）
 window.sidebarManuallyResized = false;
 
-const STORAGE_KEYS = {
-  sidebarCollapsed: 'nanbyodata:disease-sidebar-collapsed',
-  sidebarWidth: 'nanbyodata:disease-sidebar-width',
-  tocCollapsed: 'nanbyodata:disease-toc-collapsed',
-};
+const NAV_STATE_STORAGE_KEY = 'nanbyodata:disease-side-navigation-state';
 
 const SIDEBAR_MIN_WIDTH = 250;
 const SIDEBAR_MAX_WIDTH = 1200;
@@ -28,33 +24,121 @@ function setStorageItem(key, value) {
   }
 }
 
-function getStoredBoolean(key, defaultValue = false) {
-  const value = getStorageItem(key);
-  if (value === null) return defaultValue;
-  return value === 'true';
+function getDefaultNavigationState() {
+  return {
+    sidebar: {
+      collapsed: false,
+      width: null,
+    },
+    toc: {
+      collapsed: false,
+    },
+  };
 }
 
-function setStoredBoolean(key, value) {
-  setStorageItem(key, value ? 'true' : 'false');
+function normalizeNavigationState(state) {
+  const defaultState = getDefaultNavigationState();
+  const normalizedState = {
+    sidebar: {
+      ...defaultState.sidebar,
+    },
+    toc: {
+      ...defaultState.toc,
+    },
+  };
+
+  if (!state || typeof state !== 'object') return normalizedState;
+
+  if (state.sidebar && typeof state.sidebar === 'object') {
+    if (typeof state.sidebar.collapsed === 'boolean') {
+      normalizedState.sidebar.collapsed = state.sidebar.collapsed;
+    }
+
+    if (
+      Number.isFinite(state.sidebar.width) &&
+      state.sidebar.width > 0
+    ) {
+      normalizedState.sidebar.width = Math.round(state.sidebar.width);
+    } else if (typeof state.sidebar.width === 'string') {
+      const parsedWidth = Number.parseInt(state.sidebar.width, 10);
+      if (!Number.isNaN(parsedWidth) && parsedWidth > 0) {
+        normalizedState.sidebar.width = parsedWidth;
+      }
+    }
+  }
+
+  if (state.toc && typeof state.toc === 'object') {
+    if (typeof state.toc.collapsed === 'boolean') {
+      normalizedState.toc.collapsed = state.toc.collapsed;
+    }
+  }
+
+  return normalizedState;
 }
 
-function getStoredWidth(
-  key,
+function setNavigationState(state) {
+  const normalizedState = normalizeNavigationState(state);
+  setStorageItem(NAV_STATE_STORAGE_KEY, JSON.stringify(normalizedState));
+}
+
+function getNavigationState() {
+  const storedState = getStorageItem(NAV_STATE_STORAGE_KEY);
+  if (storedState) {
+    try {
+      return normalizeNavigationState(JSON.parse(storedState));
+    } catch (error) {
+      // fallback to defaults
+    }
+  }
+
+  return getDefaultNavigationState();
+}
+
+function updateNavigationState(mutator) {
+  const state = getNavigationState();
+  mutator(state);
+  setNavigationState(state);
+}
+
+function getStoredSidebarCollapsed(defaultValue = false) {
+  const state = getNavigationState();
+  if (typeof state.sidebar.collapsed !== 'boolean') return defaultValue;
+  return state.sidebar.collapsed;
+}
+
+function setStoredSidebarCollapsed(value) {
+  updateNavigationState((state) => {
+    state.sidebar.collapsed = Boolean(value);
+  });
+}
+
+function getStoredTocCollapsed(defaultValue = false) {
+  const state = getNavigationState();
+  if (typeof state.toc.collapsed !== 'boolean') return defaultValue;
+  return state.toc.collapsed;
+}
+
+function setStoredTocCollapsed(value) {
+  updateNavigationState((state) => {
+    state.toc.collapsed = Boolean(value);
+  });
+}
+
+function getStoredSidebarWidth(
   minWidth,
   maxWidth = Number.POSITIVE_INFINITY
 ) {
-  const value = getStorageItem(key);
-  if (!value) return null;
-
-  const parsed = Number.parseInt(value, 10);
-  if (Number.isNaN(parsed)) return null;
-
-  return Math.max(minWidth, Math.min(maxWidth, parsed));
+  const state = getNavigationState();
+  const width = state.sidebar.width;
+  if (!Number.isFinite(width) || width <= 0) return null;
+  return Math.max(minWidth, Math.min(maxWidth, width));
 }
 
-function setStoredWidth(key, width) {
+function setStoredSidebarWidth(width) {
   if (!Number.isFinite(width) || width <= 0) return;
-  setStorageItem(key, `${Math.round(width)}`);
+  updateNavigationState((state) => {
+    state.sidebar.width = Math.round(width);
+  });
 }
 
 function updateToggleButtonState(buttonId, isCollapsed) {
@@ -83,7 +167,7 @@ export function makeSideNavigation() {
       const { persist = true } = options;
 
       if (shouldCollapse) {
-        setStoredWidth(STORAGE_KEYS.sidebarWidth, sidebar.offsetWidth);
+        setStoredSidebarWidth(sidebar.offsetWidth);
         breadcrumbSection.classList.add('collapsed');
         sidebar.classList.add('collapsed');
         sidebar.style.width = '';
@@ -93,8 +177,7 @@ export function makeSideNavigation() {
         breadcrumbSection.classList.remove('collapsed');
         sidebar.classList.remove('collapsed');
 
-        const savedWidth = getStoredWidth(
-          STORAGE_KEYS.sidebarWidth,
+        const savedWidth = getStoredSidebarWidth(
           SIDEBAR_MIN_WIDTH,
           SIDEBAR_MAX_WIDTH
         );
@@ -115,10 +198,7 @@ export function makeSideNavigation() {
       );
 
       if (persist) {
-        setStoredBoolean(
-          STORAGE_KEYS.sidebarCollapsed,
-          sidebar.classList.contains('collapsed')
-        );
+        setStoredSidebarCollapsed(sidebar.classList.contains('collapsed'));
       }
 
       setTimeout(() => {
@@ -131,10 +211,7 @@ export function makeSideNavigation() {
       setSidebarCollapsed(!isCurrentlyCollapsed);
     };
 
-    const initialSidebarCollapsed = getStoredBoolean(
-      STORAGE_KEYS.sidebarCollapsed,
-      false
-    );
+    const initialSidebarCollapsed = getStoredSidebarCollapsed(false);
     setSidebarCollapsed(initialSidebarCollapsed, { persist: false });
 
     sidebarTitle.addEventListener('click', function (event) {
@@ -170,10 +247,7 @@ export function makeSideNavigation() {
       );
 
       if (persist) {
-        setStoredBoolean(
-          STORAGE_KEYS.tocCollapsed,
-          tempSideNav.classList.contains('collapsed')
-        );
+        setStoredTocCollapsed(tempSideNav.classList.contains('collapsed'));
       }
 
       setTimeout(() => {
@@ -186,10 +260,7 @@ export function makeSideNavigation() {
       setTocCollapsed(!isCurrentlyCollapsed);
     };
 
-    const initialTocCollapsed = getStoredBoolean(
-      STORAGE_KEYS.tocCollapsed,
-      false
-    );
+    const initialTocCollapsed = getStoredTocCollapsed(false);
     setTocCollapsed(initialTocCollapsed, { persist: false });
 
     navTitle.addEventListener('click', function (event) {
@@ -597,7 +668,7 @@ function initSidebarResize() {
     // 手動リサイズが行われたことを記録
     sidebarManuallyResized = true;
     window.sidebarManuallyResized = true;
-    setStoredWidth(STORAGE_KEYS.sidebarWidth, sidebar.offsetWidth);
+    setStoredSidebarWidth(sidebar.offsetWidth);
 
     // カーソルを元に戻す
     document.body.style.cursor = '';
