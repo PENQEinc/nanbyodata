@@ -140,13 +140,23 @@
       <!-- Sidebar -->
       <aside id="sidebar">
         <h2 class="sidebar-title">
-          <i class="fas fa-sitemap sitemap-icon"></i>
-          <span class="sidebar-title-text">
-            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-            疾患選択
-            {% else %}
-            Tree
-            {% endif %}
+          <span class="sidebar-title-main">
+            <i class="fas fa-sitemap sitemap-icon"></i>
+            <span class="sidebar-title-text">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              疾患選択
+              {% else %}
+              Tree
+              {% endif %}
+            </span>
+          </span>
+          <span class="sidebar-controls">
+            <button type="button" class="sidebar-control-btn -toggle" id="sidebar-toggle-btn"
+              aria-label="{% if get_locale() == 'ja' or get_locale() == 'ja_JP' %}疾患選択を閉じる{% else %}Close Tree panel{% endif %}"
+              aria-expanded="true">
+              <i class="fas fa-chevron-left"></i>
+              <span class="sidebar-control-label">Close</span>
+            </button>
           </span>
         </h2>
         <section class="breadcrumb-list">
@@ -160,13 +170,24 @@
       <!-- Side Navigation -->
       <aside id="temp-side-navigation">
         <h2 class="sidebar-title">
-          <i class="fas fa-solid fa-list list-icon"></i>
-          <span class="sidebar-title-text">
-            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-            目次
-            {% else %}
-            Contents
-            {% endif %}
+          <span class="sidebar-title-main">
+            <i class="fas fa-solid fa-list list-icon"></i>
+            <span class="sidebar-title-text">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              目次
+              {% else %}
+              Contents
+              {% endif %}
+            </span>
+          </span>
+          <span class="sidebar-controls">
+            <button type="button" class="sidebar-control-btn -toggle" id="toc-toggle-btn"
+              aria-label="{% if get_locale() == 'ja' or get_locale() == 'ja_JP' %}目次を閉じる{% else %}Close Contents panel{% endif %}"
+              aria-expanded="true">
+              <i class="fas fa-chevron-left"></i>
+              <span class="sidebar-control-label">Close</span>
+            </button>
+          </span>
         </h2>
         <ul>
           <li><a href="#overview" class="nav-link overview">

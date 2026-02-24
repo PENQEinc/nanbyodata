@@ -3,45 +3,74 @@ let sidebarManuallyResized = false;
 // windowオブジェクトに公開（treeview_component.htmlから参照するため）
 window.sidebarManuallyResized = false;
 
+const STORAGE_KEYS = {
+  sidebarCollapsed: 'nanbyodata:disease-sidebar-collapsed',
+  sidebarWidth: 'nanbyodata:disease-sidebar-width',
+  tocCollapsed: 'nanbyodata:disease-toc-collapsed',
+  tocWidth: 'nanbyodata:disease-toc-width',
+};
+
+const SIDEBAR_MIN_WIDTH = 250;
+const SIDEBAR_MAX_WIDTH = 1200;
+const TOC_MIN_WIDTH = 250;
+
+function getStorageItem(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function setStorageItem(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (error) {
+    // ignore storage write errors
+  }
+}
+
+function getStoredBoolean(key, defaultValue = false) {
+  const value = getStorageItem(key);
+  if (value === null) return defaultValue;
+  return value === 'true';
+}
+
+function setStoredBoolean(key, value) {
+  setStorageItem(key, value ? 'true' : 'false');
+}
+
+function getStoredWidth(
+  key,
+  minWidth,
+  maxWidth = Number.POSITIVE_INFINITY
+) {
+  const value = getStorageItem(key);
+  if (!value) return null;
+
+  const parsed = Number.parseInt(value, 10);
+  if (Number.isNaN(parsed)) return null;
+
+  return Math.max(minWidth, Math.min(maxWidth, parsed));
+}
+
+function setStoredWidth(key, width) {
+  if (!Number.isFinite(width) || width <= 0) return;
+  setStorageItem(key, `${Math.round(width)}`);
+}
+
+function updateToggleButtonState(buttonId, isCollapsed) {
+  const button = document.getElementById(buttonId);
+  if (!button) return;
+  button.setAttribute('aria-expanded', String(!isCollapsed));
+}
+
 export function makeSideNavigation() {
   const sideNavigation = document.getElementById('temp-side-navigation');
-
-  // 疾患選択の折り畳み機能
   const sidebar = document.getElementById('sidebar');
   const sidebarTitle = document.querySelector('#sidebar .sidebar-title');
   const breadcrumbSection = document.querySelector('#sidebar > section');
-  if (sidebarTitle && breadcrumbSection && sidebar) {
-    // 初期状態：疾患選択を閉じた状態にする
-    breadcrumbSection.classList.add('collapsed');
-    sidebar.classList.add('collapsed');
-
-    sidebarTitle.addEventListener('click', function () {
-      const isCurrentlyCollapsed = sidebar.classList.contains('collapsed');
-
-      breadcrumbSection.classList.toggle('collapsed');
-      sidebar.classList.toggle('collapsed');
-
-      if (!isCurrentlyCollapsed) {
-        // これから閉じる場合：widthをリセット、フラグもリセット
-        sidebar.style.width = '';
-        sidebarManuallyResized = false;
-        window.sidebarManuallyResized = false;
-      } else {
-        // これから開く場合：フラグをリセット（自動調整を有効化）
-        sidebarManuallyResized = false;
-        window.sidebarManuallyResized = false;
-      }
-
-      // treeviewの幅を再調整するため、カスタムイベントを発火
-      setTimeout(() => {
-        window.dispatchEvent(new Event('resize'));
-      }, 300); // CSSのtransitionが完了するまで待つ
-    });
-  }
-
-  // リサイズ機能
-  initSidebarResize();
-  initTocResize();
+  const sidebarToggleButton = document.getElementById('sidebar-toggle-btn');
 
   // 目次の折り畳み機能
   const tempSideNav = document.getElementById('temp-side-navigation');
@@ -49,22 +78,141 @@ export function makeSideNavigation() {
     '#temp-side-navigation .sidebar-title'
   );
   const navList = document.querySelector('#temp-side-navigation > ul');
+  const tocToggleButton = document.getElementById('toc-toggle-btn');
+
+  if (sidebarTitle && breadcrumbSection && sidebar) {
+    const setSidebarCollapsed = (shouldCollapse, options = {}) => {
+      const { persist = true } = options;
+
+      if (shouldCollapse) {
+        setStoredWidth(STORAGE_KEYS.sidebarWidth, sidebar.offsetWidth);
+        breadcrumbSection.classList.add('collapsed');
+        sidebar.classList.add('collapsed');
+        sidebar.style.width = '';
+        sidebarManuallyResized = false;
+        window.sidebarManuallyResized = false;
+      } else {
+        breadcrumbSection.classList.remove('collapsed');
+        sidebar.classList.remove('collapsed');
+
+        const savedWidth = getStoredWidth(
+          STORAGE_KEYS.sidebarWidth,
+          SIDEBAR_MIN_WIDTH,
+          SIDEBAR_MAX_WIDTH
+        );
+        if (savedWidth) {
+          sidebar.style.width = `${savedWidth}px`;
+          sidebarManuallyResized = true;
+          window.sidebarManuallyResized = true;
+        } else {
+          sidebar.style.width = '';
+          sidebarManuallyResized = false;
+          window.sidebarManuallyResized = false;
+        }
+      }
+
+      updateToggleButtonState(
+        'sidebar-toggle-btn',
+        sidebar.classList.contains('collapsed')
+      );
+
+      if (persist) {
+        setStoredBoolean(
+          STORAGE_KEYS.sidebarCollapsed,
+          sidebar.classList.contains('collapsed')
+        );
+      }
+
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    };
+
+    const toggleSidebar = () => {
+      const isCurrentlyCollapsed = sidebar.classList.contains('collapsed');
+      setSidebarCollapsed(!isCurrentlyCollapsed);
+    };
+
+    const initialSidebarCollapsed = getStoredBoolean(
+      STORAGE_KEYS.sidebarCollapsed,
+      false
+    );
+    setSidebarCollapsed(initialSidebarCollapsed, { persist: false });
+
+    sidebarTitle.addEventListener('click', function (event) {
+      if (event.target.closest('.sidebar-controls')) return;
+      toggleSidebar();
+    });
+
+    if (sidebarToggleButton) {
+      sidebarToggleButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleSidebar();
+      });
+    }
+  }
+
   if (navTitle && navList && tempSideNav) {
-    navTitle.addEventListener('click', function () {
-      const isCurrentlyCollapsed = tempSideNav.classList.contains('collapsed');
+    const setTocCollapsed = (shouldCollapse, options = {}) => {
+      const { persist = true } = options;
 
-      navList.classList.toggle('collapsed');
-      tempSideNav.classList.toggle('collapsed');
-
-      if (!isCurrentlyCollapsed) {
-        // これから閉じる場合：widthをリセット
+      if (shouldCollapse) {
+        setStoredWidth(STORAGE_KEYS.tocWidth, tempSideNav.offsetWidth);
+        navList.classList.add('collapsed');
+        tempSideNav.classList.add('collapsed');
         tempSideNav.style.width = '';
       } else {
-        // これから開く場合：初期幅250pxに設定
-        tempSideNav.style.width = '250px';
+        navList.classList.remove('collapsed');
+        tempSideNav.classList.remove('collapsed');
+
+        const savedWidth = getStoredWidth(STORAGE_KEYS.tocWidth, TOC_MIN_WIDTH);
+        tempSideNav.style.width = savedWidth ? `${savedWidth}px` : '';
       }
+
+      updateToggleButtonState(
+        'toc-toggle-btn',
+        tempSideNav.classList.contains('collapsed')
+      );
+
+      if (persist) {
+        setStoredBoolean(
+          STORAGE_KEYS.tocCollapsed,
+          tempSideNav.classList.contains('collapsed')
+        );
+      }
+
+      setTimeout(() => {
+        window.dispatchEvent(new Event('resize'));
+      }, 300);
+    };
+
+    const toggleToc = () => {
+      const isCurrentlyCollapsed = tempSideNav.classList.contains('collapsed');
+      setTocCollapsed(!isCurrentlyCollapsed);
+    };
+
+    const initialTocCollapsed = getStoredBoolean(
+      STORAGE_KEYS.tocCollapsed,
+      false
+    );
+    setTocCollapsed(initialTocCollapsed, { persist: false });
+
+    navTitle.addEventListener('click', function (event) {
+      if (event.target.closest('.sidebar-controls')) return;
+      toggleToc();
     });
+
+    if (tocToggleButton) {
+      tocToggleButton.addEventListener('click', function (event) {
+        event.stopPropagation();
+        toggleToc();
+      });
+    }
   }
+
+  // リサイズ機能
+  initSidebarResize();
+  initTocResize();
 
   const items = [
     'overview',
@@ -85,7 +233,7 @@ export function makeSideNavigation() {
   ];
 
   items.forEach((itemId) => {
-    const link = sideNavigation.querySelector(`.nav-link.${itemId}`);
+    const link = sideNavigation?.querySelector(`.nav-link.${itemId}`);
     if (!link) return;
 
     link.addEventListener('click', (event) => {
@@ -439,9 +587,10 @@ function initSidebarResize() {
     let newWidth = startWidth + deltaX;
 
     // 最小・最大幅の制限
-    const minWidth = 250;
-    const maxWidth = 1200;
-    newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+    newWidth = Math.max(
+      SIDEBAR_MIN_WIDTH,
+      Math.min(SIDEBAR_MAX_WIDTH, newWidth)
+    );
 
     sidebar.style.width = `${newWidth}px`;
   });
@@ -454,6 +603,7 @@ function initSidebarResize() {
     // 手動リサイズが行われたことを記録
     sidebarManuallyResized = true;
     window.sidebarManuallyResized = true;
+    setStoredWidth(STORAGE_KEYS.sidebarWidth, sidebar.offsetWidth);
 
     // カーソルを元に戻す
     document.body.style.cursor = '';
@@ -494,8 +644,7 @@ function initTocResize() {
     let newWidth = startWidth + deltaX;
 
     // 最小幅の制限のみ（最大幅の制限を削除）
-    const minWidth = 250;
-    newWidth = Math.max(minWidth, newWidth);
+    newWidth = Math.max(TOC_MIN_WIDTH, newWidth);
 
     tocNav.style.width = `${newWidth}px`;
   });
@@ -504,6 +653,7 @@ function initTocResize() {
     if (!isResizing) return;
 
     isResizing = false;
+    setStoredWidth(STORAGE_KEYS.tocWidth, tocNav.offsetWidth);
 
     // カーソルを元に戻す
     document.body.style.cursor = '';
