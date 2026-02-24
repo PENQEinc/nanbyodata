@@ -7,12 +7,10 @@ const STORAGE_KEYS = {
   sidebarCollapsed: 'nanbyodata:disease-sidebar-collapsed',
   sidebarWidth: 'nanbyodata:disease-sidebar-width',
   tocCollapsed: 'nanbyodata:disease-toc-collapsed',
-  tocWidth: 'nanbyodata:disease-toc-width',
 };
 
 const SIDEBAR_MIN_WIDTH = 250;
 const SIDEBAR_MAX_WIDTH = 1200;
-const TOC_MIN_WIDTH = 250;
 
 function getStorageItem(key) {
   try {
@@ -157,16 +155,13 @@ export function makeSideNavigation() {
       const { persist = true } = options;
 
       if (shouldCollapse) {
-        setStoredWidth(STORAGE_KEYS.tocWidth, tempSideNav.offsetWidth);
         navList.classList.add('collapsed');
         tempSideNav.classList.add('collapsed');
         tempSideNav.style.width = '';
       } else {
         navList.classList.remove('collapsed');
         tempSideNav.classList.remove('collapsed');
-
-        const savedWidth = getStoredWidth(STORAGE_KEYS.tocWidth, TOC_MIN_WIDTH);
-        tempSideNav.style.width = savedWidth ? `${savedWidth}px` : '';
+        tempSideNav.style.width = '';
       }
 
       updateToggleButtonState(
@@ -212,7 +207,6 @@ export function makeSideNavigation() {
 
   // リサイズ機能
   initSidebarResize();
-  initTocResize();
 
   const items = [
     'overview',
@@ -604,56 +598,6 @@ function initSidebarResize() {
     sidebarManuallyResized = true;
     window.sidebarManuallyResized = true;
     setStoredWidth(STORAGE_KEYS.sidebarWidth, sidebar.offsetWidth);
-
-    // カーソルを元に戻す
-    document.body.style.cursor = '';
-    document.body.style.userSelect = '';
-  });
-}
-
-// 目次のリサイズ機能
-function initTocResize() {
-  const tocNav = document.getElementById('temp-side-navigation');
-  const resizeHandle = document.getElementById('toc-resize-handle');
-
-  if (!tocNav || !resizeHandle) return;
-
-  let isResizing = false;
-  let startX = 0;
-  let startWidth = 0;
-
-  resizeHandle.addEventListener('mousedown', (e) => {
-    isResizing = true;
-    startX = e.clientX;
-    startWidth = tocNav.offsetWidth;
-
-    // リサイズ中はtransitionを無効化
-    tocNav.style.transition = 'none';
-
-    // ドラッグ中のカーソルを変更
-    document.body.style.cursor = 'col-resize';
-    document.body.style.userSelect = 'none';
-
-    e.preventDefault();
-  });
-
-  document.addEventListener('mousemove', (e) => {
-    if (!isResizing) return;
-
-    const deltaX = e.clientX - startX;
-    let newWidth = startWidth + deltaX;
-
-    // 最小幅の制限のみ（最大幅の制限を削除）
-    newWidth = Math.max(TOC_MIN_WIDTH, newWidth);
-
-    tocNav.style.width = `${newWidth}px`;
-  });
-
-  document.addEventListener('mouseup', () => {
-    if (!isResizing) return;
-
-    isResizing = false;
-    setStoredWidth(STORAGE_KEYS.tocWidth, tocNav.offsetWidth);
 
     // カーソルを元に戻す
     document.body.style.cursor = '';

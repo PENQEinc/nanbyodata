@@ -643,9 +643,6 @@ footer .container .footer__bottom .footer__lisence small:before {
   min-width: auto;
   max-width: auto;
 }
-.content-wrapper #temp-side-navigation.collapsed .resize-handle {
-  display: none;
-}
 .content-wrapper #temp-side-navigation .sidebar-title {
   display: flex;
   gap: 10px;
@@ -750,25 +747,6 @@ footer .container .footer__bottom .footer__lisence small:before {
 }
 .content-wrapper #temp-side-navigation:not(.collapsed) > ul {
   margin-top: 0;
-}
-.content-wrapper #temp-side-navigation .resize-handle {
-  position: absolute;
-  top: 0;
-  right: -4px;
-  width: 10px;
-  height: 100%;
-  cursor: col-resize;
-  background-color: transparent;
-  z-index: 1000;
-  transition: background-color 0.2s ease;
-}
-.content-wrapper #temp-side-navigation .resize-handle:hover {
-  background-color: rgba(36, 158, 179, 0.4);
-  right: -2px;
-  width: 6px;
-}
-.content-wrapper #temp-side-navigation .resize-handle:active {
-  background-color: rgba(36, 158, 179, 0.7);
 }
 .content-wrapper #content {
   overflow-y: auto;
@@ -1408,7 +1386,7 @@ Stats Overview Component
   height: 32px;
   margin: 0;
   border-width: 3px;
-  z-index: 2;
+  z-index: 3;
   pointer-events: none;
 }
 .loading-spinner.-sidenav {

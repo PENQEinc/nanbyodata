@@ -218,10 +218,6 @@
       width: auto;
       min-width: auto;
       max-width: auto;
-
-      .resize-handle {
-        display: none;
-      }
     }
 
     .sidebar-title {
@@ -348,29 +344,6 @@
     // 開いている状態の時のコンテンツエリアのマージン調整
     &:not(.collapsed) > ul {
       margin-top: 0;
-    }
-
-    // リサイズハンドル
-    .resize-handle {
-      position: absolute;
-      top: 0;
-      right: -4px;
-      width: 10px;
-      height: 100%;
-      cursor: col-resize;
-      background-color: transparent;
-      z-index: 1000;
-      transition: background-color 0.2s ease;
-
-      &:hover {
-        background-color: rgba(36, 158, 179, 0.4);
-        right: -2px;
-        width: 6px;
-      }
-
-      &:active {
-        background-color: rgba(36, 158, 179, 0.7);
-      }
     }
   }
 
