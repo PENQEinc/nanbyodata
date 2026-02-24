@@ -846,7 +846,7 @@ header.search-area .intro-text .keyword a {
   flex-direction: column;
   align-items: baseline;
   justify-self: center;
-  max-width: 580px;
+  max-width: 600px;
   gap: 20px;
 }
 .news-summary .logdata {
@@ -924,7 +924,7 @@ header.search-area .intro-text .keyword a {
   color: #fff;
   font-size: var(--font-size-small);
   font-weight: 700;
-  padding: 2px 10px;
+  padding: 1px 10px;
   border-radius: 999px;
 }
 .news-summary .logdata .more-list {
@@ -2121,6 +2121,7 @@ Stats Overview Component
   width: 200px;
 }
 .news-sidebar .sidebar-section {
+  margin-top: 6px;
   margin-bottom: 32px;
 }
 .news-sidebar .sidebar-section .sidebar-title {
@@ -2262,7 +2263,7 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   margin-bottom: 4px;
 }
 .news-list .news-list-item .news-item-title {
-  font-size: var(--font-size-medium);
+  font-size: var(--font-size-base);
   font-weight: 600;
   text-box-trim: trim-start;
 }
@@ -2279,7 +2280,7 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   color: #fff;
   font-size: var(--font-size-small);
   font-weight: 700;
-  padding: 2px 10px;
+  padding: 1px 10px;
   border-radius: 999px;
 }
 .news-list .news-list-item .news-item-tags {
@@ -2444,6 +2445,7 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   width: 200px;
 }
 .resources-sidebar .sidebar-section {
+  margin-top: 6px;
   margin-bottom: 32px;
 }
 .resources-sidebar .sidebar-section .sidebar-title {
@@ -3375,6 +3377,9 @@ html[lang=ja] #disease-list-page #categoryFilter .filter-children label > span:l
   color: #8a8a8a;
   flex-shrink: 0;
   line-height: 1;
+}
+#disease-list-page thead th .sort-icon.fa-sort-up, #disease-list-page thead th .sort-icon.fa-sort-down {
+  color: #249eb3;
 }
 #disease-list-page tbody td {
   border-bottom: 1px solid #b7b7b7;

@@ -300,6 +300,11 @@
       color: #8a8a8a;
       flex-shrink: 0;
       line-height: 1;
+
+      &.fa-sort-up,
+      &.fa-sort-down {
+        color: #249eb3;
+      }
     }
   }
 
