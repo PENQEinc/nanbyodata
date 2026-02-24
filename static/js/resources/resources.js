@@ -172,9 +172,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         <div class="resource-item-meta">${metaHtml}</div>
         <div class="resource-item-body">
           <div class="resource-item-title">${titleLink}</div>
-          ${tagsHtml ? `<div class="resource-item-tags">${tagsHtml}</div>` : ''}
-          ${p.description ? `<div class="resource-item-description">${escapeHtml(p.description)}</div>` : ''}
           ${authorsHtml}
+          ${p.description ? `<div class="resource-item-description">${escapeHtml(p.description)}</div>` : ''}
+          ${tagsHtml ? `<div class="resource-item-tags">${tagsHtml}</div>` : ''}
         </div>
       </li>`;
       })

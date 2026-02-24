@@ -2518,11 +2518,14 @@ Stats Overview Component
 }
 .resources-list .resources-list-item .resource-item-body {
   min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 .resources-list .resources-list-item .resource-item-title {
   font-size: var(--font-size-medium);
   font-weight: 600;
-  margin-bottom: 4px;
+  margin-bottom: 0;
 }
 .resources-list .resources-list-item .resource-item-title a {
   color: var(--color-link);
@@ -2537,7 +2540,7 @@ Stats Overview Component
   gap: 8px;
   font-size: var(--font-size-small);
   color: var(--color-black);
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 .resources-list .resources-list-item .resource-item-tags .resource-tag {
   display: inline-flex;
@@ -2555,7 +2558,7 @@ Stats Overview Component
   font-size: var(--font-size-base);
   line-height: 1.6;
   color: var(--color-black);
-  margin-bottom: 8px;
+  margin-bottom: 0;
 }
 .resources-list .resources-list-item .resource-item-authors {
   display: flex;
