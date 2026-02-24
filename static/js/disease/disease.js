@@ -68,7 +68,7 @@ if (contentElement) {
 
   // スピナーは表示
   const loadingSpinner = document.createElement('div');
-  loadingSpinner.className = 'loading-spinner';
+  loadingSpinner.className = 'loading-spinner -content';
   contentElement.appendChild(loadingSpinner);
 }
 
@@ -422,7 +422,7 @@ function trySwitchingContent(hash, retries = 0) {
     // コンテンツを非表示にし、ローディングスピナーを追加
     contentElement.style.display = 'block';
     const loadingSpinner = document.createElement('div');
-    loadingSpinner.className = 'loading-spinner';
+    loadingSpinner.className = 'loading-spinner -content';
     contentElement.appendChild(loadingSpinner);
   }
 

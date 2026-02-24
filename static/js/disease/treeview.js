@@ -11,7 +11,32 @@ let enforceLeftEdgeUntil = 0;
 // 特定ノードをクリックしても遷移しないためのスキップリスト
 const SKIP_LIST = ['NANDO:0000001'];
 const TREE_EXPANDED_STORAGE_KEY = 'nanbyodata:disease-tree-expanded-nodes';
+const TREEVIEW_LOADING_SPINNER_SELECTOR =
+  '.treeview-container > .loading-spinner.-tree';
 let expandedTreeNodeIds = _loadExpandedTreeNodeIds();
+
+function _showTreeviewLoadingSpinner() {
+  const treeviewContainer = document.querySelector('.treeview-container');
+  if (!treeviewContainer) return;
+
+  const existingSpinner = treeviewContainer.querySelector(
+    '.loading-spinner.-tree'
+  );
+  if (existingSpinner) return;
+
+  const loadingSpinner = document.createElement('div');
+  loadingSpinner.className = 'loading-spinner -tree';
+  treeviewContainer.appendChild(loadingSpinner);
+}
+
+function _hideTreeviewLoadingSpinner() {
+  const loadingSpinner = document.querySelector(
+    TREEVIEW_LOADING_SPINNER_SELECTOR
+  );
+  if (loadingSpinner) {
+    loadingSpinner.remove();
+  }
+}
 
 function _getStorageItem(key) {
   try {
@@ -641,6 +666,7 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
   };
 
   zTreeObj = $.fn.zTree.init($('#treeview'), setting, treeview_data);
+  _hideTreeviewLoadingSpinner();
   _startLeftEdgeEnforcement(3000);
   _forceTreeviewLeftEdge();
   _restoreExpandedTreeNodes(zTreeObj);
@@ -845,17 +871,21 @@ $(document).ready(function () {
     nando_id,
   )}&lang=${encodeURIComponent(lang)}`;
 
+  _showTreeviewLoadingSpinner();
+
   $.ajax({ url: url_str, type: 'GET', async: true, dataType: 'text' })
     .done(function (data) {
       try {
         const json_data = JSON.parse(data);
         init_ui_upstream_trace(nando_id, json_data, lang);
       } catch (e) {
+        _hideTreeviewLoadingSpinner();
         console.error('JSON parse error', e, data);
         alert('サーバー応答の形式が不正です。');
       }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
+      _hideTreeviewLoadingSpinner();
       console.error('AJAXに失敗しました。');
       console.error('URL: ' + url_str);
       console.error('Status: ' + textStatus);

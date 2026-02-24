@@ -392,7 +392,7 @@ export function switchingDisplayContents(selectedItemId) {
 
     // ローディングスピナーを追加
     const loadingSpinner = document.createElement('div');
-    loadingSpinner.className = 'loading-spinner';
+    loadingSpinner.className = 'loading-spinner -content';
     contentElement.appendChild(loadingSpinner);
   }
 

@@ -776,6 +776,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   padding: 40px 60px;
   display: none;
   flex: 1;
+  position: relative;
 }
 .content-wrapper #content #data-wrapper {
   display: flex;
@@ -1394,6 +1395,22 @@ Stats Overview Component
   border-radius: 50%;
   animation: sp-anime 1s infinite linear;
 }
+.loading-spinner.-content {
+  transform: translate(-50%, -50%);
+  animation: sp-anime-content 1s infinite linear;
+  margin: 0;
+  z-index: 2;
+}
+.loading-spinner.-tree {
+  transform: translate(-50%, -50%);
+  animation: sp-anime-content 1s infinite linear;
+  width: 32px;
+  height: 32px;
+  margin: 0;
+  border-width: 3px;
+  z-index: 2;
+  pointer-events: none;
+}
 .loading-spinner.-sidenav {
   display: block;
   top: -16px;
@@ -1419,6 +1436,14 @@ Stats Overview Component
 @keyframes sp-anime {
   100% {
     transform: rotate(360deg);
+  }
+}
+@keyframes sp-anime-content {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }
 /* Breadcrumb List */
@@ -1695,6 +1720,7 @@ Stats Overview Component
 }
 
 .treeview-container {
+  position: relative;
   overflow-x: auto;
   overflow-y: scroll;
   padding: 0;
