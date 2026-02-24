@@ -208,6 +208,10 @@ python scripts/build_news_json.py      # → static/data/news.json
 python scripts/build_resources_json.py # → static/data/resources.json
 ```
 
+### News / Resources tag configuration
+
+Tags used in the sidebar and list on the News and Resources pages are managed in `static/data/tags.json`. The `news` and `resources` sections each define their own tags, so you can use different tag sets for news and resources. As with the news list JSON, **dev and production load from GitHub raw** (dev → `dev` branch, production → `master`); **locally, the app reads this file directly**.
+
 ### FAQ (Help page)
 
 Edit `static/data/faq.json` directly. No build step or Actions; the Help page loads this file. Add a new Q&A by appending an object to the right `items` array.

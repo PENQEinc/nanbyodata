@@ -1,54 +1,15 @@
 /**
  * ニュース一覧・詳細ページ
  * news.json を取得して表示。サイドバーで Year / Tags フィルター。
+ * タグ定義は tags.json の news セクションから取得（dev/本番は GitHub、ローカルは /static/data）。
  */
 import { fetchNewsJson } from '../utils/newsJsonUrl.js';
-
-// タグ key → 表示ラベル（日本語・英語）
-const TAG_LABELS = {
-  ja: {
-    services: 'サービス',
-    pr: '広報',
-    public_relations: '広報',
-    event: 'イベント',
-    events: 'イベント',
-    recruitment: '募集',
-    other: 'その他',
-  },
-  en: {
-    services: 'Service',
-    pr: 'Public Relations',
-    public_relations: 'Public Relations',
-    event: 'Event',
-    events: 'Event',
-    recruitment: 'Recruitment',
-    other: 'Other',
-  },
-};
-
-// サイドバー用タグ定義（表示順・色クラス）
-const SIDEBAR_TAGS = [
-  { key: 'services', labelKey: 'services', dotClass: 'tag-services' },
-  { key: 'pr', labelKey: 'pr', dotClass: 'tag-pr' },
-  { key: 'event', labelKey: 'event', dotClass: 'tag-event' },
-  { key: 'recruitment', labelKey: 'recruitment', dotClass: 'tag-recruitment' },
-  { key: 'other', labelKey: 'other', dotClass: 'tag-other' },
-];
+import { fetchTagsJson, buildTagHelpers } from '../utils/tagsJsonUrl.js';
 
 function getLang() {
   const el = document.querySelector('.language-select');
   if (el && el.value) return el.value === 'en' ? 'en' : 'ja';
   return document.documentElement.lang === 'en' ? 'en' : 'ja';
-}
-
-function getTagLabel(tagKey, lang) {
-  const map = TAG_LABELS[lang] || TAG_LABELS.ja;
-  return map[tagKey] || tagKey;
-}
-
-function getTagDotClass(tagKey) {
-  const t = SIDEBAR_TAGS.find((s) => s.key === tagKey);
-  return t ? t.dotClass : 'tag-other';
 }
 
 function parseYearFromDate(dateStr) {
@@ -99,19 +60,21 @@ document.addEventListener('DOMContentLoaded', async () => {
   }
 
   let newsData = null;
+  let tagsConfig = null;
 
   try {
     showLoading();
-    newsData = await fetchNewsJson();
+    [tagsConfig, newsData] = await Promise.all([fetchTagsJson(), fetchNewsJson()]);
     if (!newsData[lang]) newsData[lang] = [];
   } catch (e) {
-    console.error('News fetch error:', e);
+    console.error('News or tags fetch error:', e);
     showError();
     return;
   }
 
   if (loadingEl) loadingEl.style.display = 'none';
 
+  const { getTagLabel, getTagStyle, SIDEBAR_TAGS } = buildTagHelpers(tagsConfig.news);
   const posts = newsData[lang] || [];
 
   // 年リスト（重複なし・降順）
@@ -137,7 +100,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     `<li><label${tagAllSelectedClass} data-tag=""><span class="option-check"></span><span>${tagAllLabel}</span></label></li>`,
     ...SIDEBAR_TAGS.map(
       (t) =>
-        `<li><label data-tag="${t.key}"><span class="tag-dot ${t.dotClass}"></span><span>${getTagLabel(t.key, lang)}</span></label></li>`,
+        `<li><label data-tag="${t.key}"><span class="tag-dot" style="${getTagStyle(t.key)}"></span><span>${getTagLabel(t.key, lang)}</span></label></li>`,
     ),
   ].join('');
 
@@ -201,7 +164,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         const tagsHtml = (p.tags || [])
           .map(
             (t) =>
-              `<span class="news-tag"><span class="tag-dot ${getTagDotClass(t)}"></span>${escapeHtml(getTagLabel(t, lang))}</span>`,
+              `<span class="news-tag"><span class="tag-dot" style="${getTagStyle(t)}"></span>${escapeHtml(getTagLabel(t, lang))}</span>`,
           )
           .join('');
         return `
@@ -230,7 +193,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('news-detail-tags').innerHTML = (entry.tags || [])
       .map(
         (t) =>
-          `<span class="news-tag"><span class="tag-dot ${getTagDotClass(t)}"></span>${escapeHtml(getTagLabel(t, lang))}</span>`,
+          `<span class="news-tag"><span class="tag-dot" style="${getTagStyle(t)}"></span>${escapeHtml(getTagLabel(t, lang))}</span>`,
       )
       .join('');
     document.getElementById('news-detail-body').innerHTML = entry.body || '';

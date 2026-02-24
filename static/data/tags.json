@@ -1,0 +1,90 @@
+{
+  "news": {
+    "tags": [
+      {
+        "key": "services",
+        "labels": {
+          "ja": "サービス",
+          "en": "Service"
+        },
+        "color": "#0d9488"
+      },
+      {
+        "key": "pr",
+        "labels": {
+          "ja": "広報",
+          "en": "Public Relations"
+        },
+        "color": "#22c55e"
+      },
+      {
+        "key": "event",
+        "labels": {
+          "ja": "イベント",
+          "en": "Event"
+        },
+        "color": "#f97316"
+      },
+      {
+        "key": "recruitment",
+        "labels": {
+          "ja": "募集",
+          "en": "Recruitment"
+        },
+        "color": "#ef4444"
+      },
+      {
+        "key": "other",
+        "labels": {
+          "ja": "その他",
+          "en": "Other"
+        },
+        "color": "#94a3b8"
+      }
+    ]
+  },
+  "resources": {
+    "tags": [
+      {
+        "key": "services",
+        "labels": {
+          "ja": "サービス",
+          "en": "Service"
+        },
+        "color": "#0d9488"
+      },
+      {
+        "key": "pr",
+        "labels": {
+          "ja": "広報",
+          "en": "Public Relations"
+        },
+        "color": "#22c55e"
+      },
+      {
+        "key": "event",
+        "labels": {
+          "ja": "イベント",
+          "en": "Event"
+        },
+        "color": "#f97316"
+      },
+      {
+        "key": "recruitment",
+        "labels": {
+          "ja": "募集",
+          "en": "Recruitment"
+        },
+        "color": "#ef4444"
+      },
+      {
+        "key": "other",
+        "labels": {
+          "ja": "その他",
+          "en": "Other"
+        },
+        "color": "#94a3b8"
+      }
+    ]
+  }
+}

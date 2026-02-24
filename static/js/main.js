@@ -2,6 +2,7 @@ import { navToggle } from './utils/navigation.js';
 import { focusInput } from './utils/focusInput.js';
 import { setLangChange } from './utils/setLangChange.js';
 import { fetchNewsJson } from './utils/newsJsonUrl.js';
+import { fetchTagsJson, buildTagHelpers } from './utils/tagsJsonUrl.js';
 import {
   drawDesignatedIntractableDiseaseColumnsTable,
   drawPediatricChronicSpecificDiseaseColumnsTable,
@@ -27,7 +28,7 @@ if (window.location.pathname === '/') {
     window.location.href = `${location.origin}/disease/${labelInfo.id}`;
   });
 
-  // ニュースセクション: /static/data/news.json から取得して表示（3件）
+  // ニュースセクション: news.json とタグ設定を取得して表示（3件）。タグは tags.json の news で管理。
   function initNewsSection() {
     const newsWrapperEl = document.querySelector('.news-summary > .news-wrapper');
     if (!newsWrapperEl) return;
@@ -36,12 +37,14 @@ if (window.location.pathname === '/') {
     loadingSpinner.className = 'loading-spinner news-loading';
     newsWrapperEl.appendChild(loadingSpinner);
 
-    loadNewsFromJson()
-      .then((newsData) => {
-        renderNewsList(newsData, true);
+    Promise.all([fetchTagsJson(), fetchNewsJson()])
+      .then(([tagsConfig, newsData]) => {
+        const { getTagLabel, getTagStyle } = buildTagHelpers(tagsConfig.news);
+        const newsDataMap = buildNewsDataFromJson(newsData);
+        renderNewsList(newsDataMap, true, { getTagLabel, getTagStyle });
       })
       .catch((err) => {
-        console.error('Error fetching news:', err);
+        console.error('Error fetching news or tags:', err);
       })
       .finally(() => {
         const spinner = newsWrapperEl.querySelector('.loading-spinner');
@@ -62,9 +65,8 @@ function getCurrentLang() {
   return document.documentElement.lang === 'en' ? 'en' : 'ja';
 }
 
-async function loadNewsFromJson() {
+function buildNewsDataFromJson(data) {
   const currentLang = getCurrentLang();
-  const data = await fetchNewsJson();
   const list = data[currentLang] || [];
   const newsData = {};
   list.forEach((entry) => {
@@ -81,22 +83,14 @@ async function loadNewsFromJson() {
   return newsData;
 }
 
-function getNewsTagDotClass(tagKey) {
-  const map = { services: 'tag-services', pr: 'tag-pr', public_relations: 'tag-pr', event: 'tag-event', events: 'tag-event', recruitment: 'tag-recruitment', other: 'tag-other' };
-  return map[tagKey] || 'tag-other';
-}
-
-function getNewsTagLabel(tagKey, lang) {
-  const ja = { services: 'サービス', pr: '広報', public_relations: '広報', event: 'イベント', events: 'イベント', recruitment: '募集', other: 'その他' };
-  const en = { services: 'Service', pr: 'Public Relations', public_relations: 'Public Relations', event: 'Event', events: 'Event', recruitment: 'Recruitment', other: 'Other' };
-  return (lang === 'en' ? en : ja)[tagKey] || tagKey;
-}
-
-function renderNewsList(newsData, limitTo3 = true) {
+function renderNewsList(newsData, limitTo3 = true, tagHelpers = null) {
   const newsContainer = document.querySelector('.news-summary .logdata');
   if (!newsContainer) return;
 
   const lang = getCurrentLang();
+  const getTagLabel = tagHelpers ? tagHelpers.getTagLabel : () => '';
+  const getTagStyle = tagHelpers ? tagHelpers.getTagStyle : () => 'background-color: #94a3b8';
+
   let html = '';
   const now = new Date();
   const threeMonthsAgo = new Date();
@@ -119,7 +113,7 @@ function renderNewsList(newsData, limitTo3 = true) {
       const tagsHtml = (info.tags || [])
         .map(
           (t) =>
-            `<span class="news-tag"><span class="tag-dot ${getNewsTagDotClass(t)}"></span>${escapeHtmlForNews(getNewsTagLabel(t, lang))}</span>`
+            `<span class="news-tag"><span class="tag-dot" style="${getTagStyle(t)}"></span>${escapeHtmlForNews(getTagLabel(t, lang))}</span>`
         )
         .join('');
       const newBadge = isRecent ? '<span class="news-item-new">new</span>' : '';
