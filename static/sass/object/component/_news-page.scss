@@ -56,14 +56,12 @@
         text-decoration: none;
         transition: color 0.15s ease;
 
-        /* 非選択：薄いグレー */
         color: #b0b0b0;
 
         &:hover {
           color: var(--color-primary);
         }
 
-        /* 選択中：濃い色（青系） */
         &.is-selected {
           color: var(--color-secondary);
           font-weight: 600;
@@ -76,27 +74,14 @@
         height: 8px;
         border-radius: 50%;
         transition: opacity 0.15s ease;
+      }
 
-        /* 非選択：円を薄く */
-        label:not(.is-selected) & {
-          opacity: 0.35;
-        }
+      label:not(.is-selected) .tag-dot {
+        opacity: 0.35;
+      }
 
-        &.tag-services {
-          background: var(--color-primary);
-        }
-        &.tag-pr {
-          background: #22c55e;
-        }
-        &.tag-event {
-          background: #f97316;
-        }
-        &.tag-recruitment {
-          background: #ef4444;
-        }
-        &.tag-other {
-          background: #94a3b8;
-        }
+      label.is-selected .tag-dot {
+        opacity: 1;
       }
 
       input[type='radio'] {
@@ -104,18 +89,18 @@
         accent-color: var(--color-primary);
       }
 
-      /* 全期間・すべて：タグと同じ 8px 円。選択時は濃い青、未選択は薄い青 */
       .option-check {
         width: 8px;
         height: 8px;
         border-radius: 50%;
         flex-shrink: 0;
-        transition: background 0.15s ease;
-        background: #c5e5e8;
+        transition: opacity 0.15s ease;
+        background: var(--color-primary);
+        opacity: 0.4;
+      }
 
-        .is-selected & {
-          background: var(--color-primary);
-        }
+      label.is-selected .option-check {
+        opacity: 1;
       }
     }
   }
@@ -146,15 +131,23 @@
 
   .news-list-item {
     display: flex;
-    align-items: flex-start;
+    align-items: baseline;
     gap: 24px;
     margin-bottom: 24px;
 
     .news-item-date {
       flex-shrink: 0;
       font-size: var(--font-size-base);
+      line-height: 1.5;
       letter-spacing: 0.05em;
       color: var(--color-font);
+      padding-top: 0;
+      margin: 0;
+
+      time {
+        display: block;
+        margin: 0;
+      }
     }
 
     .news-item-body {
@@ -168,6 +161,7 @@
       gap: 8px;
       flex-wrap: wrap;
       margin-bottom: 4px;
+      line-height: 1.5;
     }
 
     .news-item-title {
@@ -212,22 +206,6 @@
           height: 6px;
           border-radius: 50%;
           flex-shrink: 0;
-
-          &.tag-services {
-            background: var(--color-primary);
-          }
-          &.tag-pr {
-            background: #22c55e;
-          }
-          &.tag-event {
-            background: #f97316;
-          }
-          &.tag-recruitment {
-            background: #ef4444;
-          }
-          &.tag-other {
-            background: #94a3b8;
-          }
         }
       }
     }
@@ -271,22 +249,6 @@
         height: 6px;
         border-radius: 50%;
         flex-shrink: 0;
-
-        &.tag-services {
-          background: var(--color-primary);
-        }
-        &.tag-pr {
-          background: #22c55e;
-        }
-        &.tag-event {
-          background: #f97316;
-        }
-        &.tag-recruitment {
-          background: #ef4444;
-        }
-        &.tag-other {
-          background: #94a3b8;
-        }
       }
     }
   }

@@ -2155,16 +2155,11 @@ Stats Overview Component
   font-size: var(--font-size-base);
   text-decoration: none;
   transition: color 0.15s ease;
-  /* 非選択：薄いグレー */
   color: #b0b0b0;
 }
 .news-sidebar .sidebar-section .sidebar-options label:hover,
 .news-sidebar .sidebar-section .sidebar-options .sidebar-option-link:hover {
   color: var(--color-primary);
-}
-.news-sidebar .sidebar-section .sidebar-options label,
-.news-sidebar .sidebar-section .sidebar-options .sidebar-option-link {
-  /* 選択中：濃い色（青系） */
 }
 .news-sidebar .sidebar-section .sidebar-options label.is-selected,
 .news-sidebar .sidebar-section .sidebar-options .sidebar-option-link.is-selected {
@@ -2177,43 +2172,28 @@ Stats Overview Component
   height: 8px;
   border-radius: 50%;
   transition: opacity 0.15s ease;
-  /* 非選択：円を薄く */
 }
-label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot {
+.news-sidebar .sidebar-section .sidebar-options label:not(.is-selected) .tag-dot {
   opacity: 0.35;
 }
-.news-sidebar .sidebar-section .sidebar-options .tag-dot.tag-services {
-  background: var(--color-primary);
-}
-.news-sidebar .sidebar-section .sidebar-options .tag-dot.tag-pr {
-  background: #22c55e;
-}
-.news-sidebar .sidebar-section .sidebar-options .tag-dot.tag-event {
-  background: #f97316;
-}
-.news-sidebar .sidebar-section .sidebar-options .tag-dot.tag-recruitment {
-  background: #ef4444;
-}
-.news-sidebar .sidebar-section .sidebar-options .tag-dot.tag-other {
-  background: #94a3b8;
+.news-sidebar .sidebar-section .sidebar-options label.is-selected .tag-dot {
+  opacity: 1;
 }
 .news-sidebar .sidebar-section .sidebar-options input[type=radio] {
   margin: 0;
   accent-color: var(--color-primary);
-}
-.news-sidebar .sidebar-section .sidebar-options {
-  /* 全期間・すべて：タグと同じ 8px 円。選択時は濃い青、未選択は薄い青 */
 }
 .news-sidebar .sidebar-section .sidebar-options .option-check {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  transition: background 0.15s ease;
-  background: #c5e5e8;
-}
-.is-selected .news-sidebar .sidebar-section .sidebar-options .option-check {
+  transition: opacity 0.15s ease;
   background: var(--color-primary);
+  opacity: 0.4;
+}
+.news-sidebar .sidebar-section .sidebar-options label.is-selected .option-check {
+  opacity: 1;
 }
 
 .news-main {
@@ -2241,15 +2221,22 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
 }
 .news-list .news-list-item {
   display: flex;
-  align-items: flex-start;
+  align-items: baseline;
   gap: 24px;
   margin-bottom: 24px;
 }
 .news-list .news-list-item .news-item-date {
   flex-shrink: 0;
   font-size: var(--font-size-base);
+  line-height: 1.5;
   letter-spacing: 0.05em;
   color: var(--color-font);
+  padding-top: 0;
+  margin: 0;
+}
+.news-list .news-list-item .news-item-date time {
+  display: block;
+  margin: 0;
 }
 .news-list .news-list-item .news-item-body {
   flex: 1;
@@ -2261,6 +2248,7 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   gap: 8px;
   flex-wrap: wrap;
   margin-bottom: 4px;
+  line-height: 1.5;
 }
 .news-list .news-list-item .news-item-title {
   font-size: var(--font-size-base);
@@ -2301,21 +2289,6 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   border-radius: 50%;
   flex-shrink: 0;
 }
-.news-list .news-list-item .news-item-tags .news-tag .tag-dot.tag-services {
-  background: var(--color-primary);
-}
-.news-list .news-list-item .news-item-tags .news-tag .tag-dot.tag-pr {
-  background: #22c55e;
-}
-.news-list .news-list-item .news-item-tags .news-tag .tag-dot.tag-event {
-  background: #f97316;
-}
-.news-list .news-list-item .news-item-tags .news-tag .tag-dot.tag-recruitment {
-  background: #ef4444;
-}
-.news-list .news-list-item .news-item-tags .news-tag .tag-dot.tag-other {
-  background: #94a3b8;
-}
 
 .news-detail-title {
   font-size: var(--font-size-2xl);
@@ -2352,21 +2325,6 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
-}
-.news-detail-meta .news-detail-tags .news-tag .tag-dot.tag-services {
-  background: var(--color-primary);
-}
-.news-detail-meta .news-detail-tags .news-tag .tag-dot.tag-pr {
-  background: #22c55e;
-}
-.news-detail-meta .news-detail-tags .news-tag .tag-dot.tag-event {
-  background: #f97316;
-}
-.news-detail-meta .news-detail-tags .news-tag .tag-dot.tag-recruitment {
-  background: #ef4444;
-}
-.news-detail-meta .news-detail-tags .news-tag .tag-dot.tag-other {
-  background: #94a3b8;
 }
 
 .news-detail-body {
@@ -2497,37 +2455,23 @@ label:not(.is-selected) .news-sidebar .sidebar-section .sidebar-options .tag-dot
   border-radius: 50%;
   transition: opacity 0.15s ease;
 }
-label:not(.is-selected) .resources-sidebar .sidebar-section .sidebar-options .tag-dot {
+.resources-sidebar .sidebar-section .sidebar-options label:not(.is-selected) .tag-dot {
   opacity: 0.35;
 }
-.resources-sidebar .sidebar-section .sidebar-options .tag-dot.tag-services {
-  background: var(--color-primary);
-}
-.resources-sidebar .sidebar-section .sidebar-options .tag-dot.tag-pr {
-  background: #22c55e;
-}
-.resources-sidebar .sidebar-section .sidebar-options .tag-dot.tag-event {
-  background: #f97316;
-}
-.resources-sidebar .sidebar-section .sidebar-options .tag-dot.tag-recruitment {
-  background: #ef4444;
-}
-.resources-sidebar .sidebar-section .sidebar-options .tag-dot.tag-other {
-  background: #94a3b8;
-}
-.resources-sidebar .sidebar-section .sidebar-options {
-  /* 全期間・すべて：タグ（サービス等）と同じ 8px 円 */
+.resources-sidebar .sidebar-section .sidebar-options label.is-selected .tag-dot {
+  opacity: 1;
 }
 .resources-sidebar .sidebar-section .sidebar-options .option-check {
   width: 8px;
   height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  transition: background 0.15s ease;
-  background: #c5e5e8;
-}
-.is-selected .resources-sidebar .sidebar-section .sidebar-options .option-check {
+  transition: opacity 0.15s ease;
   background: var(--color-primary);
+  opacity: 0.4;
+}
+.resources-sidebar .sidebar-section .sidebar-options label.is-selected .option-check {
+  opacity: 1;
 }
 
 .resources-main {
@@ -2599,27 +2543,13 @@ label:not(.is-selected) .resources-sidebar .sidebar-section .sidebar-options .ta
   display: inline-flex;
   align-items: center;
   gap: 4px;
+  /* 色は tags.json の inline style で適用 */
 }
 .resources-list .resources-list-item .resource-item-tags .resource-tag .tag-dot {
   width: 6px;
   height: 6px;
   border-radius: 50%;
   flex-shrink: 0;
-}
-.resources-list .resources-list-item .resource-item-tags .resource-tag .tag-dot.tag-services {
-  background: var(--color-primary);
-}
-.resources-list .resources-list-item .resource-item-tags .resource-tag .tag-dot.tag-pr {
-  background: #22c55e;
-}
-.resources-list .resources-list-item .resource-item-tags .resource-tag .tag-dot.tag-event {
-  background: #f97316;
-}
-.resources-list .resources-list-item .resource-item-tags .resource-tag .tag-dot.tag-recruitment {
-  background: #ef4444;
-}
-.resources-list .resources-list-item .resource-item-tags .resource-tag .tag-dot.tag-other {
-  background: #94a3b8;
 }
 .resources-list .resources-list-item .resource-item-description {
   font-size: var(--font-size-base);

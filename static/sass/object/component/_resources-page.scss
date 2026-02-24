@@ -54,6 +54,7 @@
         font-size: var(--font-size-base);
         text-decoration: none;
         transition: color 0.15s ease;
+
         color: #b0b0b0;
 
         &:hover {
@@ -72,40 +73,28 @@
         height: 8px;
         border-radius: 50%;
         transition: opacity 0.15s ease;
-
-        label:not(.is-selected) & {
-          opacity: 0.35;
-        }
-
-        &.tag-services {
-          background: var(--color-primary);
-        }
-        &.tag-pr {
-          background: #22c55e;
-        }
-        &.tag-event {
-          background: #f97316;
-        }
-        &.tag-recruitment {
-          background: #ef4444;
-        }
-        &.tag-other {
-          background: #94a3b8;
-        }
       }
 
-      /* 全期間・すべて：タグ（サービス等）と同じ 8px 円 */
+      label:not(.is-selected) .tag-dot {
+        opacity: 0.35;
+      }
+
+      label.is-selected .tag-dot {
+        opacity: 1;
+      }
+
       .option-check {
         width: 8px;
         height: 8px;
         border-radius: 50%;
         flex-shrink: 0;
-        transition: background 0.15s ease;
-        background: #c5e5e8;
+        transition: opacity 0.15s ease;
+        background: var(--color-primary);
+        opacity: 0.4;
+      }
 
-        .is-selected & {
-          background: var(--color-primary);
-        }
+      label.is-selected .option-check {
+        opacity: 1;
       }
     }
   }
@@ -188,27 +177,12 @@
         align-items: center;
         gap: 4px;
 
+        /* 色は tags.json の inline style で適用 */
         .tag-dot {
           width: 6px;
           height: 6px;
           border-radius: 50%;
           flex-shrink: 0;
-
-          &.tag-services {
-            background: var(--color-primary);
-          }
-          &.tag-pr {
-            background: #22c55e;
-          }
-          &.tag-event {
-            background: #f97316;
-          }
-          &.tag-recruitment {
-            background: #ef4444;
-          }
-          &.tag-other {
-            background: #94a3b8;
-          }
         }
       }
     }
