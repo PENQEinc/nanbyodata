@@ -1,0 +1,185 @@
+<!doctype html>
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% elif get_locale() == "ko" or get_locale() == "ko_KR" %}
+<html lang="ko">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  <title>Disease List | NanbyoData</title>
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+  <meta name="description" content="NanbyoDataのDisease Listページです." />
+  {% else %}
+  <meta name="description" content="This is the Disease List page of NanbyoData." />
+  {% endif %}
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="Disease List | NanbyoData" />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://nanbyodata.jp/disease-list" />
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+  <meta property="og:description" content="NanbyoDataのDisease Listページです." />
+  {% else %}
+  <meta property="og:description" content="This is the Disease List page of NanbyoData." />
+  {% endif %}
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" />
+
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico" />
+</head>
+
+<body>
+  <main>
+    {% include 'component/navigation.html' %}
+
+    <div class="page-layout" id="disease-list-page">
+      <header class="page-title">
+        <h2>Disease List</h2>
+      </header>
+
+      <div class="disease-list-layout">
+        <aside>
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+          <h1 class="sidebar-title">フィルター</h1>
+          {% else %}
+          <h1 class="sidebar-title">Filters</h1>
+          {% endif %}
+
+          <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <div class="card-header">
+              <span>疾患群別一覧</span>
+              <button type="button" class="filter-clear-btn" id="clearGroupFilter">Clear</button>
+            </div>
+            {% else %}
+            <div class="card-header">
+              <span>Disease Groups</span>
+              <button type="button" class="filter-clear-btn" id="clearGroupFilter">Clear</button>
+            </div>
+            {% endif %}
+            <div class="card-body list-scroll" id="groupFilter"></div>
+          </section>
+
+          <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <div class="card-header">
+              <span>50音順</span>
+              <button type="button" class="filter-clear-btn" id="clearKanaFilter">Clear</button>
+            </div>
+            {% else %}
+            <div class="card-header">
+              <span>Alphabetical</span>
+              <button type="button" class="filter-clear-btn" id="clearKanaFilter">Clear</button>
+            </div>
+            {% endif %}
+            <div class="card-body">
+              <div class="kana-tree" id="kanaFilter"></div>
+            </div>
+          </section>
+
+          <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <div class="card-header">
+              <span>告示番号（指定難病のみ）</span>
+              <button type="button" class="filter-clear-btn" id="clearNoticeFilter">Clear</button>
+            </div>
+            {% else %}
+            <div class="card-header">
+              <span>Notification Number (Designated Intractable Diseases only)</span>
+              <button type="button" class="filter-clear-btn" id="clearNoticeFilter">Clear</button>
+            </div>
+            {% endif %}
+            <div class="card-body">
+              <div class="range-wrap">
+                <input id="noticeMin" type="number" min="1" placeholder="min" />
+                <span>〜</span>
+                <input id="noticeMax" type="number" min="1" placeholder="max" />
+              </div>
+            </div>
+          </section>
+
+          <section class="card">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <div class="card-header">
+              <span>主な症状</span>
+              <button type="button" class="filter-clear-btn" id="clearSymptomFilter">Clear</button>
+            </div>
+            {% else %}
+            <div class="card-header">
+              <span>Main Symptoms</span>
+              <button type="button" class="filter-clear-btn" id="clearSymptomFilter">Clear</button>
+            </div>
+            {% endif %}
+            <div class="card-body list-scroll" id="symptomFilter"></div>
+          </section>
+        </aside>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th class="col-id sortable" data-sort-key="id">
+                  <span class="th-label">
+                    <span>NANDO ID</span>
+                    <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                  </span>
+                </th>
+                <th class="col-notice sortable" data-sort-key="notice">
+                  <span class="th-label">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    <span>告示番号</span>
+                    {% else %}
+                    <span>Notification Number</span>
+                    {% endif %}
+                    <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                  </span>
+                </th>
+                <th class="col-name sortable" data-sort-key="name">
+                  <span class="th-label">
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    <span>疾患名</span>
+                    {% else %}
+                    <span>Disease Name</span>
+                    {% endif %}
+                    <i class="fas fa-sort sort-icon" aria-hidden="true"></i>
+                  </span>
+                </th>
+              </tr>
+            </thead>
+            <tbody id="rows"></tbody>
+          </table>
+          <div class="pager" id="pager"></div>
+        </div>
+      </div>
+    </div>
+
+    {% include 'component/footer.html' %}
+
+    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+    {% include 'component/modal-tos.html' %}
+    {% else %}
+    {% include 'component/modal-tos_en.html' %}
+    {% endif %}
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o"
+    crossorigin="anonymous"></script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script type="module" src="/static/js/disease-list/disease-list.js"></script>
+</body>
+
+</html>

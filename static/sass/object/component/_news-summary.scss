@@ -1,12 +1,19 @@
 .news-summary {
   padding: 0 20px;
   position: relative;
+
+  .section-title {
+    color: var(--color-secondary);
+    font-weight: 700;
+    text-align: center;
+  }
+
   .news-wrapper {
     display: flex;
     flex-direction: column;
     align-items: baseline;
     justify-self: center;
-    max-width: 580px;
+    max-width: 600px;
     gap: 20px;
   }
 
@@ -25,28 +32,77 @@
       font-size: var(--font-size-base);
       font-weight: normal;
       letter-spacing: 0.1rem;
+      color: var(--color-black);
+      flex-shrink: 0;
     }
 
     dd {
-      &::after {
-        content: 'new';
-        position: relative;
-        background: #f93759;
-        padding: 0 10px;
-        border-radius: 10px;
-        color: white;
-        left: 5px;
-        display: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      min-width: 0;
+
+      .news-item-title-row {
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
       }
 
-      &[data-date] {
-        &::after {
-          display: none;
-        }
+      a {
+        color: var(--color-secondary);
+        font-weight: normal;
 
-        &.is-recent::after {
-          display: inline-block;
+        &:hover {
+          text-decoration: underline;
+          opacity: 0.9;
         }
+      }
+
+      .news-item-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        font-size: var(--font-size-small);
+        color: var(--color-black);
+
+        .news-tag {
+          display: inline-flex;
+          align-items: center;
+          gap: 4px;
+
+          .tag-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            flex-shrink: 0;
+
+            &.tag-services {
+              background: var(--color-primary);
+            }
+            &.tag-pr {
+              background: #22c55e;
+            }
+            &.tag-event {
+              background: #f97316;
+            }
+            &.tag-recruitment {
+              background: #ef4444;
+            }
+            &.tag-other {
+              background: #94a3b8;
+            }
+          }
+        }
+      }
+
+      .news-item-new {
+        display: inline-block;
+        background: #f93759;
+        color: #fff;
+        font-size: var(--font-size-small);
+        font-weight: 700;
+        padding: 1px 10px;
+        border-radius: 999px;
       }
     }
 

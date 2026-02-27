@@ -10,6 +10,22 @@
   border-top: 4px var(--color-primary) solid;
   border-radius: 50%;
   animation: sp-anime 1s infinite linear;
+  &.-content {
+    transform: translate(-50%, -50%);
+    animation: sp-anime-content 1s infinite linear;
+    margin: 0;
+    z-index: 2;
+  }
+  &.-tree {
+    transform: translate(-50%, -50%);
+    animation: sp-anime-content 1s infinite linear;
+    width: 32px;
+    height: 32px;
+    margin: 0;
+    border-width: 3px;
+    z-index: 3;
+    pointer-events: none;
+  }
   &.-sidenav {
     display: block;
     top: -16px;
@@ -36,5 +52,14 @@
 @keyframes sp-anime {
   100% {
     transform: rotate(360deg);
+  }
+}
+
+@keyframes sp-anime-content {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }

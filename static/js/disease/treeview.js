@@ -6,9 +6,149 @@ let nando_id = '';
 let currentSelectedNandoId = null;
 // スクロール位置を保存（選択時の自動スクロールを防ぐため）
 let savedScrollLeft = 0;
+let enforceLeftEdgeUntil = 0;
 
 // 特定ノードをクリックしても遷移しないためのスキップリスト
 const SKIP_LIST = ['NANDO:0000001'];
+const TREE_EXPANDED_STORAGE_KEY = 'nanbyodata:disease-tree-expanded-nodes';
+const TREEVIEW_LOADING_SPINNER_SELECTOR =
+  '.treeview-container > .loading-spinner.-tree';
+let expandedTreeNodeIds = _loadExpandedTreeNodeIds();
+
+function _showTreeviewLoadingSpinner() {
+  const treeviewContainer = document.querySelector('.treeview-container');
+  if (!treeviewContainer) return;
+
+  const existingSpinner = treeviewContainer.querySelector(
+    '.loading-spinner.-tree'
+  );
+  if (existingSpinner) return;
+
+  const loadingSpinner = document.createElement('div');
+  loadingSpinner.className = 'loading-spinner -tree';
+  treeviewContainer.appendChild(loadingSpinner);
+}
+
+function _hideTreeviewLoadingSpinner() {
+  const loadingSpinner = document.querySelector(
+    TREEVIEW_LOADING_SPINNER_SELECTOR
+  );
+  if (loadingSpinner) {
+    loadingSpinner.remove();
+  }
+}
+
+function _getStorageItem(key) {
+  try {
+    return window.localStorage.getItem(key);
+  } catch (error) {
+    return null;
+  }
+}
+
+function _setStorageItem(key, value) {
+  try {
+    window.localStorage.setItem(key, value);
+  } catch (error) {
+    // ignore storage write errors
+  }
+}
+
+function _loadExpandedTreeNodeIds() {
+  const rawValue = _getStorageItem(TREE_EXPANDED_STORAGE_KEY);
+  if (!rawValue) return new Set();
+
+  try {
+    const parsed = JSON.parse(rawValue);
+    if (!Array.isArray(parsed)) return new Set();
+    return new Set(parsed.filter((id) => typeof id === 'string' && id.length));
+  } catch (error) {
+    return new Set();
+  }
+}
+
+function _saveExpandedTreeNodeIds() {
+  _setStorageItem(
+    TREE_EXPANDED_STORAGE_KEY,
+    JSON.stringify(Array.from(expandedTreeNodeIds))
+  );
+}
+
+function _removeExpandedDescendants(treeNode) {
+  if (!treeNode || !Array.isArray(treeNode.children)) return;
+
+  treeNode.children.forEach((childNode) => {
+    if (childNode?.nando_id) {
+      expandedTreeNodeIds.delete(childNode.nando_id);
+    }
+    _removeExpandedDescendants(childNode);
+  });
+}
+
+function _persistTreeNodeExpandState(treeNode, isExpanded) {
+  if (!treeNode || !treeNode.isParent || !treeNode.nando_id) return;
+
+  if (isExpanded) {
+    expandedTreeNodeIds.add(treeNode.nando_id);
+  } else {
+    expandedTreeNodeIds.delete(treeNode.nando_id);
+    _removeExpandedDescendants(treeNode);
+  }
+  _saveExpandedTreeNodeIds();
+}
+
+function _restoreExpandedTreeNodes(zTree) {
+  if (!zTree || expandedTreeNodeIds.size === 0) return;
+
+  const container = $('.treeview-container');
+  const savedScrollLeft = container.length > 0 ? container.scrollLeft() : 0;
+  const savedScrollTop = container.length > 0 ? container.scrollTop() : 0;
+
+  expandedTreeNodeIds.forEach((nandoId) => {
+    const node = zTree.getNodesByParam('nando_id', nandoId, null)[0];
+    if (!node || !node.isParent || node.open) return;
+
+    if (node.isFirstTimeLoad) {
+      zTree.reAsyncChildNodes(node, 'refresh');
+      node.isFirstTimeLoad = false;
+    }
+    zTree.expandNode(node, true, false, false);
+  });
+
+  if (container.length > 0) {
+    container.scrollLeft(savedScrollLeft);
+    container.scrollTop(savedScrollTop);
+    requestAnimationFrame(() => {
+      container.scrollLeft(savedScrollLeft);
+      container.scrollTop(savedScrollTop);
+    });
+  }
+}
+
+function _forceTreeviewLeftEdge() {
+  const container = $('.treeview-container');
+  if (container.length === 0) return;
+
+  container.scrollLeft(0);
+  requestAnimationFrame(() => {
+    container.scrollLeft(0);
+    requestAnimationFrame(() => {
+      container.scrollLeft(0);
+    });
+  });
+}
+
+function _startLeftEdgeEnforcement(durationMs = 1500) {
+  enforceLeftEdgeUntil = Math.max(
+    enforceLeftEdgeUntil,
+    Date.now() + durationMs
+  );
+}
+
+function _keepTreeviewLeftEdgeIfNeeded() {
+  if (Date.now() > enforceLeftEdgeUntil) return;
+  _forceTreeviewLeftEdge();
+}
 
 // -------------------------------
 // ツリーデータ整形・ソート
@@ -94,11 +234,11 @@ function _applyHighlightFromUrl() {
     const targetNode = zTreeObj.getNodesByParam(
       'nando_id',
       currentNandoId,
-      null
+      null,
     )[0];
     if (targetNode) {
-      zTreeObj.cancelSelectedNode();
-      zTreeObj.selectNode(targetNode, true, false);
+      // zTree.selectNode() はノード可視化のために横スクロールを動かすことがあるため、
+      // 選択状態はCSSクラスで管理する。
       currentSelectedNandoId = currentNandoId;
 
       requestAnimationFrame(() => {
@@ -148,7 +288,7 @@ function _expandParentNodesForSelectedNode(zTree, targetId) {
           const retryNode = zTree.getNodesByParam(
             'nando_id',
             targetId,
-            null
+            null,
           )[0];
           if (retryNode) {
             isExpandingParentNodes = true;
@@ -228,7 +368,6 @@ function _expandParentNodesForSelectedNode(zTree, targetId) {
 function _highlight_upstream_treeview_startNode(zTree, nodes, targetId) {
   for (let i = 0; i < nodes.length; i++) {
     if (nodes[i].nando_id === targetId) {
-      zTree.selectNode(nodes[i], true, false);
       currentSelectedNandoId = targetId;
 
       setTimeout(() => {
@@ -245,7 +384,7 @@ function _highlight_upstream_treeview_startNode(zTree, nodes, targetId) {
       _highlight_upstream_treeview_startNode(
         zTree,
         nodes[i].children,
-        targetId
+        targetId,
       );
     }
   }
@@ -303,6 +442,10 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
         return true;
       },
       onAsyncSuccess: function (event, treeId, treeNode, msg) {
+        _startLeftEdgeEnforcement(1200);
+        _restoreExpandedTreeNodes(zTreeObj);
+        _keepTreeviewLeftEdgeIfNeeded();
+
         if (isExpandingParentNodes) {
           return;
         }
@@ -332,6 +475,7 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
               });
             }
           }
+          _keepTreeviewLeftEdgeIfNeeded();
         }, 50);
       },
       onClick: function (event, treeId, treeNode) {
@@ -348,7 +492,6 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
 
         if (treeNode.isParent) {
           // 親ノードをクリックした場合は選択のみ行い、展開/折りたたみは行わない
-          zTreeObj.selectNode(treeNode, true, false);
           currentSelectedNandoId = treeNode.nando_id;
 
           const currentScrollLeft = container.scrollLeft();
@@ -376,8 +519,6 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
           currentSelectedNandoId = treeNode.nando_id;
 
           const selectScrollLeft = container.scrollLeft();
-
-          zTreeObj.selectNode(treeNode, true, false);
 
           if (container.length > 0) {
             container.scrollLeft(selectScrollLeft);
@@ -411,6 +552,9 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
       },
       onExpand: function (treeId, treeNode) {
         manuallyCollapsedNodes.delete(treeNode.tId);
+        if (!isExpandingParentNodes) {
+          _persistTreeNodeExpandState(treeNode, true);
+        }
 
         treeNode.isFirstTimeLoad = false;
         const container = $('.treeview-container');
@@ -433,10 +577,10 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
           const button = $('#' + treeNode.tId + '_switch');
           if (button.length) {
             button.removeClass(
-              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico'
+              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico',
             );
             button.addClass(
-              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico'
+              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico',
             );
             button.css('content', '"▼"');
             button.attr('data-icon', 'open');
@@ -446,6 +590,7 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
       },
       onCollapse: function (treeId, treeNode) {
         manuallyCollapsedNodes.add(treeNode.tId);
+        _persistTreeNodeExpandState(treeNode, false);
 
         const container = $('.treeview-container');
         if (container.length > 0) {
@@ -472,7 +617,7 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
             const targetNode = zTreeObj.getNodesByParam(
               'nando_id',
               currentNandoId,
-              null
+              null,
             )[0];
             if (targetNode) {
               let parentNode = targetNode.getParentNode();
@@ -498,10 +643,10 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
           const button = $('#' + treeNode.tId + '_switch');
           if (button.length) {
             button.removeClass(
-              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico'
+              'open open_docu open_ico_docu open_ico_open open_ico_close open_ico',
             );
             button.addClass(
-              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico'
+              'close close_docu close_ico_docu close_ico_close close_ico_open close_ico',
             );
             button.css('content', '"▶"');
             button.attr('data-icon', 'close');
@@ -521,30 +666,40 @@ function init_ui_upstream_trace(startId, upstream_trace_data, currentLang) {
   };
 
   zTreeObj = $.fn.zTree.init($('#treeview'), setting, treeview_data);
+  _hideTreeviewLoadingSpinner();
+  _startLeftEdgeEnforcement(3000);
+  _forceTreeviewLeftEdge();
+  _restoreExpandedTreeNodes(zTreeObj);
 
   const nodes = zTreeObj.getNodes();
   _highlight_upstream_treeview_startNode(zTreeObj, nodes, startId);
 
   setTimeout(() => {
     if (!isExpandingParentNodes) {
+      _restoreExpandedTreeNodes(zTreeObj);
       _expandParentNodesForSelectedNode(zTreeObj, startId);
       _applyHighlightFromUrl();
+      _keepTreeviewLeftEdgeIfNeeded();
     }
   }, 200);
 
   setTimeout(() => {
     if (!isExpandingParentNodes) {
+      _restoreExpandedTreeNodes(zTreeObj);
       _expandParentNodesForSelectedNode(zTreeObj, startId);
       _applyHighlightFromUrl();
+      _keepTreeviewLeftEdgeIfNeeded();
     }
   }, 500);
 
   setTimeout(() => {
     _applyHighlightFromUrl();
+    _keepTreeviewLeftEdgeIfNeeded();
   }, 100);
 
   setTimeout(() => {
     _applyHighlightFromUrl();
+    _keepTreeviewLeftEdgeIfNeeded();
   }, 300);
 
   let highlightTimer = null;
@@ -713,8 +868,10 @@ $(document).ready(function () {
   if (!nando_id) nando_id = 'NANDO:1200477'; // デフォルト値
 
   const url_str = `${URL_GET_PANEL_UPSTREAM_HIERARCHY}?nando_id=${encodeURIComponent(
-    nando_id
+    nando_id,
   )}&lang=${encodeURIComponent(lang)}`;
+
+  _showTreeviewLoadingSpinner();
 
   $.ajax({ url: url_str, type: 'GET', async: true, dataType: 'text' })
     .done(function (data) {
@@ -722,11 +879,13 @@ $(document).ready(function () {
         const json_data = JSON.parse(data);
         init_ui_upstream_trace(nando_id, json_data, lang);
       } catch (e) {
+        _hideTreeviewLoadingSpinner();
         console.error('JSON parse error', e, data);
         alert('サーバー応答の形式が不正です。');
       }
     })
     .fail(function (jqXHR, textStatus, errorThrown) {
+      _hideTreeviewLoadingSpinner();
       console.error('AJAXに失敗しました。');
       console.error('URL: ' + url_str);
       console.error('Status: ' + textStatus);

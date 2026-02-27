@@ -119,11 +119,26 @@ def team():
 
 
 #####
+# HELP
+## GET: 
+@app.route('/help')
+def help():
+    return render_template('help.html')
+
+
+#####
 # NANDOについて
 ## GET: 
 @app.route('/epidemiology')
 def epidemiology():
     return render_template('epidemiology.html')
+
+#####
+# Disease list page
+## GET:
+@app.route('/disease-list')
+def disease_list():
+    return render_template('disease-list.html')
 
 
 #####
@@ -260,6 +275,13 @@ def get_overview(id_nando):
 @app.route('/news')
 def page():
     return render_template('news.html')
+
+
+# Resourcesページ
+@app.route('/resources')
+def resources_page():
+    return render_template('resources.html')
+
 
 @contextmanager
 def get_mysql_connection():

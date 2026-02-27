@@ -53,6 +53,14 @@
     <!-- Header, Search Area -->
     <div class="page-layout">
       <header class="search-area">
+        <a class="other-search-method" href="/disease-list">
+          <i class="fas fa-search" aria-hidden="true"></i>
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+          <span>その他の検索方法</span>
+          {% else %}
+          <span>Other Search</span>
+          {% endif %}
+        </a>
         <div class="intro-text">
           <div class="top-smart-box">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
@@ -83,9 +91,9 @@
       <div class="contents-wrapper">
         <section class="news-summary section-block">
           {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-          <h2 class="section-title">お知らせ</h2>
+          <h2 class="section-title"><a href="/news" class="section-title-link">お知らせ</a></h2>
           {% else %}
-          <h2 class="section-title">News</h2>
+          <h2 class="section-title"><a href="/news" class="section-title-link">News</a></h2>
           {% endif %}
 
           <div class="news-wrapper">

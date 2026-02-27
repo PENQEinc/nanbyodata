@@ -42,6 +42,8 @@ Component
 @use './object/component/popup';
 @use './object/component/tab-wrap';
 @use './object/component/smart-box';
+@use './object/component/news-page';
+@use './object/component/resources-page';
 
 /* -----------------------------------
 Project
@@ -52,3 +54,7 @@ Project
 @use './object/project/team';
 /* ---------- Stats Page ---------- */
 @use './object/project/nanbyodata-in-numbers';
+/* ---------- Help Page ---------- */
+@use './object/project/help';
+/* ---------- Disease List Page ---------- */
+@use './object/project/disease-list';

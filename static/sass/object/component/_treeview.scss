@@ -1,13 +1,26 @@
 .treeview-container {
+  position: relative;
   overflow-x: auto;
   overflow-y: scroll;
   padding: 0;
+  flex: 1 1 auto;
+  min-height: 0;
+  height: 100%;
   width: 100%;
   min-width: 250px;
   max-width: 100%;
   box-sizing: border-box;
   scroll-behavior: auto;
   -ms-overflow-style: none; /* IE and Edge */
+
+  --tree-line-indent: 14px;
+  --tree-line-into: 9px;
+  --tree-line-y: 11px;
+  --tree-line-x: 8px;
+  --tree-line-end-gap: 6px;
+  --tree-line-thickness: 2px;
+  --tree-line-color: rgba(22, 35, 78, 0.35);
+  --tree-line-bg: var(--color-sidebar-disease, #fff);
 }
 
 .treeview-container::-webkit-scrollbar {
@@ -32,8 +45,9 @@
 }
 
 .treeview-container .ztree * {
-  font-family: 'Poppins', 'Hiragino Sans', 'ヒラギノ角ゴシック', 'Yu Gothic',
-    'メイリオ', sans-serif !important;
+  font-family:
+    'Poppins', 'Hiragino Sans', 'ヒラギノ角ゴシック', 'Yu Gothic', 'メイリオ',
+    sans-serif !important;
   font-size: 14px;
 }
 
@@ -54,6 +68,8 @@
   white-space: nowrap;
   overflow: visible;
   border-radius: 3px;
+  position: relative;
+  z-index: 2;
 }
 
 /* 外部CSSの::after疑似要素を無効化 */
@@ -87,8 +103,10 @@
 }
 
 .treeview-container .ztree li span.button.switch {
-  background-image: none;
   left: 4px;
+  top: 1px;
+  background-color: var(--tree-line-bg);
+  z-index: 2;
 }
 
 /* デフォルトは右向き三角形 - CSS borderで作成 */
@@ -184,7 +202,48 @@
 .treeview-container .ztree li ul {
   margin: 0;
   padding: 0;
-  padding-left: 14px;
+  padding-left: 30px;
+}
+
+/* 親子コネクタ線（縦・横） */
+/* showLine:false のまま、CSSでツリー線を描画する */
+.treeview-container .ztree li ul {
+  /* ul全体に縦線を引くと下まで伸び続けるので、縦線はli側で描画する */
+  border-left: none;
+}
+
+/* 子ノードへの横線 */
+.treeview-container .ztree li ul li::before {
+  content: '';
+  position: absolute;
+  top: var(--tree-line-y);
+  left: calc(-0.7 * var(--tree-line-indent) + var(--tree-line-x));
+  width: calc(
+    var(--tree-line-indent) + var(--tree-line-into) - var(--tree-line-end-gap)
+  );
+  border-top: 1px solid var(--tree-line-color);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 縦線（各行ごとに必要な分だけ） */
+.treeview-container .ztree li ul li::after {
+  content: '';
+  position: absolute;
+  left: calc(-0.7 * var(--tree-line-indent) + var(--tree-line-x));
+  /* 行の継ぎ目で切れて見えないように少しだけオーバーラップ */
+  top: 0px;
+  bottom: 0px;
+  width: 0;
+  border-left: 1px solid var(--tree-line-color);
+  z-index: 0;
+  pointer-events: none;
+}
+
+/* 最終行には下向きの縦線を出さない */
+.treeview-container .ztree li ul li:last-child::after {
+  bottom: auto;
+  height: calc(var(--tree-line-y) + 1px); /* 横線との接続を確実にする */
 }
 
 /* ルートレベルのインデントをリセット */

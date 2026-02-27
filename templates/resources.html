@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ja">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- SEO -->
+  <title>Resources | NanbyoData</title>
+  <meta name="description" content="NanbyoDataのResourcesページです." />
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="Resources | NanbyoData" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanbyodata.jp/resources" />
+  <meta property="og:description" content="NanbyoDataのResourceページです." />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css">
+
+  <!-- favicon -->
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+
+</head>
+
+<body>
+  <main>
+    <!-- Navigation -->
+    {% include 'component/navigation.html' %}
+
+    <div class="page-layout" id="resources-page">
+      <header class="page-title">
+        <h2>Resources</h2>
+      </header>
+
+      <div class="resources-page-container">
+        <aside class="resources-sidebar">
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">
+              <i class="fas fa-calendar-alt sidebar-icon" aria-hidden="true"></i>
+              Year
+            </h3>
+            <ul class="sidebar-options" id="resources-year-options"></ul>
+          </div>
+          <div class="sidebar-section">
+            <h3 class="sidebar-title">
+              <i class="fas fa-tag sidebar-icon" aria-hidden="true"></i>
+              Tags
+            </h3>
+            <ul class="sidebar-options" id="resources-tag-options"></ul>
+          </div>
+        </aside>
+
+        <div class="resources-main">
+          <div id="resources-list-view">
+            <h2 class="resources-list-title" id="resources-list-title"></h2>
+            <ul class="resources-list" id="resources-list"></ul>
+          </div>
+          <div id="resources-loading" class="resources-loading-state" style="display: none;"></div>
+          <div id="resources-error" class="resources-error-state" style="display: none;"></div>
+        </div>
+      </div>
+    </div>
+
+    {% include 'component/footer.html' %}
+
+    <!--- NanbyoData利用規約 modal -->
+    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+    {% include 'component/modal-tos.html' %}
+    {% else %}
+    {% include 'component/modal-tos_en.html' %}
+    {% endif %}
+  </main>
+
+  <!-- Optional JavaScript -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"
+    integrity="sha384-xrRywqdh3PHs8keKZN+8zzc5TX0GRTLCcmivcbNJWm2rs5C8PRhcEn3czEjhAO9o" crossorigin="anonymous">
+    </script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script type="module" src="/static/js/resources/resources.js"></script>
+</body>
+
+</html>
