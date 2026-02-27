@@ -2,26 +2,34 @@
   "news": {
     "tags": [
       {
+        "key": "nanbyodata",
+        "labels": {
+          "ja": "NanbyoData",
+          "en": "NanbyoData"
+        },
+        "color": "#0ea5e9"
+      },
+      {
         "key": "services",
         "labels": {
-          "ja": "サービス",
-          "en": "Service"
+          "ja": "サービス更新",
+          "en": "Service update"
         },
         "color": "#0d9488"
       },
       {
-        "key": "pr",
+        "key": "data-update",
         "labels": {
-          "ja": "広報",
-          "en": "Public Relations"
+          "ja": "データ更新",
+          "en": "Data update"
         },
         "color": "#22c55e"
       },
       {
-        "key": "event",
+        "key": "academic",
         "labels": {
-          "ja": "イベント",
-          "en": "Event"
+          "ja": "学会・論文",
+          "en": "Conference / Paper"
         },
         "color": "#f97316"
       },
@@ -32,6 +40,14 @@
           "en": "Recruitment"
         },
         "color": "#ef4444"
+      },
+      {
+        "key": "award",
+        "labels": {
+          "ja": "受賞",
+          "en": "Award"
+        },
+        "color": "#facc15"
       },
       {
         "key": "other",
@@ -54,20 +70,28 @@
         "color": "#0d9488"
       },
       {
-        "key": "poster",
+        "key": "oral",
         "labels": {
-          "ja": "ポスター",
-          "en": "Poster"
+          "ja": "口頭発表",
+          "en": "Oral presentation"
         },
         "color": "#22c55e"
       },
       {
-        "key": "oral",
+        "key": "poster",
         "labels": {
-          "ja": "口頭発表",
-          "en": "Oral Presentation"
+          "ja": "ポスター発表",
+          "en": "Poster presentation"
         },
         "color": "#f97316"
+      },
+      {
+        "key": "workshop",
+        "labels": {
+          "ja": "ワークショップ",
+          "en": "Workshop"
+        },
+        "color": "#6366f1"
       },
       {
         "key": "domestic",
@@ -84,6 +108,46 @@
           "en": "International"
         },
         "color": "#8b5cf6"
+      },
+      {
+        "key": "nando",
+        "labels": {
+          "ja": "NANDO",
+          "en": "NANDO"
+        },
+        "color": "#0ea5e9"
+      },
+      {
+        "key": "nanbyodata",
+        "labels": {
+          "ja": "NanbyoData",
+          "en": "NanbyoData"
+        },
+        "color": "#14b8a6"
+      },
+      {
+        "key": "award",
+        "labels": {
+          "ja": "受賞",
+          "en": "Award"
+        },
+        "color": "#facc15"
+      },
+      {
+        "key": "collaboration",
+        "labels": {
+          "ja": "共同研究",
+          "en": "Collaboration"
+        },
+        "color": "#f97316"
+      },
+      {
+        "key": "other",
+        "labels": {
+          "ja": "その他",
+          "en": "Other"
+        },
+        "color": "#94a3b8"
       }
     ]
   }
