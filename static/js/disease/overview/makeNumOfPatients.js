@@ -35,7 +35,7 @@ function initializeCharts(data) {
     return;
   }
 
-  const stanzaWidth = data.length * 100;
+  const stanzaWidth = data.length * 70;
   const maxValue = Math.max(...data.map((item) => item.num_of_patients));
 
   // テーブル用のカラム定義
