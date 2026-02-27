@@ -144,7 +144,7 @@ const state = {
   all: [],
   filtered: [],
   page: 1,
-  sortKey: null,
+  sortKey: 'id',
   sortOrder: 'asc',
   selectedKana: new Set(),
   expandedKanaRows: new Set(),
@@ -429,9 +429,7 @@ function setChevronExpanded(toggle, isExpanded) {
   toggle.setAttribute('aria-expanded', String(isExpanded));
   const icon = toggle.querySelector('i');
   if (!icon) return;
-  icon.className = isExpanded
-    ? 'fas fa-angle-down'
-    : 'fas fa-angle-right';
+  icon.className = isExpanded ? 'fas fa-angle-down' : 'fas fa-angle-right';
 }
 
 function renderCheckboxList(container, items, selectedSet, onToggle) {
@@ -513,8 +511,12 @@ function renderKanaFilter() {
     const childCheckboxes = [];
 
     function syncRowCheckboxState() {
-      const count = childCheckboxes.reduce((n, cb) => n + (cb.checked ? 1 : 0), 0);
-      rowCheckbox.checked = count === childCheckboxes.length && childCheckboxes.length > 0;
+      const count = childCheckboxes.reduce(
+        (n, cb) => n + (cb.checked ? 1 : 0),
+        0,
+      );
+      rowCheckbox.checked =
+        count === childCheckboxes.length && childCheckboxes.length > 0;
       rowCheckbox.indeterminate = count > 0 && count < childCheckboxes.length;
     }
 
@@ -816,7 +818,8 @@ function parseNoticeInput() {
 }
 
 function applyFilters() {
-  const isNoticeFilterActive = state.noticeMin !== null || state.noticeMax !== null;
+  const isNoticeFilterActive =
+    state.noticeMin !== null || state.noticeMax !== null;
   const hasKanaFilter = state.selectedKana.size > 0;
   const allGroupsSelected =
     state.allSelectableGroupIds.size > 0 &&
