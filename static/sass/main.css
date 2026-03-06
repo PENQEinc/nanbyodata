@@ -519,6 +519,15 @@ footer .container .footer__bottom .footer__lisence small:before {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  transition: color 0.2s ease;
+}
+.content-wrapper #sidebar .sidebar-title .sidebar-title-main:hover {
+  color: var(--color-primary);
+}
+.content-wrapper #sidebar .sidebar-title .sidebar-title-main:hover .sidebar-title-text,
+.content-wrapper #sidebar .sidebar-title .sidebar-title-main:hover .sitemap-icon {
+  color: var(--color-primary);
+  opacity: 1;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-controls {
   display: none;
@@ -540,6 +549,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   padding: 0 9px 0 8px;
   line-height: 1;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-control-btn i {
   font-size: 11px;
@@ -551,7 +561,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   pointer-events: none;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-control-btn:hover {
-  background-color: rgba(22, 35, 78, 0.12);
+  color: var(--color-primary);
 }
 .content-wrapper #sidebar .sidebar-title .sitemap-icon {
   cursor: pointer;
@@ -661,6 +671,15 @@ footer .container .footer__bottom .footer__lisence small:before {
   flex-direction: column;
   align-items: center;
   gap: 10px;
+  transition: color 0.2s ease;
+}
+.content-wrapper #temp-side-navigation .sidebar-title .sidebar-title-main:hover {
+  color: var(--color-primary);
+}
+.content-wrapper #temp-side-navigation .sidebar-title .sidebar-title-main:hover .sidebar-title-text,
+.content-wrapper #temp-side-navigation .sidebar-title .sidebar-title-main:hover .list-icon {
+  color: var(--color-primary);
+  opacity: 1;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-controls {
   display: none;
@@ -682,6 +701,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   padding: 0 9px 0 8px;
   line-height: 1;
   white-space: nowrap;
+  transition: color 0.2s ease;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-control-btn i {
   font-size: 11px;
@@ -693,7 +713,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   pointer-events: none;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-control-btn:hover {
-  background-color: rgba(22, 35, 78, 0.12);
+  color: var(--color-primary);
 }
 .content-wrapper #temp-side-navigation .sidebar-title .list-icon {
   cursor: pointer;
@@ -1585,19 +1605,20 @@ Stats Overview Component
   position: relative;
   color: var(--color-secondary);
   cursor: default;
+  transition: color 0.2s ease;
 }
 #temp-side-navigation > ul > li .nav-link:hover {
-  background-color: var(--color-breadcrumb-hover);
+  color: var(--color-primary);
 }
 #temp-side-navigation > ul > li .nav-link.-disabled {
   color: rgba(19, 41, 90, 0.2705882353);
   cursor: default;
 }
 #temp-side-navigation > ul > li .nav-link.-disabled:hover {
-  background-color: transparent;
+  color: rgba(19, 41, 90, 0.2705882353);
 }
 #temp-side-navigation > ul > li .nav-link.selected:hover {
-  background-color: rgba(22, 35, 78, 0.2);
+  color: var(--color-primary);
 }
 #temp-side-navigation > ul > li .data-num {
   padding: 0 5px;
@@ -1678,13 +1699,13 @@ Stats Overview Component
   margin-left: 20px;
   padding-left: 10px;
   z-index: var(--zindex-disease-side-link);
-  border-radius: var(--radius-small);
   background-color: transparent;
+  transition: color 0.2s ease;
 }
 #temp-side-navigation > ul > li .bio-resource ul li a:hover,
 #temp-side-navigation > ul > li .variant ul li a:hover,
 #temp-side-navigation > ul > li .genes ul li a:hover {
-  background-color: var(--color-breadcrumb-hover);
+  color: var(--color-primary);
 }
 #temp-side-navigation > ul > li .bio-resource ul li .-disabled:hover,
 #temp-side-navigation > ul > li .variant ul li .-disabled:hover,

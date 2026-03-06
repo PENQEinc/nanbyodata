@@ -68,6 +68,17 @@
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: var(--color-primary);
+
+          .sidebar-title-text,
+          .sitemap-icon {
+            color: var(--color-primary);
+            opacity: 1;
+          }
+        }
       }
 
       .sidebar-controls {
@@ -91,6 +102,7 @@
         padding: 0 9px 0 8px;
         line-height: 1;
         white-space: nowrap;
+        transition: color 0.2s ease;
 
         i {
           font-size: 11px;
@@ -104,7 +116,7 @@
         }
 
         &:hover {
-          background-color: rgba(22, 35, 78, 0.12);
+          color: var(--color-primary);
         }
       }
 
@@ -238,6 +250,17 @@
         flex-direction: column;
         align-items: center;
         gap: 10px;
+        transition: color 0.2s ease;
+
+        &:hover {
+          color: var(--color-primary);
+
+          .sidebar-title-text,
+          .list-icon {
+            color: var(--color-primary);
+            opacity: 1;
+          }
+        }
       }
 
       .sidebar-controls {
@@ -261,6 +284,7 @@
         padding: 0 9px 0 8px;
         line-height: 1;
         white-space: nowrap;
+        transition: color 0.2s ease;
 
         i {
           font-size: 11px;
@@ -274,7 +298,7 @@
         }
 
         &:hover {
-          background-color: rgba(22, 35, 78, 0.12);
+          color: var(--color-primary);
         }
       }
 
