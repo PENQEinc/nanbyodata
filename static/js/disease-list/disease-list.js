@@ -939,11 +939,14 @@ async function boot() {
   initTableSort();
   const raw = await fetchDiseaseData();
 
+  // テーブルには obsolete が 1 のアイテムを表示しない
+  const rawForTable = raw.filter((r) => r.obsolete !== 1 && r.obsolete !== '1');
+
   const idToLabelMap = new Map(
     raw.map((r) => [r.id, getDisplayName(r) || r.id]),
   );
 
-  state.all = raw.map((r) => {
+  state.all = rawForTable.map((r) => {
     const noticeNum = Number.parseInt(r.notificationNumber, 10);
     const hasNoticeNum = Number.isFinite(noticeNum) && noticeNum > 0;
     const symptomsJaList = normalizeSymptomList(r.symptoms_ja_list);
