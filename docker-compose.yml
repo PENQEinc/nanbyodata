@@ -19,6 +19,7 @@ services:
   mysql:
     container_name: ${CONTAINER_NAME_MYSQL:-nanbyodata-mysql}
     image: mysql:8.0
+    user: "${UID}:${GID}"
     ports:
       - ${MYSQL_PORT:-3306}:3306
     environment:

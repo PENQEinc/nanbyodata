@@ -23,6 +23,17 @@ Create `.env` file and set values for your environment.
 $ cp templete.env .env
 ```
 
+### `UID`
+(default: None)
+
+Host user id for the docker container. You can find your user id by `id -u`.
+
+### `GID`
+
+(default: None)
+
+Host group id for the docker container. You can find your group id by `id -g`.
+
 ### `CONTAINER_NAME`
 
 (default: `nanbyodata-app`)
@@ -34,6 +45,41 @@ The name of the docker container. Must be unique in the system.
 (default: `8888`)
 
 Port to listen on. Must be unique in the system.
+
+### `CONTAINER_NAME_MYSQL`
+(default: `nanbyodata-mysql`)
+
+The name of the docker container for the MySQL database. Must be unique in the system.
+
+### `MYSQL_PORT`
+(default: `3306`)
+
+Port for the MySQL to listen on. Must be unique in the system.
+
+### `MYSQL_ROOT_PASSWORD`
+(default: None)
+
+This variable is mandatory and specifies the password that will be set for the MySQL root superuser account.  
+seeAlso: https://hub.docker.com/_/mysql
+
+### `MYSQL_DATABASE`
+(default: None)
+
+This variable allows you to specify the name of a database to be created on image startup.  
+seeAlso: https://hub.docker.com/_/mysql
+
+### `MYSQL_USER`, `MYSQL_PASSWORD`
+(default: None)
+
+These variables used in conjunction to create a new user and to set that user's password.  
+seeAlso: https://hub.docker.com/_/mysql
+
+
+### `MYSQL_DATA_DIR`
+(default: `./mysql/data`)
+
+Directory for MySQL data storage. For better performance, it is recommended to place the database files on an SSD.
+
 
 ### `BASE_URI`
 
