@@ -33,3 +33,4 @@ services:
       - ${MYSQL_DATA_DIR:-./mysql/data}:/var/lib/mysql
       - ./mysql/logs:/var/log/mysql
       - ./mysql/scripts:/scripts
+    mem_limit: 4g
