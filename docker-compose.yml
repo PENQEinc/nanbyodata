@@ -16,6 +16,7 @@ services:
       - MYSQL_USER=${MYSQL_USER}
       - MYSQL_PASSWORD=${MYSQL_PASSWORD}
     # [TODO] user $UID:$GID
+    restart: "unless-stopped"
   mysql:
     container_name: ${CONTAINER_NAME_MYSQL:-nanbyodata-mysql}
     image: mysql:8.0
@@ -33,3 +34,5 @@ services:
       - ${MYSQL_DATA_DIR:-./mysql/data}:/var/lib/mysql
       - ./mysql/logs:/var/log/mysql
       - ./mysql/scripts:/scripts
+    mem_limit: 4g
+    restart: "unless-stopped"
