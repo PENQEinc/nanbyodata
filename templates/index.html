@@ -114,109 +114,122 @@
 
           <div class="stats-grid">
             <!-- 難病 -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/NANDO.svg" alt="難病" class="stats-icon-svg">
+            <a href="/nanbyodata-in-numbers#nando-content" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/NANDO.svg" alt="難病" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="intractable_diseases">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  難病
+                  {% else %}
+                  Nanbyo
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="intractable_diseases">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                難病
-                {% else %}
-                Nanbyo
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
             <!-- 疾患関連遺伝子 -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/genes.svg" alt="疾患関連遺伝子" class="stats-icon-svg">
+            <a href="/nanbyodata-in-numbers#genes-content" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/genes.svg" alt="疾患関連遺伝子" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="disease_genes">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  疾患関連遺伝子
+                  {% else %}
+                  Genes
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="disease_genes">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                疾患関連遺伝子
-                {% else %}
-                Genes
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
             <!-- 糖鎖関連遺伝子 -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/glycan-related_genes.svg" alt="糖鎖関連遺伝子" class="stats-icon-svg">
+            <a href="/nanbyodata-in-numbers#related-data-content" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/glycan-related_genes.svg" alt="糖鎖関連遺伝子" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="glycan_genes">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  糖鎖関連遺伝子
+                  {% else %}
+                  Glycan-related Genes
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="glycan_genes">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                糖鎖関連遺伝子
-                {% else %}
-                Glycan-related Genes
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
-            <!-- 診療用遺伝学的検査 -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/genetic_testings.svg" alt="診療用遺伝学的検査" class="stats-icon-svg">
+            <!-- 診療用遺伝学的検査（外部サイト kentaikensa.jp） -->
+            <a href="http://kentaikensa.jp/" target="_blank" rel="noopener noreferrer" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/genetic_testings.svg" alt="診療用遺伝学的検査" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="clinical_tests">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  診療用遺伝学的検査
+                  {% else %}
+                  Genetic Testings
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="clinical_tests">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                診療用遺伝学的検査
-                {% else %}
-                Genetic Testings
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
             <!-- 臨床的特徴 -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/clinical_features.svg" alt="臨床的特徴" class="stats-icon-svg">
+            <a href="/nanbyodata-in-numbers#related-data-content" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/clinical_features.svg" alt="臨床的特徴" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="clinical_features">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  臨床的特徴
+                  {% else %}
+                  Clinical Features
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="clinical_features">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                臨床的特徴
-                {% else %}
-                Clinical Features
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
             <!-- 難病特異的バイオリソース -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/bioresources.svg" alt="難病特異的バイオリソース" class="stats-icon-svg">
+            <a href="/nanbyodata-in-numbers#bioresources-content" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/bioresources.svg" alt="難病特異的バイオリソース" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="bioresources">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  難病特異的<br>バイオリソース
+                  {% else %}
+                  Bioresources
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="bioresources">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                難病特異的<br>バイオリソース
-                {% else %}
-                Bioresources
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
-            <!-- 顔貌特徴 -->
-            <div class="stats-card">
+            <!-- 顔貌特徴（準備中のため非クリック） -->
+            <div class="stats-card stats-card--disabled"
+              title="{% if get_locale() == 'ja' or get_locale() == 'ja_JP' %}準備中{% else %}Coming soon{% endif %}">
               <div class="stats-icon">
                 <img src="/static/img/facial_features.svg" alt="顔貌特徴" class="stats-icon-svg">
               </div>
@@ -233,21 +246,23 @@
             </div>
 
             <!-- 外部リンク -->
-            <div class="stats-card">
-              <div class="stats-icon">
-                <img src="/static/img/external_links.svg" alt="外部リンク" class="stats-icon-svg">
+            <a href="/nanbyodata-in-numbers#links-content" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/external_links.svg" alt="外部リンク" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="external_links">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  外部リンク
+                  {% else %}
+                  External Links
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="external_links">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                外部リンク
-                {% else %}
-                External Links
-                {% endif %}
-              </div>
-            </div>
+            </a>
           </div>
         </section>
 

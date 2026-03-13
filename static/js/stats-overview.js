@@ -20,7 +20,7 @@ class StatsOverview {
           const nandoTotal = shiteiAll + shomanAll;
           this.updateCard(
             'intractable_diseases',
-            nandoTotal > 0 ? nandoTotal.toString() : '-'
+            nandoTotal > 0 ? nandoTotal.toString() : '-',
           );
         }
       })
@@ -42,20 +42,20 @@ class StatsOverview {
           const totalGenes = shiteiGenes + shomanGenes;
           this.updateCard(
             'disease_genes',
-            totalGenes > 0 ? totalGenes.toString() : '-'
+            totalGenes > 0 ? totalGenes.toString() : '-',
           );
 
           // 診療用遺伝学的検査
           const shiteiTests = parseInt(
-            linkData2.shitei_genetest?.genetest || 0
+            linkData2.shitei_genetest?.genetest || 0,
           );
           const shomanTests = parseInt(
-            linkData2.shoman_genetest?.genetest || 0
+            linkData2.shoman_genetest?.genetest || 0,
           );
           const totalTests = shiteiTests + shomanTests;
           this.updateCard(
             'clinical_tests',
-            totalTests > 0 ? totalTests.toString() : '-'
+            totalTests > 0 ? totalTests.toString() : '-',
           );
 
           // 臨床的特徴
@@ -64,7 +64,7 @@ class StatsOverview {
           const totalFeatures = shiteiFeatures + shomanFeatures;
           this.updateCard(
             'clinical_features',
-            totalFeatures > 0 ? totalFeatures.toString() : '-'
+            totalFeatures > 0 ? totalFeatures.toString() : '-',
           );
         }
       })
@@ -113,7 +113,7 @@ class StatsOverview {
           const totalFacial = shiteiFacial + shomanFacial;
           this.updateCard(
             'facial_features',
-            totalFacial > 0 ? totalFacial.toString() : '-'
+            totalFacial > 0 ? totalFacial.toString() : '-',
           );
         }
       })
@@ -131,7 +131,7 @@ class StatsOverview {
           const glycoGeneTotal = parseInt(glycoData.glyco_gene_total?.num || 0);
           this.updateCard(
             'glycan_genes',
-            glycoGeneTotal > 0 ? glycoGeneTotal.toString() : '-'
+            glycoGeneTotal > 0 ? glycoGeneTotal.toString() : '-',
           );
         }
       })
@@ -139,8 +139,6 @@ class StatsOverview {
         console.error('NANDO_link_count8 API failed:', error);
         this.updateCard('glycan_genes', 'N/A');
       });
-
-    this.updateCard('external_links', '-');
 
     fetch(`/sparqlist/api/NANDO_link_count?timestamp=${this.timestamp}`)
       .then((res) => (res.ok ? res.json() : null))
@@ -175,7 +173,7 @@ class StatsOverview {
 
           this.updateCard(
             'external_links',
-            totalExternalLinks > 0 ? totalExternalLinks.toString() : '-'
+            totalExternalLinks > 0 ? totalExternalLinks.toString() : '-',
           );
         }
       })

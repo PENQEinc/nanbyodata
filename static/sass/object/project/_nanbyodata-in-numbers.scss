@@ -2,17 +2,187 @@
 Stats Page Styles
 ================================================ */
 
+$stats-tooltip-width: 200px;
+
 // Stats Section
 .stats-section {
   margin: 2rem 0;
+}
 
-  &-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-secondary);
-    margin-bottom: 1rem;
-    padding-left: 0.75rem;
-    border-left: 6px solid var(--color-secondary);
+.stats-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.stats-section-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--color-secondary);
+  margin: 0 0 1rem 0;
+  padding-left: 0.75rem;
+  border-left: 6px solid var(--color-secondary);
+}
+
+.stats-section-header .stats-section-title {
+  margin-bottom: 0;
+}
+
+.stats-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition:
+    background-color 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background-color: #e8e8e8;
+    border-color: #999;
+  }
+
+  .fa-download {
+    font-size: 0.95em;
+  }
+}
+
+/* セクションタイトル横の i アイコン（titleTooltip があるときのみ・hoverで表示） */
+.stats-section-title-tooltip {
+  margin-left: 0.25em;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9em;
+  color: var(--color-secondary, #6c757d);
+  cursor: help;
+  flex-shrink: 0;
+  line-height: 1;
+
+  .fa-info-circle {
+    font-size: inherit;
+  }
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%) translateY(-6px);
+    padding: 6px 10px;
+    width: $stats-tooltip-width;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    font-weight: normal;
+    line-height: 1.4;
+    color: #fff;
+    background: #333;
+    border-radius: 4px;
+    white-space: normal;
+    word-break: normal;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s,
+      visibility 0.2s;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.card-detail-section .table-contents {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+
+  .stats-table,
+  .table.stats-table {
+    table-layout: auto;
+    width: 100%;
+    max-width: 100%;
+
+    thead th,
+    tbody td {
+      white-space: normal;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      padding: 0.4rem 0.5rem;
+      font-size: 0.8rem;
+      line-height: 1.35;
+    }
+
+    tbody td {
+      text-align: left;
+      font-weight: normal;
+    }
+
+    thead th {
+      font-size: 0.8rem;
+      line-height: 1.45;
+      padding: 0.5rem 0.5rem 0.55rem;
+      vertical-align: middle;
+      box-sizing: border-box;
+      text-align: left;
+    }
+  }
+}
+
+// HTML（説明など）セルは横に伸びすぎないように上限を設定
+.stats-table td.stats-cell--html {
+  max-width: clamp(320px, 46vw, 500px);
+  overflow-wrap: anywhere;
+
+  > div + div {
+    margin-top: 0.25rem;
+  }
+}
+
+// NanbyoData in numbers（通常ページ）の stats-table は、汎用 table の nowrap を上書きして折り返す
+#nanbyodata-in-numbers-original {
+  .table-contents {
+    .table.stats-table {
+      table-layout: fixed; // 説明列が横に伸びすぎないように
+
+      thead th,
+      tbody td {
+        white-space: normal;
+        overflow-wrap: anywhere;
+        word-break: normal;
+      }
+
+      // ID や NANDO は読みやすさ優先で折り返しを抑制（必要なら横スクロール）
+      thead th:first-child,
+      tbody td:first-child {
+        white-space: nowrap;
+        overflow-wrap: normal;
+      }
+
+      // 2列目（ID列）も極端に縦割りにならないよう nowrap
+      thead th:nth-child(2),
+      tbody td:nth-child(2) {
+        white-space: nowrap;
+        overflow-wrap: normal;
+      }
+    }
   }
 }
 
@@ -35,5 +205,176 @@ Stats Page Styles
     &:not(:first-child) {
       text-align: right;
     }
+
+    &.stats-sortable {
+      cursor: pointer;
+      user-select: none;
+
+      .stats-th-label {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .sort-icon {
+        margin-left: 6px;
+        font-size: 0.85rem;
+        color: #8a8a8a;
+
+        &.fa-sort-up,
+        &.fa-sort-down {
+          color: #249eb3;
+        }
+      }
+    }
   }
+}
+
+// body 直下に表示するツールチップ（overflow で切れないように）
+.stats-tooltip-portal {
+  max-width: 280px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #fff;
+  background: #333;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+// ポータル表示中は CSS の ::after ツールチップを非表示
+.stats-th-tooltip[data-tooltip-active]::after,
+.stats-section-title-tooltip[data-tooltip-active]::after {
+  display: none !important;
+}
+
+// カラムヘッダー横の i アイコン（tooltip用・hoverで表示）
+.stats-th-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85em;
+  color: var(--color-secondary, #6c757d);
+  cursor: help;
+  vertical-align: middle;
+
+  .fa-info-circle {
+    font-size: inherit;
+  }
+
+  &::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    left: 50%;
+    bottom: 100%;
+    transform: translateX(-50%) translateY(-6px);
+    padding: 6px 10px;
+    width: $stats-tooltip-width;
+    box-sizing: border-box;
+    font-size: 0.8rem;
+    font-weight: normal;
+    line-height: 1.4;
+    color: #fff;
+    background: #333;
+    border-radius: 4px;
+    white-space: normal;
+    word-break: normal;
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transition:
+      opacity 0.2s,
+      visibility 0.2s;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  &:hover::after {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+// 糖鎖・外部リンクなどのタブ切替（特定医療費受給者証所持者数と同じデザイン）
+.stats-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--color-secondary, #2c3e50);
+}
+
+.stats-tabs + .table-contents {
+  border-top: none !important;
+
+  .table.stats-table,
+  .stats-table {
+    border-top: none !important;
+  }
+  .table.stats-table thead th,
+  .table.stats-table thead td,
+  .stats-table thead th,
+  .stats-table thead td,
+  .table.stats-table tbody tr:first-child td,
+  .stats-table tbody tr:first-child td {
+    border-top: none !important;
+  }
+}
+
+.stats-tab {
+  padding: 0.35rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-secondary, #2c3e50);
+  background: transparent;
+  border: 2px solid transparent;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  margin-bottom: -2px;
+  outline: none;
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  /* 選択中: 上・左右を枠で囲み、下は横線に繋がる（未選択もboldのまま） */
+  &.active {
+    color: var(--color-secondary, #2c3e50);
+    background: #fff;
+    border-color: var(--color-secondary, #2c3e50);
+    border-bottom: 2px solid #fff;
+  }
+}
+
+// dataApi 取得中のローディング・エラー行（スピナー表示）
+.stats-table-loading,
+.stats-table-error {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--color-secondary, #6c757d);
+}
+
+.stats-table-loading-spinner-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 3rem;
+}
+
+// カード詳細エリアの初期読み込み時（テーブル外のスピナー）を中央に
+#card-detail-content > .stats-table-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 6rem;
+}
+
+.stats-table-error {
+  color: #dc3545;
 }

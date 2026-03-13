@@ -64,7 +64,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     showLoading();
-    [tagsConfig, newsData] = await Promise.all([fetchTagsJson(), fetchNewsJson()]);
+    [tagsConfig, newsData] = await Promise.all([
+      fetchTagsJson(),
+      fetchNewsJson(),
+    ]);
     if (!newsData[lang]) newsData[lang] = [];
   } catch (e) {
     console.error('News or tags fetch error:', e);
@@ -74,7 +77,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (loadingEl) loadingEl.style.display = 'none';
 
-  const { getTagLabel, getTagStyle, SIDEBAR_TAGS } = buildTagHelpers(tagsConfig.news);
+  const { getTagLabel, getTagStyle, SIDEBAR_TAGS } = buildTagHelpers(
+    tagsConfig.news,
+  );
   const posts = newsData[lang] || [];
 
   // 年リスト（重複なし・降順）
@@ -83,7 +88,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ].sort((a, b) => b - a);
 
   // サイドバー: Year
-  const yearAllLabel = lang === 'ja' ? '全期間' : 'All periods';
+  const yearAllLabel = lang === 'ja' ? 'すべて' : 'All';
   const yearAllSelectedClass = postId ? '' : ' class="is-selected"';
   yearOptionsEl.innerHTML = [
     `<li><label${yearAllSelectedClass} data-year=""><span class="option-check"></span><span>${yearAllLabel}</span></label></li>`,
@@ -241,8 +246,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
   });
 
-  // 一覧ページでは初期状態で「全期間」「すべて」＝全項目選択としてすべて濃く表示。
-  // 詳細ページ表示時（postId があるとき）はフィルタはすべて未選択状態の見た目にしておく。
   if (!postId) {
     updateYearSelectionUI();
     updateTagSelectionUI();

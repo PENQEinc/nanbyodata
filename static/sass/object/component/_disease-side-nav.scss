@@ -24,20 +24,15 @@
         position: relative;
         color: var(--color-secondary);
         cursor: default;
-        transition: color 0.2s ease;
+        transition: background-color 0.2s ease;
         &:hover {
-          color: var(--color-primary);
+          background-color: rgba(22, 35, 78, 0.08);
         }
         &.-disabled {
           color: #13295a45;
           cursor: default;
           &:hover {
-            color: #13295a45;
-          }
-        }
-        &.selected {
-          &:hover {
-            color: var(--color-primary);
+            background-color: transparent;
           }
         }
       }
@@ -109,10 +104,10 @@
               padding-left: 10px;
               z-index: var(--zindex-disease-side-link);
               background-color: transparent;
-              transition: color 0.2s ease;
+              transition: background-color 0.2s ease;
             }
             a:hover {
-              color: var(--color-primary);
+              background-color: rgba(22, 35, 78, 0.08);
             }
             .-disabled:hover {
               background-color: transparent;

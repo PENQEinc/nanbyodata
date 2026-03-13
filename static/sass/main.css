@@ -519,15 +519,10 @@ footer .container .footer__bottom .footer__lisence small:before {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-title-main:hover {
-  color: var(--color-primary);
-}
-.content-wrapper #sidebar .sidebar-title .sidebar-title-main:hover .sidebar-title-text,
-.content-wrapper #sidebar .sidebar-title .sidebar-title-main:hover .sitemap-icon {
-  color: var(--color-primary);
-  opacity: 1;
+  opacity: 0.8;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-controls {
   display: none;
@@ -549,7 +544,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   padding: 0 9px 0 8px;
   line-height: 1;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-control-btn i {
   font-size: 11px;
@@ -561,7 +556,12 @@ footer .container .footer__bottom .footer__lisence small:before {
   pointer-events: none;
 }
 .content-wrapper #sidebar .sidebar-title .sidebar-control-btn:hover {
-  color: var(--color-primary);
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 1px rgba(22, 35, 78, 0.15);
+}
+.content-wrapper #sidebar .sidebar-title .sidebar-control-btn:focus, .content-wrapper #sidebar .sidebar-title .sidebar-control-btn:active {
+  outline: none;
+  box-shadow: none;
 }
 .content-wrapper #sidebar .sidebar-title .sitemap-icon {
   cursor: pointer;
@@ -671,15 +671,10 @@ footer .container .footer__bottom .footer__lisence small:before {
   flex-direction: column;
   align-items: center;
   gap: 10px;
-  transition: color 0.2s ease;
+  transition: opacity 0.2s ease;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-title-main:hover {
-  color: var(--color-primary);
-}
-.content-wrapper #temp-side-navigation .sidebar-title .sidebar-title-main:hover .sidebar-title-text,
-.content-wrapper #temp-side-navigation .sidebar-title .sidebar-title-main:hover .list-icon {
-  color: var(--color-primary);
-  opacity: 1;
+  opacity: 0.8;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-controls {
   display: none;
@@ -701,7 +696,7 @@ footer .container .footer__bottom .footer__lisence small:before {
   padding: 0 9px 0 8px;
   line-height: 1;
   white-space: nowrap;
-  transition: color 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-control-btn i {
   font-size: 11px;
@@ -713,7 +708,12 @@ footer .container .footer__bottom .footer__lisence small:before {
   pointer-events: none;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .sidebar-control-btn:hover {
-  color: var(--color-primary);
+  background-color: rgba(255, 255, 255, 0.85);
+  box-shadow: 0 0 0 1px rgba(22, 35, 78, 0.15);
+}
+.content-wrapper #temp-side-navigation .sidebar-title .sidebar-control-btn:focus, .content-wrapper #temp-side-navigation .sidebar-title .sidebar-control-btn:active {
+  outline: none;
+  box-shadow: none;
 }
 .content-wrapper #temp-side-navigation .sidebar-title .list-icon {
   cursor: pointer;
@@ -1083,6 +1083,27 @@ Stats Overview Component
   margin: 0 auto;
 }
 
+/* カードをラップするリンク（クリック可能な項目用） */
+.stats-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  /* 統計カードでは外部リンクアイコンを表示しない */
+}
+.stats-card-link[target=_blank]::after {
+  content: none;
+  display: none;
+}
+.stats-card-link:hover {
+  opacity: 0.9;
+}
+.stats-card-link:hover .stats-card {
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+}
+
 .stats-card {
   background: white;
   padding: 24px 10px;
@@ -1092,6 +1113,12 @@ Stats Overview Component
   display: flex;
   flex-direction: column;
   position: relative;
+  transition: box-shadow 0.2s ease;
+  /* 準備中などで押せないカード（例: 顔貌特徴） */
+}
+.stats-card--disabled {
+  cursor: default;
+  pointer-events: none;
 }
 
 .stats-icon {
@@ -1605,20 +1632,17 @@ Stats Overview Component
   position: relative;
   color: var(--color-secondary);
   cursor: default;
-  transition: color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 #temp-side-navigation > ul > li .nav-link:hover {
-  color: var(--color-primary);
+  background-color: rgba(22, 35, 78, 0.08);
 }
 #temp-side-navigation > ul > li .nav-link.-disabled {
   color: rgba(19, 41, 90, 0.2705882353);
   cursor: default;
 }
 #temp-side-navigation > ul > li .nav-link.-disabled:hover {
-  color: rgba(19, 41, 90, 0.2705882353);
-}
-#temp-side-navigation > ul > li .nav-link.selected:hover {
-  color: var(--color-primary);
+  background-color: transparent;
 }
 #temp-side-navigation > ul > li .data-num {
   padding: 0 5px;
@@ -1700,12 +1724,12 @@ Stats Overview Component
   padding-left: 10px;
   z-index: var(--zindex-disease-side-link);
   background-color: transparent;
-  transition: color 0.2s ease;
+  transition: background-color 0.2s ease;
 }
 #temp-side-navigation > ul > li .bio-resource ul li a:hover,
 #temp-side-navigation > ul > li .variant ul li a:hover,
 #temp-side-navigation > ul > li .genes ul li a:hover {
-  color: var(--color-primary);
+  background-color: rgba(22, 35, 78, 0.08);
 }
 #temp-side-navigation > ul > li .bio-resource ul li .-disabled:hover,
 #temp-side-navigation > ul > li .variant ul li .-disabled:hover,
@@ -2902,13 +2926,161 @@ Stats Page Styles
 .stats-section {
   margin: 2rem 0;
 }
+
+.stats-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
 .stats-section-title {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--color-secondary);
-  margin-bottom: 1rem;
+  margin: 0 0 1rem 0;
   padding-left: 0.75rem;
   border-left: 6px solid var(--color-secondary);
+}
+
+.stats-section-header .stats-section-title {
+  margin-bottom: 0;
+}
+
+.stats-download-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+  background-color: #f0f0f0;
+  border: 1px solid #bbb;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.stats-download-btn:hover {
+  background-color: #e8e8e8;
+  border-color: #999;
+}
+.stats-download-btn .fa-download {
+  font-size: 0.95em;
+}
+
+/* セクションタイトル横の i アイコン（titleTooltip があるときのみ・hoverで表示） */
+.stats-section-title-tooltip {
+  margin-left: 0.25em;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.9em;
+  color: var(--color-secondary, #6c757d);
+  cursor: help;
+  flex-shrink: 0;
+  line-height: 1;
+}
+.stats-section-title-tooltip .fa-info-circle {
+  font-size: inherit;
+}
+.stats-section-title-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%) translateY(-6px);
+  padding: 6px 10px;
+  width: 200px;
+  box-sizing: border-box;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #fff;
+  background: #333;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: normal;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1000;
+  pointer-events: none;
+}
+.stats-section-title-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.card-detail-section .table-contents {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.card-detail-section .table-contents .stats-table,
+.card-detail-section .table-contents .table.stats-table {
+  table-layout: auto;
+  width: 100%;
+  max-width: 100%;
+}
+.card-detail-section .table-contents .stats-table thead th,
+.card-detail-section .table-contents .stats-table tbody td,
+.card-detail-section .table-contents .table.stats-table thead th,
+.card-detail-section .table-contents .table.stats-table tbody td {
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  padding: 0.4rem 0.5rem;
+  font-size: 0.8rem;
+  line-height: 1.35;
+}
+.card-detail-section .table-contents .stats-table tbody td,
+.card-detail-section .table-contents .table.stats-table tbody td {
+  text-align: left;
+  font-weight: normal;
+}
+.card-detail-section .table-contents .stats-table thead th,
+.card-detail-section .table-contents .table.stats-table thead th {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  padding: 0.5rem 0.5rem 0.55rem;
+  vertical-align: middle;
+  box-sizing: border-box;
+  text-align: left;
+}
+
+.stats-table td.stats-cell--html {
+  max-width: clamp(320px, 46vw, 500px);
+  overflow-wrap: anywhere;
+}
+.stats-table td.stats-cell--html > div + div {
+  margin-top: 0.25rem;
+}
+
+#nanbyodata-in-numbers-original .table-contents .table.stats-table {
+  table-layout: fixed;
+}
+#nanbyodata-in-numbers-original .table-contents .table.stats-table thead th,
+#nanbyodata-in-numbers-original .table-contents .table.stats-table tbody td {
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: normal;
+}
+#nanbyodata-in-numbers-original .table-contents .table.stats-table thead th:first-child,
+#nanbyodata-in-numbers-original .table-contents .table.stats-table tbody td:first-child {
+  white-space: nowrap;
+  overflow-wrap: normal;
+}
+#nanbyodata-in-numbers-original .table-contents .table.stats-table thead th:nth-child(2),
+#nanbyodata-in-numbers-original .table-contents .table.stats-table tbody td:nth-child(2) {
+  white-space: nowrap;
+  overflow-wrap: normal;
 }
 
 .stats-table tbody td:not(:first-child) {
@@ -2920,6 +3092,160 @@ Stats Page Styles
 }
 .stats-table thead th:not(:first-child) {
   text-align: right;
+}
+.stats-table thead th.stats-sortable {
+  cursor: pointer;
+  user-select: none;
+}
+.stats-table thead th.stats-sortable .stats-th-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.stats-table thead th.stats-sortable .sort-icon {
+  margin-left: 6px;
+  font-size: 0.85rem;
+  color: #8a8a8a;
+}
+.stats-table thead th.stats-sortable .sort-icon.fa-sort-up, .stats-table thead th.stats-sortable .sort-icon.fa-sort-down {
+  color: #249eb3;
+}
+
+.stats-tooltip-portal {
+  max-width: 280px;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #fff;
+  background: #333;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: break-word;
+  text-align: left;
+  pointer-events: none;
+  box-sizing: border-box;
+}
+
+.stats-th-tooltip[data-tooltip-active]::after,
+.stats-section-title-tooltip[data-tooltip-active]::after {
+  display: none !important;
+}
+
+.stats-th-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85em;
+  color: var(--color-secondary, #6c757d);
+  cursor: help;
+  vertical-align: middle;
+}
+.stats-th-tooltip .fa-info-circle {
+  font-size: inherit;
+}
+.stats-th-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%) translateY(-6px);
+  padding: 6px 10px;
+  width: 200px;
+  box-sizing: border-box;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #fff;
+  background: #333;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: normal;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1000;
+  pointer-events: none;
+}
+.stats-th-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
+.stats-tabs {
+  display: flex;
+  gap: 0;
+  margin-bottom: 0;
+  border-bottom: 2px solid var(--color-secondary, #2c3e50);
+}
+
+.stats-tabs + .table-contents {
+  border-top: none !important;
+}
+.stats-tabs + .table-contents .table.stats-table,
+.stats-tabs + .table-contents .stats-table {
+  border-top: none !important;
+}
+.stats-tabs + .table-contents .table.stats-table thead th,
+.stats-tabs + .table-contents .table.stats-table thead td,
+.stats-tabs + .table-contents .stats-table thead th,
+.stats-tabs + .table-contents .stats-table thead td,
+.stats-tabs + .table-contents .table.stats-table tbody tr:first-child td,
+.stats-tabs + .table-contents .stats-table tbody tr:first-child td {
+  border-top: none !important;
+}
+
+.stats-tab {
+  padding: 0.35rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-secondary, #2c3e50);
+  background: transparent;
+  border: 2px solid transparent;
+  border-bottom: none;
+  border-radius: 4px 4px 0 0;
+  cursor: pointer;
+  margin-bottom: -2px;
+  outline: none;
+}
+.stats-tab:focus {
+  outline: none;
+  box-shadow: none;
+}
+.stats-tab {
+  /* 選択中: 上・左右を枠で囲み、下は横線に繋がる（未選択もboldのまま） */
+}
+.stats-tab.active {
+  color: var(--color-secondary, #2c3e50);
+  background: #fff;
+  border-color: var(--color-secondary, #2c3e50);
+  border-bottom: 2px solid #fff;
+}
+
+.stats-table-loading,
+.stats-table-error {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--color-secondary, #6c757d);
+}
+
+.stats-table-loading-spinner-wrap {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 3rem;
+}
+
+#card-detail-content > .stats-table-loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 6rem;
+}
+
+.stats-table-error {
+  color: #dc3545;
 }
 
 /* ---------- Help Page ---------- */

@@ -1,0 +1,697 @@
+{
+  "sections": [
+    {
+      "id": "nando-content",
+      "title": {
+        "ja": "難病（NANDO）",
+        "en": "Nanbyo (NANDO)"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "hasTabs": false,
+      "dataApi": "/sparqlist/api/nanbyodata_stats_nando",
+      "columns": [
+        {
+          "dataKey": "category",
+          "label": {
+            "ja": "区分",
+            "en": "Category"
+          },
+          "tooltip": {
+            "ja": "指定難病または小児慢性特定疾病の区分",
+            "en": "Category: Shitei (designated nanbyo) or Shoman (pediatric chronic)"
+          }
+        },
+        {
+          "dataKey": "all",
+          "label": {
+            "ja": "All",
+            "en": "All"
+          },
+          "tooltip": {
+            "ja": "該当区分の全件数",
+            "en": "Total count for this category"
+          }
+        },
+        {
+          "dataKey": "nanbyo_group",
+          "label": {
+            "ja": "Nanbyo group",
+            "en": "Nanbyo group"
+          },
+          "tooltip": {
+            "ja": "難病グループの件数",
+            "en": "Number of nanbyo groups"
+          }
+        },
+        {
+          "dataKey": "nanbyo_disease",
+          "label": {
+            "ja": "Nanbyo disease",
+            "en": "Nanbyo disease"
+          },
+          "tooltip": {
+            "ja": "難病疾患の件数",
+            "en": "Number of nanbyo diseases"
+          }
+        },
+        {
+          "dataKey": "nanbyo_subtype",
+          "label": {
+            "ja": "Nanbyo subtype",
+            "en": "Nanbyo subtype"
+          },
+          "tooltip": {
+            "ja": "難病サブタイプの件数",
+            "en": "Number of nanbyo subtypes"
+          }
+        }
+      ]
+    },
+    {
+      "id": "disease-overview-content",
+      "title": {
+        "ja": "疾患概要",
+        "en": "Overview"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "hasTabs": false,
+      "dataApi": "/sparqlist/api/nanbyodata_stats_disease_overview",
+      "columns": [
+        {
+          "dataKey": "category",
+          "label": {
+            "ja": "区分",
+            "en": "Category"
+          },
+          "tooltip": {
+            "ja": "指定難病または小児慢性特定疾病の区分",
+            "en": "Category: Shitei or Shoman"
+          }
+        },
+        {
+          "dataKey": "definition",
+          "label": {
+            "ja": "疾患定義",
+            "en": "Disease Definition"
+          },
+          "tooltip": {
+            "ja": "疾患定義が登録されている件数",
+            "en": "Count of entries with disease definition"
+          }
+        },
+        {
+          "dataKey": "inheritance",
+          "label": {
+            "ja": "遺伝形式",
+            "en": "Inheritance"
+          },
+          "tooltip": {
+            "ja": "遺伝形式が登録されている件数",
+            "en": "Count of entries with inheritance information"
+          }
+        },
+        {
+          "dataKey": "alternativeNames",
+          "label": {
+            "ja": "別疾患名",
+            "en": "Alternative Disease Names"
+          },
+          "tooltip": {
+            "ja": "別名が登録されている件数",
+            "en": "Count of entries with alternative names"
+          }
+        }
+      ]
+    },
+    {
+      "id": "links-content",
+      "title": {
+        "ja": "外部リンク",
+        "en": "External Links"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "hasTabs": true,
+      "dataApi": "/sparqlist/api/nanbyodata_stats_links",
+      "tabs": [
+        {
+          "id": "shitei",
+          "label": {
+            "ja": "指定難病",
+            "en": "Shitei"
+          }
+        },
+        {
+          "id": "shoman",
+          "label": {
+            "ja": "小児慢性特定疾病",
+            "en": "Shoman"
+          }
+        }
+      ],
+      "columns": [
+        {
+          "dataKey": "monarchExact",
+          "label": {
+            "ja": "Monarch Initiative (exact)",
+            "en": "Monarch Initiative (exact)"
+          },
+          "tooltip": {
+            "ja": "Monarch Initiative との完全一致リンク数",
+            "en": "Exact match links to Monarch Initiative"
+          }
+        },
+        {
+          "dataKey": "monarchClose",
+          "label": {
+            "ja": "Monarch Initiative (close)",
+            "en": "Monarch Initiative (close)"
+          },
+          "tooltip": {
+            "ja": "Monarch Initiative との近い一致リンク数",
+            "en": "Close match links to Monarch Initiative"
+          }
+        },
+        {
+          "dataKey": "orphanet",
+          "label": {
+            "ja": "Orphanet",
+            "en": "Orphanet"
+          },
+          "tooltip": {
+            "ja": "Orphanet へのリンク数",
+            "en": "Links to Orphanet"
+          }
+        },
+        {
+          "dataKey": "medgen",
+          "label": {
+            "ja": "MedGen",
+            "en": "MedGen"
+          },
+          "tooltip": {
+            "ja": "MedGen へのリンク数",
+            "en": "Links to MedGen"
+          }
+        },
+        {
+          "dataKey": "kegg",
+          "label": {
+            "ja": "KEGG",
+            "en": "KEGG"
+          },
+          "tooltip": {
+            "ja": "KEGG へのリンク数",
+            "en": "Links to KEGG"
+          }
+        }
+      ]
+    },
+    {
+      "id": "related-data-content",
+      "title": {
+        "ja": "糖鎖関連遺伝子",
+        "en": "Glycan-Related Genes"
+      },
+      "titleTooltip": {
+        "ja": "糖鎖関連遺伝子の登録データ",
+        "en": "Glycan-related gene registration data"
+      },
+      "hasTabs": true,
+      "tabs": [
+        {
+          "id": "by-gene",
+          "label": {
+            "ja": "糖鎖中心",
+            "en": "Glycan-centered"
+          },
+          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_Glycogene_table_2",
+          "columns": [
+            {
+              "dataKey": "genesymbol",
+              "label": {
+                "ja": "Genesymbol (GlyCosmos Glycogene)",
+                "en": "Genesymbol (GlyCosmos Glycogene)"
+              },
+              "tooltip": {
+                "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
+                "en": "Gene symbol used in the GlyCosmos glycogene database"
+              },
+              "rowspan": true
+            },
+            {
+              "dataKey": "nando_label",
+              "label": {
+                "ja": "疾患",
+                "en": "Disease"
+              },
+              "tooltip": {
+                "ja": "難病オントロジー（NANDO）に登録された疾患名。クリックで疾患ページへ",
+                "en": "Disease name registered in NANDO. Click to go to the disease page"
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "nando_category",
+              "label": {
+                "ja": "制度区分",
+                "en": "Category"
+              },
+              "tooltip": {
+                "ja": "指定難病または小児慢性特定疾病の制度上の区分",
+                "en": "Category under the designated intractable disease or pediatric chronic disease system"
+              }
+            },
+            {
+              "dataKey": "ncbi_id",
+              "label": {
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
+              },
+              "tooltip": {
+                "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
+                "en": "Unique gene identifier in the NCBI Gene database"
+              },
+              "rowspan": true
+            },
+            {
+              "dataKey": "mondo_id",
+              "label": {
+                "ja": "Mondo ID",
+                "en": "Mondo ID"
+              },
+              "tooltip": {
+                "ja": "MONDO 疾患オントロジーにおける疾患の識別子",
+                "en": "Disease identifier in the MONDO Disease Ontology"
+              }
+            },
+            {
+              "dataKey": "nando2mondo_match",
+              "label": {
+                "ja": "NANDOとMONDOの疾患類似",
+                "en": "NANDO-MONDO disease match"
+              },
+              "tooltip": {
+                "ja": "NANDO 疾患と MONDO 疾患の対応関係（exactMatch: 完全一致、closeMatch: 近似一致）",
+                "en": "Mapping between NANDO and MONDO diseases (exactMatch: exact, closeMatch: close match)"
+              }
+            }
+          ]
+        },
+        {
+          "id": "by-disease",
+          "label": {
+            "ja": "NANDO中心",
+            "en": "NANDO-centered"
+          },
+          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_Glycogene_table_2",
+          "columns": [
+            {
+              "dataKey": "nando_id",
+              "label": {
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
+              },
+              "tooltip": {
+                "ja": "難病オントロジー（NANDO）における疾患の一意な識別子",
+                "en": "Unique disease identifier in the NANDO ontology"
+              },
+              "rowspan": true
+            },
+            {
+              "dataKey": "nando_label",
+              "label": {
+                "ja": "疾患",
+                "en": "Disease"
+              },
+              "tooltip": {
+                "ja": "難病オントロジー（NANDO）に登録された疾患名。クリックで疾患ページへ",
+                "en": "Disease name registered in NANDO. Click to go to the disease page"
+              },
+              "link": "nando",
+              "rowspan": true
+            },
+            {
+              "dataKey": "genesymbol",
+              "label": {
+                "ja": "GlyCosmos Glycogene",
+                "en": "GlyCosmos Glycogene"
+              },
+              "tooltip": {
+                "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
+                "en": "Gene symbol used in the GlyCosmos glycogene database"
+              }
+            },
+            {
+              "dataKey": "nando_category",
+              "label": {
+                "ja": "制度区分",
+                "en": "Category"
+              },
+              "tooltip": {
+                "ja": "指定難病または小児慢性特定疾病の制度上の区分",
+                "en": "Category under the designated intractable disease or pediatric chronic disease system"
+              }
+            },
+            {
+              "dataKey": "ncbi_id",
+              "label": {
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
+              },
+              "tooltip": {
+                "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
+                "en": "Unique gene identifier in the NCBI Gene database"
+              }
+            },
+            {
+              "dataKey": "mondo_id",
+              "label": {
+                "ja": "Mondo ID",
+                "en": "Mondo ID"
+              },
+              "tooltip": {
+                "ja": "MONDO 疾患オントロジーにおける疾患の識別子",
+                "en": "Disease identifier in the MONDO Disease Ontology"
+              }
+            },
+            {
+              "dataKey": "nando2mondo_match",
+              "label": {
+                "ja": "NANDOとMONDOの疾患類似",
+                "en": "NANDO-MONDO disease match"
+              },
+              "tooltip": {
+                "ja": "NANDO 疾患と MONDO 疾患の対応関係（exactMatch: 完全一致、closeMatch: 近似一致）",
+                "en": "Mapping between NANDO and MONDO diseases (exactMatch: exact, closeMatch: close match)"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "genes-content",
+      "title": {
+        "ja": "疾患関連遺伝子",
+        "en": "Genes"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "hasTabs": false,
+      "dataApi": "/sparqlist/api/nanbyodata_stats_genes",
+      "columns": [
+        {
+          "dataKey": "category",
+          "label": {
+            "ja": "区分",
+            "en": "Category"
+          },
+          "tooltip": {
+            "ja": "指定難病または小児慢性特定疾病の区分",
+            "en": "Category: Shitei or Shoman"
+          }
+        },
+        {
+          "dataKey": "domestic",
+          "label": {
+            "ja": "国内基準由来",
+            "en": "Japan-curated"
+          },
+          "tooltip": {
+            "ja": "国内基準に由来する遺伝子情報の件数",
+            "en": "Count of Japan-curated gene data"
+          }
+        },
+        {
+          "dataKey": "international",
+          "label": {
+            "ja": "国際リソース由来",
+            "en": "Internationally curated"
+          },
+          "tooltip": {
+            "ja": "国際リソースに由来する遺伝子情報の件数",
+            "en": "Count of internationally curated gene data"
+          }
+        }
+      ]
+    },
+    {
+      "id": "bioresources-content",
+      "title": {
+        "ja": "難病特異的バイオリソース",
+        "en": "Bioresources"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "hasTabs": true,
+      "tabs": [
+        {
+          "id": "cells",
+          "label": {
+            "ja": "細胞",
+            "en": "Cell"
+          },
+          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_cell_list",
+          "columns": [
+            {
+              "dataKey": "nando",
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "難病オントロジー（NANDO）の疾患。クリックで疾患ページへ",
+                "en": "Disease in NANDO. Click to go to disease page"
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "ID",
+              "label": {
+                "ja": "細胞ID",
+                "en": "Cell ID"
+              },
+              "tooltip": {
+                "ja": "理研BRC細胞バンクの登録ID。クリックでBRCのデータシートへ",
+                "en": "RIKEN BRC Cell Bank registration ID. Click to open BRC datasheet"
+              },
+              "link": "external",
+              "linkHrefKey": "HP",
+              "rowspan": true
+            },
+            {
+              "dataKey": "Cell_name",
+              "label": {
+                "ja": "細胞名",
+                "en": "Cell name"
+              },
+              "tooltip": {
+                "ja": "細胞リソース名",
+                "en": "Cell resource name"
+              },
+              "rowspan": true
+            },
+            {
+              "dataKey": "Description_j",
+              "dataKeysByLocale": {
+                "ja": ["Description_j", "Description_e"],
+                "en": ["Description_e", "Description_j"]
+              },
+              "label": {
+                "ja": "説明",
+                "en": "Description"
+              },
+              "tooltip": {
+                "ja": "細胞の説明。リンクはBRC等へのリンクとして表示されます",
+                "en": "Cell description. Links are rendered as clickable"
+              },
+              "html": true,
+              "rowspan": true
+            }
+          ]
+        },
+        {
+          "id": "mouse",
+          "label": {
+            "ja": "マウス",
+            "en": "Mouse"
+          },
+          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_mouse_list",
+          "columns": [
+            {
+              "dataKey": "nando",
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "mouse_id",
+              "label": {
+                "ja": "マウスID",
+                "en": "Mouse ID"
+              },
+              "tooltip": {
+                "ja": "理研BRCマウスバンクの登録ID。クリックでBRCの詳細ページへ",
+                "en": "RIKEN BRC Mouse Bank registration ID. Click to open BRC detail page"
+              },
+              "link": "external",
+              "linkHrefKey": "hp",
+              "rowspan": true
+            },
+            {
+              "dataKey": "mouse_name",
+              "label": {
+                "ja": "マウス系統名",
+                "en": "Mouse strain name"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspan": true
+            },
+            {
+              "dataKey": "label_ja",
+              "dataKeyByLocale": {
+                "ja": "label_ja",
+                "en": "label_en"
+              },
+              "label": {
+                "ja": "表現型",
+                "en": "Phenotype"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspan": true
+            }
+          ]
+        },
+        {
+          "id": "dna",
+          "label": {
+            "ja": "DNA",
+            "en": "DNA"
+          },
+          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_dna_list",
+          "columns": [
+            {
+              "dataKey": "nando",
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "gene_id",
+              "label": {
+                "ja": "DNA ID",
+                "en": "DNA ID"
+              },
+              "tooltip": {
+                "ja": "理研BRC DNAバンクの登録ID。クリックでBRCのデータシートへ",
+                "en": "RIKEN BRC DNA Bank registration ID. Click to open BRC datasheet"
+              },
+              "link": "external",
+              "linkHrefKey": "hp",
+              "rowspan": true
+            },
+            {
+              "dataKey": "gene",
+              "label": {
+                "ja": "遺伝子",
+                "en": "Gene"
+              },
+              "tooltip": {
+                "ja": "遺伝子シンボル",
+                "en": "Gene symbol"
+              },
+              "rowspan": true
+            },
+            {
+              "dataKey": "ncbi_gene_id",
+              "label": {
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspan": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "variants-content",
+      "title": {
+        "ja": "バリアント",
+        "en": "Variants"
+      },
+      "hasTabs": false,
+      "dataApi": "/sparqlist/api/nanbyodata_stats_variants",
+      "columns": [
+        {
+          "dataKey": "category",
+          "label": {
+            "ja": "区分",
+            "en": "Category"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          }
+        },
+        {
+          "dataKey": "clinvar",
+          "label": {
+            "ja": "ClinVar",
+            "en": "ClinVar"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          }
+        },
+        {
+          "dataKey": "mgend",
+          "label": {
+            "ja": "MGeND",
+            "en": "MGeND"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          }
+        }
+      ]
+    }
+  ]
+}
