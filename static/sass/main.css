@@ -2283,7 +2283,7 @@ Stats Overview Component
   gap: 8px;
   font-size: var(--font-size-base);
   font-weight: 700;
-  color: var(--color-secondary);
+  color: #444;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px dashed var(--color-table-border);
@@ -2312,11 +2312,11 @@ Stats Overview Component
 }
 .news-sidebar .sidebar-section .sidebar-options label:hover,
 .news-sidebar .sidebar-section .sidebar-options .sidebar-option-link:hover {
-  color: var(--color-primary);
+  color: rgba(68, 68, 68, 0.8);
 }
 .news-sidebar .sidebar-section .sidebar-options label.is-selected,
 .news-sidebar .sidebar-section .sidebar-options .sidebar-option-link.is-selected {
-  color: var(--color-secondary);
+  color: #444;
   font-weight: 600;
 }
 .news-sidebar .sidebar-section .sidebar-options .tag-dot {
@@ -2565,7 +2565,7 @@ Stats Overview Component
   gap: 8px;
   font-size: var(--font-size-base);
   font-weight: 700;
-  color: var(--color-secondary);
+  color: #444;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px dashed var(--color-table-border);
@@ -2594,11 +2594,11 @@ Stats Overview Component
 }
 .resources-sidebar .sidebar-section .sidebar-options label:hover,
 .resources-sidebar .sidebar-section .sidebar-options .sidebar-option-link:hover {
-  color: var(--color-primary);
+  color: rgba(68, 68, 68, 0.8);
 }
 .resources-sidebar .sidebar-section .sidebar-options label.is-selected,
 .resources-sidebar .sidebar-section .sidebar-options .sidebar-option-link.is-selected {
-  color: var(--color-secondary);
+  color: #444;
   font-weight: 600;
 }
 .resources-sidebar .sidebar-section .sidebar-options .tag-dot {
@@ -3272,7 +3272,7 @@ Stats Page Styles
   gap: 8px;
   font-size: var(--font-size-base);
   font-weight: 700;
-  color: var(--color-secondary);
+  color: #444;
   margin-bottom: 12px;
   padding-bottom: 8px;
   border-bottom: 1px dashed var(--color-table-border);
@@ -3298,19 +3298,19 @@ Stats Page Styles
 .help-sidebar .help-sidebar-sublink {
   display: block;
   font-size: var(--font-size-base);
-  color: var(--color-secondary);
+  color: #444;
   text-decoration: none;
   transition: color 0.15s ease;
 }
 .help-sidebar .help-sidebar-link:hover,
 .help-sidebar .help-sidebar-sublink:hover {
-  color: var(--color-primary);
+  color: rgba(68, 68, 68, 0.8);
 }
 .help-sidebar .help-sidebar-label {
   display: block;
   font-size: var(--font-size-base);
   font-weight: 600;
-  color: var(--color-secondary);
+  color: #444;
   margin-bottom: 6px;
 }
 .help-sidebar .help-sidebar-sublist {
@@ -3332,7 +3332,7 @@ Stats Page Styles
   width: 5px;
   height: 5px;
   border-radius: 50%;
-  background: var(--color-secondary);
+  background: #444;
 }
 .help-sidebar .help-sidebar-sublink {
   font-size: var(--font-size-small);
