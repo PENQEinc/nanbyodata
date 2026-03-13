@@ -3552,6 +3552,10 @@ Stats Page Styles
   align-items: center;
   justify-content: space-between;
   gap: 8px;
+  user-select: none;
+}
+#disease-list-page .card-header:focus {
+  outline: none;
 }
 #disease-list-page .filter-clear-btn {
   border: 1px solid rgba(255, 255, 255, 0.7);
@@ -3746,7 +3750,12 @@ html[lang=ja] #disease-list-page #categoryFilter .filter-children label > span:l
   border-radius: 4px;
   font-size: 14px;
   color: #444;
-  background: #f9f9f9;
+  background: #fff;
+}
+#disease-list-page .range-wrap input:focus {
+  outline: none;
+  box-shadow: none;
+  border-color: #c8c8c8;
 }
 #disease-list-page .range-wrap input::placeholder {
   color: #b2b2b2;
@@ -3769,6 +3778,9 @@ html[lang=ja] #disease-list-page #categoryFilter .filter-children label > span:l
   border-bottom: 1px solid #9f9f9f;
   padding: 3px 10px;
   white-space: normal;
+}
+#disease-list-page thead th:focus {
+  outline: none;
 }
 #disease-list-page thead th.sortable {
   cursor: pointer;
