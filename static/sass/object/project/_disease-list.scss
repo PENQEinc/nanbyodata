@@ -62,13 +62,18 @@
     background: rgba(255, 255, 255, 0.16);
   }
 
+  .filter-clear-btn:focus,
+  .filter-clear-btn:focus-visible {
+    outline: none;
+    box-shadow: none;
+  }
+
   .card-body {
-    padding: 12px 9px 13px;
+    padding: 12px 13px;
     background: #fff;
   }
 
   .list-scroll {
-    max-height: 250px;
     overflow: auto;
     padding-right: 2px;
   }
@@ -200,6 +205,12 @@
 
     i {
       pointer-events: none;
+    }
+
+    &:focus,
+    &:focus-visible {
+      outline: none;
+      box-shadow: none;
     }
   }
 

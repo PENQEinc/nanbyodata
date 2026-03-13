@@ -3567,12 +3567,16 @@ Stats Page Styles
 #disease-list-page .filter-clear-btn:hover {
   background: rgba(255, 255, 255, 0.16);
 }
+#disease-list-page .filter-clear-btn:focus,
+#disease-list-page .filter-clear-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
 #disease-list-page .card-body {
-  padding: 12px 9px 13px;
+  padding: 12px 13px;
   background: #fff;
 }
 #disease-list-page .list-scroll {
-  max-height: 250px;
   overflow: auto;
   padding-right: 2px;
 }
@@ -3682,6 +3686,10 @@ html[lang=ja] #disease-list-page #categoryFilter .filter-children label > span:l
 }
 #disease-list-page .kana-toggle i {
   pointer-events: none;
+}
+#disease-list-page .kana-toggle:focus, #disease-list-page .kana-toggle:focus-visible {
+  outline: none;
+  box-shadow: none;
 }
 #disease-list-page .toggle-spacer {
   width: 14px;
