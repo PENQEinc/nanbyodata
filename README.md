@@ -5,7 +5,9 @@
 - Docker
 - Docker Compose
 
-## Download source code
+## Setup & Usage
+
+### 1. Download source code
 
 Download source code from this repository
 
@@ -15,7 +17,7 @@ $ git clone https://github.com/aidrd/nanbyodata.git
 $ cd nanbyodata
 ```
 
-## Configuration environment
+### 2. Configuration environment
 
 Create `.env` file and set values for your environment.
 
@@ -23,85 +25,85 @@ Create `.env` file and set values for your environment.
 $ cp templete.env .env
 ```
 
-### `UID`
+#### `UID`
 (default: None)
 
 Host user id for the docker container. You can find your user id by `id -u`.
 
-### `GID`
+#### `GID`
 
 (default: None)
 
 Host group id for the docker container. You can find your group id by `id -g`.
 
-### `CONTAINER_NAME`
+#### `CONTAINER_NAME`
 
 (default: `nanbyodata-app`)
 
 The name of the docker container. Must be unique in the system.
 
-### `PORT`
+#### `PORT`
 
 (default: `8888`)
 
 Port to listen on. Must be unique in the system.
 
-### `CONTAINER_NAME_MYSQL`
+#### `CONTAINER_NAME_MYSQL`
 (default: `nanbyodata-mysql`)
 
 The name of the docker container for the MySQL database. Must be unique in the system.
 
-### `MYSQL_PORT`
+#### `MYSQL_PORT`
 (default: `3306`)
 
 Port for the MySQL to listen on. Must be unique in the system.
 
-### `MYSQL_ROOT_PASSWORD`
+#### `MYSQL_ROOT_PASSWORD`
 (default: None)
 
 This variable is mandatory and specifies the password that will be set for the MySQL root superuser account.  
 seeAlso: https://hub.docker.com/_/mysql
 
-### `MYSQL_DATABASE`
+#### `MYSQL_DATABASE`
 (default: None)
 
 This variable allows you to specify the name of a database to be created on image startup.  
 seeAlso: https://hub.docker.com/_/mysql
 
-### `MYSQL_USER`, `MYSQL_PASSWORD`
+#### `MYSQL_USER`, `MYSQL_PASSWORD`
 (default: None)
 
 These variables used in conjunction to create a new user and to set that user's password.  
 seeAlso: https://hub.docker.com/_/mysql
 
 
-### `MYSQL_DATA_DIR`
+#### `MYSQL_DATA_DIR`
 (default: `./mysql/data`)
 
 Directory for MySQL data storage. For better performance, it is recommended to place the database files on an SSD.
 
 
-### `BASE_URI`
+#### `BASE_URI`
 
 (default: `https://nanbyodata.jp`)
 
 The URL of the server. Specifically, the base URL of the SPARQList to connect to.
 
-### `NGINX_PORT`
+#### `NGINX_PORT`
 
 See `Local development environment` section.
 
-## Opration
+### 3. Opration
 
 NOTE: If you are using a version prior to Docker Compose v2.0.0, use the `docker-compose` command instead of `docker compose`
 
-### Create and start container
+### 4. Create and start container
 
 ```
 $ docker compose up -d
 ```
 
-### Check status
+### 5. Check status
 
 ```
 $ docker compose ps
@@ -111,7 +113,7 @@ nanbyodata-app      app                 running             0.0.0.0:8000->8000/t
 
 Check the application page can be displayed from a browser on the port number specified in the `.env` file. e.g. `http://localhost:8000`
 
-### Stop container
+### 6. Stop container
 
 ```
 $ docker-compose stop
@@ -119,7 +121,7 @@ $ docker-compose stop
 
 If the source code is changed, it must be `stop` and then `start`; this can also be done with the `restart` command.
 
-### Delete container
+### 7. Delete container
 
 ```
 $ docker-compose down
@@ -127,172 +129,12 @@ $ docker-compose down
 
 If `.env` or `docker-compose.yml` is changed, delete the container and start it with `up -d`
 
-## Local development environment
 
-Procedure for preparing a development environment on the local PC instead of on the server.  
-Almost the same as the server environment but use `docker-compose_for_dev.yml` instead of the default `docker-compose.yml`. Specify the YML file with the `-f` option.  
-Local development environment also includes the nginx container, so also specify the `NGINX_PORT` port in the `.env` file.(see below)
+### 8. Execution and Operation  
+Operational workflows are detailed in the following documentation:  
 
-### `NGINX_PORT`
+* [MySQL Update Procedure](https://docs.google.com/spreadsheets/d/12JjDHkd4k9oI5Xme_Isyg9nqUsHU1PZvmvz5DQPKNZc/edit?gid=1150718828#gid=1150718828)
+* [NANDO Ontology Update Procedure](https://docs.google.com/spreadsheets/d/12JjDHkd4k9oI5Xme_Isyg9nqUsHU1PZvmvz5DQPKNZc/edit?gid=1914005581#gid=1914005581)  
 
-(default: `8888`)  
-Nginx port to listen on. Must be unique in the system.  
-Only required in the local development environment.
-
-### Create network
-
-Run only once when building the environment
-
-```
-$ docker network create nanbyodata_dev
-```
-
-If you have not created a network, you may get the following error
-
-```
-$ docker compose -f docker-compose_for_dev.yml up -d
-Error response from daemon: network nanbyodata_dev not found
-```
-
-### Create and start container
-
-```
-$ docker compose -f docker-compose_for_dev.yml up -d
-```
-
-### Check status
-
-```
-$ docker-compose -f docker-compose_for_dev.yml ps
-NAME                 IMAGE            COMMAND                   SERVICE   CREATED         STATUS         PORTS
-nanbyodata-app     nanbyodata-app   "pipenv run uwsgi --…"   app       15 hours ago   Up 9 minutes   0.0.0.0:8000->8000/tcp
-nanbyodata-mysql   mysql:5.7.13     "docker-entrypoint.s…"   mysql     15 hours ago   Up 15 hours    0.0.0.0:13306->3306/tcp
-nanbyodata-nginx   nginx:1.27.1     "/docker-entrypoint.…"   nginx     15 hours ago   Up 15 hours    0.0.0.0:8888->80/tcp
-```
-
-### Load db data
-
-```
-$ cp -a /your/path/nanbyodata_nando_panel.dump.sql mysql/sql/nanbyodata_nando_panel.dump.sql
-$ docker-compose exec -T mysql sh /scripts/exec_sql_file.sh /scripts/sql/nanbyodata_nando_panel.dump.sql
-```
-
-### Stop container
-
-```
-$ docker compose -f docker-compose_for_dev.yml stop
-```
-
-If the source code is changed, it must be `stop` and then `start`; this can also be done with the `restart` command.
-
-### Delete container
-
-```
-$ docker compose -f docker-compose_for_dev.yml down
-```
-
-If `.env` or `docker-compose.yml` is changed, delete the container and start it with `up -d`
-
-## Adding News and Resources (Markdown → JSON)
-
-News and Resources are built from Markdown. When you add or update files under `posts/` or `resources/` and push, GitHub Actions generates the corresponding JSON and commits it.
-
-### News
-
-- **Location**: `posts/ja/*.md`, `posts/en/*.md`
-- **Filename**: `YYYY-MM-DD-post1.md`, `post2.md`, … (use a number for order when multiple items share the same date)
-- **Front matter**: `title`, `tags`, `published`. The body is Markdown (converted to HTML).
-- **Build**: Pushing under `posts/` or `scripts/build_news_json.py` updates `static/data/news.json`.
-
-**Sample** (`posts/ja/2025-11-26-post1.md`):
-
-```markdown
----
-published: true
-title: 'NanbyoData UI/UX update (Version 2025-11-26)'
-tags:
-  - services
----
-
-This release improves the top page and disease information pages.
-
-## Updates
-
-- Added summary statistics to the top page.
-- Added new data to disease pages: Human Genomic Datasets, Facial Features, Compounds, References.
-```
-
-### Resources
-
-- **Location**: `resources/ja/*.md`, `resources/en/*.md`
-- **Filename**: `YYYY-MM-DD-resource1.md`, `resource2.md`, … (use a number for order when multiple items share the same date)
-- **Front matter**: `title`, `publisher`, `url`, `tags`, `authors`, `description`, `published`
-- **Build**: Pushing under `resources/` or `scripts/build_resources_json.py` updates `static/data/resources.json`.
-
-**Sample** (`resources/ja/2025-12-10-resource1.md`):
-
-```markdown
----
-published: true
-title: 'Machine Learning Approaches to Identifying Undiagnosed Rare Conditions'
-publisher: 'JOURNAL OF CELL BIOLOGY'
-url: 'https://example.com/paper1'
-tags:
-  - services
-  - pr
-authors: 'R. Smith, M. Jones, S. Chen'
-description: 'Exploring novel ML algorithms for pattern recognition in EHR data to flag potential undiagnosed rare disease patients for screening. Results suggest a 15% increase in detection rates.'
----
-```
-
-### Local build
-
-To regenerate the JSON locally:
-
-```bash
-python scripts/build_news_json.py      # → static/data/news.json
-python scripts/build_resources_json.py # → static/data/resources.json
-```
-
-### Disease List
-
-The Disease List page displays data from `static/data/disease_list.json`. **When the table content is updated, replace this file** (`disease_list.json`) with the new data so that the list, filters, and sort order reflect the latest content.
-
-### News / Resources tag configuration
-
-Tags used in the sidebar and list on the News and Resources pages are managed in `static/data/tags.json`. The `news` and `resources` sections each define their own tags, so you can use different tag sets for news and resources. As with the news list JSON, **dev and production load from GitHub raw** (dev → `dev` branch, production → `master`); **locally, the app reads this file directly**.
-
-### FAQ (Help page)
-
-Edit `static/data/faq.json` directly. No build step or Actions; the Help page loads this file. Add a new Q&A by appending an object to the right `items` array.
-
-**Structure sample**:
-
-```json
-{
-  "sections": [
-    {
-      "id": "frequently-asked-questions",
-      "title": { "ja": "よくある質問", "en": "Frequently Asked Questions" },
-      "subsections": [
-        {
-          "id": "download",
-          "title": { "ja": "ダウンロード", "en": "Download" },
-          "items": [
-            {
-              "question": {
-                "ja": "CSV形式でダウンロードするには？",
-                "en": "How do I download to CSV?"
-              },
-              "answer": {
-                "ja": "データセットページの「Download」ボタンから…",
-                "en": "Use the \"Download\" button on the dataset page…"
-              }
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
+[!IMPORTANT]  
+If you are unable to access the documentation links above, please contact the DBCLS team.  
