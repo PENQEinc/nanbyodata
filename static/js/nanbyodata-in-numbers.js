@@ -28,6 +28,81 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 });
 
+const CARD_DETAIL_FETCH_TIMEOUT_MS = 10000;
+
+/** トップページのカードで使っているAPIと合計抽出ロジック（sectionId → { api, extract }） */
+const TOP_PAGE_API_MAP = {
+  'nando-content': {
+    api: '/sparqlist/api/NANDO_count',
+    extract: (d) => {
+      const s = parseInt(d.shitei_all?.['callret-0'] || 0);
+      const m = parseInt(d.shoman_all?.['callret-0'] || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+  'genes-content': {
+    api: '/sparqlist/api/NANDO_link_count2',
+    extract: (d) => {
+      const s = parseInt(d.shitei_gene?.gene || 0);
+      const m = parseInt(d.shoman_gene?.gene || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+  'related-data-content': {
+    api: '/sparqlist/api/NANDO_link_count8',
+    extract: (d) => parseInt(d.glyco_gene_total?.num || 0) || 0,
+  },
+  'bioresources-content': {
+    api: '/sparqlist/api/NANDO_link_count3',
+    extract: (d) => {
+      const sc = parseInt(d.shitei_cell?.cell || 0);
+      const mc = parseInt(d.shoman_cell?.cell || 0);
+      const sm = parseInt(d.shitei_mouse?.mouse || 0);
+      const mm = parseInt(d.shoman_mouse?.mouse || 0);
+      const sd = parseInt(d.shitei_DNA?.gene || 0);
+      const md = parseInt(d.shoman_DNA?.gene || 0);
+      return [sc, mc, sm, mm, sd, md].reduce(
+        (a, v) => a + (Number.isFinite(v) ? v : 0),
+        0,
+      );
+    },
+  },
+  'links-content': {
+    api: '/sparqlist/api/NANDO_link_count',
+    extract: (d) => {
+      const keys = [
+        ['name2', 'mondo'],
+        ['name4', 'mondo'],
+        ['name12', 'mondo'],
+        ['name10', 'medgen'],
+        ['name5', 'kegg'],
+        ['name1', 'mondo'],
+        ['name3', 'mondo'],
+        ['name11', 'mondo'],
+        ['name9', 'medgen'],
+        ['name6', 'kegg'],
+      ];
+      return keys.reduce((sum, [k1, k2]) => {
+        const v = parseInt(d[k1]?.[k2] || 0);
+        return sum + (Number.isFinite(v) ? v : 0);
+      }, 0);
+    },
+  },
+};
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timerId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timerId);
+  }
+}
+
 /**
  * ツールチップを body 直下に表示して、テーブルの overflow で切れないようにする。
  */
@@ -81,6 +156,7 @@ function setupTooltipPortal() {
   document.addEventListener(
     'mouseenter',
     function (e) {
+      if (!e.target || typeof e.target.closest !== 'function') return;
       const trigger = e.target.closest(
         '.stats-th-tooltip, .stats-section-title-tooltip',
       );
@@ -98,6 +174,7 @@ function setupTooltipPortal() {
   document.addEventListener(
     'mouseleave',
     function (e) {
+      if (!e.target || typeof e.target.closest !== 'function') return;
       const trigger = e.target.closest(
         '.stats-th-tooltip, .stats-section-title-tooltip',
       );
@@ -116,8 +193,13 @@ function setupTooltipPortal() {
  */
 function setupStatsDownloadButtons() {
   document.addEventListener('click', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     const btn = e.target.closest('.stats-download-btn');
     if (!btn) return;
+    if (typeof btn._statsDownloadHandler === 'function') {
+      btn._statsDownloadHandler(e);
+      return;
+    }
     const section = btn.closest('.stats-section');
     if (!section) return;
     const table = section.querySelector('.table-contents table.stats-table');
@@ -127,6 +209,20 @@ function setupStatsDownloadButtons() {
     const sectionId = btn.getAttribute('data-section-id') || 'stats-table';
     const filename = sectionId + '.csv';
     downloadCsv(csv, filename);
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
+    const isPopupButton = e.target.closest('.stats-header-actions .open-popup-btn');
+    const isInsidePopup = e.target.closest('.stats-header-actions .popup-view');
+    if (isPopupButton || isInsidePopup) return;
+
+    document
+      .querySelectorAll('.stats-header-actions .open-popup-btn')
+      .forEach((button) => button.setAttribute('aria-expanded', 'false'));
+    document
+      .querySelectorAll('.stats-header-actions .popup-view')
+      .forEach((popup) => popup.setAttribute('aria-hidden', 'true'));
   });
 }
 
@@ -159,6 +255,82 @@ function tableToCsv(table) {
     if (cells.length) rows.push(cells.join(','));
   });
   return rows.length ? rows.join('\n') : null;
+}
+
+function getConfigDataKeysForLocale(col, locale) {
+  if (!col) return [];
+  const multi = col.dataKeysByLocale;
+  if (multi && typeof multi === 'object') {
+    const keys = multi[locale] || multi.en || multi.ja;
+    return Array.isArray(keys) ? keys.filter(Boolean) : [];
+  }
+  const single = col.dataKeyByLocale;
+  if (single && typeof single === 'object') {
+    const key = single[locale] || single.en || single.ja || col.dataKey;
+    return key ? [key] : [];
+  }
+  return col.dataKey ? [col.dataKey] : [];
+}
+
+function getNandoIdForCsv(val) {
+  if (val == null || val === '') return '';
+  const s = String(val).trim();
+  const fromUrl = s.match(/\/?(NANDO_\d+)$/i);
+  if (fromUrl) return fromUrl[1];
+  const fromColon = s.match(/^NANDO:(\d+)$/i);
+  if (fromColon) return 'NANDO_' + fromColon[1];
+  return s;
+}
+
+function htmlToPlainText(html) {
+  if (html == null || html === '') return '';
+  const div = document.createElement('div');
+  div.innerHTML = String(html).replace(/\r\n|\r|\n/g, '<br>');
+  return (div.textContent || div.innerText || '').trim();
+}
+
+function getCsvCellValueFromRow(row, col, locale) {
+  const keys = getConfigDataKeysForLocale(col, locale);
+  const values = keys
+    .map((key) => row?.[key])
+    .filter((value) => value != null && value !== '');
+
+  if (col.link === 'external') {
+    const hrefVal = col.linkHrefKey ? row?.[col.linkHrefKey] : values[0];
+    return hrefVal != null && hrefVal !== '' ? String(hrefVal) : '—';
+  }
+
+  if (col.link === 'nando') {
+    const raw = row?.nando_id != null ? row.nando_id : values[0];
+    const normalized = getNandoIdForCsv(raw);
+    return normalized
+      ? `${window.location.origin}/disease/${encodeURIComponent(normalized)}`
+      : '—';
+  }
+
+  if (col.html) {
+    const htmlValues = values.map((value) => htmlToPlainText(value)).filter(Boolean);
+    return htmlValues.length > 0 ? htmlValues.join('\n') : '—';
+  }
+
+  if (values.length === 0) return '—';
+  if (values.length === 1) return String(values[0]);
+  return values.map((value) => String(value)).join('\n');
+}
+
+function buildCsvFromConfigRows(columns, rows, locale) {
+  const header = (columns || []).map((col) =>
+    escapeCsvCell(col?.label?.[locale] || col?.label?.en || ''),
+  );
+  const body = (rows || []).map((row) =>
+    (columns || [])
+      .map((col) => escapeCsvCell(getCsvCellValueFromRow(row, col, locale)))
+      .join(','),
+  );
+  const allRows = [];
+  if (header.length > 0) allRows.push(header.join(','));
+  allRows.push(...body);
+  return allRows.length > 0 ? allRows.join('\n') : null;
 }
 
 function escapeCsvCell(str) {
@@ -223,7 +395,9 @@ async function showCardDetailTable(sectionId) {
   container.innerHTML = loadingSpinnerHtml;
 
   try {
-    const res = await fetch('/static/data/nanbyodata-in-numbers-config.json');
+    const res = await fetchWithTimeout(
+      '/static/data/nanbyodata-in-numbers-config.json',
+    );
     if (!res.ok) throw new Error(res.statusText);
     const config = await res.json();
     const sectionConfig = config.sections?.find((s) => s.id === sectionId);
@@ -259,16 +433,165 @@ async function showCardDetailTable(sectionId) {
       tw.appendChild(icon);
       title.appendChild(tw);
     }
+    const titleCount = document.createElement('span');
+    titleCount.className = 'stats-title-count data-num';
+    titleCount.textContent = '-';
+    title.appendChild(titleCount);
     header.appendChild(title);
+    let loadedRowsFromApi = [];
+    let loadTabTable = null;
+    const hasTabs = Array.isArray(sectionConfig.tabs) && sectionConfig.tabs.length > 0;
+    const headerActions = document.createElement('div');
+    headerActions.className = 'stats-header-actions';
+    const downloadWrap = document.createElement('div');
+    downloadWrap.className = 'summary-download';
     const downloadBtn = document.createElement('button');
     downloadBtn.type = 'button';
-    downloadBtn.className = 'stats-download-btn';
+    downloadBtn.className = 'stats-download-btn open-popup-btn';
     downloadBtn.setAttribute('data-section-id', sectionId);
+    downloadBtn.setAttribute('aria-controls', `popup-download-${sectionId}`);
+    downloadBtn.setAttribute('aria-expanded', 'false');
     downloadBtn.setAttribute('aria-label', 'Download as CSV');
     downloadBtn.innerHTML =
       '<i class="fas fa-download" aria-hidden="true"></i> Download';
-    header.appendChild(downloadBtn);
+    downloadWrap.appendChild(downloadBtn);
+    const downloadPanel = document.createElement('div');
+    downloadPanel.className = 'popup-view';
+    downloadPanel.id = `popup-download-${sectionId}`;
+    downloadPanel.setAttribute('aria-hidden', 'true');
+    downloadPanel.setAttribute('role', 'dialog');
+    downloadPanel.setAttribute('aria-labelledby', `popupDownloadTitle-${sectionId}`);
+
+    const downloadTitle = document.createElement('div');
+    downloadTitle.className = 'popup-title';
+    downloadTitle.id = `popupDownloadTitle-${sectionId}`;
+    downloadTitle.textContent = locale === 'ja' ? 'ダウンロード' : 'Download';
+    downloadPanel.appendChild(downloadTitle);
+
+    const downloadBody = document.createElement('div');
+    downloadBody.className = 'popup-body';
+
+    let downloadTabSelect = null;
+    let downloadFormatSelect = null;
+
+    if (hasTabs) {
+      const tabWrapper = document.createElement('div');
+      tabWrapper.className = 'popup-wrapper';
+      const tabLabel = document.createElement('label');
+      tabLabel.className = 'label';
+      tabLabel.textContent = locale === 'ja' ? 'Table :' : 'Table :';
+      downloadTabSelect = document.createElement('select');
+      downloadTabSelect.className = 'stats-download-select';
+      sectionConfig.tabs.forEach((tab) => {
+        const option = document.createElement('option');
+        option.value = tab.id;
+        option.textContent = tab.label?.[locale] || tab.label?.en || tab.id;
+        downloadTabSelect.appendChild(option);
+      });
+      tabWrapper.appendChild(tabLabel);
+      tabWrapper.appendChild(downloadTabSelect);
+      downloadBody.appendChild(tabWrapper);
+    }
+
+    const formatWrapper = document.createElement('div');
+    formatWrapper.className = 'popup-wrapper';
+    const formatLabel = document.createElement('label');
+    formatLabel.className = 'label';
+    formatLabel.textContent = 'Format :';
+    downloadFormatSelect = document.createElement('select');
+    downloadFormatSelect.className = 'stats-download-select';
+    const csvOption = document.createElement('option');
+    csvOption.value = 'csv';
+    csvOption.textContent = 'CSV';
+    downloadFormatSelect.appendChild(csvOption);
+    formatWrapper.appendChild(formatLabel);
+    formatWrapper.appendChild(downloadFormatSelect);
+    downloadBody.appendChild(formatWrapper);
+
+    const downloadConfirmBtn = document.createElement('button');
+    downloadConfirmBtn.type = 'button';
+    downloadConfirmBtn.className = 'popup-btn';
+    downloadConfirmBtn.textContent = 'Download';
+    downloadConfirmBtn.addEventListener('click', async () => {
+      if (downloadFormatSelect?.value !== 'csv') return;
+
+      if (hasTabs) {
+        const selectedTabId = downloadTabSelect?.value;
+        if (!selectedTabId) return;
+
+        if (sectionConfig.tabs?.some((tab) => tab.dataApi && tab.columns?.length)) {
+          const selectedIndex = sectionConfig.tabs.findIndex(
+            (tab) => tab.id === selectedTabId,
+          );
+          if (selectedIndex < 0) return;
+          const selectedTab = sectionConfig.tabs[selectedIndex];
+          const rows =
+            typeof loadTabTable === 'function'
+              ? await loadTabTable(selectedIndex, { silent: true })
+              : [];
+          const csv = buildCsvFromConfigRows(selectedTab.columns || [], rows, locale);
+          if (!csv) return;
+          downloadCsv(csv, `${sectionId}-${selectedTabId}.csv`);
+          downloadBtn.setAttribute('aria-expanded', 'false');
+          downloadPanel.setAttribute('aria-hidden', 'true');
+          return;
+        }
+
+        if (sectionConfig.hasTabs && loadedRowsFromApi.length > 0) {
+          const selectedIndex = sectionConfig.tabs.findIndex(
+            (tab) => tab.id === selectedTabId,
+          );
+          if (selectedIndex < 0) return;
+          const row = loadedRowsFromApi[selectedIndex];
+          const csv = buildCsvFromConfigRows(
+            sectionConfig.columns || [],
+            row ? [row] : [],
+            locale,
+          );
+          if (!csv) return;
+          downloadCsv(csv, `${sectionId}-${selectedTabId}.csv`);
+          downloadBtn.setAttribute('aria-expanded', 'false');
+          downloadPanel.setAttribute('aria-hidden', 'true');
+          return;
+        }
+      }
+
+      const csv = buildCsvFromConfigRows(
+        sectionConfig.columns || [],
+        loadedRowsFromApi,
+        locale,
+      );
+      if (!csv) return;
+      downloadCsv(csv, `${sectionId}.csv`);
+      downloadBtn.setAttribute('aria-expanded', 'false');
+      downloadPanel.setAttribute('aria-hidden', 'true');
+    });
+    downloadBody.appendChild(downloadConfirmBtn);
+    downloadPanel.appendChild(downloadBody);
+    downloadWrap.appendChild(downloadPanel);
+    headerActions.appendChild(downloadWrap);
+    downloadBtn._statsDownloadHandler = () => {
+      const isOpen = downloadBtn.getAttribute('aria-expanded') === 'true';
+      document
+        .querySelectorAll('.stats-header-actions .open-popup-btn')
+        .forEach((button) => button.setAttribute('aria-expanded', 'false'));
+      document
+        .querySelectorAll('.stats-header-actions .popup-view')
+        .forEach((popup) => popup.setAttribute('aria-hidden', 'true'));
+      downloadBtn.setAttribute('aria-expanded', String(!isOpen));
+      downloadPanel.setAttribute('aria-hidden', String(isOpen));
+    };
+    header.appendChild(headerActions);
     section.appendChild(header);
+
+    const descriptionText =
+      sectionConfig.description?.[locale] || sectionConfig.description?.en || '';
+    if (descriptionText) {
+      const description = document.createElement('p');
+      description.className = 'stats-section-description';
+      description.textContent = descriptionText;
+      section.appendChild(description);
+    }
 
     const tableWrap = document.createElement('div');
     tableWrap.className = 'table-contents';
@@ -293,32 +616,118 @@ async function showCardDetailTable(sectionId) {
       const tabBar = document.createElement('div');
       tabBar.className = 'stats-tabs';
       const tabCache = {};
-      const loadTabTable = (tabIndex) => {
+      const topPageApiDef = TOP_PAGE_API_MAP[sectionId];
+
+      /** タイトル横の件数表示を更新（タブ行数合計）。トップAPIがあるセクションでは呼ばない（API失敗時は '-' のまま） */
+      function updateTitleCountFromCache() {
+        if (topPageApiDef || !titleCount) return;
+        const total = Object.values(tabCache).reduce(
+          (sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0),
+          0,
+        );
+        if (Number.isFinite(total)) {
+          titleCount.textContent = total.toLocaleString();
+        }
+      }
+
+      // タイトル横の合計をトップページのBioresourcesカードと同じAPI（NANDO_link_count3 等）で取得
+      // API が失敗・停止している場合はタイトル横は '-' のまま（タブ合計では上書きしない）
+      if (topPageApiDef && titleCount) {
+        const apiUrl = topPageApiDef.api.startsWith('http')
+          ? topPageApiDef.api
+          : (typeof window !== 'undefined' && window.location?.origin
+              ? window.location.origin
+              : '') + topPageApiDef.api;
+        try {
+          const r = await fetchWithTimeout(apiUrl);
+          if (r.ok) {
+            const data = await r.json();
+            if (data && typeof topPageApiDef.extract === 'function') {
+              const total = topPageApiDef.extract(data);
+              if (Number.isFinite(total) && total >= 0) {
+                titleCount.textContent = total.toLocaleString();
+              }
+            }
+          }
+        } catch (_) {
+          // API 停止時はタイトル横は初期値 '-' のまま表示
+        }
+      }
+
+      loadTabTable = async (tabIndex, options = {}) => {
+        const { silent = false } = options;
         const tab = sectionConfig.tabs[tabIndex];
-        if (!tab?.dataApi || !tab.columns) return;
+        if (!tab?.dataApi || !tab.columns) return [];
         if (tabCache[tabIndex]) {
-          renderTableFromRows(table, tab.columns, tabCache[tabIndex], locale);
-          return;
+          const cachedRows = tabCache[tabIndex];
+          if (!silent) {
+            renderTableFromRows(table, tab.columns, cachedRows, locale);
+          }
+          // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
+          const idKeyCache =
+            tab.columns && tab.columns[0] ? tab.columns[0].dataKey : null;
+          const uniqueCountCache =
+            idKeyCache && Array.isArray(cachedRows)
+              ? new Set(
+                  cachedRows
+                    .map((r) => r[idKeyCache])
+                    .filter((v) => v != null && String(v).trim() !== ''),
+                ).size
+              : Array.isArray(cachedRows)
+                ? cachedRows.length
+                : 0;
+          const cachedCountEl = tabBar.querySelector(
+            `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
+          );
+          if (cachedCountEl) {
+            cachedCountEl.textContent = uniqueCountCache.toLocaleString();
+          }
+          if (!silent) {
+            updateTitleCountFromCache();
+          }
+          return cachedRows;
         }
         const colCount = tab.columns.length;
-        // 読み込み中はヘッダーを非表示（スピナーのみ表示）
-        thead.style.display = 'none';
-        tbody.innerHTML =
-          '<tr><td colspan="' +
-          colCount +
-          '" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>';
-        fetch(tab.dataApi)
-          .then((r) =>
-            r.ok ? r.json() : Promise.reject(new Error(r.statusText)),
-          )
-          .then((data) => {
-            const rows =
-              data.rows || data.data || (Array.isArray(data) ? data : []);
-            tabCache[tabIndex] = rows;
+        if (!silent) {
+          thead.style.display = 'none';
+          tbody.innerHTML =
+            '<tr><td colspan="' +
+            colCount +
+            '" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>';
+        }
+        try {
+          const r = await fetchWithTimeout(tab.dataApi);
+          if (!r.ok) throw new Error(r.statusText);
+          const data = await r.json();
+          const rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+          tabCache[tabIndex] = rows;
+          if (!silent) {
             renderTableFromRows(table, tab.columns, rows, locale);
-          })
-          .catch((e) => {
-            console.warn('Stats tab API エラー (' + tab.id + '):', e);
+          }
+          // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
+          const idKey =
+            tab.columns && tab.columns[0] ? tab.columns[0].dataKey : null;
+          const uniqueCount =
+            idKey && Array.isArray(rows)
+              ? new Set(
+                  rows
+                    .map((r) => r[idKey])
+                    .filter((v) => v != null && String(v).trim() !== ''),
+                ).size
+              : Array.isArray(rows)
+                ? rows.length
+                : 0;
+          const countEl = tabBar.querySelector(
+            `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
+          );
+          if (countEl) {
+            countEl.textContent = uniqueCount.toLocaleString();
+          }
+          updateTitleCountFromCache();
+          return rows;
+        } catch (e) {
+          console.warn('Stats tab API エラー (' + tab.id + '):', e);
+          if (!silent) {
             tbody.innerHTML =
               '<tr><td colspan="' +
               colCount +
@@ -327,9 +736,10 @@ async function showCardDetailTable(sectionId) {
                 ? 'データの読み込みに失敗しました'
                 : 'Failed to load data') +
               '</td></tr>';
-            // エラー時はヘッダーを表示に戻す
             thead.style.display = '';
-          });
+          }
+          return [];
+        }
       };
       /** NANDO URL または "NANDO:1100014" 形式から疾患IDを抽出（リンク用に NANDO_xxxxx に統一） */
       function getNandoIdForLink(val) {
@@ -716,19 +1126,33 @@ async function showCardDetailTable(sectionId) {
         const btn = document.createElement('button');
         btn.type = 'button';
         btn.className = 'stats-tab' + (idx === 0 ? ' active' : '');
-        btn.textContent = tab.label[locale] || tab.label.en || tab.id;
+        const labelSpan = document.createElement('span');
+        labelSpan.textContent = tab.label[locale] || tab.label.en || tab.id;
+        const countSpan = document.createElement('span');
+        countSpan.className = 'data-num';
+        // 読み込み前・エラー時のデフォルト表示は半角ダッシュ
+        countSpan.textContent = '-';
+        btn.appendChild(labelSpan);
+        btn.appendChild(countSpan);
         btn.dataset.tabIndex = String(idx);
         btn.addEventListener('click', function () {
           tabBar
             .querySelectorAll('.stats-tab')
             .forEach((b) => b.classList.remove('active'));
           this.classList.add('active');
+          if (downloadTabSelect) {
+            downloadTabSelect.value = tab.id;
+          }
           loadTabTable(Number(this.dataset.tabIndex));
         });
         tabBar.appendChild(btn);
       });
       section.insertBefore(tabBar, tableWrap);
+      // ページ表示時に全タブを並列で読み込む（先頭タブは表示、他は silent でキャッシュ）
       loadTabTable(0);
+      for (let i = 1; i < tabsWithApi.length; i++) {
+        loadTabTable(i, { silent: true });
+      }
     } else if (
       sectionConfig.rows?.length &&
       sectionConfig.columns?.some((c) => c.dataApi)
@@ -784,7 +1208,116 @@ async function showCardDetailTable(sectionId) {
         });
         section.insertBefore(tabBar, tableWrap);
       }
-      await loadSectionTableFromApi(table, tbody, sectionConfig, locale);
+      const rowsFromApi = await loadSectionTableFromApi(
+        table,
+        tbody,
+        sectionConfig,
+        locale,
+      );
+      loadedRowsFromApi = Array.isArray(rowsFromApi) ? rowsFromApi : [];
+      const topPageApiDefSingle = TOP_PAGE_API_MAP[sectionId];
+      if (topPageApiDefSingle && titleCount) {
+        fetchWithTimeout(topPageApiDefSingle.api)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((data) => {
+            if (data && typeof topPageApiDefSingle.extract === 'function') {
+              const total = topPageApiDefSingle.extract(data);
+              if (Number.isFinite(total) && total >= 0) {
+                titleCount.textContent = total.toLocaleString();
+              }
+            }
+          })
+          .catch(() => {});
+      }
+      if (
+        !topPageApiDefSingle &&
+        Array.isArray(rowsFromApi) &&
+        titleCount &&
+        rowsFromApi.length > 0
+      ) {
+        let total = NaN;
+        if (sectionId === 'nando-content') {
+          // All 列の合計（指定＋小慢）
+          total = rowsFromApi.reduce((sum, row) => {
+            const raw = row.all;
+            if (raw === undefined || raw === null) return sum;
+            const v = Number(
+              typeof raw === 'number'
+                ? raw
+                : String(raw).replace(/,/g, '').trim(),
+            );
+            return Number.isFinite(v) ? sum + v : sum;
+          }, 0);
+        } else if (sectionId === 'genes-content') {
+          // 疾患関連遺伝子: 国内基準由来＋国際リソース由来の合計
+          total = rowsFromApi.reduce((sum, row) => {
+            const d = Number(
+              typeof row.domestic === 'number'
+                ? row.domestic
+                : String(row.domestic || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const i = Number(
+              typeof row.international === 'number'
+                ? row.international
+                : String(row.international || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const part =
+              (Number.isFinite(d) ? d : 0) + (Number.isFinite(i) ? i : 0);
+            return sum + part;
+          }, 0);
+        } else if (sectionId === 'links-content') {
+          // 外部リンク: 全リンク列の合計
+          total = rowsFromApi.reduce((sum, row) => {
+            const keys = [
+              'monarchExact',
+              'monarchClose',
+              'orphanet',
+              'medgen',
+              'kegg',
+            ];
+            const rowSum = keys.reduce((s, key) => {
+              const raw = row[key];
+              if (raw === undefined || raw === null) return s;
+              const v = Number(
+                typeof raw === 'number'
+                  ? raw
+                  : String(raw).replace(/,/g, '').trim(),
+              );
+              return Number.isFinite(v) ? s + v : s;
+            }, 0);
+            return sum + rowSum;
+          }, 0);
+        } else if (sectionId === 'variants-content') {
+          // バリアント: ClinVar＋MGeND
+          total = rowsFromApi.reduce((sum, row) => {
+            const c = Number(
+              typeof row.clinvar === 'number'
+                ? row.clinvar
+                : String(row.clinvar || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const m = Number(
+              typeof row.mgend === 'number'
+                ? row.mgend
+                : String(row.mgend || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const part =
+              (Number.isFinite(c) ? c : 0) + (Number.isFinite(m) ? m : 0);
+            return sum + part;
+          }, 0);
+        }
+
+        if (Number.isFinite(total)) {
+          titleCount.textContent = total.toLocaleString();
+        }
+      }
       if (tabBar) {
         const rows = tbody.querySelectorAll('tr');
         sectionConfig.tabs.forEach((tab, idx) => {
@@ -801,6 +1334,9 @@ async function showCardDetailTable(sectionId) {
               .forEach((b) => b.classList.remove('active'));
             this.classList.add('active');
             const tabId = this.dataset.tabId;
+            if (downloadTabSelect) {
+              downloadTabSelect.value = tabId;
+            }
             tbody.querySelectorAll('.stats-tab-row').forEach((tr) => {
               tr.style.display = tr.dataset.tabId === tabId ? '' : 'none';
             });
@@ -865,7 +1401,7 @@ async function loadSectionTableFromColumnApis(
     const columnData = {};
     for (const col of columns) {
       if (!col.dataApi) continue;
-      const res = await fetch(col.dataApi);
+      const res = await fetchWithTimeout(col.dataApi);
       if (!res.ok) throw new Error(`${col.dataKey}: ${res.statusText}`);
       const data = await res.json();
       if (data && typeof data === 'object' && !Array.isArray(data)) {
@@ -934,7 +1470,7 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
   tbody.innerHTML = loadingSpinnerHtml;
 
   try {
-    const res = await fetch(sectionConfig.dataApi);
+    const res = await fetchWithTimeout(sectionConfig.dataApi);
     if (!res.ok) throw new Error(res.statusText);
     const data = await res.json();
     const rows = data.rows || data.data || (Array.isArray(data) ? data : []);
@@ -942,7 +1478,7 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
     if (!Array.isArray(rows) || rows.length === 0) {
       tbody.innerHTML = `<tr><td colspan="${colCount}">—</td></tr>`;
       if (thead) thead.style.display = '';
-      return;
+      return rows;
     }
 
     tbody.innerHTML = '';
@@ -974,10 +1510,12 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
       tbody.appendChild(tr);
     });
     if (thead) thead.style.display = '';
+    return rows;
   } catch (e) {
     console.warn(`Stats API エラー (${sectionConfig.id}):`, e);
     tbody.innerHTML = `<tr><td colspan="${colCount}" class="stats-table-error">${errorText}</td></tr>`;
     if (thead) thead.style.display = '';
+    return [];
   }
 }
 

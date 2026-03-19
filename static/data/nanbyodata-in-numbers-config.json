@@ -10,6 +10,10 @@
         "ja": "",
         "en": ""
       },
+      "description": {
+        "ja": "指定難病・小児慢性特定疾病について、NANDO に登録されている件数を区分別に示した表です。",
+        "en": "This table shows counts of entries registered in NANDO for designated intractable diseases and pediatric chronic diseases by category."
+      },
       "hasTabs": false,
       "dataApi": "/sparqlist/api/nanbyodata_stats_nando",
       "columns": [
@@ -80,6 +84,10 @@
         "ja": "",
         "en": ""
       },
+      "description": {
+        "ja": "疾患定義、遺伝形式、別疾患名が登録されている件数を区分別に示した表です。",
+        "en": "This table shows counts of disease definitions, inheritance information, and alternative names by category."
+      },
       "hasTabs": false,
       "dataApi": "/sparqlist/api/nanbyodata_stats_disease_overview",
       "columns": [
@@ -138,6 +146,10 @@
       "titleTooltip": {
         "ja": "",
         "en": ""
+      },
+      "description": {
+        "ja": "各外部疾患リソースへのリンク件数を、指定難病・小児慢性特定疾病ごとに示した表です。",
+        "en": "This table shows counts of links to external disease resources for each disease category."
       },
       "hasTabs": true,
       "dataApi": "/sparqlist/api/nanbyodata_stats_links",
@@ -224,6 +236,10 @@
       "titleTooltip": {
         "ja": "糖鎖関連遺伝子の登録データ",
         "en": "Glycan-related gene registration data"
+      },
+      "description": {
+        "ja": "糖鎖関連遺伝子と NANDO 疾患の対応を、糖鎖中心・NANDO 中心の 2 つの見方で確認できる表です。",
+        "en": "This table shows mappings between glycan-related genes and NANDO diseases from glycan-centered and NANDO-centered views."
       },
       "hasTabs": true,
       "tabs": [
@@ -408,6 +424,10 @@
         "ja": "",
         "en": ""
       },
+      "description": {
+        "ja": "疾患関連遺伝子の件数を、国内基準由来・国際リソース由来に分けて区分別に示した表です。",
+        "en": "This table shows counts of disease-related genes by category, separated into Japan-curated and internationally curated sources."
+      },
       "hasTabs": false,
       "dataApi": "/sparqlist/api/nanbyodata_stats_genes",
       "columns": [
@@ -456,6 +476,10 @@
         "ja": "",
         "en": ""
       },
+      "description": {
+        "ja": "理研 BRC で提供されている難病関連バイオリソースを、細胞・マウス・DNA ごとに示した表です。",
+        "en": "This table shows disease-related bioresources provided by RIKEN BRC, grouped into cells, mice, and DNA."
+      },
       "hasTabs": true,
       "tabs": [
         {
@@ -466,18 +490,6 @@
           },
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_cell_list",
           "columns": [
-            {
-              "dataKey": "nando",
-              "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
-              },
-              "tooltip": {
-                "ja": "難病オントロジー（NANDO）の疾患。クリックで疾患ページへ",
-                "en": "Disease in NANDO. Click to go to disease page"
-              },
-              "link": "nando"
-            },
             {
               "dataKey": "ID",
               "label": {
@@ -491,6 +503,18 @@
               "link": "external",
               "linkHrefKey": "HP",
               "rowspan": true
+            },
+            {
+              "dataKey": "nando",
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "難病オントロジー（NANDO）の疾患。クリックで疾患ページへ",
+                "en": "Disease in NANDO. Click to go to disease page"
+              },
+              "link": "nando"
             },
             {
               "dataKey": "Cell_name",
@@ -532,18 +556,6 @@
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_mouse_list",
           "columns": [
             {
-              "dataKey": "nando",
-              "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
-              },
-              "tooltip": {
-                "ja": "",
-                "en": ""
-              },
-              "link": "nando"
-            },
-            {
               "dataKey": "mouse_id",
               "label": {
                 "ja": "マウスID",
@@ -556,6 +568,18 @@
               "link": "external",
               "linkHrefKey": "hp",
               "rowspan": true
+            },
+            {
+              "dataKey": "nando",
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
             },
             {
               "dataKey": "mouse_name",
@@ -596,18 +620,6 @@
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_dna_list",
           "columns": [
             {
-              "dataKey": "nando",
-              "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
-              },
-              "tooltip": {
-                "ja": "",
-                "en": ""
-              },
-              "link": "nando"
-            },
-            {
               "dataKey": "gene_id",
               "label": {
                 "ja": "DNA ID",
@@ -620,6 +632,18 @@
               "link": "external",
               "linkHrefKey": "hp",
               "rowspan": true
+            },
+            {
+              "dataKey": "nando",
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
             },
             {
               "dataKey": "gene",
@@ -654,6 +678,10 @@
       "title": {
         "ja": "バリアント",
         "en": "Variants"
+      },
+      "description": {
+        "ja": "ClinVar および MGeND に登録されたバリアント件数を、区分別に示した表です。",
+        "en": "This table shows counts of variants registered in ClinVar and MGeND by category."
       },
       "hasTabs": false,
       "dataApi": "/sparqlist/api/nanbyodata_stats_variants",
