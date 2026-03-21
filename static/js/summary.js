@@ -1,15 +1,216 @@
 (function () {
   const DEFAULT_ID = '1200473';
+  const MY_DISEASES_STORAGE_KEY = 'nanbyodata:my-diseases';
   let currentDownloadData = null;
   let activeLoadToken = 0;
+  let quickFactsState = {};
+  let clinicalOverviewState = {
+    features: [],
+    facialItems: [],
+    bodyMap: null,
+    selectedCategoryIds: [],
+    showAll: false,
+    facialSelection: null,
+  };
+  const labelCache = new Map();
+  let bodyMapPromise = null;
+  let currentMyDiseaseEntry = null;
 
   const $ = (id) => document.getElementById(id);
   const summaryRoot = $('summary-root');
+
+  function getCurrentLang() {
+    const params = new URLSearchParams(window.location.search);
+    const lang = params.get('lang');
+    if (lang === 'ja' || lang === 'ja_JP') return 'ja';
+    if (lang === 'en') return 'en';
+    const locale = summaryRoot?.dataset.locale || document.documentElement.lang || 'en';
+    return locale === 'ja' || locale === 'ja_JP' ? 'ja' : 'en';
+  }
+
+  function isJapaneseLocale() {
+    return getCurrentLang() === 'ja';
+  }
+
+  function t(ja, en) {
+    return isJapaneseLocale() ? ja : en;
+  }
+
+  function getDiseaseCharacter(rawId) {
+    return window.NanbyoDataDiseaseCharacters?.get?.(rawId) || null;
+  }
+
+  function stripDiseasePrefix(label) {
+    return String(label || '')
+      .replace(/^\[[^\]]+\]\s*/, '')
+      .trim();
+  }
+
+  function pickDiseaseName(overview, lang) {
+    if (lang === 'ja') {
+      return (
+        stripDiseasePrefix(overview.label_ja) ||
+        stripDiseasePrefix(overview.label) ||
+        overview.label ||
+        overview.title_ja ||
+        stripDiseasePrefix(overview.label_en) ||
+        overview.label_en ||
+        overview.engLabel ||
+        overview.nando_id ||
+        ''
+      );
+    }
+
+    return (
+      stripDiseasePrefix(overview.label_en) ||
+      overview.label_en ||
+      overview.engLabel ||
+      overview.title_en ||
+      stripDiseasePrefix(overview.label) ||
+      overview.label ||
+      stripDiseasePrefix(overview.label_ja) ||
+      overview.label_ja ||
+      overview.nando_id ||
+      ''
+    );
+  }
 
   function normalizeNandoId(raw) {
     const trimmed = String(raw || '').trim();
     if (!trimmed) return '';
     return trimmed.toUpperCase().startsWith('NANDO:') ? trimmed.slice(6) : trimmed;
+  }
+
+  function getStorageItem(key) {
+    try {
+      return window.localStorage.getItem(key);
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function setStorageItem(key, value) {
+    try {
+      window.localStorage.setItem(key, value);
+    } catch (error) {
+      // ignore storage write errors
+    }
+  }
+
+  function normalizeMyDiseaseEntry(entry) {
+    if (!entry || typeof entry !== 'object') return null;
+
+    const normalizedId = normalizeNandoId(entry.id);
+    if (!normalizedId) return null;
+
+    return {
+      id: `NANDO:${normalizedId}`,
+      label_ja: String(entry.label_ja || '').trim(),
+      label_en: String(entry.label_en || '').trim(),
+      saved_at: String(entry.saved_at || new Date().toISOString()),
+    };
+  }
+
+  function loadMyDiseases() {
+    const raw = getStorageItem(MY_DISEASES_STORAGE_KEY);
+    if (!raw) return [];
+
+    try {
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed)) return [];
+      return parsed.map(normalizeMyDiseaseEntry).filter(Boolean);
+    } catch (error) {
+      return [];
+    }
+  }
+
+  function saveMyDiseases(entries) {
+    const normalized = uniqueBy(
+      (Array.isArray(entries) ? entries : [])
+        .map(normalizeMyDiseaseEntry)
+        .filter(Boolean),
+      (entry) => entry.id
+    );
+    setStorageItem(MY_DISEASES_STORAGE_KEY, JSON.stringify(normalized));
+    return normalized;
+  }
+
+  function isMyDisease(id) {
+    const targetId = `NANDO:${normalizeNandoId(id)}`;
+    return loadMyDiseases().some((entry) => entry.id === targetId);
+  }
+
+  function addMyDisease(entry) {
+    const normalizedEntry = normalizeMyDiseaseEntry(entry);
+    if (!normalizedEntry) return loadMyDiseases();
+
+    const current = loadMyDiseases().filter((item) => item.id !== normalizedEntry.id);
+    return saveMyDiseases([normalizedEntry, ...current]);
+  }
+
+  function removeMyDisease(id) {
+    const targetId = `NANDO:${normalizeNandoId(id)}`;
+    return saveMyDiseases(loadMyDiseases().filter((entry) => entry.id !== targetId));
+  }
+
+  function toggleMyDisease(entry) {
+    const normalizedEntry = normalizeMyDiseaseEntry(entry);
+    if (!normalizedEntry) {
+      return {
+        active: false,
+        entries: loadMyDiseases(),
+      };
+    }
+
+    if (isMyDisease(normalizedEntry.id)) {
+      return {
+        active: false,
+        entries: removeMyDisease(normalizedEntry.id),
+      };
+    }
+
+    return {
+      active: true,
+      entries: addMyDisease(normalizedEntry),
+    };
+  }
+
+  window.NanbyoDataMyDiseases = {
+    key: MY_DISEASES_STORAGE_KEY,
+    load: loadMyDiseases,
+    save: saveMyDiseases,
+    has: isMyDisease,
+    add: addMyDisease,
+    remove: removeMyDisease,
+    toggle: toggleMyDisease,
+    normalizeEntry: normalizeMyDiseaseEntry,
+  };
+
+  function setMyDiseaseButtonState(active) {
+    const button = $('my-disease-toggle');
+    const label = $('my-disease-toggle-label');
+    if (!button || !label) return;
+
+    button.classList.toggle('is-active', active);
+    button.setAttribute('aria-pressed', active ? 'true' : 'false');
+    label.textContent = active
+      ? t('登録済み', 'Added')
+      : t('マイ疾患に追加', 'Add to My Diseases');
+  }
+
+  function updateMyDiseasesNavCount() {
+    const countEl = $('my-diseases-nav-count');
+    if (!countEl) return;
+    countEl.textContent = String(loadMyDiseases().length);
+  }
+
+  function syncMyDiseaseButton(entry) {
+    const button = $('my-disease-toggle');
+    if (!button) return;
+    currentMyDiseaseEntry = normalizeMyDiseaseEntry(entry);
+    button.disabled = !currentMyDiseaseEntry;
+    setMyDiseaseButtonState(currentMyDiseaseEntry ? isMyDisease(currentMyDiseaseEntry.id) : false);
+    updateMyDiseasesNavCount();
   }
 
   function escapeHtml(value) {
@@ -31,11 +232,73 @@
     });
   }
 
+  function extractHpoId(value) {
+    const raw = String(value || '');
+    const colonMatch = raw.match(/HP:\d{7}/i);
+    if (colonMatch) return colonMatch[0].toUpperCase();
+
+    const underscoreMatch = raw.match(/HP[_:](\d{7})/i);
+    if (underscoreMatch) return `HP:${underscoreMatch[1]}`;
+
+    return '';
+  }
+
+  function toFeatureAnchorId(hpoId) {
+    return `feature-category-${String(hpoId || '').replace(':', '-')}`;
+  }
+
+  function filtersEqual(left, right) {
+    if (!left && !right) return true;
+    if (!left || !right) return false;
+    return left.type === right.type && left.value === right.value;
+  }
+
   function setStatus(message, isError = false) {
     const el = $('status');
     if (!el) return;
     el.textContent = message;
     el.className = isError ? 'summary-status error' : 'summary-status';
+  }
+
+  function renderDiseaseCharacter(rawId) {
+    const slot = $('summary-character-slot');
+    const wrap = $('summary-hero-overview');
+    if (!slot) return;
+
+    const character = getDiseaseCharacter(rawId);
+    if (!character) {
+      slot.hidden = true;
+      slot.innerHTML = '';
+      wrap?.classList.add('summary-hero-overview--single');
+      return;
+    }
+
+    slot.hidden = false;
+    wrap?.classList.remove('summary-hero-overview--single');
+    const baseName = isJapaneseLocale() ? character.base_name_ja : character.base_name_en;
+    const baseUrl = isJapaneseLocale() ? character.base_url_ja : character.base_url_en;
+    const note = isJapaneseLocale()
+      ? (character.caption_ja || character.caption_en || '')
+      : (character.caption_en || character.caption_ja || '');
+    const noteHtml = baseName && baseUrl && note.includes(baseName)
+      ? escapeHtml(note).replace(
+          escapeHtml(baseName),
+          `<a class="summary-character-link" href="${escapeHtml(baseUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(baseName)}</a>`
+        )
+      : escapeHtml(note);
+    const imageSrc = character.asset_fallback
+      ? `${escapeHtml(character.asset)}" onerror="this.onerror=null;this.src='${escapeHtml(character.asset_fallback)}`
+      : escapeHtml(character.asset);
+    slot.innerHTML = `
+      <figure class="summary-character-card summary-character-card--${escapeHtml(character.theme || 'default')}">
+        <img class="summary-character-image" src="${imageSrc}" alt="${escapeHtml(isJapaneseLocale() ? character.alt_ja : character.alt_en)}" loading="lazy" />
+        <figcaption class="summary-character-copy">
+          <div class="summary-character-kicker">${escapeHtml(isJapaneseLocale() ? '疾患キャラクター' : 'Disease mascot')}</div>
+          <div class="summary-character-name">${escapeHtml(isJapaneseLocale() ? character.name_ja : character.name_en)}</div>
+          <div class="summary-character-note">${noteHtml}</div>
+        </figcaption>
+      </figure>
+    `;
   }
 
   function setText(id, value) {
@@ -52,6 +315,13 @@
     }
   }
 
+  function setHtml(id, html) {
+    const el = $(id);
+    if (el) {
+      el.innerHTML = html;
+    }
+  }
+
   async function fetchJson(endpoint, id) {
     const url = `/sparqlist/api/${endpoint}?nando_id=${encodeURIComponent(id)}`;
     const response = await fetch(url);
@@ -59,6 +329,81 @@
       throw new Error(`${endpoint}: HTTP ${response.status}`);
     }
     return response.json();
+  }
+
+  async function fetchOntologyLabels(id) {
+    const cacheKey = `NANDO:${normalizeNandoId(id)}`;
+    if (labelCache.has(cacheKey)) return labelCache.get(cacheKey);
+
+    const response = await fetch('/ontology/current_release/nando.tsv');
+    if (!response.ok) throw new Error(`nando.tsv: HTTP ${response.status}`);
+
+    const text = await response.text();
+    const line = text
+      .split('\n')
+      .find((row) => row.startsWith(`${cacheKey}\t`));
+
+    const labels = { ja: '', en: '' };
+    if (line) {
+      const cols = line.split('\t');
+      labels.en = stripDiseasePrefix(cols[1] || '');
+      labels.ja = stripDiseasePrefix(cols[3] || '');
+    }
+
+    labelCache.set(cacheKey, labels);
+    return labels;
+  }
+
+  async function fetchBodyMap() {
+    if (!bodyMapPromise) {
+      bodyMapPromise = fetch('/static/data/hpo-body-map.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`hpo-body-map.json: HTTP ${response.status}`);
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          bodyMapPromise = null;
+          throw error;
+        });
+    }
+    return bodyMapPromise;
+  }
+
+  async function fetchSubtypeStats(children) {
+    const entries = await Promise.all(
+      children.map(async (child) => {
+        const childId = normalizeNandoId(child.id);
+        const settled = await Promise.allSettled([
+          fetchJson('nanbyodata_get_japan_curated_gene_by_nando_id', childId),
+          fetchJson('nanbyodata_get_causal_gene_by_nando_id', childId),
+          fetchJson('nanbyodata_get_hpo_data_by_nando_id', childId),
+          fetchJson('nanbyodata_get_pubmed_data_by_nando_id', childId),
+        ]);
+
+        const japanGenes = settled[0].status === 'fulfilled' ? settled[0].value : [];
+        const causalGenes = settled[1].status === 'fulfilled' ? settled[1].value : [];
+        const hpoData = settled[2].status === 'fulfilled' ? settled[2].value : [];
+        const references = settled[3].status === 'fulfilled' ? settled[3].value : [];
+
+        const relatedGenes = uniqueBy(
+          [...japanGenes.map((gene) => gene.symbol), ...causalGenes.map((gene) => gene.gene_symbol)].filter(Boolean),
+          (symbol) => symbol
+        ).length;
+
+        return [
+          child.id,
+          {
+            genes: relatedGenes,
+            features: hpoData.length,
+            references: references.length,
+          },
+        ];
+      })
+    );
+
+    return new Map(entries);
   }
 
   function downloadBlob(filename, content, type) {
@@ -145,7 +490,7 @@
     const el = $('description');
     const button = $('description-toggle');
     if (!el || !button) return;
-    el.textContent = text || '説明データはありません。';
+    el.textContent = text || t('説明データはありません。', 'No description available.');
     el.classList.remove('expanded');
 
     const isLong = (text || '').length > 360;
@@ -153,28 +498,111 @@
     button.textContent = 'More';
   }
 
-  function configureStatLinks(id) {
+  function configureSummaryLinks(id) {
     const base = `${window.location.origin}/disease/NANDO:${encodeURIComponent(id)}`;
     setHref('detail-link', base);
-    setHref('link-overview', `${base}#overview`);
-    setHref('link-genes-japan', `${base}#genes-japan-curated`);
-    setHref('link-genes-international', `${base}#genes-internationally-curated`);
-    setHref('link-glycan-genes', `${base}#glycan-related-genes`);
-    setHref('link-genetic-testing', `${base}#genetic-testing`);
-    setHref('link-clinical-features', `${base}#clinical-features`);
-    setHref('link-facial-features', `${base}#facial-features`);
-    setHref('link-human-datasets', `${base}#human-genomic-datasets`);
-    setHref('link-cell', `${base}#bio-resources-cell`);
-    setHref('link-mouse', `${base}#bio-resources-mouse`);
-    setHref('link-dna', `${base}#bio-resources-dna`);
-    setHref('link-compounds', `${base}#compounds`);
-    setHref('link-clinvar', `${base}#variants-clinvar`);
-    setHref('link-mgend', `${base}#variants-mgend`);
-    setHref('link-references', `${base}#references`);
+    setHref('nando-id-link', base);
+  }
+
+  function renderQuickFactsList() {
+    const facts = [
+      {
+        href: '#patient-trend',
+        label: t('患者数', 'Patients'),
+        value: quickFactsState.patients || '-',
+        note: quickFactsState.patientsNote || '',
+      },
+      {
+        href: '#subtype-classification',
+        label: t('病型数', 'Subtypes'),
+        value: quickFactsState.subtypes || '-',
+        note: quickFactsState.subtypesNote || '',
+      },
+      {
+        href: '#molecular-diagnosis',
+        label: t('関連遺伝子', 'Related genes'),
+        value: quickFactsState.genes || '-',
+        note: quickFactsState.genesNote || '',
+      },
+      {
+        href: '#clinical-overview',
+        label: t('臨床所見', 'Clinical features'),
+        value: quickFactsState.features || '-',
+        note: quickFactsState.featuresNote || '',
+      },
+      {
+        href: '#molecular-diagnosis',
+        label: t('遺伝学的検査', 'Genetic tests'),
+        value: quickFactsState.tests || '-',
+        note: quickFactsState.testsNote || '',
+      },
+    ];
+
+    setHtml(
+      'quick-facts-list',
+      facts
+        .map(
+          (fact) => `
+        <a class="summary-compact-link" href="${escapeHtml(fact.href)}">
+          <strong>${escapeHtml(fact.label)}:</strong> ${escapeHtml(fact.value)}
+          ${fact.note ? `<div class="summary-compact-note">${escapeHtml(fact.note)}</div>` : ''}
+        </a>
+      `
+        )
+        .join('')
+    );
+  }
+
+  function renderAliases(overview) {
+    const aliases = isJapaneseLocale()
+      ? [...(overview.alt_label_ja || []), ...(overview.alt_label_en || [])]
+      : [...(overview.alt_label_en || []), ...(overview.alt_label_ja || [])];
+    const cleaned = uniqueBy(
+      aliases.map((alias) => stripDiseasePrefix(alias)).filter(Boolean),
+      (alias) => alias.toLowerCase()
+    ).slice(0, 6);
+
+    setHtml(
+      'alias-row',
+      cleaned.length
+        ? cleaned.map((alias) => `<span class="summary-alias-pill">${escapeHtml(alias)}</span>`).join('')
+        : ''
+    );
+  }
+
+  function renderPrimaryLinks(links) {
+    setHtml(
+      'primary-link-grid',
+      links.length
+        ? links
+            .map(
+              (link) => `
+          <a class="summary-primary-link" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">
+            <span>${escapeHtml(link.label)}</span>
+            <span class="summary-link-icon" aria-hidden="true"></span>
+          </a>
+        `
+            )
+            .join('')
+        : ''
+    );
   }
 
   function resetView(id) {
     document.title = 'Disease Summary | NanbyoData';
+    currentMyDiseaseEntry = null;
+    quickFactsState = {
+      patients: '-',
+      patientsNote: '',
+      subtypes: '-',
+      subtypesNote: '',
+      genes: '-',
+      genesNote: '',
+      features: '-',
+      featuresNote: '',
+      tests: '-',
+      testsNote: '',
+    };
     currentDownloadData = {
       overview: {
         nandoId: `NANDO:${id}`,
@@ -190,30 +618,26 @@
       links: [],
       references: [],
     };
+    clinicalOverviewState = {
+      features: [],
+      facialItems: [],
+      bodyMap: null,
+      selectedCategoryIds: [],
+      showAll: false,
+    };
     setText('title-ja', 'Loading...');
     setText('title-en', '');
     setDescription('');
+    setHtml('alias-row', '');
+    setHtml('primary-link-grid', '');
     setText('nando-id', `NANDO:${id}`);
     setText('notification-number', '-');
     setText('alias-primary', '-');
-    configureStatLinks(id);
+    configureSummaryLinks(id);
+    setHref('mondo-link', '#');
+    setHref('latest-paper-link', '#');
 
     [
-      'latest-patient-count',
-      'japan-gene-count',
-      'reference-count',
-      'variant-count',
-      'gene-count',
-      'glycan-gene-count',
-      'genetic-testing-count',
-      'clinical-feature-count',
-      'facial-feature-count',
-      'human-dataset-count',
-      'cell-count',
-      'mouse-count',
-      'dna-count',
-      'compound-count',
-      'mgend-count',
       'insight-axis',
       'insight-axis-note',
       'insight-patients',
@@ -222,12 +646,23 @@
       'insight-paper-note',
     ].forEach((key) => setText(key, '-'));
 
-    $('trend-chart').innerHTML = '<div class="summary-tiny">読み込み中...</div>';
-    $('gene-grid').innerHTML = '<div class="summary-tiny">読み込み中...</div>';
-    $('feature-grid').innerHTML = '<div class="summary-tiny">読み込み中...</div>';
-    $('subclass-tree').innerHTML = '<div class="summary-tiny">読み込み中...</div>';
-    $('link-grid').innerHTML = '<div class="summary-tiny">読み込み中...</div>';
-    $('reference-list').innerHTML = '<div class="summary-tiny">読み込み中...</div>';
+    $('trend-chart').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('quick-facts-list').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('gene-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('diagnostic-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('bodymap-wrap').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('selection-summary').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('feature-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('facial-panel').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    setText('subclass-meta', '');
+    $('subclass-tree').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('link-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('reference-list').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    const myDiseaseButton = $('my-disease-toggle');
+    if (myDiseaseButton) {
+      myDiseaseButton.disabled = true;
+      setMyDiseaseButtonState(false);
+    }
   }
 
   function isActiveLoad(token) {
@@ -236,7 +671,7 @@
 
   function renderTrendChart(points) {
     if (!points.length) {
-      $('trend-chart').innerHTML = '<div class="summary-tiny">患者数データはありません。</div>';
+      $('trend-chart').innerHTML = `<div class="summary-tiny">${t('患者数データはありません。', 'No patient data available.')}</div>`;
       return;
     }
 
@@ -266,7 +701,7 @@
       .join('');
 
     $('trend-chart').innerHTML = `
-      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="患者数推移">
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(t('患者数推移', 'Patient trend'))}">
         <defs>
           <linearGradient id="summaryTrendFill" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stop-color="rgba(29,107,82,0.26)"></stop>
@@ -280,8 +715,8 @@
         ${markers}
       </svg>
       <div class="summary-chart-caption">
-        <span>最小 ${escapeHtml(min)}人</span>
-        <span>最大 ${escapeHtml(max)}人</span>
+        <span>${escapeHtml(t(`最小 ${min}人`, `Min ${min}`))}</span>
+        <span>${escapeHtml(t(`最大 ${max}人`, `Max ${max}`))}</span>
       </div>
     `;
   }
@@ -294,21 +729,646 @@
         <article class="summary-gene-card">
           <a class="summary-gene-symbol" href="${escapeHtml(gene.url || '#')}" target="_blank" rel="noopener noreferrer">${escapeHtml(gene.symbol)}</a>
           <h3>${escapeHtml(gene.name)}</h3>
-          <div class="summary-tiny">${escapeHtml(gene.note)}</div>
+          ${
+            isJapaneseLocale() && gene.nameJa
+              ? `<div class="summary-gene-name-ja">${escapeHtml(gene.nameJa)}</div>`
+              : ''
+          }
+          ${
+            isJapaneseLocale() && gene.noteJa
+              ? `<div class="summary-gene-note-ja">${escapeHtml(gene.noteJa)}</div>`
+              : ''
+          }
+          <div class="summary-tiny summary-gene-note" data-expanded="false">${escapeHtml(gene.note)}</div>
+          ${
+            gene.note && gene.note.length > 180
+              ? '<button class="summary-inline-toggle summary-gene-toggle" type="button">More</button>'
+              : ''
+          }
         </article>
       `
           )
           .join('')
-      : '<div class="summary-tiny">遺伝子データはありません。</div>';
+      : `<div class="summary-tiny">${t('遺伝子データはありません。', 'No gene data available.')}</div>`;
   }
 
-  function renderFeatures(items) {
-    $('feature-grid').innerHTML = items.length
-      ? items
+  function renderDiagnosticCards(cards) {
+    $('diagnostic-grid').innerHTML = cards.length
+      ? cards
+          .map(
+            (card) => `
+        <a class="summary-diagnostic-card summary-card-link" href="${escapeHtml(card.href)}">
+          <span class="summary-link-icon" aria-hidden="true"></span>
+          <h3>${escapeHtml(card.title)}</h3>
+          <div class="summary-diagnostic-value">${escapeHtml(card.value)}</div>
+          <div class="summary-diagnostic-note">${escapeHtml(card.note)}</div>
+        </a>
+      `
+          )
+          .join('')
+      : `<div class="summary-tiny">${t('診断関連データはありません。', 'No diagnostic data available.')}</div>`;
+  }
+
+  function pulseTarget(target) {
+    if (!target) return;
+    target.classList.remove('is-targeted');
+    window.requestAnimationFrame(() => {
+      target.classList.add('is-targeted');
+      window.setTimeout(() => {
+        target.classList.remove('is-targeted');
+      }, 4600);
+    });
+  }
+
+  function getSelectedFeatureIds() {
+    if (clinicalOverviewState.showAll) {
+      return new Set(clinicalOverviewState.features.map((feature) => feature.categoryId).filter(Boolean));
+    }
+    return new Set(clinicalOverviewState.selectedCategoryIds);
+  }
+
+  function rerenderClinicalOverviewWithState() {
+    renderClinicalOverview(
+      clinicalOverviewState.features,
+      clinicalOverviewState.facialItems,
+      clinicalOverviewState.bodyMap
+    );
+  }
+
+  function buildBodyMapFigure() {
+    return `
+      <svg class="summary-bodymap-svg" viewBox="0 0 220 420" role="img" aria-label="${escapeHtml(
+        t('人体部位ナビゲーション', 'Body region navigation')
+      )}">
+        <g fill="#f3f7f4" stroke="rgba(21,32,24,0.18)" stroke-width="2">
+          <circle cx="110" cy="48" r="28"></circle>
+          <rect x="98" y="74" width="24" height="18" rx="10"></rect>
+          <rect x="74" y="92" width="72" height="118" rx="34"></rect>
+          <rect x="48" y="102" width="26" height="110" rx="14"></rect>
+          <rect x="146" y="102" width="26" height="110" rx="14"></rect>
+          <rect x="82" y="208" width="24" height="128" rx="14"></rect>
+          <rect x="114" y="208" width="24" height="128" rx="14"></rect>
+        </g>
+        <g class="summary-bodymap-hotspots">
+          <rect class="summary-bodymap-shape summary-bodymap-shape--limbs" data-area="limbs" x="46" y="102" width="128" height="234" rx="40"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--skin" data-area="skin" x="60" y="92" width="100" height="244" rx="44"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--torso" data-area="torso" x="80" y="92" width="60" height="118" rx="24"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--torso" data-area="torso" x="66" y="132" width="18" height="88" rx="9"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--torso" data-area="torso" x="136" y="132" width="18" height="88" rx="9"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--torso" data-area="torso" x="88" y="208" width="48" height="22" rx="11"></rect>
+          <circle class="summary-bodymap-shape summary-bodymap-shape--head" data-area="head" cx="110" cy="48" r="28"></circle>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--abdomen" data-area="abdomen" x="82" y="154" width="56" height="52" rx="20"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--chest" data-area="chest" x="78" y="100" width="64" height="52" rx="22"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--pelvis" data-area="pelvis" x="84" y="204" width="52" height="30" rx="14"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--ear" data-area="ear" x="74" y="40" width="8" height="18" rx="4"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--ear" data-area="ear" x="138" y="40" width="8" height="18" rx="4"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--eye" data-area="eye" x="90" y="36" width="16" height="8" rx="4"></rect>
+          <rect class="summary-bodymap-shape summary-bodymap-shape--eye" data-area="eye" x="114" y="36" width="16" height="8" rx="4"></rect>
+        </g>
+      </svg>
+    `;
+  }
+
+  function getFacialAgeMonths(item) {
+    const years = Number(item.age_year);
+    const months = Number(item.age_month);
+    const hasYears = Number.isFinite(years) && years >= 0;
+    const hasMonths = Number.isFinite(months) && months >= 0;
+    if (!hasYears && !hasMonths) return null;
+    return (hasYears ? years * 12 : 0) + (hasMonths ? months : 0);
+  }
+
+  function getFacialAgeBucket(item) {
+    const months = getFacialAgeMonths(item);
+    if (months == null) {
+      return {
+        key: 'unknown',
+        label: t('年齢不明', 'Unknown age'),
+      };
+    }
+    if (months < 24) {
+      return { key: '0-1', label: t('0-1歳', '0-1 years') };
+    }
+    if (months < 72) {
+      return { key: '2-5', label: t('2-5歳', '2-5 years') };
+    }
+    if (months < 156) {
+      return { key: '6-12', label: t('6-12歳', '6-12 years') };
+    }
+    if (months < 216) {
+      return { key: '13-17', label: t('13-17歳', '13-17 years') };
+    }
+    return { key: '18+', label: t('18歳以上', '18+ years') };
+  }
+
+  function normalizeEthnicityLabel(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return 'Unknown';
+    const lowered = raw.toLowerCase();
+    if (['unknown', '不明', 'na', 'n/a', '-'].includes(lowered)) {
+      return 'Unknown';
+    }
+    return raw;
+  }
+
+  function describeFacialRecord(item) {
+    return [
+      item.gender,
+      item.gene,
+      item.image_desc,
+      (() => {
+        const years = Number(item.age_year);
+        const months = Number(item.age_month);
+        if (Number.isFinite(years) && years >= 0) return `${years}${t('歳', 'y')}`;
+        if (Number.isFinite(months) && months >= 0) return `${months}${t('か月', 'mo')}`;
+        return '';
+      })(),
+      item.pmid ? `PMID ${item.pmid}` : '',
+    ]
+      .filter(Boolean)
+      .join(' / ');
+  }
+
+  function getFacialSelectionKey(ethnicity, bucketKey) {
+    return `${ethnicity}__${bucketKey}`;
+  }
+
+  function buildPieSlicePath(cx, cy, radius, startAngle, endAngle) {
+    const toPoint = (angle) => ({
+      x: cx + radius * Math.cos(angle),
+      y: cy + radius * Math.sin(angle),
+    });
+    const start = toPoint(startAngle);
+    const end = toPoint(endAngle);
+    const largeArc = endAngle - startAngle > Math.PI ? 1 : 0;
+    return `M ${cx} ${cy} L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y} Z`;
+  }
+
+  function renderFacialPanel(records) {
+    const panel = $('facial-panel');
+    if (!panel) return;
+
+    if (!records.length) {
+      panel.innerHTML = `
+        <h3>${escapeHtml(t('顔貌・視覚的特徴', 'Facial features'))}</h3>
+        <div class="summary-tiny">${t('顔貌特徴データはありません。', 'No facial feature data available.')}</div>
+      `;
+      return;
+    }
+
+    const grouped = new Map();
+    for (const item of records) {
+      const ethnicity = normalizeEthnicityLabel(item.ethnicity);
+      if (!grouped.has(ethnicity)) {
+        grouped.set(ethnicity, []);
+      }
+      grouped.get(ethnicity).push(item);
+    }
+
+    const bucketOrder = ['0-1', '2-5', '6-12', '13-17', '18+', 'unknown'];
+    const bucketColors = {
+      '0-1': '#1d6b52',
+      '2-5': '#2f8a68',
+      '6-12': '#59a17f',
+      '13-17': '#88b798',
+      '18+': '#b8d0bb',
+      unknown: '#d7ddd3',
+    };
+
+    const ethnicityCards = Array.from(grouped.entries())
+      .sort((a, b) => b[1].length - a[1].length)
+      .map(([ethnicity, items]) => {
+        const buckets = new Map();
+        items.forEach((item) => {
+          const bucket = getFacialAgeBucket(item);
+          if (!buckets.has(bucket.key)) {
+            buckets.set(bucket.key, {
+              key: bucket.key,
+              label: bucket.label,
+              color: bucketColors[bucket.key],
+              items: [],
+            });
+          }
+          buckets.get(bucket.key).items.push(item);
+        });
+
+        const orderedBuckets = bucketOrder
+          .map((key) => buckets.get(key))
+          .filter(Boolean);
+        const total = items.length;
+        let angle = -Math.PI / 2;
+        const slices = orderedBuckets
+          .map((bucket) => {
+            const ratio = bucket.items.length / total;
+            const nextAngle = angle + ratio * Math.PI * 2;
+            const path = buildPieSlicePath(54, 54, 42, angle, nextAngle);
+            const selected =
+              clinicalOverviewState.facialSelection?.ethnicity === ethnicity &&
+              clinicalOverviewState.facialSelection?.bucketKey === bucket.key;
+            const slice = `
+              <path
+                d="${path}"
+                fill="${bucket.color}"
+                class="summary-facial-slice ${selected ? 'is-selected' : ''}"
+                data-facial-ethnicity="${escapeHtml(ethnicity)}"
+                data-facial-bucket="${escapeHtml(bucket.key)}"
+                tabindex="0"
+                role="button"
+              ></path>
+            `;
+            angle = nextAngle;
+            return slice;
+          })
+          .join('');
+
+        const selectedBucket =
+          clinicalOverviewState.facialSelection?.ethnicity === ethnicity
+            ? orderedBuckets.find((bucket) => bucket.key === clinicalOverviewState.facialSelection.bucketKey)
+            : null;
+
+        return `
+          <article class="summary-facial-card">
+            <div class="summary-facial-card-head">
+              <div>
+                <h4>${escapeHtml(ethnicity)}</h4>
+                <div class="summary-tiny">${escapeHtml(
+                  t(`${total}件の GestaltMatcher 症例`, `${total} GestaltMatcher records`)
+                )}</div>
+              </div>
+            </div>
+            <div class="summary-facial-card-body">
+              <svg class="summary-facial-pie" viewBox="0 0 108 108" role="img" aria-label="${escapeHtml(
+                `${ethnicity} age distribution`
+              )}">
+                ${slices}
+                <circle cx="54" cy="54" r="18" fill="rgba(255,252,246,0.96)"></circle>
+                <text x="54" y="51" text-anchor="middle" class="summary-facial-pie-total">${escapeHtml(String(total))}</text>
+                <text x="54" y="65" text-anchor="middle" class="summary-facial-pie-label">${escapeHtml(t('件', 'cases'))}</text>
+              </svg>
+              <div class="summary-facial-legend">
+                ${orderedBuckets
+                  .map(
+                    (bucket) => `
+                      <button
+                        class="summary-facial-legend-item ${
+                          clinicalOverviewState.facialSelection?.ethnicity === ethnicity &&
+                          clinicalOverviewState.facialSelection?.bucketKey === bucket.key
+                            ? 'is-selected'
+                            : ''
+                        }"
+                        type="button"
+                        data-facial-ethnicity="${escapeHtml(ethnicity)}"
+                        data-facial-bucket="${escapeHtml(bucket.key)}"
+                      >
+                        <span class="summary-facial-legend-swatch" style="background:${escapeHtml(bucket.color)}"></span>
+                        <span>${escapeHtml(bucket.label)}</span>
+                        <span class="summary-facial-legend-count">${escapeHtml(String(bucket.items.length))}</span>
+                      </button>
+                    `
+                  )
+                  .join('')}
+              </div>
+            </div>
+            ${
+              selectedBucket
+                ? `
+                  <div class="summary-facial-records">
+                    <div class="summary-selection-note">${escapeHtml(
+                      t('選択中の年齢帯の症例', 'Records in selected age range')
+                    )}</div>
+                    <div class="summary-facial-record-list">
+                      ${selectedBucket.items
+                        .map(
+                          (item) => `
+                            <a class="summary-facial-record" href="${escapeHtml(item.person || '#')}" target="_blank" rel="noopener noreferrer">
+                              <strong>${escapeHtml(item.id || t('症例', 'Case'))}</strong>
+                              <div class="summary-tiny">${escapeHtml(describeFacialRecord(item))}</div>
+                            </a>
+                          `
+                        )
+                        .join('')}
+                    </div>
+                  </div>
+                `
+                : ''
+            }
+          </article>
+        `;
+      })
+      .join('');
+
+    panel.innerHTML = `
+      <h3>${escapeHtml(t('顔貌・視覚的特徴', 'Facial features'))}</h3>
+      <div class="summary-facial-meta">${escapeHtml(
+        t(
+          `GestaltMatcher に由来する症例画像・顔貌データ ${records.length} 件`,
+          `${records.length} case-image records from GestaltMatcher`
+        )
+      )}</div>
+      <div class="summary-facial-grid">${ethnicityCards}</div>
+    `;
+
+    const toggleFacialSelection = (ethnicity, bucketKey) => {
+      const current = clinicalOverviewState.facialSelection;
+      if (current?.ethnicity === ethnicity && current?.bucketKey === bucketKey) {
+        clinicalOverviewState.facialSelection = null;
+      } else {
+        clinicalOverviewState.facialSelection = { ethnicity, bucketKey };
+      }
+      rerenderClinicalOverviewWithState();
+    };
+
+    panel.querySelectorAll('[data-facial-ethnicity][data-facial-bucket]').forEach((element) => {
+      const ethnicity = element.dataset.facialEthnicity;
+      const bucketKey = element.dataset.facialBucket;
+      element.addEventListener('click', () => {
+        toggleFacialSelection(ethnicity, bucketKey);
+      });
+      element.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggleFacialSelection(ethnicity, bucketKey);
+        }
+      });
+    });
+  }
+
+  function renderBodyMap(features, bodyMap) {
+    const wrap = $('bodymap-wrap');
+    if (!wrap) return;
+
+    if (!features.length) {
+      wrap.innerHTML = '';
+      return;
+    }
+
+    const featureById = new Map(
+      features
+        .filter((feature) => feature.categoryId)
+        .map((feature) => [feature.categoryId, feature])
+    );
+    const resolvedRegions = (bodyMap?.body_regions || [])
+      .map((region) => ({
+        ...region,
+        feature: featureById.get(region.hpo_id),
+      }))
+      .filter((region) => region.feature);
+
+    const regions = resolvedRegions;
+
+    const supplemental = (bodyMap?.supplemental_categories || [])
+      .map((category) => ({
+        ...category,
+        feature: featureById.get(category.hpo_id),
+      }))
+      .filter((category) => category.feature);
+
+    if (!regions.length && !supplemental.length) {
+      wrap.innerHTML = '';
+      return;
+    }
+
+    const selectedIds = getSelectedFeatureIds();
+    const selectedAreas = new Set(
+      regions
+        .filter((region) => selectedIds.has(region.hpo_id))
+        .map((region) => region.target_area)
+    );
+    const totalFeatureCount = features.reduce((sum, feature) => sum + feature.items.length, 0);
+
+    wrap.innerHTML = `
+      <div class="summary-bodymap">
+        <div class="summary-bodymap-figure">
+          ${buildBodyMapFigure()}
+        </div>
+        <div class="summary-bodymap-labels">
+          <div class="summary-bodymap-actions">
+            <button class="summary-bodymap-action" type="button" data-bodymap-action="all">
+              <span>${escapeHtml(t('全表示', 'Show all'))}</span>
+              <span class="summary-bodymap-count">${escapeHtml(String(totalFeatureCount))}</span>
+            </button>
+            <button class="summary-bodymap-action" type="button" data-bodymap-action="clear">
+              ${escapeHtml(t('クリア', 'Clear'))}
+            </button>
+          </div>
+          <div>
+            <div class="summary-bodymap-title">${escapeHtml(t('人体部位から探す', 'Browse by body region'))}</div>
+            <div class="summary-bodymap-links">
+              ${regions
+                .map(
+                  (region) => `
+                    <a
+                      class="summary-bodymap-link ${selectedIds.has(region.hpo_id) ? 'is-selected' : ''}"
+                      href="#${escapeHtml(toFeatureAnchorId(region.hpo_id))}"
+                      data-bodymap-target="${escapeHtml(region.target_area)}"
+                      data-bodymap-filter-type="hpo"
+                      data-bodymap-filter-value="${escapeHtml(region.hpo_id)}"
+                    >
+                      <span>${escapeHtml(isJapaneseLocale() ? region.label_ja : region.label_en)}</span>
+                      <span class="summary-bodymap-count">${escapeHtml(region.feature.items.length)}</span>
+                    </a>
+                  `
+                )
+                .join('')}
+            </div>
+          </div>
+          ${
+            supplemental.length
+              ? `
+                <div>
+                  <div class="summary-bodymap-title">${escapeHtml(
+                    t('全身・補助カテゴリから探す', 'Browse general and supplemental categories')
+                  )}</div>
+                  <div class="summary-bodymap-links">
+                    ${supplemental
+                      .map(
+                        (category) => `
+                          <a
+                            class="summary-bodymap-link ${selectedIds.has(category.hpo_id) ? 'is-selected' : ''}"
+                            href="#${escapeHtml(toFeatureAnchorId(category.hpo_id))}"
+                            data-bodymap-filter-type="hpo"
+                            data-bodymap-filter-value="${escapeHtml(category.hpo_id)}"
+                          >
+                            <span>${escapeHtml(isJapaneseLocale() ? category.label_ja : category.label_en)}</span>
+                            <span class="summary-bodymap-count">${escapeHtml(category.feature.items.length)}</span>
+                          </a>
+                        `
+                      )
+                      .join('')}
+                  </div>
+                </div>
+              `
+              : ''
+          }
+        </div>
+      </div>
+    `;
+
+    const hotspotAreas = wrap.querySelectorAll('[data-area]');
+    const filterLinks = wrap.querySelectorAll('[data-bodymap-filter-type]');
+    const applySelectedState = () => {
+      selectedAreas.forEach((area) => {
+        wrap.querySelectorAll(`[data-area="${area}"]`).forEach((node) => node.classList.add('is-active'));
+      });
+    };
+    const clearActiveState = () => {
+      hotspotAreas.forEach((node) => node.classList.remove('is-active'));
+      filterLinks.forEach((node) => node.classList.remove('is-active'));
+      applySelectedState();
+    };
+
+    filterLinks.forEach((link) => {
+      const filterType = link.dataset.bodymapFilterType;
+      const filterValue = link.dataset.bodymapFilterValue;
+      const region = regions.find((item) => item.hpo_id === filterValue);
+      const area = region?.target_area || null;
+      const matchingHotspots = area ? wrap.querySelectorAll(`[data-area="${area}"]`) : [];
+      const matchingLinks = wrap.querySelectorAll(
+        `[data-bodymap-filter-type="${filterType}"][data-bodymap-filter-value="${filterValue}"]`
+      );
+      const activate = () => {
+        clearActiveState();
+        matchingHotspots.forEach((node) => node.classList.add('is-active'));
+        matchingLinks.forEach((node) => node.classList.add('is-active'));
+      };
+      link.addEventListener('mouseenter', activate);
+      link.addEventListener('focus', activate);
+      link.addEventListener('mouseleave', clearActiveState);
+      link.addEventListener('blur', clearActiveState);
+      link.addEventListener('click', (event) => {
+        event.preventDefault();
+        if (filterType !== 'hpo') return;
+        clinicalOverviewState.showAll = false;
+        if (clinicalOverviewState.selectedCategoryIds.includes(filterValue)) {
+          clinicalOverviewState.selectedCategoryIds = clinicalOverviewState.selectedCategoryIds.filter((id) => id !== filterValue);
+        } else {
+          clinicalOverviewState.selectedCategoryIds = [...clinicalOverviewState.selectedCategoryIds, filterValue];
+        }
+        rerenderClinicalOverviewWithState();
+      });
+    });
+
+    hotspotAreas.forEach((hotspot) => {
+      const area = hotspot.dataset.area;
+      const targetRegions = regions.filter((region) => region.target_area === area);
+      if (!targetRegions.length) {
+        hotspot.classList.add('is-inactive');
+        hotspot.removeAttribute('tabindex');
+        return;
+      }
+
+      const matchingHotspots = wrap.querySelectorAll(`[data-area="${area}"]`);
+      const matchingLinks = targetRegions.flatMap((region) =>
+        Array.from(wrap.querySelectorAll(`[data-bodymap-filter-type="hpo"][data-bodymap-filter-value="${region.hpo_id}"]`))
+      );
+      const activate = () => {
+        clearActiveState();
+        matchingHotspots.forEach((node) => node.classList.add('is-active'));
+        matchingLinks.forEach((node) => node.classList.add('is-active'));
+      };
+      const navigate = () => {
+        clinicalOverviewState.showAll = false;
+        const targetIds = targetRegions.map((region) => region.hpo_id);
+        const currentIds = new Set(clinicalOverviewState.selectedCategoryIds);
+        const allSelected = targetIds.every((id) => currentIds.has(id));
+
+        if (allSelected) {
+          clinicalOverviewState.selectedCategoryIds = clinicalOverviewState.selectedCategoryIds.filter(
+            (id) => !targetIds.includes(id)
+          );
+        } else {
+          targetIds.forEach((id) => currentIds.add(id));
+          clinicalOverviewState.selectedCategoryIds = Array.from(currentIds);
+        }
+        rerenderClinicalOverviewWithState();
+      };
+
+      hotspot.setAttribute('tabindex', '0');
+      hotspot.setAttribute('role', 'link');
+      hotspot.setAttribute(
+        'aria-label',
+        matchingLinks[0]?.textContent?.trim() || t('該当カテゴリを表示', 'Show matching categories')
+      );
+
+      hotspot.addEventListener('mouseenter', activate);
+      hotspot.addEventListener('focus', activate);
+      hotspot.addEventListener('mouseleave', clearActiveState);
+      hotspot.addEventListener('blur', clearActiveState);
+      hotspot.addEventListener('click', navigate);
+      hotspot.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          navigate();
+        }
+      });
+    });
+
+    wrap.querySelectorAll('[data-bodymap-action]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const action = button.dataset.bodymapAction;
+        if (action === 'all') {
+          clinicalOverviewState.showAll = true;
+          clinicalOverviewState.selectedCategoryIds = [];
+        } else if (action === 'clear') {
+          clinicalOverviewState.showAll = false;
+          clinicalOverviewState.selectedCategoryIds = [];
+        }
+        rerenderClinicalOverviewWithState();
+      });
+    });
+
+    applySelectedState();
+  }
+
+  function renderClinicalOverview(features, facialItems, bodyMap) {
+    clinicalOverviewState = {
+      features,
+      facialItems,
+      bodyMap,
+      selectedCategoryIds: clinicalOverviewState.selectedCategoryIds,
+      showAll: clinicalOverviewState.showAll,
+      facialSelection: clinicalOverviewState.facialSelection,
+    };
+
+    const selectedIds = getSelectedFeatureIds();
+    const visibleFeatures = clinicalOverviewState.showAll
+      ? features
+      : features.filter((feature) => selectedIds.has(feature.categoryId));
+
+    renderBodyMap(features, bodyMap);
+
+    const selectedFeatures = clinicalOverviewState.showAll ? features : visibleFeatures;
+
+    $('selection-summary').innerHTML = clinicalOverviewState.showAll
+      ? `<div class="summary-selection-note">${escapeHtml(t('すべてのカテゴリを表示中です。', 'Showing all categories.'))}</div>`
+      : selectedFeatures.length
+        ? `
+          <div class="summary-selection-note">${escapeHtml(t('選択中のカテゴリ', 'Selected categories'))}</div>
+          <div class="summary-selection-pills">
+            ${selectedFeatures
+              .map(
+                (feature) => `
+                  <button class="summary-selection-pill" type="button" data-remove-hpo="${escapeHtml(feature.categoryId)}">
+                    ${escapeHtml(feature.category)}
+                  </button>
+                `
+              )
+              .join('')}
+          </div>
+        `
+        : `<div class="summary-selection-note">${escapeHtml(
+            t('人体図またはカテゴリボタンを押すと、該当カテゴリがここに表示されます。', 'Pick a body area or category to show matching sections here.')
+          )}</div>`;
+
+    $('feature-grid').innerHTML = selectedFeatures.length
+      ? selectedFeatures
           .map(
             (feature) => `
-        <article class="summary-feature-card">
-          <h3><a href="${escapeHtml(feature.categoryUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(feature.category)}</a></h3>
+        <article class="summary-feature-card is-match" id="${escapeHtml(toFeatureAnchorId(feature.categoryId))}" data-hpo-id="${escapeHtml(feature.categoryId || '')}">
+          <h3>
+            <a href="${escapeHtml(feature.categoryUrl)}" target="_blank" rel="noopener noreferrer">${escapeHtml(feature.category)}</a>
+            <span class="summary-feature-count">${escapeHtml(feature.items.length)}</span>
+          </h3>
           <div class="summary-feature-tags">
             ${feature.items
               .map(
@@ -321,30 +1381,84 @@
       `
           )
           .join('')
-      : '<div class="summary-tiny">臨床所見データはありません。</div>';
+      : '';
+
+    $('selection-summary')
+      .querySelectorAll('[data-remove-hpo]')
+      .forEach((button) => {
+        button.addEventListener('click', () => {
+          const hpoId = button.dataset.removeHpo;
+          clinicalOverviewState.showAll = false;
+          clinicalOverviewState.selectedCategoryIds = clinicalOverviewState.selectedCategoryIds.filter((id) => id !== hpoId);
+          rerenderClinicalOverviewWithState();
+        });
+      });
+
+    renderFacialPanel(facialItems);
   }
 
-  function renderSubclasses(root, children) {
+  function renderSubclasses(root, children, statsById = new Map()) {
+    setText(
+      'subclass-meta',
+      children.length
+        ? (isJapaneseLocale() ? `${children.length} 病型` : `${children.length} subtypes`)
+        : t('病型なし', 'No subtypes')
+    );
+
     $('subclass-tree').innerHTML = `
       <div class="summary-tree-root">
-        <strong>${escapeHtml(root.ja)}</strong><br>
-        <span>${escapeHtml(root.en)}</span><br>
-        <span>${escapeHtml(root.id)}</span>
+        <div class="summary-subclass-kicker">${escapeHtml(t('親疾患', 'Parent disease'))}</div>
+        <strong>${escapeHtml(isJapaneseLocale() ? root.ja : root.en)}</strong>
+        ${isJapaneseLocale() ? `<span>${escapeHtml(root.en)}</span>` : root.ja ? `<span>${escapeHtml(root.ja)}</span>` : ''}
+        <span class="summary-tree-root-id">${escapeHtml(root.id)}</span>
+        <div class="summary-tree-root-note">
+          ${escapeHtml(
+            children.length
+              ? t('主疾患からたどれる病型分類です。', 'Subtype entries derived from the main disease.')
+              : t('現在表示できる病型分類はありません。', 'No subtype entries are currently available.')
+          )}
+        </div>
       </div>
       <div class="summary-tree-children">
         ${
           children.length
             ? children
                 .map(
-                  (child) => `
-          <div class="summary-child-card">
-            <h3>${escapeHtml(child.ja)}</h3>
-            <div class="summary-tiny">${escapeHtml(child.en)}<br>${escapeHtml(child.id)}</div>
-          </div>
-        `
+                  (child, index) => {
+                    const stats = statsById.get(child.id) || { genes: 0, features: 0, references: 0 };
+                    const diseaseUrl = `/disease/${escapeHtml(child.id)}`;
+                    return `
+          <article class="summary-child-card">
+            <div class="summary-child-kicker">${escapeHtml(
+              isJapaneseLocale() ? `病型 ${String(index + 1).padStart(2, '0')}` : `Subtype ${String(index + 1).padStart(2, '0')}`
+            )}</div>
+            <a class="summary-child-id" href="${diseaseUrl}">${escapeHtml(child.id)}</a>
+            <h3>${escapeHtml(isJapaneseLocale() ? child.ja : child.en)}</h3>
+            ${
+              isJapaneseLocale() && child.en
+                ? `<div class="summary-child-subtitle">${escapeHtml(child.en)}</div>`
+                : ''
+            }
+            <div class="summary-child-stats">
+              <a class="summary-child-stat summary-card-link" href="${diseaseUrl}#genes">
+                <span class="summary-child-stat-label">${escapeHtml(t('遺伝子', 'Genes'))}</span>
+                <strong>${escapeHtml(String(stats.genes))}</strong>
+              </a>
+              <a class="summary-child-stat summary-card-link" href="${diseaseUrl}#clinical-features">
+                <span class="summary-child-stat-label">${escapeHtml(t('所見', 'Features'))}</span>
+                <strong>${escapeHtml(String(stats.features))}</strong>
+              </a>
+              <a class="summary-child-stat summary-card-link" href="${diseaseUrl}#references">
+                <span class="summary-child-stat-label">${escapeHtml(t('文献', 'Papers'))}</span>
+                <strong>${escapeHtml(String(stats.references))}</strong>
+              </a>
+            </div>
+          </article>
+        `;
+                  }
                 )
                 .join('')
-            : '<div class="summary-tiny">サブクラスはありません。</div>'
+            : `<div class="summary-tiny">${t('病型分類はありません。', 'No subtype classification available.')}</div>`
         }
       </div>
     `;
@@ -355,14 +1469,14 @@
       ? items
           .map(
             (link) => `
-        <article class="summary-link-card">
-          <h3><a href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(link.label)}</a></h3>
-          <div class="summary-tiny">${escapeHtml(getLinkDescription(link.label))}</div>
-        </article>
+        <a class="summary-compact-link" href="${escapeHtml(link.url)}" target="_blank" rel="noopener noreferrer">
+          <strong>${escapeHtml(link.label)}</strong>
+          <div class="summary-compact-note">${escapeHtml(getLinkDescription(link.label))}</div>
+        </a>
       `
           )
           .join('')
-      : '<div class="summary-tiny">リンク情報はありません。</div>';
+      : `<div class="summary-tiny">${t('リンク情報はありません。', 'No external links available.')}</div>`;
   }
 
   function renderReferences(items) {
@@ -370,18 +1484,14 @@
       ? items
           .map(
             (ref) => `
-        <article class="summary-reference-card">
-          <div class="summary-reference-meta">
-            <span>${escapeHtml(ref.date)}</span>
-            <span>PMID ${escapeHtml(ref.pmid)}</span>
-          </div>
-          <h3><a href="${escapeHtml(ref.url)}" target="_blank" rel="noopener noreferrer">${escapeHtml(ref.title)}</a></h3>
-          <div class="summary-tiny">${escapeHtml(ref.journal)}</div>
-        </article>
+        <a class="summary-compact-link" href="${escapeHtml(ref.url)}" target="_blank" rel="noopener noreferrer">
+          <strong>${escapeHtml(ref.date)}</strong>
+          <div class="summary-compact-note">${escapeHtml(ref.title)}</div>
+        </a>
       `
           )
           .join('')
-      : '<div class="summary-tiny">文献データはありません。</div>';
+      : `<div class="summary-tiny">${t('文献データはありません。', 'No references available.')}</div>`;
   }
 
   function mapGenes(japanGenes, causalGenes) {
@@ -391,6 +1501,8 @@
         {
           symbol: gene.symbol,
           name: gene.gene_name || gene.symbol,
+          nameJa: gene.gene_name_ja || gene.name_ja || '',
+          noteJa: gene.gene_description_ja || gene.ncbigene_description_ja || '',
           note: gene.gene_description || 'Japan-curated gene',
           url: gene.ncbi || (gene.ncbi_id ? `https://www.ncbi.nlm.nih.gov/gene/${gene.ncbi_id}` : '#'),
         },
@@ -402,6 +1514,8 @@
         japanMap.set(gene.gene_symbol, {
           symbol: gene.gene_symbol,
           name: gene.mondo_label || gene.gene_symbol,
+          nameJa: gene.mondo_label_ja || '',
+          noteJa: '',
           note: `${gene.source || 'curated'}: ${gene.mondo_label_ja || gene.mondo_label || 'associated subtype'}`,
           url: gene.ncbi_url || (gene.ncbi_id ? `https://www.ncbi.nlm.nih.gov/gene/${gene.ncbi_id}` : '#'),
         });
@@ -414,14 +1528,19 @@
   function mapFeatures(hpoData) {
     const grouped = new Map();
     for (const item of hpoData) {
+      const categoryId = extractHpoId(item.hpo_category || item.hpo_category_id || item.hpo_category_url);
       const key =
+        categoryId ||
         item.hpo_category ||
         item.hpo_category_name_ja ||
         item.hpo_category_name_en ||
         '未分類';
       if (!grouped.has(key)) {
         grouped.set(key, {
-          category: item.hpo_category_name_ja || item.hpo_category_name_en || '未分類',
+          categoryId,
+          category: isJapaneseLocale()
+            ? item.hpo_category_name_ja || item.hpo_category_name_en || '未分類'
+            : item.hpo_category_name_en || item.hpo_category_name_ja || 'Uncategorized',
           categoryUrl: item.hpo_category || '#',
           items: new Map(),
         });
@@ -431,16 +1550,42 @@
         item.hpo_url || item.hpo_id || item.hpo_label_ja || item.hpo_label_en;
       if (!group.items.has(itemKey)) {
         group.items.set(itemKey, {
-          label: item.hpo_label_ja || item.hpo_label_en || item.hpo_id,
+          label: isJapaneseLocale()
+            ? item.hpo_label_ja || item.hpo_label_en || item.hpo_id
+            : item.hpo_label_en || item.hpo_label_ja || item.hpo_id,
           url: item.hpo_url || '#',
         });
       }
     }
     return Array.from(grouped.values()).map((group) => ({
+      categoryId: group.categoryId,
       category: group.category,
       categoryUrl: group.categoryUrl,
       items: Array.from(group.items.values()),
     }));
+  }
+
+  function mapFacialFeatures(items) {
+    return uniqueBy(
+      items
+        .map((item) => ({
+          id: item.id || '',
+          person: item.person || '',
+          gender: item.gender || '',
+          gene: item.gene || '',
+          ethnicity: item.minzoku || t('不明', 'Unknown'),
+          ethnicityNote: item.minzokumemo || '',
+          imageId: item.image_id || '',
+          imageType: item.image_desc || '',
+          age_year: item.age_year,
+          age_month: item.age_month,
+          age_memo: item.age_memo || '',
+          pmid: item.pmid || '',
+          pmid_url: item.pmid_url || '',
+        }))
+        .filter((item) => item.id || item.person || item.pmid),
+      (item) => `${item.id}|${item.person}|${item.pmid}|${item.imageId}`
+    );
   }
 
   function mapLinks(overview, mondo, orphanet, medgen, kegg) {
@@ -467,15 +1612,39 @@
 
   function getLinkDescription(label) {
     const descriptions = {
-      'MHLW 概要・診断基準': '厚生労働省が公開する疾患概要と診断基準の資料です。',
-      'MHLW 個票': '指定難病の臨床調査個人票の様式を確認できます。',
-      '難病情報センター': '患者向けの解説や支援制度情報を掲載する国内ポータルです。',
-      MONDO: '疾患オントロジー上の統合 ID と対応関係を参照できます。',
-      Orphanet: '希少疾患の国際データベースにある該当疾患ページです。',
-      MedGen: 'NCBI の疾患概念データベースで関連概念を確認できます。',
-      'KEGG Disease': 'KEGG Disease に登録された疾患エントリです。',
+      'MHLW 概要・診断基準': t(
+        '厚生労働省が公開する疾患概要と診断基準の資料です。',
+        'Overview and diagnostic criteria published by MHLW.'
+      ),
+      'MHLW 個票': t(
+        '指定難病の臨床調査個人票の様式を確認できます。',
+        'Clinical survey form for designated intractable diseases.'
+      ),
+      '難病情報センター': t(
+        '患者向けの解説や支援制度情報を掲載する国内ポータルです。',
+        'Japanese portal with patient-oriented disease and support information.'
+      ),
+      MONDO: t(
+        '疾患オントロジー上の統合 ID と対応関係を参照できます。',
+        'Integrated disease ontology identifier and mappings.'
+      ),
+      Orphanet: t(
+        '希少疾患の国際データベースにある該当疾患ページです。',
+        'Relevant disease page in the Orphanet rare disease database.'
+      ),
+      MedGen: t(
+        'NCBI の疾患概念データベースで関連概念を確認できます。',
+        'Related concept page in NCBI MedGen.'
+      ),
+      'KEGG Disease': t(
+        'KEGG Disease に登録された疾患エントリです。',
+        'Disease entry in KEGG Disease.'
+      ),
     };
-    return descriptions[label] || '関連する外部データベースへのリンクです。';
+    return descriptions[label] || t(
+      '関連する外部データベースへのリンクです。',
+      'Link to a related external database.'
+    );
   }
 
   function formatMatchType(property) {
@@ -496,10 +1665,84 @@
     return `/summary/NANDO:${encodeURIComponent(id)}${queryString ? `?${queryString}` : ''}`;
   }
 
+  function setupToc() {
+    const tocLinks = Array.from(document.querySelectorAll('.summary-toc-link'));
+    if (!tocLinks.length) return;
+
+    const sections = tocLinks
+      .map((link) => document.getElementById(link.dataset.target))
+      .filter(Boolean);
+
+    const setActive = (id) => {
+      tocLinks.forEach((link) => {
+        link.classList.toggle('is-active', link.dataset.target === id);
+      });
+    };
+
+    if (sections[0]?.id) {
+      setActive(sections[0].id);
+    }
+
+    const updateByScrollPosition = () => {
+      const headerOffset = 140;
+      const candidates = sections
+        .map((section) => ({ section, top: section.getBoundingClientRect().top }))
+        .filter(({ top }) => top <= headerOffset);
+
+      if (candidates.length) {
+        setActive(candidates[candidates.length - 1].section.id);
+        return;
+      }
+
+      const nearest = sections
+        .map((section) => ({ section, distance: Math.abs(section.getBoundingClientRect().top - headerOffset) }))
+        .sort((a, b) => a.distance - b.distance)[0];
+
+      if (nearest?.section?.id) {
+        setActive(nearest.section.id);
+      }
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+        if (visible?.target?.id) {
+          setActive(visible.target.id);
+        } else {
+          updateByScrollPosition();
+        }
+      },
+      {
+        rootMargin: '-10% 0px -70% 0px',
+        threshold: [0, 0.15, 0.35],
+      }
+    );
+
+    sections.forEach((section) => observer.observe(section));
+
+    const mobileToc = document.querySelector('.summary-toc-mobile');
+    tocLinks.forEach((link) => {
+      link.addEventListener('click', () => {
+        if (mobileToc?.open) mobileToc.open = false;
+      });
+    });
+
+    window.addEventListener('scroll', updateByScrollPosition, { passive: true });
+    updateByScrollPosition();
+  }
+
   async function loadDisease(rawId) {
     const id = normalizeNandoId(rawId);
     if (!id) {
-      setStatus('URL に NANDO ID を指定してください。例: /summary/NANDO:1200473', true);
+      setStatus(
+        t(
+          'URL に NANDO ID を指定してください。例: /summary/NANDO:1200473',
+          'Specify a NANDO ID in the URL. Example: /summary/NANDO:1200473'
+        ),
+        true
+      );
       return;
     }
 
@@ -508,6 +1751,10 @@
     setStatus('');
 
     const overviewPromise = fetchJson('nanbyodata_get_overview_by_nando_id', id);
+    const ontologyLabelsPromise = fetchOntologyLabels(id).catch(() => ({
+      ja: '',
+      en: '',
+    }));
     const patientPromise = fetchJson('nanbyodata_get_stats_on_patient_number_by_nando_id', id);
     const subClassPromise = fetchJson('nanbyodata_get_sub_class_by_nando_id', id);
     const japanGenesPromise = fetchJson('nanbyodata_get_japan_curated_gene_by_nando_id', id);
@@ -521,10 +1768,16 @@
     const dnaPromise = fetchJson('nanbyodata_get_riken_brc_dna_info_by_nando_id', id);
     const compoundsPromise = fetchJson('nanbyodata_get_pubchem_chemical_information_by_nando_id', id);
     const referencesPromise = fetchJson('nanbyodata_get_pubmed_data_by_nando_id', id);
+    const bodyMapPromiseForLoad = fetchBodyMap().catch(() => null);
     const mondoPromise = fetchJson('nanbyodata_get_link_mondo_by_nando_id', id);
     const orphanetPromise = fetchJson('nanbyodata_get_link_orphanet_by_nando_id', id);
     const medgenPromise = fetchJson('nanbyodata_get_link_medgen_by_nando_id', id);
-    const keggPromise = fetchJson('nanbyodata_get_link_kegg_by_nando_id', id);
+    const keggPromise = fetchJson('nanbyodata_get_link_kegg_by_nando_id', id).catch((error) => {
+      if (isActiveLoad(loadToken)) {
+        console.warn('KEGG link fetch failed:', error);
+      }
+      return [];
+    });
     const clinvarPromise = fetchJson('nanbyodata_get_clinvar_variant_by_nando_id', id);
     const mgendPromise = fetchJson('nanbyodata_get_mgend_variant_by_nando_id', id);
     const geneticTestsPromise = fetchJson('nanbyodata_get_genetic_test_by_nando_id', id);
@@ -533,22 +1786,51 @@
     const noteFailure = (error) => {
       failures += 1;
       if (isActiveLoad(loadToken)) {
-        setStatus(`一部データの取得に失敗しています。${error.message}`, true);
+        setStatus(t('一部データの取得に失敗しています。', 'Some data could not be loaded.'), true);
       }
     };
 
     overviewPromise
-      .then((overview) => {
+      .then(async (overview) => {
         if (!isActiveLoad(loadToken)) return;
-        const alias = overview.alt_label_en?.[0] || overview.alt_label_ja?.[0] || '-';
-        document.title = `${overview.label_ja || overview.label_en || `NANDO:${id}`} | Disease Summary`;
-        setText('title-ja', overview.label_ja || overview.label_en || `NANDO:${id}`);
-        setText('title-en', overview.label_en || '');
+        const ontologyLabels = await ontologyLabelsPromise;
+        if (!isActiveLoad(loadToken)) return;
+        const currentLang = getCurrentLang();
+        const alias = isJapaneseLocale()
+          ? overview.alt_label_ja?.[0] || overview.alt_label_en?.[0] || '-'
+          : overview.alt_label_en?.[0] || overview.alt_label_ja?.[0] || '-';
+        const primaryTitle =
+          (currentLang === 'ja'
+            ? ontologyLabels.ja || pickDiseaseName(overview, 'ja')
+            : ontologyLabels.en || pickDiseaseName(overview, 'en')) || `NANDO:${id}`;
+        const secondaryTitle =
+          currentLang === 'ja'
+            ? (ontologyLabels.en || pickDiseaseName(overview, 'en'))
+            : '';
+        document.title = `${primaryTitle} | Disease Summary`;
+        renderDiseaseCharacter(`NANDO:${id}`);
+        setText('title-ja', primaryTitle);
+        if (currentLang === 'ja') {
+          setText('title-en', secondaryTitle || '');
+        } else {
+          setText('title-en', '');
+        }
+        renderAliases(overview);
         setDescription(
-          overview.description ||
-            overview.medgen_definition ||
-            overview.kegg_description ||
-            '説明データはありません。'
+          isJapaneseLocale()
+            ? (
+                overview.description ||
+                overview.medgen_definition ||
+                overview.kegg_description ||
+                ''
+              )
+            : (
+                overview.medgen_definition ||
+                overview.mondo_decs?.[0]?.id ||
+                overview.kegg_description ||
+                overview.description ||
+                ''
+              )
         );
         setText('notification-number', overview.notification_number || '-');
         setText('alias-primary', alias);
@@ -567,6 +1849,11 @@
               '',
           },
         });
+        syncMyDiseaseButton({
+          id: `NANDO:${id}`,
+          label_ja: ontologyLabels.ja || overview.label_ja || '',
+          label_en: ontologyLabels.en || overview.label_en || overview.engLabel || '',
+        });
       })
       .catch(noteFailure);
 
@@ -576,6 +1863,7 @@
         const mondoItem = mondo.find((item) => item.id?.startsWith('MONDO:'));
         setText('insight-axis', mondoItem?.id || overview.mondos?.[0]?.id || '-');
         setText('insight-axis-note', formatMatchType(mondoItem?.property));
+        setHref('mondo-link', mondoItem?.mondo_url || mondoItem?.url || '#');
         updateDownloadData({
           overview: {
             ...(currentDownloadData?.overview || {}),
@@ -594,11 +1882,19 @@
           count: item.num_of_patients,
         }));
         const latestPatient = patients.at(-1);
-        setText('latest-patient-count', latestPatient ? latestPatient.count : '-');
+        quickFactsState.patients = latestPatient ? `${latestPatient.count}人` : '-';
+        quickFactsState.patientsNote = latestPatient
+          ? (isJapaneseLocale() ? `${latestPatient.year}年` : String(latestPatient.year))
+          : t('患者統計なし', 'No patient data');
+        renderQuickFactsList();
         setText('insight-patients', latestPatient ? `${latestPatient.count}人` : '-');
         setText(
           'insight-patients-note',
-          latestPatient ? `${latestPatient.year}年の特定医療費受給者証所持者数` : '患者統計なし'
+          latestPatient
+            ? (isJapaneseLocale()
+                ? `${latestPatient.year}年の特定医療費受給者証所持者数`
+                : `Patients in ${latestPatient.year}`)
+            : t('患者統計なし', 'No patient statistics')
         );
         renderTrendChart(patients);
         updateDownloadData({
@@ -614,8 +1910,15 @@
     Promise.all([japanGenesPromise, causalGenesPromise])
       .then(([japanGenes, causalGenes]) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('japan-gene-count', japanGenes.length);
-        setText('gene-count', causalGenes.length);
+        const totalGenes = uniqueBy(
+          [...japanGenes.map((gene) => gene.symbol), ...causalGenes.map((gene) => gene.gene_symbol)].filter(Boolean),
+          (symbol) => symbol
+        ).length;
+        quickFactsState.genes = String(totalGenes);
+        quickFactsState.genesNote = isJapaneseLocale()
+          ? `国内 ${japanGenes.length} / 国際 ${causalGenes.length}`
+          : `Japan ${japanGenes.length} / Intl ${causalGenes.length}`;
+        renderQuickFactsList();
         const genes = mapGenes(japanGenes, causalGenes);
         renderGenes(genes);
         updateDownloadData({
@@ -629,36 +1932,102 @@
       })
       .catch(noteFailure);
 
-    hpoPromise
-      .then((hpoData) => {
+    Promise.all([glycanPromise, geneticTestsPromise, clinvarPromise, mgendPromise])
+      .then(([glycanData, geneticTests, clinvarData, mgendData]) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('clinical-feature-count', hpoData.length);
-        const features = mapFeatures(hpoData);
-        renderFeatures(features);
-        updateDownloadData({
-          features,
-          stats: {
-            ...(currentDownloadData?.stats || {}),
-            臨床的特徴: hpoData.length,
+        const base = `${window.location.origin}/disease/NANDO:${encodeURIComponent(id)}`;
+        quickFactsState.tests = String(geneticTests.length);
+        quickFactsState.testsNote = isJapaneseLocale()
+          ? '診療用の遺伝学的検査'
+          : 'Clinical genetic testing entries';
+        renderQuickFactsList();
+        renderDiagnosticCards([
+          {
+            title: t('遺伝学的検査', 'Genetic tests'),
+            value: String(geneticTests.length),
+            note: t('診療用の遺伝学的検査', 'Clinical genetic testing entries'),
+            href: `${base}#genetic-testing`,
           },
-        });
+          {
+            title: 'ClinVar',
+            value: String(clinvarData.length),
+            note: t('国際的なバリアント知識ベース', 'International variant knowledge base'),
+            href: `${base}#variants-clinvar`,
+          },
+          {
+            title: 'MGeND',
+            value: String(mgendData.length),
+            note: t('国内のバリアント知識ベース', 'Japanese variant knowledge base'),
+            href: `${base}#variants-mgend`,
+          },
+          {
+            title: 'GlyCosmos',
+            value: String(glycanData.length),
+            note: t('糖鎖関連遺伝子', 'Glycan-related genes'),
+            href: `${base}#glycan-related-genes`,
+          },
+        ]);
+      })
+      .catch(noteFailure);
+
+    Promise.all([hpoPromise, bodyMapPromiseForLoad])
+      .then(([hpoData, bodyMap]) => {
+        if (!isActiveLoad(loadToken)) return;
+        const features = mapFeatures(hpoData);
+        quickFactsState.features = String(hpoData.length);
+        quickFactsState.featuresNote = isJapaneseLocale()
+          ? `症状カテゴリ ${features.length}`
+          : `Categories ${features.length}`;
+        renderQuickFactsList();
+        facialPromise
+          .then((facialData) => {
+            if (!isActiveLoad(loadToken)) return;
+            renderClinicalOverview(features, mapFacialFeatures(facialData), bodyMap);
+            updateDownloadData({
+              features,
+              stats: {
+                ...(currentDownloadData?.stats || {}),
+                臨床的特徴: hpoData.length,
+                顔貌特徴: facialData.length,
+              },
+            });
+          })
+          .catch(() => {
+            if (!isActiveLoad(loadToken)) return;
+            renderClinicalOverview(features, [], bodyMap);
+            updateDownloadData({
+              features,
+              stats: {
+                ...(currentDownloadData?.stats || {}),
+                臨床的特徴: hpoData.length,
+              },
+            });
+          });
       })
       .catch(noteFailure);
 
     subClassPromise
-      .then((subClassData) => {
+      .then(async (subClassData) => {
         if (!isActiveLoad(loadToken)) return;
         const root = subClassData[0] || {};
         const children = subClassData
           .filter((item) => item.parent)
           .map((item) => ({ id: item.id, ja: item.label, en: item.engLabel }));
+        quickFactsState.subtypes = String(children.length);
+        quickFactsState.subtypesNote = children.length
+          ? t('親疾患を除く', 'Excluding parent disease')
+          : t('病型分類なし', 'No subtype classification');
+        renderQuickFactsList();
+        const statsById = children.length ? await fetchSubtypeStats(children) : new Map();
+        if (!isActiveLoad(loadToken)) return;
         renderSubclasses(
           {
             id: `NANDO:${id}`,
             ja: root.label || root.engLabel || '-',
             en: root.engLabel || root.label || '-',
           },
-          children
+          children,
+          statsById
         );
         updateDownloadData({
           subclasses: {
@@ -677,6 +2046,7 @@
       .then(([overview, mondo, orphanet, medgen, kegg]) => {
         if (!isActiveLoad(loadToken)) return;
         const links = mapLinks(overview, mondo, orphanet, medgen, kegg);
+        renderPrimaryLinks(links.slice(0, 4));
         renderLinks(links);
         updateDownloadData({ links });
       })
@@ -686,9 +2056,9 @@
       .then((references) => {
         if (!isActiveLoad(loadToken)) return;
         const recentReferences = references.slice(0, 6);
-        setText('reference-count', references.length);
         setText('insight-paper', recentReferences[0]?.date || '-');
-        setText('insight-paper-note', recentReferences[0]?.title || '文献データなし');
+        setText('insight-paper-note', recentReferences[0]?.title || t('文献データなし', 'No reference data'));
+        setHref('latest-paper-link', recentReferences[0]?.url || '#');
         renderReferences(recentReferences);
         updateDownloadData({
           references: recentReferences,
@@ -703,70 +2073,60 @@
     glycanPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('glycan-gene-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 糖鎖関連遺伝子: data.length } });
       })
       .catch(noteFailure);
     facialPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('facial-feature-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 顔貌特徴: data.length } });
       })
       .catch(noteFailure);
     humanPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('human-dataset-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), ヒトゲノムデータセット: data.length } });
       })
       .catch(noteFailure);
     cellPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('cell-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 細胞: data.length } });
       })
       .catch(noteFailure);
     mousePromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('mouse-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), マウス: data.length } });
       })
       .catch(noteFailure);
     dnaPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('dna-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), DNA: data.length } });
       })
       .catch(noteFailure);
     compoundsPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('compound-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 化合物: data.length } });
       })
       .catch(noteFailure);
     clinvarPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('variant-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), ClinVar: data.length } });
       })
       .catch(noteFailure);
     mgendPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('mgend-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), MGeND: data.length } });
       })
       .catch(noteFailure);
     geneticTestsPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        setText('genetic-testing-count', data.length);
         updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 診療用遺伝学的検査: data.length } });
       })
       .catch(noteFailure);
@@ -798,7 +2158,7 @@
       const today = new Date().toISOString().slice(0, 10);
       $('footer-note').innerHTML = `出典: NanbyoData API / NANDO:${escapeHtml(id)}<br>取得日: ${escapeHtml(today)}`;
       window.history.replaceState(null, '', buildSummaryUrl(id));
-      setStatus(failures === 0 ? '' : '一部データの取得に失敗しています。', failures > 0);
+      setStatus(failures === 0 ? '' : t('一部データの取得に失敗しています。', 'Some data could not be loaded.'), failures > 0);
     });
   }
 
@@ -818,6 +2178,27 @@
         descriptionToggle.textContent = expanded ? 'Less' : 'More';
       });
     }
+
+    const myDiseaseToggle = $('my-disease-toggle');
+    if (myDiseaseToggle) {
+      myDiseaseToggle.addEventListener('click', () => {
+        if (!currentMyDiseaseEntry) return;
+        const result = toggleMyDisease(currentMyDiseaseEntry);
+        setMyDiseaseButtonState(result.active);
+        updateMyDiseasesNavCount();
+      });
+    }
+
+    $('gene-grid').addEventListener('click', (event) => {
+      const button = event.target.closest('.summary-gene-toggle');
+      if (!button) return;
+      const card = button.closest('.summary-gene-card');
+      const note = card?.querySelector('.summary-gene-note');
+      if (!note) return;
+      const expanded = note.dataset.expanded === 'true';
+      note.dataset.expanded = expanded ? 'false' : 'true';
+      button.textContent = expanded ? 'More' : 'Less';
+    });
 
     $('txt-download').addEventListener('click', () => {
       if (!currentDownloadData) return;
@@ -844,6 +2225,8 @@
     });
 
     const initialId = params.get('id') || summaryRoot.dataset.initialId || DEFAULT_ID;
+    updateMyDiseasesNavCount();
+    setupToc();
     loadDisease(initialId);
 
     if (params.get('export') === 'pdf') {

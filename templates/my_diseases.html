@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+  <title>マイ疾患 | NanbyoData</title>
+  {% else %}
+  <title>My Diseases | NanbyoData</title>
+  {% endif %}
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/summary.css" />
+</head>
+
+<body class="summary-body my-diseases-body">
+  <main id="my-diseases-root" data-locale="{{ get_locale() }}">
+    {% include 'component/navigation.html' %}
+
+    <section class="summary-shell">
+      <div class="summary-status-bar">
+        <div class="summary-status" id="my-diseases-status"></div>
+      </div>
+
+      <section class="summary-layout my-diseases-layout">
+        <div class="summary-stack">
+          <section class="summary-panel summary-hero-main">
+            <div class="summary-section-head">
+              <div>
+                <h1>
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  マイ疾患
+                  {% else %}
+                  My Diseases
+                  {% endif %}
+                </h1>
+              </div>
+              <div class="summary-section-meta" id="my-diseases-count">0</div>
+            </div>
+
+            <div class="summary-description" id="my-diseases-description">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              登録した疾患をここからすぐに開けます。
+              {% else %}
+              Open your saved diseases from here.
+              {% endif %}
+            </div>
+            <div class="my-diseases-content">
+              <div class="my-diseases-tabs" id="my-diseases-tabs" hidden></div>
+              <div class="summary-tree-children" id="my-diseases-list"></div>
+              <div class="summary-tiny" id="my-diseases-empty" hidden>
+                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                まだマイ疾患は登録されていません。
+                {% else %}
+                No diseases have been added yet.
+                {% endif %}
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <script src="/static/js/utils/disease-characters.js"></script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script src="/static/js/my_diseases.js"></script>
+</body>
+
+</html>

@@ -83,6 +83,14 @@
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
               <i class="fas fa-bars"></i>
             </button>
+            <a class="my-diseases-link" href="/my-diseases">
+              {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+              <span>マイ疾患</span>
+              {% else %}
+              <span>My Diseases</span>
+              {% endif %}
+              <span class="my-diseases-count">0</span>
+            </a>
             <select class="language-select">
               <option value="ja" {% if get_locale()=='ja' %}selected{% endif %}>日本語</option>
               <option value="en" {% if get_locale()=='en' %}selected{% endif %}>English</option>
@@ -410,16 +418,28 @@
             }
           </style>
 
-          <div id="data-wrapper" class="disease-summary">
+          <div id="data-wrapper" class="disease-summary" data-nando-id="NANDO:{{id_nando}}"
+            data-locale="{{ get_locale() }}">
             <header class="summary-header">
               <div id="temp-data-summary" class="data-name">
-                <h3>
-                  NANDO ID:
-                  <span id="temp-nando-id"></span>
-                  <a href="https://nanbyodata.jp/ontology/NANDO_" target="_blank" rel="noopener noreferrer"
-                    id="temp-nando-link" class="nando-link">https://nanbyodata.jp/ontology/NANDO_</a>
-                  <span id="temp-nando-copy" class="nando-copy">Copy</span>
-                </h3>
+                <div class="data-name-meta">
+                  <h3>
+                    NANDO ID:
+                    <span id="temp-nando-id"></span>
+                    <a href="https://nanbyodata.jp/ontology/NANDO_" target="_blank" rel="noopener noreferrer"
+                      id="temp-nando-link" class="nando-link">https://nanbyodata.jp/ontology/NANDO_</a>
+                    <span id="temp-nando-copy" class="nando-copy">Copy</span>
+                  </h3>
+                  <button id="disease-my-disease-toggle" class="disease-my-disease-toggle" type="button"
+                    data-id="NANDO:{{id_nando}}" aria-pressed="false" disabled>
+                    <i class="fas fa-bookmark" aria-hidden="true"></i>
+                    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                    <span id="disease-my-disease-toggle-label">マイ疾患に追加</span>
+                    {% else %}
+                    <span id="disease-my-disease-toggle-label">Add to My Diseases</span>
+                    {% endif %}
+                  </button>
+                </div>
                 {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
                 <h2 id="temp-label-ja"></h2>
                 <h3 id="temp-label-en"></h3>
@@ -523,6 +543,13 @@
                         <button type="button" class="popup-btn email">Email</button>
                       </div>
                     </div>
+                  </div>
+
+                  <div class="summary-summary">
+                    <a class="open-popup-btn summary-link-btn"
+                      href="/summary/NANDO:{{id_nando}}?lang={% if get_locale() == 'ja' or get_locale() == 'ja_JP' %}ja{% else %}en{% endif %}">
+                      <span class="btn-text">Summary</span>
+                    </a>
                   </div>
                 </div>
               </div>
@@ -986,6 +1013,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@ztree/ztree_v3@3.5.48/js/jquery.ztree.excheck.min.js"></script>
   <script src="/static/js/disease/treeview.js"></script>
   <script type="module" src="/static/js/disease/disease.js"></script>
+  <script src="/static/js/disease/my-disease-toggle.js"></script>
   <script type="module"
     src="https://cdn.jsdelivr.net/gh/PubCaseFinder/pubcasefinder_tools@main/smartbox/smartbox.js"></script>
 

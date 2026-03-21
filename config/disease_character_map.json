@@ -1,0 +1,56 @@
+{
+  "diseases": [
+    {
+      "id": "NANDO:1200656",
+      "label_ja": "低ホスファターゼ症",
+      "label_en": "Hypophosphatasia",
+      "category_key": "bone-joint",
+      "base_key": "stegosaurus",
+      "character_name_ja": "ホスファテゴサウルス",
+      "character_name_en": "Phosphategosaurus",
+      "output_asset": "static/img/characters/nando-1200656-phosphategosaurus.png",
+      "variant_rules_ja": [
+        "採用済みのステゴサウルスベース画像をそのまま参照する",
+        "新しい別種のステゴサウルスを作らない",
+        "同じシリーズ・同じ個体群のバリエーションとして見せる",
+        "変えるのは配色、模様、背板の色味、表情の軽い差分だけにする",
+        "シルエット、線、目の描き方、塗りのやわらかさは維持する",
+        "穏やかで、落ち着きがあり、医療情報サイトに置ける清潔感を持たせる"
+      ],
+      "variant_rules_en": [
+        "Use the approved stegosaurus base image as the direct reference",
+        "Do not create a completely new stegosaurus",
+        "Make it feel like a variant from the same mascot series and creature family",
+        "Change only the color palette, pattern accents, back plate color, and a small nuance in expression",
+        "Keep the same silhouette, line quality, eye style, and soft mascot shading",
+        "Keep the result calm, approachable, and clean enough for a medical information website"
+      ]
+    },
+    {
+      "id": "NANDO:1200877",
+      "label_ja": "軟骨無形成症",
+      "label_en": "Achondroplasia",
+      "category_key": "bone-joint",
+      "base_key": "triceratops",
+      "character_name_ja": "アコンドロトプス",
+      "character_name_en": "Achondrotops",
+      "output_asset": "static/img/characters/nando-1200877-achondrotops.png",
+      "variant_rules_ja": [
+        "採用済みのトリケラトプスベース画像をそのまま参照する",
+        "新しい別種のトリケラトプスを作らない",
+        "同じシリーズ・同じ個体群のバリエーションとして見せる",
+        "変えるのは配色、模様、角やフリルの色味、表情の軽い差分だけにする",
+        "シルエット、線、目の描き方、塗りのやわらかさは維持する",
+        "穏やかで、安定感があり、医療情報サイトに置ける清潔感を持たせる"
+      ],
+      "variant_rules_en": [
+        "Use the approved triceratops base image as the direct reference",
+        "Do not create a completely new triceratops",
+        "Make it feel like a variant from the same mascot series and creature family",
+        "Change only the color palette, pattern accents, horn or frill colors, and a small nuance in expression",
+        "Keep the same silhouette, line quality, eye style, and soft mascot shading",
+        "Keep the result calm, stable, and clean enough for a medical information website"
+      ]
+    }
+  ]
+}

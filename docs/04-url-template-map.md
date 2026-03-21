@@ -26,10 +26,8 @@ flowchart TD
 | `/about_nando` | NANDO 説明ページ表示 | `templates/about_nando.html` | `static/js/main.js` | 静的説明ページ |
 | `/datasets` | データセット説明ページ表示 | `templates/datasets.html` | `static/js/main.js` | データ配布案内 |
 | `/stats` | 統計ページ表示 | `templates/stats.html` | `static/js/main.js`, `static/js/stats.js` | SPARQList API を複数呼ぶ |
-<<<<<<< HEAD
 | `/summary` / `/summary/NANDO:<id>` | 疾患サマリーページ表示 | `templates/summary.html` | `static/js/main.js`, `static/js/summary.js` | 既存 API を使って俯瞰型サマリーを表示 |
-=======
->>>>>>> 38fa69f (Add NanbyoData docs)
+| `/my-diseases` | マイ疾患一覧ページ表示 | `templates/my_diseases.html` | `static/js/main.js`, `static/js/my_diseases.js` | `localStorage` を読み、制度タブとカテゴリ別一覧を表示 |
 | `/team` | チームページ表示 | `templates/team.html` | `static/js/main.js`, `static/js/team/team.js` | `static/data/members.json` を読む |
 | `/epidemiology` | 疫学ページ表示 | `templates/epidemiology.html` | `static/js/main.js`, `static/js/epidemiology/epidemiology.js` | SPARQList API の患者数表を表示 |
 | `/ontology/nando` | NANDO 一覧ページ表示 | `templates/nando.html` | なし | 大きな静的 HTML に近い |
@@ -72,7 +70,6 @@ flowchart TD
   - SPARQList API を集約して統計表を表示
   - 複数の API の結果をひとつの画面に合成する
 
-<<<<<<< HEAD
 ### サマリーページ `/summary/NANDO:<id>`
 
 - 最初に見るファイル:
@@ -84,8 +81,18 @@ flowchart TD
   - 疾患詳細ページで使っている API を再利用し、俯瞰しやすい 1 ページサマリーとして表示する
   - ダウンロード用の TXT / JSON も生成する
 
-=======
->>>>>>> 38fa69f (Add NanbyoData docs)
+### マイ疾患ページ `/my-diseases`
+
+- 最初に見るファイル:
+  - `app.py`
+  - `templates/my_diseases.html`
+  - `static/js/my_diseases.js`
+  - `static/css/summary.css`
+- 役割:
+  - `localStorage` に保存した疾患を一覧表示する
+  - `指定難病` と `小児慢性特定疾病` を制度タブで切り替える
+  - 各制度の直下カテゴリごとにグルーピングして表示する
+
 ## テンプレートと JS の対応パターン
 
 - 多くのページは `templates/*.html` と `static/js/main.js` の組み合わせ

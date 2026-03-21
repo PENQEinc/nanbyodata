@@ -16,4 +16,4 @@ COPY . /app
 
 # uWSGIを実行
 EXPOSE 8000
-CMD ["pipenv", "run", "uwsgi", "--ini", "uwsgi/uwsgi.ini"]
+CMD ["sh", "/app/scripts/start_app.sh"]

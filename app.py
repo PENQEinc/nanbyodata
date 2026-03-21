@@ -121,6 +121,13 @@ def summary(id_nando=""):
     return render_template('summary.html', id_nando=id_nando)
 
 #####
+# My diseases page
+## GET:
+@app.route('/my-diseases')
+def my_diseases():
+    return render_template('my_diseases.html')
+
+#####
 # TEAM
 ## GET: 
 @app.route('/team')
