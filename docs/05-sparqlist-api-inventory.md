@@ -60,6 +60,36 @@ flowchart LR
 | `nanbyodata_get_stats_on_patient_number_by_nando_id` | 患者数 | `static/js/disease/disease.js` |
 | `nanbyodata_get_sub_class_by_nando_id` | 下位疾患一覧 | `static/js/disease/disease.js` |
 
+### 1.5. サマリーページで使う API
+
+主な呼び出し元:
+
+- `static/js/summary.js`
+
+| API 名 | 主な用途 | 主な呼び出し元 |
+| --- | --- | --- |
+| `nanbyodata_get_overview_by_nando_id` | Hero の疾患名、説明、基本情報 | `static/js/summary.js` |
+| `nanbyodata_get_stats_on_patient_number_by_nando_id` | 患者数推移、基本情報の患者数 | `static/js/summary.js` |
+| `nanbyodata_get_sub_class_by_nando_id` | 病型分類、サブタイプカードの統計 | `static/js/summary.js` |
+| `nanbyodata_get_japan_curated_gene_by_nando_id` | 国内由来の関連遺伝子、基本情報の国内遺伝子数 | `static/js/summary.js` |
+| `nanbyodata_get_causal_gene_by_nando_id` | 国際由来の関連遺伝子、基本情報の国際遺伝子数 | `static/js/summary.js` |
+| `nanbyodata_get_hpo_data_by_nando_id` | 臨床概要、HPO カテゴリ、人体ナビ | `static/js/summary.js` |
+| `nanbyodata_get_gestaltmatcher_data_by_nando_id` | 顔貌・視覚的特徴、世界地図、年齢分布、Patient ID 一覧 | `static/js/summary.js` |
+| `nanbyodata_get_pubmed_data_by_nando_id` | 最新関連文献、関連文献一覧 | `static/js/summary.js` |
+| `nanbyodata_get_link_mondo_by_nando_id` | 外部リンク、MONDO カード | `static/js/summary.js` |
+| `nanbyodata_get_link_orphanet_by_nando_id` | 外部リンク | `static/js/summary.js` |
+| `nanbyodata_get_link_medgen_by_nando_id` | 外部リンク | `static/js/summary.js` |
+| `nanbyodata_get_link_kegg_by_nando_id` | 外部リンク | `static/js/summary.js` |
+| `nanbyodata_get_genetic_test_by_nando_id` | 分子・診断パネルの遺伝学的検査 | `static/js/summary.js` |
+| `nanbyodata_get_clinvar_variant_by_nando_id` | 分子・診断パネルの ClinVar | `static/js/summary.js` |
+| `nanbyodata_get_mgend_variant_by_nando_id` | 分子・診断パネルの MGeND | `static/js/summary.js` |
+| `nanbyodata_get_glycosmos_gene_by_nando_id` | 分子・診断パネルの GlyCosmos | `static/js/summary.js` |
+| `nanbyodata_get_nbdc_human_databases_info_by_nando_id` | リソース件数 | `static/js/summary.js` |
+| `nanbyodata_get_riken_brc_cell_info_by_nando_id` | リソース件数 | `static/js/summary.js` |
+| `nanbyodata_get_riken_brc_mouse_info_by_nando_id` | リソース件数 | `static/js/summary.js` |
+| `nanbyodata_get_riken_brc_dna_info_by_nando_id` | リソース件数 | `static/js/summary.js` |
+| `nanbyodata_get_pubchem_chemical_information_by_nando_id` | リソース件数 | `static/js/summary.js` |
+
 ### 2. 統計ページで使う API
 
 主な呼び出し元:

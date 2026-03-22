@@ -900,6 +900,23 @@
   opacity: 0.75;
 }
 
+.summary-selection-pill--toggle::after {
+  content: none;
+}
+
+.summary-selection-pill.is-active,
+.summary-selection-pill--toggle.is-active {
+  background: rgba(29, 107, 82, 0.18);
+  box-shadow: inset 0 0 0 1px rgba(29, 107, 82, 0.2);
+}
+
+.summary-selection-pill-count {
+  margin-left: 8px;
+  color: var(--summary-muted);
+  font-size: 12px;
+  font-weight: 700;
+}
+
 .summary-clinical-layout {
   display: grid;
   grid-template-columns: minmax(0, 1.4fr) minmax(260px, 0.8fr);
@@ -974,25 +991,118 @@
   line-height: 1.6;
 }
 
-.summary-facial-list {
+.summary-facial-map-shell {
+  display: grid;
+  gap: 14px;
+}
+
+.summary-facial-map-frame {
+  border: 1px solid var(--summary-line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.82);
+  padding: 10px;
+}
+
+.summary-facial-world {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.summary-facial-world-image {
+  opacity: 0.92;
+}
+
+.summary-facial-world--precise .summary-facial-world-image {
+  opacity: 0.98;
+}
+
+.summary-facial-map-region {
+  cursor: pointer;
+  outline: none;
+}
+
+.summary-facial-map-region path {
+  transition: transform 0.18s ease, opacity 0.18s ease, filter 0.18s ease;
+  transform-origin: center;
+}
+
+.summary-facial-map-region:hover path,
+.summary-facial-map-region:focus path,
+.summary-facial-map-region.is-selected path {
+  filter: drop-shadow(0 6px 12px rgba(29, 107, 82, 0.18));
+}
+
+.summary-facial-map-region:hover path,
+.summary-facial-map-region:focus path {
+  transform: translateY(-1px);
+}
+
+.summary-facial-map-region.is-empty {
+  cursor: default;
+}
+
+.summary-facial-world.has-selection .summary-facial-map-region.is-selected path {
+  opacity: 1;
+  filter: drop-shadow(0 8px 16px rgba(29, 107, 82, 0.28));
+  stroke: rgba(13, 73, 54, 0.78) !important;
+}
+
+.summary-facial-world.has-selection .summary-facial-map-region.is-selected .summary-facial-map-label,
+.summary-facial-world.has-selection .summary-facial-map-region.is-selected .summary-facial-map-count {
+  fill: #0d4936;
+}
+
+.summary-facial-map-label,
+.summary-facial-map-count {
+  fill: var(--summary-ink);
+  pointer-events: none;
+  font-weight: 700;
+  paint-order: stroke;
+  stroke: rgba(255, 252, 246, 0.94);
+  stroke-width: 4px;
+  stroke-linejoin: round;
+}
+
+.summary-facial-map-label {
+  font-size: 13px;
+}
+
+.summary-facial-map-count {
+  font-size: 14px;
+}
+
+.summary-facial-world--precise .summary-facial-map-label,
+.summary-facial-world--precise .summary-facial-map-count {
+  stroke-width: 0.9px;
+}
+
+.summary-facial-world--precise .summary-facial-map-label {
+  font-size: 6.2px;
+}
+
+.summary-facial-world--precise .summary-facial-map-count {
+  font-size: 6.6px;
+}
+
+.summary-facial-extra {
   display: grid;
   gap: 10px;
 }
 
-.summary-facial-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-
-.summary-facial-card {
+.summary-facial-detail {
+  margin-top: 14px;
   border: 1px solid var(--summary-line);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.82);
   padding: 16px;
 }
 
-.summary-facial-card h4 {
+.summary-facial-detail-empty {
+  padding: 14px 16px;
+}
+
+.summary-facial-detail-head h4 {
   margin: 0 0 4px;
   font-size: 16px;
 }
@@ -1001,7 +1111,7 @@
   display: grid;
   grid-template-columns: 120px minmax(0, 1fr);
   gap: 14px;
-  align-items: center;
+  align-items: start;
   margin-top: 10px;
 }
 
@@ -1033,6 +1143,11 @@
 }
 
 .summary-facial-legend {
+  display: grid;
+  gap: 8px;
+}
+
+.summary-facial-legend-block {
   display: grid;
   gap: 8px;
 }
@@ -1075,6 +1190,13 @@
   margin-top: 14px;
   padding-top: 12px;
   border-top: 1px solid var(--summary-line);
+}
+
+.summary-facial-records--inline {
+  margin-top: 0;
+  padding-top: 0;
+  padding-left: 8px;
+  border-top: 0;
 }
 
 .summary-facial-record-list {

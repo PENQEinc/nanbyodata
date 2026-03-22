@@ -8,12 +8,14 @@
     features: [],
     facialItems: [],
     bodyMap: null,
+    facialMap: null,
     selectedCategoryIds: [],
     showAll: false,
     facialSelection: null,
   };
   const labelCache = new Map();
   let bodyMapPromise = null;
+  let facialMapPromise = null;
   let currentMyDiseaseEntry = null;
 
   const $ = (id) => document.getElementById(id);
@@ -371,6 +373,23 @@
     return bodyMapPromise;
   }
 
+  async function fetchFacialMap() {
+    if (!facialMapPromise) {
+      facialMapPromise = fetch('/static/data/facial-map-regions.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`facial-map-regions.json: HTTP ${response.status}`);
+          }
+          return response.json();
+        })
+        .catch((error) => {
+          facialMapPromise = null;
+          throw error;
+        });
+    }
+    return facialMapPromise;
+  }
+
   async function fetchSubtypeStats(children) {
     const entries = await Promise.all(
       children.map(async (child) => {
@@ -379,25 +398,26 @@
           fetchJson('nanbyodata_get_japan_curated_gene_by_nando_id', childId),
           fetchJson('nanbyodata_get_causal_gene_by_nando_id', childId),
           fetchJson('nanbyodata_get_hpo_data_by_nando_id', childId),
-          fetchJson('nanbyodata_get_pubmed_data_by_nando_id', childId),
+          fetchJson('nanbyodata_get_sub_class_by_nando_id', childId),
         ]);
 
         const japanGenes = settled[0].status === 'fulfilled' ? settled[0].value : [];
         const causalGenes = settled[1].status === 'fulfilled' ? settled[1].value : [];
         const hpoData = settled[2].status === 'fulfilled' ? settled[2].value : [];
-        const references = settled[3].status === 'fulfilled' ? settled[3].value : [];
+        const subClassData = settled[3].status === 'fulfilled' ? settled[3].value : [];
 
         const relatedGenes = uniqueBy(
           [...japanGenes.map((gene) => gene.symbol), ...causalGenes.map((gene) => gene.gene_symbol)].filter(Boolean),
           (symbol) => symbol
         ).length;
+        const subtypeCount = (subClassData || []).filter((item) => item.parent).length;
 
         return [
           child.id,
           {
             genes: relatedGenes,
             features: hpoData.length,
-            references: references.length,
+            subtypes: subtypeCount,
           },
         ];
       })
@@ -791,7 +811,8 @@
     renderClinicalOverview(
       clinicalOverviewState.features,
       clinicalOverviewState.facialItems,
-      clinicalOverviewState.bodyMap
+      clinicalOverviewState.bodyMap,
+      clinicalOverviewState.facialMap
     );
   }
 
@@ -861,14 +882,292 @@
     return { key: '18+', label: t('18歳以上', '18+ years') };
   }
 
+  const FACIAL_REGION_DEFS = [
+    {
+      id: 'americas',
+      labelJa: '米州',
+      labelEn: 'Americas',
+      mapLabelJa: '米州',
+      mapLabelEn: 'Americas',
+      countX: 112,
+      countY: 92,
+      paths: [
+        'M42 56 C55 34 92 30 126 42 C150 50 171 68 171 93 C171 116 158 129 140 142 C127 151 124 164 118 176 C104 171 91 160 80 145 C63 123 51 96 42 56 Z',
+      ],
+    },
+    {
+      id: 'latin_america',
+      labelJa: '中南米',
+      labelEn: 'Latin America',
+      mapLabelJa: '中南米',
+      mapLabelEn: 'LatAm',
+      countX: 142,
+      countY: 181,
+      paths: [
+        'M118 154 C134 151 155 160 165 176 C171 188 171 202 164 217 C155 240 154 260 144 284 C137 300 126 314 111 324 C101 314 102 296 108 277 C116 254 116 235 111 216 C105 194 104 173 118 154 Z',
+      ],
+    },
+    {
+      id: 'europe',
+      labelJa: 'ヨーロッパ',
+      labelEn: 'Europe',
+      mapLabelJa: '欧州',
+      mapLabelEn: 'Europe',
+      countX: 348,
+      countY: 84,
+      paths: [
+        'M294 73 C308 58 334 53 362 56 C387 59 409 69 421 85 C427 94 426 105 418 112 C406 123 384 127 363 124 C332 119 301 108 292 95 C287 87 287 80 294 73 Z',
+      ],
+    },
+    {
+      id: 'mena',
+      labelJa: '中東・北アフリカ',
+      labelEn: 'Middle East / North Africa',
+      mapLabelJa: '中東・北アフリカ',
+      mapLabelEn: 'MENA',
+      countX: 392,
+      countY: 154,
+      paths: [
+        'M323 126 C346 116 381 114 416 121 C444 126 466 138 472 154 C476 166 469 177 455 185 C435 197 404 201 372 194 C344 189 321 178 314 165 C309 154 312 138 323 126 Z',
+      ],
+    },
+    {
+      id: 'sub_saharan_africa',
+      labelJa: 'サブサハラアフリカ',
+      labelEn: 'Sub-Saharan Africa',
+      mapLabelJa: 'サブサハラ',
+      mapLabelEn: 'Africa',
+      countX: 393,
+      countY: 241,
+      paths: [
+        'M356 187 C375 179 406 178 427 186 C445 194 456 210 455 231 C454 257 442 282 421 304 C404 322 385 325 372 309 C358 290 344 272 342 248 C340 226 344 199 356 187 Z',
+      ],
+    },
+    {
+      id: 'south_asia',
+      labelJa: '南アジア',
+      labelEn: 'South Asia',
+      mapLabelJa: '南アジア',
+      mapLabelEn: 'S Asia',
+      countX: 532,
+      countY: 175,
+      paths: [
+        'M493 143 C511 136 539 137 559 146 C576 154 583 169 580 184 C576 201 562 216 545 224 C529 232 516 233 505 224 C492 214 482 199 481 183 C481 165 483 150 493 143 Z',
+      ],
+    },
+    {
+      id: 'east_asia',
+      labelJa: '東アジア',
+      labelEn: 'East Asia',
+      mapLabelJa: '東アジア',
+      mapLabelEn: 'E Asia',
+      countX: 626,
+      countY: 118,
+      paths: [
+        'M565 84 C585 71 620 67 654 72 C688 76 714 90 720 109 C725 124 717 139 703 149 C684 162 657 168 626 166 C597 164 574 155 563 141 C553 128 553 95 565 84 Z',
+      ],
+    },
+    {
+      id: 'southeast_asia',
+      labelJa: '東南アジア',
+      labelEn: 'Southeast Asia',
+      mapLabelJa: '東南アジア',
+      mapLabelEn: 'SE Asia',
+      countX: 604,
+      countY: 220,
+      paths: [
+        'M551 190 C564 183 585 182 605 187 C624 192 639 201 644 214 C648 225 642 236 631 244 C616 255 596 260 577 257 C560 255 547 247 542 236 C538 226 541 198 551 190 Z',
+      ],
+    },
+    {
+      id: 'oceania',
+      labelJa: 'オセアニア',
+      labelEn: 'Oceania',
+      mapLabelJa: 'オセアニア',
+      mapLabelEn: 'Oceania',
+      countX: 684,
+      countY: 284,
+      paths: [
+        'M644 257 C658 246 680 242 703 246 C724 249 742 258 746 270 C751 285 735 297 716 301 C689 307 654 304 641 292 C634 286 635 266 644 257 Z',
+      ],
+    },
+  ];
+
+  const FACIAL_REGION_EXTRA_ORDER = ['asia_unspecified', 'unknown_other'];
+  const FACIAL_REGION_PRIORITY = [
+    'east_asia',
+    'south_asia',
+    'southeast_asia',
+    'mena',
+    'sub_saharan_africa',
+    'latin_america',
+    'americas',
+    'oceania',
+    'europe',
+    'asia_unspecified',
+    'unknown_other',
+  ];
+
+  const FACIAL_REGION_META = {
+    asia_unspecified: {
+      id: 'asia_unspecified',
+      labelJa: 'アジア（詳細不明）',
+      labelEn: 'Asia (unspecified)',
+    },
+    unknown_other: {
+      id: 'unknown_other',
+      labelJa: 'Unknown / Other',
+      labelEn: 'Unknown / Other',
+    },
+  };
+
+  const FACIAL_ETHNICITY_TO_REGION = {
+    Caucasian: 'europe',
+    European: 'europe',
+    'European - Northwestern': 'europe',
+    'European - Southern': 'europe',
+    'European - Eastern': 'europe',
+    'Jewish - Ashkenazi': 'europe',
+    'Jewish - Sephardi': 'europe',
+    'Roma/Romani': 'europe',
+    'Asian - East': 'east_asia',
+    'Asian - South/Indian': 'south_asia',
+    'Asian - South-East': 'southeast_asia',
+    'Asian - West/Middle Eastern': 'mena',
+    Arab: 'mena',
+    'African - North': 'mena',
+    African: 'sub_saharan_africa',
+    'African - Sub-Saharan': 'sub_saharan_africa',
+    'American - Latin/Hispanic': 'latin_america',
+    'American - Native': 'americas',
+    'American - African/Black': 'americas',
+    'Oceanian/Pacific Islander': 'oceania',
+    Asian: 'asia_unspecified',
+    Unknown: 'unknown_other',
+    Other: 'unknown_other',
+  };
+
   function normalizeEthnicityLabel(value) {
     const raw = String(value || '').trim();
     if (!raw) return 'Unknown';
     const lowered = raw.toLowerCase();
-    if (['unknown', '不明', 'na', 'n/a', '-'].includes(lowered)) {
+    if (['unknown', '不明', 'na', 'n/a', '-', 'null'].includes(lowered)) {
       return 'Unknown';
     }
     return raw;
+  }
+
+  function parseEthnicityLabels(value) {
+    const raw = String(value || '').trim();
+    if (!raw) return [];
+    try {
+      const parsed = JSON.parse(raw);
+      if (Array.isArray(parsed)) {
+        return parsed.map((item) => normalizeEthnicityLabel(item)).filter(Boolean);
+      }
+      return [normalizeEthnicityLabel(parsed)];
+    } catch (_error) {
+      return [normalizeEthnicityLabel(raw)];
+    }
+  }
+
+  function getFacialRegionDef(regionId) {
+    return FACIAL_REGION_DEFS.find((region) => region.id === regionId) || FACIAL_REGION_META[regionId] || null;
+  }
+
+  function getFacialRegionLabel(regionId) {
+    const region = getFacialRegionDef(regionId);
+    if (!region) return regionId;
+    return isJapaneseLocale() ? region.labelJa : region.labelEn;
+  }
+
+  function getFacialMapLabel(regionId) {
+    const region = getFacialRegionDef(regionId);
+    if (!region) return regionId;
+    return isJapaneseLocale()
+      ? region.mapLabelJa || region.labelJa
+      : region.mapLabelEn || region.labelEn;
+  }
+
+  function assignFacialRegion(value) {
+    const labels = parseEthnicityLabels(value);
+    if (!labels.length) return 'unknown_other';
+    const candidates = labels
+      .map((label) => FACIAL_ETHNICITY_TO_REGION[label])
+      .filter(Boolean);
+    if (!candidates.length) return 'unknown_other';
+    return FACIAL_REGION_PRIORITY.find((regionId) => candidates.includes(regionId)) || 'unknown_other';
+  }
+
+  function splitSvgSubpaths(d) {
+    return String(d || '').match(/M[\s\S]*?Z/g) || (d ? [d] : []);
+  }
+
+  function normalizePreciseFacialMapRegions(regions) {
+    let franceSouthAmericaPath = null;
+    const normalized = (regions || []).map((region) => {
+      const nextRegion = { ...region, paths: (region.paths || []).map((path) => ({ ...path })) };
+
+      if (region.id === 'americas') {
+        nextRegion.label_x = -135;
+        nextRegion.label_y = -44;
+        nextRegion.count_y = -36;
+      }
+
+      if (region.id === 'europe') {
+        nextRegion.paths = nextRegion.paths.map((path) => {
+          if (path.id !== 'FRA') return path;
+          const subpaths = splitSvgSubpaths(path.d);
+          if (subpaths.length <= 1) return path;
+          franceSouthAmericaPath = subpaths[0];
+          return {
+            ...path,
+            d: subpaths.slice(1).join(' '),
+          };
+        });
+      }
+
+      return nextRegion;
+    });
+
+    if (franceSouthAmericaPath) {
+      const latinAmericaRegion = normalized.find((region) => region.id === 'latin_america');
+      if (latinAmericaRegion) {
+        latinAmericaRegion.paths.push({
+          id: 'FRA_GUIANA_OVERLAY',
+          d: franceSouthAmericaPath,
+        });
+      }
+    }
+
+    return normalized;
+  }
+
+  function normalizeFacialSelection(selection, grouped) {
+    const availableRegionIds = FACIAL_REGION_PRIORITY.filter(
+      (regionId) => countUniqueFacialPatients(grouped.get(regionId) || []) > 0
+    );
+    const availableRegionSet = new Set(availableRegionIds);
+
+    if (selection?.regions && Array.isArray(selection.regions)) {
+      const regions = selection.regions.filter((regionId) => availableRegionSet.has(regionId));
+      const buckets = {};
+      regions.forEach((regionId) => {
+        buckets[regionId] = selection.buckets?.[regionId] || null;
+      });
+      return { regions, buckets };
+    }
+
+    if (selection?.region && availableRegionSet.has(selection.region)) {
+      return {
+        regions: [selection.region],
+        buckets: {
+          [selection.region]: selection.bucketKey || null,
+        },
+      };
+    }
+
+    return { regions: [], buckets: {} };
   }
 
   function describeFacialRecord(item) {
@@ -889,8 +1188,30 @@
       .join(' / ');
   }
 
-  function getFacialSelectionKey(ethnicity, bucketKey) {
-    return `${ethnicity}__${bucketKey}`;
+  function getFacialPatientKey(item) {
+    return String(item?.id || item?.person || item?.imageId || item?.pmid || '').trim();
+  }
+
+  function countUniqueFacialPatients(items) {
+    return uniqueBy(
+      (items || []).filter((item) => getFacialPatientKey(item)),
+      (item) => getFacialPatientKey(item)
+    ).length;
+  }
+
+  function dedupeFacialRecordList(items) {
+    return uniqueBy(items || [], (item) => {
+      const patientKey = getFacialPatientKey(item);
+      if (patientKey) return patientKey;
+      return [
+        item.gender || '',
+        item.gene || '',
+        normalizeEthnicityLabel(item.ethnicity),
+        String(item.age_year ?? ''),
+        String(item.age_month ?? ''),
+        item.age_memo || '',
+      ].join('|');
+    });
   }
 
   function buildPieSlicePath(cx, cy, radius, startAngle, endAngle) {
@@ -904,26 +1225,66 @@
     return `M ${cx} ${cy} L ${start.x} ${start.y} A ${radius} ${radius} 0 ${largeArc} 1 ${end.x} ${end.y} Z`;
   }
 
-  function renderFacialPanel(records) {
+  function renderFacialPanel(records, facialMapData) {
     const panel = $('facial-panel');
     if (!panel) return;
 
     if (!records.length) {
-      panel.innerHTML = `
-        <h3>${escapeHtml(t('顔貌・視覚的特徴', 'Facial features'))}</h3>
-        <div class="summary-tiny">${t('顔貌特徴データはありません。', 'No facial feature data available.')}</div>
-      `;
+      panel.innerHTML = '';
+      panel.hidden = true;
       return;
     }
 
+    panel.hidden = false;
+
     const grouped = new Map();
     for (const item of records) {
-      const ethnicity = normalizeEthnicityLabel(item.ethnicity);
-      if (!grouped.has(ethnicity)) {
-        grouped.set(ethnicity, []);
+      const regionId = assignFacialRegion(item.ethnicity);
+      if (!grouped.has(regionId)) {
+        grouped.set(regionId, []);
       }
-      grouped.get(ethnicity).push(item);
+      grouped.get(regionId).push(item);
     }
+
+    const regionEntries = FACIAL_REGION_PRIORITY
+      .map((regionId) => [regionId, grouped.get(regionId) || []])
+      .filter(([, items]) => countUniqueFacialPatients(items) > 0);
+
+    if (!regionEntries.length) {
+      panel.innerHTML = '';
+      panel.hidden = true;
+      return;
+    }
+
+    clinicalOverviewState.facialSelection = normalizeFacialSelection(
+      clinicalOverviewState.facialSelection,
+      grouped
+    );
+
+    const preciseMapRegions = normalizePreciseFacialMapRegions(facialMapData?.regions || []).map((region) => ({
+      ...region,
+      items: grouped.get(region.id) || [],
+    }));
+    const mapRegions = preciseMapRegions.length
+      ? preciseMapRegions
+      : FACIAL_REGION_DEFS.map((region) => ({
+          ...region,
+          items: grouped.get(region.id) || [],
+        }));
+    const extraRegions = FACIAL_REGION_EXTRA_ORDER.map((regionId) => ({
+      id: regionId,
+      label: getFacialRegionLabel(regionId),
+      items: grouped.get(regionId) || [],
+    })).filter((region) => region.items.length);
+
+    const maxMapCount = Math.max(...mapRegions.map((region) => countUniqueFacialPatients(region.items)), 1);
+    const totalUniquePatients = countUniqueFacialPatients(records);
+    const inMapUniquePatients = countUniqueFacialPatients(
+      mapRegions.flatMap((region) => region.items || [])
+    );
+    const offMapUniquePatients = Math.max(totalUniquePatients - inMapUniquePatients, 0);
+    const mapViewBox = facialMapData?.viewBox || '0 0 760 360';
+    const [viewX, viewY, viewWidth, viewHeight] = mapViewBox.split(/\s+/).map(Number);
 
     const bucketOrder = ['0-1', '2-5', '6-12', '13-17', '18+', 'unknown'];
     const bucketColors = {
@@ -935,11 +1296,115 @@
       unknown: '#d7ddd3',
     };
 
-    const ethnicityCards = Array.from(grouped.entries())
-      .sort((a, b) => b[1].length - a[1].length)
-      .map(([ethnicity, items]) => {
+    const selectedRegionIds = clinicalOverviewState.facialSelection.regions;
+
+    const mapSvg = preciseMapRegions.length
+      ? `
+        <svg class="summary-facial-world summary-facial-world--precise ${selectedRegionIds.length ? 'has-selection' : ''}" viewBox="${escapeHtml(mapViewBox)}" role="img" aria-label="${escapeHtml(
+          t('世界地図上の顔貌症例分布', 'World map of facial case distribution')
+        )}">
+          <image
+            href="/static/img/maps/world-robinson-cc0.svg"
+            x="${viewX}"
+            y="${viewY}"
+            width="${viewWidth}"
+            height="${viewHeight}"
+            preserveAspectRatio="none"
+            class="summary-facial-world-image"
+          ></image>
+          ${mapRegions
+            .map((region) => {
+              const count = countUniqueFacialPatients(region.items);
+              const intensity = count ? 0.12 + (count / maxMapCount) * 0.5 : 0.02;
+              const selected = selectedRegionIds.includes(region.id);
+              return `
+                <g
+                  class="summary-facial-map-region ${selected ? 'is-selected' : ''} ${count ? 'is-active' : 'is-empty'}"
+                  ${count ? `data-facial-region="${escapeHtml(region.id)}" tabindex="0" role="button"` : 'aria-hidden="true"'}
+                  aria-label="${escapeHtml(`${getFacialRegionLabel(region.id)} ${count}`)}"
+                >
+                  ${region.paths
+                    .map(
+                      (path) => `
+                        <path
+                          d="${path.d}"
+                          fill="rgba(29, 107, 82, ${count ? intensity.toFixed(3) : '0.01'})"
+                          stroke="${count ? 'rgba(29, 107, 82, 0.28)' : 'rgba(86, 105, 97, 0.08)'}"
+                          stroke-width="${selected ? '0.9' : '0.45'}"
+                          vector-effect="non-scaling-stroke"
+                        ></path>
+                      `
+                    )
+                    .join('')}
+                  <text x="${region.label_x}" y="${region.label_y}" text-anchor="middle" class="summary-facial-map-label">${escapeHtml(
+                    getFacialMapLabel(region.id)
+                  )}</text>
+                  <text x="${region.label_x}" y="${region.count_y}" text-anchor="middle" class="summary-facial-map-count">${escapeHtml(
+                    String(count)
+                  )}</text>
+                </g>
+              `;
+            })
+            .join('')}
+        </svg>
+      `
+      : `
+        <svg class="summary-facial-world ${selectedRegionIds.length ? 'has-selection' : ''}" viewBox="0 0 760 360" role="img" aria-label="${escapeHtml(
+          t('世界地図上の顔貌症例分布', 'World map of facial case distribution')
+        )}">
+          <rect x="18" y="18" width="724" height="324" rx="28" fill="rgba(244,247,242,0.96)"></rect>
+          <image
+            href="/static/img/maps/world-robinson-cc0.svg"
+            x="30"
+            y="32"
+            width="700"
+            height="286"
+            preserveAspectRatio="xMidYMid meet"
+            class="summary-facial-world-image"
+          ></image>
+          ${mapRegions
+            .map((region) => {
+              const count = countUniqueFacialPatients(region.items);
+              const intensity = count ? 0.18 + (count / maxMapCount) * 0.64 : 0.08;
+              const selected = selectedRegionIds.includes(region.id);
+              return `
+                <g
+                  class="summary-facial-map-region ${selected ? 'is-selected' : ''} ${count ? 'is-active' : 'is-empty'}"
+                  ${count ? `data-facial-region="${escapeHtml(region.id)}" tabindex="0" role="button"` : 'aria-hidden="true"'}
+                  aria-label="${escapeHtml(`${getFacialRegionLabel(region.id)} ${count}`)}"
+                >
+                  ${region.paths
+                    .map(
+                      (path) => `
+                        <path
+                          d="${path}"
+                          fill="rgba(29, 107, 82, ${count ? intensity.toFixed(3) : '0.06'})"
+                          stroke="${count ? 'rgba(29, 107, 82, 0.35)' : 'rgba(86, 105, 97, 0.12)'}"
+                          stroke-width="${selected ? '3' : '2'}"
+                          vector-effect="non-scaling-stroke"
+                        ></path>
+                      `
+                    )
+                    .join('')}
+                  <text x="${region.countX}" y="${region.countY}" text-anchor="middle" class="summary-facial-map-label">${escapeHtml(
+                    getFacialMapLabel(region.id)
+                  )}</text>
+                  <text x="${region.countX}" y="${region.countY + 21}" text-anchor="middle" class="summary-facial-map-count">${escapeHtml(
+                    String(count)
+                  )}</text>
+                </g>
+              `;
+            })
+            .join('')}
+        </svg>
+      `;
+
+    const detailHtml = selectedRegionIds
+      .map((selectedRegionId) => {
+        const selectedItems = grouped.get(selectedRegionId) || [];
+        const selectedRegionLabel = getFacialRegionLabel(selectedRegionId);
         const buckets = new Map();
-        items.forEach((item) => {
+        selectedItems.forEach((item) => {
           const bucket = getFacialAgeBucket(item);
           if (!buckets.has(bucket.key)) {
             buckets.set(bucket.key, {
@@ -955,22 +1420,23 @@
         const orderedBuckets = bucketOrder
           .map((key) => buckets.get(key))
           .filter(Boolean);
-        const total = items.length;
+        const total = countUniqueFacialPatients(selectedItems);
         let angle = -Math.PI / 2;
+        const selectedBucketKey = clinicalOverviewState.facialSelection.buckets[selectedRegionId] || null;
+        const selectedBucket = orderedBuckets.find((bucket) => bucket.key === selectedBucketKey) || null;
         const slices = orderedBuckets
           .map((bucket) => {
-            const ratio = bucket.items.length / total;
+            const bucketCount = countUniqueFacialPatients(bucket.items);
+            const ratio = bucketCount / Math.max(total, 1);
             const nextAngle = angle + ratio * Math.PI * 2;
             const path = buildPieSlicePath(54, 54, 42, angle, nextAngle);
-            const selected =
-              clinicalOverviewState.facialSelection?.ethnicity === ethnicity &&
-              clinicalOverviewState.facialSelection?.bucketKey === bucket.key;
+            const selected = selectedBucketKey === bucket.key;
             const slice = `
               <path
                 d="${path}"
                 fill="${bucket.color}"
                 class="summary-facial-slice ${selected ? 'is-selected' : ''}"
-                data-facial-ethnicity="${escapeHtml(ethnicity)}"
+                data-facial-region="${escapeHtml(selectedRegionId)}"
                 data-facial-bucket="${escapeHtml(bucket.key)}"
                 tabindex="0"
                 role="button"
@@ -981,49 +1447,66 @@
           })
           .join('');
 
-        const selectedBucket =
-          clinicalOverviewState.facialSelection?.ethnicity === ethnicity
-            ? orderedBuckets.find((bucket) => bucket.key === clinicalOverviewState.facialSelection.bucketKey)
-            : null;
-
         return `
-          <article class="summary-facial-card">
-            <div class="summary-facial-card-head">
+          <div class="summary-facial-detail">
+            <div class="summary-facial-detail-head">
               <div>
-                <h4>${escapeHtml(ethnicity)}</h4>
+                <h4>${escapeHtml(selectedRegionLabel)}</h4>
                 <div class="summary-tiny">${escapeHtml(
-                  t(`${total}件の GestaltMatcher 症例`, `${total} GestaltMatcher records`)
+                  t(`${total}件の一意の Patient ID`, `${total} unique Patient IDs`)
                 )}</div>
               </div>
             </div>
             <div class="summary-facial-card-body">
               <svg class="summary-facial-pie" viewBox="0 0 108 108" role="img" aria-label="${escapeHtml(
-                `${ethnicity} age distribution`
+                `${selectedRegionLabel} age distribution`
               )}">
                 ${slices}
                 <circle cx="54" cy="54" r="18" fill="rgba(255,252,246,0.96)"></circle>
                 <text x="54" y="51" text-anchor="middle" class="summary-facial-pie-total">${escapeHtml(String(total))}</text>
-                <text x="54" y="65" text-anchor="middle" class="summary-facial-pie-label">${escapeHtml(t('件', 'cases'))}</text>
+                <text x="54" y="65" text-anchor="middle" class="summary-facial-pie-label">${escapeHtml(
+                  t('件', 'cases')
+                )}</text>
               </svg>
               <div class="summary-facial-legend">
                 ${orderedBuckets
                   .map(
                     (bucket) => `
-                      <button
-                        class="summary-facial-legend-item ${
-                          clinicalOverviewState.facialSelection?.ethnicity === ethnicity &&
-                          clinicalOverviewState.facialSelection?.bucketKey === bucket.key
-                            ? 'is-selected'
+                      <div class="summary-facial-legend-block">
+                        <button
+                          class="summary-facial-legend-item ${selectedBucketKey === bucket.key ? 'is-selected' : ''}"
+                          type="button"
+                          data-facial-region="${escapeHtml(selectedRegionId)}"
+                          data-facial-bucket="${escapeHtml(bucket.key)}"
+                        >
+                          <span class="summary-facial-legend-swatch" style="background:${escapeHtml(bucket.color)}"></span>
+                          <span>${escapeHtml(bucket.label)}</span>
+                          <span class="summary-facial-legend-count">${escapeHtml(String(countUniqueFacialPatients(bucket.items)))}</span>
+                        </button>
+                        ${
+                          selectedBucket && selectedBucket.key === bucket.key
+                            ? `
+                              <div class="summary-facial-records summary-facial-records--inline">
+                                <div class="summary-selection-note">${escapeHtml(
+                                  t('選択中の年齢帯の症例', 'Records in selected age range')
+                                )}</div>
+                                <div class="summary-facial-record-list">
+                                  ${dedupeFacialRecordList(selectedBucket.items)
+                                    .map(
+                                      (item) => `
+                                        <a class="summary-facial-record" href="${escapeHtml(item.person || '#')}" target="_blank" rel="noopener noreferrer">
+                                          <strong>${escapeHtml(item.id || t('症例', 'Case'))}</strong>
+                                          <div class="summary-tiny">${escapeHtml(describeFacialRecord(item))}</div>
+                                        </a>
+                                      `
+                                    )
+                                    .join('')}
+                                </div>
+                              </div>
+                            `
                             : ''
-                        }"
-                        type="button"
-                        data-facial-ethnicity="${escapeHtml(ethnicity)}"
-                        data-facial-bucket="${escapeHtml(bucket.key)}"
-                      >
-                        <span class="summary-facial-legend-swatch" style="background:${escapeHtml(bucket.color)}"></span>
-                        <span>${escapeHtml(bucket.label)}</span>
-                        <span class="summary-facial-legend-count">${escapeHtml(String(bucket.items.length))}</span>
-                      </button>
+                        }
+                      </div>
                     `
                   )
                   .join('')}
@@ -1031,28 +1514,16 @@
             </div>
             ${
               selectedBucket
-                ? `
+                ? ''
+                : `
                   <div class="summary-facial-records">
                     <div class="summary-selection-note">${escapeHtml(
-                      t('選択中の年齢帯の症例', 'Records in selected age range')
+                      t('年齢帯を選ぶと、その症例一覧が表示されます。', 'Choose an age range to show the matching records.')
                     )}</div>
-                    <div class="summary-facial-record-list">
-                      ${selectedBucket.items
-                        .map(
-                          (item) => `
-                            <a class="summary-facial-record" href="${escapeHtml(item.person || '#')}" target="_blank" rel="noopener noreferrer">
-                              <strong>${escapeHtml(item.id || t('症例', 'Case'))}</strong>
-                              <div class="summary-tiny">${escapeHtml(describeFacialRecord(item))}</div>
-                            </a>
-                          `
-                        )
-                        .join('')}
-                    </div>
                   </div>
                 `
-                : ''
             }
-          </article>
+          </div>
         `;
       })
       .join('');
@@ -1061,33 +1532,147 @@
       <h3>${escapeHtml(t('顔貌・視覚的特徴', 'Facial features'))}</h3>
       <div class="summary-facial-meta">${escapeHtml(
         t(
-          `GestaltMatcher に由来する症例画像・顔貌データ ${records.length} 件`,
-          `${records.length} case-image records from GestaltMatcher`
+          `${totalUniquePatients} 件の一意の Patient ID（地図内 ${inMapUniquePatients} / 地図外 ${offMapUniquePatients}）`,
+          `${totalUniquePatients} unique Patient IDs (on-map ${inMapUniquePatients} / off-map ${offMapUniquePatients})`
         )
       )}</div>
-      <div class="summary-facial-grid">${ethnicityCards}</div>
+      <div class="summary-facial-map-shell">
+        <div class="summary-facial-map-frame">
+          ${mapSvg}
+        </div>
+        <div class="summary-facial-extra">
+          <div class="summary-selection-pills">
+            <button
+              type="button"
+              class="summary-selection-pill summary-selection-pill--toggle ${selectedRegionIds.length === regionEntries.length ? 'is-active' : ''}"
+              data-facial-action="select-all"
+            >
+              ${escapeHtml(t('全選択', 'Select all'))}
+              <span class="summary-selection-pill-count">${escapeHtml(String(regionEntries.length))}</span>
+            </button>
+            <button
+              type="button"
+              class="summary-selection-pill summary-selection-pill--toggle"
+              data-facial-action="clear"
+            >
+              ${escapeHtml(t('クリア', 'Clear'))}
+            </button>
+          </div>
+          ${extraRegions.length
+            ? `
+              <div class="summary-selection-note">${escapeHtml(
+                t('地図外の地域カテゴリ', 'Additional region categories')
+              )}</div>
+              <div class="summary-selection-pills">
+                ${extraRegions
+                  .map(
+                    (region) => `
+                      <button
+                        type="button"
+                        class="summary-selection-pill summary-selection-pill--toggle ${selectedRegionIds.includes(region.id) ? 'is-active' : ''}"
+                        data-facial-region="${escapeHtml(region.id)}"
+                      >
+                        ${escapeHtml(region.label)}
+                        <span class="summary-selection-pill-count">${escapeHtml(String(countUniqueFacialPatients(region.items)))}</span>
+                      </button>
+                    `
+                  )
+                  .join('')}
+              </div>
+            `
+            : ''}
+        </div>
+      </div>
+      ${
+        selectedRegionIds.length
+          ? detailHtml
+          : `
+            <div class="summary-facial-detail summary-facial-detail-empty">
+              <div class="summary-selection-note">${escapeHtml(
+                t('世界地図の地域を選ぶと、その地域の年齢分布と症例一覧を表示します。', 'Select a region on the world map to view age distribution and matching records.')
+              )}</div>
+            </div>
+          `
+      }
     `;
 
-    const toggleFacialSelection = (ethnicity, bucketKey) => {
-      const current = clinicalOverviewState.facialSelection;
-      if (current?.ethnicity === ethnicity && current?.bucketKey === bucketKey) {
-        clinicalOverviewState.facialSelection = null;
+    const toggleRegionSelection = (regionId) => {
+      const current = normalizeFacialSelection(clinicalOverviewState.facialSelection, grouped);
+      const nextRegions = [...current.regions];
+      const nextBuckets = { ...current.buckets };
+      const existingIndex = nextRegions.indexOf(regionId);
+      if (existingIndex >= 0) {
+        nextRegions.splice(existingIndex, 1);
+        delete nextBuckets[regionId];
       } else {
-        clinicalOverviewState.facialSelection = { ethnicity, bucketKey };
+        nextRegions.push(regionId);
+        nextBuckets[regionId] = null;
       }
+      clinicalOverviewState.facialSelection = { regions: nextRegions, buckets: nextBuckets };
       rerenderClinicalOverviewWithState();
     };
 
-    panel.querySelectorAll('[data-facial-ethnicity][data-facial-bucket]').forEach((element) => {
-      const ethnicity = element.dataset.facialEthnicity;
-      const bucketKey = element.dataset.facialBucket;
+    const toggleFacialSelection = (regionId, bucketKey) => {
+      const current = normalizeFacialSelection(clinicalOverviewState.facialSelection, grouped);
+      const nextRegions = current.regions.includes(regionId) ? [...current.regions] : [...current.regions, regionId];
+      const nextBuckets = { ...current.buckets };
+      if (current.buckets[regionId] === bucketKey) {
+        nextBuckets[regionId] = null;
+      } else {
+        nextBuckets[regionId] = bucketKey;
+      }
+      clinicalOverviewState.facialSelection = { regions: nextRegions, buckets: nextBuckets };
+      rerenderClinicalOverviewWithState();
+    };
+
+    const selectAllRegions = () => {
+      const regionIds = regionEntries.map(([regionId]) => regionId);
+      clinicalOverviewState.facialSelection = {
+        regions: regionIds,
+        buckets: Object.fromEntries(regionIds.map((regionId) => [regionId, null])),
+      };
+      rerenderClinicalOverviewWithState();
+    };
+
+    const clearFacialSelection = () => {
+      clinicalOverviewState.facialSelection = { regions: [], buckets: {} };
+      rerenderClinicalOverviewWithState();
+    };
+
+    panel.querySelectorAll('[data-facial-region]:not([data-facial-bucket])').forEach((element) => {
+      const regionId = element.dataset.facialRegion;
       element.addEventListener('click', () => {
-        toggleFacialSelection(ethnicity, bucketKey);
+        toggleRegionSelection(regionId);
       });
       element.addEventListener('keydown', (event) => {
         if (event.key === 'Enter' || event.key === ' ') {
           event.preventDefault();
-          toggleFacialSelection(ethnicity, bucketKey);
+          toggleRegionSelection(regionId);
+        }
+      });
+    });
+
+    panel.querySelectorAll('[data-facial-region][data-facial-bucket]').forEach((element) => {
+      const regionId = element.dataset.facialRegion;
+      const bucketKey = element.dataset.facialBucket;
+      element.addEventListener('click', () => {
+        toggleFacialSelection(regionId, bucketKey);
+      });
+      element.addEventListener('keydown', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggleFacialSelection(regionId, bucketKey);
+        }
+      });
+    });
+
+    panel.querySelectorAll('[data-facial-action]').forEach((element) => {
+      const action = element.dataset.facialAction;
+      element.addEventListener('click', () => {
+        if (action === 'select-all') {
+          selectAllRegions();
+        } else if (action === 'clear') {
+          clearFacialSelection();
         }
       });
     });
@@ -1320,11 +1905,12 @@
     applySelectedState();
   }
 
-  function renderClinicalOverview(features, facialItems, bodyMap) {
+  function renderClinicalOverview(features, facialItems, bodyMap, facialMap) {
     clinicalOverviewState = {
       features,
       facialItems,
       bodyMap,
+      facialMap,
       selectedCategoryIds: clinicalOverviewState.selectedCategoryIds,
       showAll: clinicalOverviewState.showAll,
       facialSelection: clinicalOverviewState.facialSelection,
@@ -1394,7 +1980,7 @@
         });
       });
 
-    renderFacialPanel(facialItems);
+    renderFacialPanel(facialItems, facialMap);
   }
 
   function renderSubclasses(root, children, statsById = new Map()) {
@@ -1405,6 +1991,11 @@
         : t('病型なし', 'No subtypes')
     );
 
+    if (!children.length) {
+      $('subclass-tree').innerHTML = `<div class="summary-tiny">${t('病型分類はありません。', 'No subtype classification available.')}</div>`;
+      return;
+    }
+
     $('subclass-tree').innerHTML = `
       <div class="summary-tree-root">
         <div class="summary-subclass-kicker">${escapeHtml(t('親疾患', 'Parent disease'))}</div>
@@ -1412,27 +2003,21 @@
         ${isJapaneseLocale() ? `<span>${escapeHtml(root.en)}</span>` : root.ja ? `<span>${escapeHtml(root.ja)}</span>` : ''}
         <span class="summary-tree-root-id">${escapeHtml(root.id)}</span>
         <div class="summary-tree-root-note">
-          ${escapeHtml(
-            children.length
-              ? t('主疾患からたどれる病型分類です。', 'Subtype entries derived from the main disease.')
-              : t('現在表示できる病型分類はありません。', 'No subtype entries are currently available.')
-          )}
+          ${escapeHtml(t('主疾患からたどれる病型分類です。', 'Subtype entries derived from the main disease.'))}
         </div>
       </div>
       <div class="summary-tree-children">
-        ${
-          children.length
-            ? children
-                .map(
-                  (child, index) => {
-                    const stats = statsById.get(child.id) || { genes: 0, features: 0, references: 0 };
-                    const diseaseUrl = `/disease/${escapeHtml(child.id)}`;
-                    return `
+        ${children
+          .map((child, index) => {
+            const stats = statsById.get(child.id) || { genes: 0, features: 0, subtypes: 0 };
+            const diseaseUrl = `/disease/${escapeHtml(child.id)}`;
+            const childSummaryUrl = `/summary/${encodeURIComponent(child.id)}?lang=${getCurrentLang()}`;
+            return `
           <article class="summary-child-card">
             <div class="summary-child-kicker">${escapeHtml(
               isJapaneseLocale() ? `病型 ${String(index + 1).padStart(2, '0')}` : `Subtype ${String(index + 1).padStart(2, '0')}`
             )}</div>
-            <a class="summary-child-id" href="${diseaseUrl}">${escapeHtml(child.id)}</a>
+            <a class="summary-child-id" href="${childSummaryUrl}">${escapeHtml(child.id)}</a>
             <h3>${escapeHtml(isJapaneseLocale() ? child.ja : child.en)}</h3>
             ${
               isJapaneseLocale() && child.en
@@ -1448,18 +2033,15 @@
                 <span class="summary-child-stat-label">${escapeHtml(t('所見', 'Features'))}</span>
                 <strong>${escapeHtml(String(stats.features))}</strong>
               </a>
-              <a class="summary-child-stat summary-card-link" href="${diseaseUrl}#references">
-                <span class="summary-child-stat-label">${escapeHtml(t('文献', 'Papers'))}</span>
-                <strong>${escapeHtml(String(stats.references))}</strong>
+              <a class="summary-child-stat summary-card-link" href="${diseaseUrl}#nanbyo-subtype">
+                <span class="summary-child-stat-label">${escapeHtml(t('病型', 'Subtypes'))}</span>
+                <strong>${escapeHtml(String(stats.subtypes))}</strong>
               </a>
             </div>
           </article>
         `;
-                  }
-                )
-                .join('')
-            : `<div class="summary-tiny">${t('病型分類はありません。', 'No subtype classification available.')}</div>`
-        }
+          })
+          .join('')}
       </div>
     `;
   }
@@ -1769,6 +2351,7 @@
     const compoundsPromise = fetchJson('nanbyodata_get_pubchem_chemical_information_by_nando_id', id);
     const referencesPromise = fetchJson('nanbyodata_get_pubmed_data_by_nando_id', id);
     const bodyMapPromiseForLoad = fetchBodyMap().catch(() => null);
+    const facialMapPromiseForLoad = fetchFacialMap().catch(() => null);
     const mondoPromise = fetchJson('nanbyodata_get_link_mondo_by_nando_id', id);
     const orphanetPromise = fetchJson('nanbyodata_get_link_orphanet_by_nando_id', id);
     const medgenPromise = fetchJson('nanbyodata_get_link_medgen_by_nando_id', id);
@@ -1910,14 +2493,22 @@
     Promise.all([japanGenesPromise, causalGenesPromise])
       .then(([japanGenes, causalGenes]) => {
         if (!isActiveLoad(loadToken)) return;
+        const uniqueJapanGeneSymbols = uniqueBy(
+          japanGenes.map((gene) => gene.symbol).filter(Boolean),
+          (symbol) => String(symbol).toUpperCase()
+        );
+        const uniqueIntlGeneSymbols = uniqueBy(
+          causalGenes.map((gene) => gene.gene_symbol).filter(Boolean),
+          (symbol) => String(symbol).toUpperCase()
+        );
         const totalGenes = uniqueBy(
           [...japanGenes.map((gene) => gene.symbol), ...causalGenes.map((gene) => gene.gene_symbol)].filter(Boolean),
-          (symbol) => symbol
+          (symbol) => String(symbol).toUpperCase()
         ).length;
         quickFactsState.genes = String(totalGenes);
         quickFactsState.genesNote = isJapaneseLocale()
-          ? `国内 ${japanGenes.length} / 国際 ${causalGenes.length}`
-          : `Japan ${japanGenes.length} / Intl ${causalGenes.length}`;
+          ? `国内 ${uniqueJapanGeneSymbols.length} / 国際 ${uniqueIntlGeneSymbols.length}`
+          : `Japan ${uniqueJapanGeneSymbols.length} / Intl ${uniqueIntlGeneSymbols.length}`;
         renderQuickFactsList();
         const genes = mapGenes(japanGenes, causalGenes);
         renderGenes(genes);
@@ -1925,8 +2516,8 @@
           genes,
           stats: {
             ...(currentDownloadData?.stats || {}),
-            '疾患関連遺伝子 国内基準由来': japanGenes.length,
-            '疾患関連遺伝子 国際リソース由来': causalGenes.length,
+            '疾患関連遺伝子 国内基準由来': uniqueJapanGeneSymbols.length,
+            '疾患関連遺伝子 国際リソース由来': uniqueIntlGeneSymbols.length,
           },
         });
       })
@@ -1970,8 +2561,8 @@
       })
       .catch(noteFailure);
 
-    Promise.all([hpoPromise, bodyMapPromiseForLoad])
-      .then(([hpoData, bodyMap]) => {
+    Promise.all([hpoPromise, bodyMapPromiseForLoad, facialMapPromiseForLoad])
+      .then(([hpoData, bodyMap, facialMap]) => {
         if (!isActiveLoad(loadToken)) return;
         const features = mapFeatures(hpoData);
         quickFactsState.features = String(hpoData.length);
@@ -1982,7 +2573,7 @@
         facialPromise
           .then((facialData) => {
             if (!isActiveLoad(loadToken)) return;
-            renderClinicalOverview(features, mapFacialFeatures(facialData), bodyMap);
+            renderClinicalOverview(features, mapFacialFeatures(facialData), bodyMap, facialMap);
             updateDownloadData({
               features,
               stats: {
@@ -1994,7 +2585,7 @@
           })
           .catch(() => {
             if (!isActiveLoad(loadToken)) return;
-            renderClinicalOverview(features, [], bodyMap);
+            renderClinicalOverview(features, [], bodyMap, facialMap);
             updateDownloadData({
               features,
               stats: {
