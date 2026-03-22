@@ -725,7 +725,7 @@
   display: grid;
   grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
   gap: 18px;
-  align-items: center;
+  align-items: start;
   padding: 18px;
   border: 1px solid var(--summary-line);
   border-radius: 20px;
@@ -734,7 +734,10 @@
 
 .summary-bodymap-figure {
   position: relative;
-  min-height: 360px;
+  min-height: 0;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
 }
 
 .summary-bodymap-svg {
@@ -742,7 +745,7 @@
   max-width: 240px;
   height: auto;
   display: block;
-  margin: 0 auto;
+  margin: 0;
 }
 
 .summary-bodymap-hotspots {
@@ -772,6 +775,8 @@
 .summary-bodymap-labels {
   display: grid;
   gap: 10px;
+  align-content: center;
+  min-height: 100%;
 }
 
 .summary-bodymap-actions {
@@ -1040,6 +1045,10 @@
 
 .summary-facial-map-region.is-empty {
   cursor: default;
+}
+
+.summary-facial-world.has-selection .summary-facial-map-region.is-active path {
+  opacity: 0.38;
 }
 
 .summary-facial-world.has-selection .summary-facial-map-region.is-selected path {

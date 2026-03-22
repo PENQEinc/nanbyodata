@@ -818,7 +818,7 @@
 
   function buildBodyMapFigure() {
     return `
-      <svg class="summary-bodymap-svg" viewBox="0 0 220 420" role="img" aria-label="${escapeHtml(
+      <svg class="summary-bodymap-svg" viewBox="0 8 220 338" role="img" aria-label="${escapeHtml(
         t('人体部位ナビゲーション', 'Body region navigation')
       )}">
         <g fill="#f3f7f4" stroke="rgba(21,32,24,0.18)" stroke-width="2">
@@ -1215,6 +1215,15 @@
   }
 
   function buildPieSlicePath(cx, cy, radius, startAngle, endAngle) {
+    if (Math.abs(endAngle - startAngle) >= Math.PI * 2 - 0.0001) {
+      return [
+        `M ${cx} ${cy}`,
+        `m 0 ${-radius}`,
+        `a ${radius} ${radius} 0 1 1 0 ${radius * 2}`,
+        `a ${radius} ${radius} 0 1 1 0 ${-radius * 2}`,
+        'Z',
+      ].join(' ');
+    }
     const toPoint = (angle) => ({
       x: cx + radius * Math.cos(angle),
       y: cy + radius * Math.sin(angle),
@@ -1541,23 +1550,6 @@
           ${mapSvg}
         </div>
         <div class="summary-facial-extra">
-          <div class="summary-selection-pills">
-            <button
-              type="button"
-              class="summary-selection-pill summary-selection-pill--toggle ${selectedRegionIds.length === regionEntries.length ? 'is-active' : ''}"
-              data-facial-action="select-all"
-            >
-              ${escapeHtml(t('全選択', 'Select all'))}
-              <span class="summary-selection-pill-count">${escapeHtml(String(regionEntries.length))}</span>
-            </button>
-            <button
-              type="button"
-              class="summary-selection-pill summary-selection-pill--toggle"
-              data-facial-action="clear"
-            >
-              ${escapeHtml(t('クリア', 'Clear'))}
-            </button>
-          </div>
           ${extraRegions.length
             ? `
               <div class="summary-selection-note">${escapeHtml(
@@ -1598,47 +1590,27 @@
 
     const toggleRegionSelection = (regionId) => {
       const current = normalizeFacialSelection(clinicalOverviewState.facialSelection, grouped);
-      const nextRegions = [...current.regions];
-      const nextBuckets = { ...current.buckets };
-      const existingIndex = nextRegions.indexOf(regionId);
-      if (existingIndex >= 0) {
-        nextRegions.splice(existingIndex, 1);
-        delete nextBuckets[regionId];
+      if (current.regions[0] === regionId) {
+        clinicalOverviewState.facialSelection = { regions: [], buckets: {} };
       } else {
-        nextRegions.push(regionId);
-        nextBuckets[regionId] = null;
+        clinicalOverviewState.facialSelection = {
+          regions: [regionId],
+          buckets: { [regionId]: current.buckets?.[regionId] || null },
+        };
       }
-      clinicalOverviewState.facialSelection = { regions: nextRegions, buckets: nextBuckets };
       rerenderClinicalOverviewWithState();
     };
 
     const toggleFacialSelection = (regionId, bucketKey) => {
       const current = normalizeFacialSelection(clinicalOverviewState.facialSelection, grouped);
-      const nextRegions = current.regions.includes(regionId) ? [...current.regions] : [...current.regions, regionId];
-      const nextBuckets = { ...current.buckets };
-      if (current.buckets[regionId] === bucketKey) {
-        nextBuckets[regionId] = null;
-      } else {
-        nextBuckets[regionId] = bucketKey;
-      }
-      clinicalOverviewState.facialSelection = { regions: nextRegions, buckets: nextBuckets };
-      rerenderClinicalOverviewWithState();
-    };
-
-    const selectAllRegions = () => {
-      const regionIds = regionEntries.map(([regionId]) => regionId);
       clinicalOverviewState.facialSelection = {
-        regions: regionIds,
-        buckets: Object.fromEntries(regionIds.map((regionId) => [regionId, null])),
+        regions: [regionId],
+        buckets: {
+          [regionId]: current.buckets[regionId] === bucketKey ? null : bucketKey,
+        },
       };
       rerenderClinicalOverviewWithState();
     };
-
-    const clearFacialSelection = () => {
-      clinicalOverviewState.facialSelection = { regions: [], buckets: {} };
-      rerenderClinicalOverviewWithState();
-    };
-
     panel.querySelectorAll('[data-facial-region]:not([data-facial-bucket])').forEach((element) => {
       const regionId = element.dataset.facialRegion;
       element.addEventListener('click', () => {
@@ -1666,16 +1638,6 @@
       });
     });
 
-    panel.querySelectorAll('[data-facial-action]').forEach((element) => {
-      const action = element.dataset.facialAction;
-      element.addEventListener('click', () => {
-        if (action === 'select-all') {
-          selectAllRegions();
-        } else if (action === 'clear') {
-          clearFacialSelection();
-        }
-      });
-    });
   }
 
   function renderBodyMap(features, bodyMap) {

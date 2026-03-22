@@ -33,7 +33,7 @@
 - HPO と人体部位マッピングの運用を確認したいとき: `06-hpo-body-map-maintenance.md`
 - `マイ疾患` の保存仕様と一覧設計を確認したいとき: `07-my-diseases-feature.md`
 - `/my-diseases` の制度タブやカテゴリ分けを確認したいとき: `07-my-diseases-feature.md`
-- `summary` の世界地図ベースの顔貌パネルや Hero の役割を確認したいとき: `04-url-template-map.md`
+- `summary` の人体図・世界地図ベースの可視化や Hero の役割を確認したいとき: `04-url-template-map.md`
 - NanbyoData の大きな将来像を整理したいとき: `08-future-vision-connected-rare-disease-platform.md`
 - 疾患キャラクターの設計原則を確認したいとき: `09-character-design-guidelines.md`
 - ステゴサウルスのベース種を描き直す時の観点を見たいとき: `10-stegosaurus-base-notes.md`
