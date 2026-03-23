@@ -47,6 +47,13 @@
     border: 3px #e9ecef solid;
     border-top: 3px #20b2aa solid;
   }
+  &.-count {
+    width: 12px;
+    height: 12px;
+    border-width: 2px;
+    border-color: rgba(255, 255, 255, 0.35);
+    border-top-color: var(--color-white);
+  }
 }
 
 @keyframes sp-anime {

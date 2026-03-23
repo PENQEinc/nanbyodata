@@ -159,6 +159,10 @@
           "label": {
             "ja": "指定難病",
             "en": "Shitei"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -166,6 +170,10 @@
           "label": {
             "ja": "小児慢性特定疾病",
             "en": "Shoman"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
           }
         }
       ],
@@ -249,6 +257,10 @@
             "ja": "糖鎖中心",
             "en": "Glycan-centered"
           },
+          "tooltip": {
+            "ja": "test",
+            "en": "test"
+          },
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_Glycogene_table_2",
           "columns": [
             {
@@ -265,6 +277,7 @@
             },
             {
               "dataKey": "nando_label",
+              "noWrap": false,
               "label": {
                 "ja": "疾患",
                 "en": "Disease"
@@ -300,6 +313,7 @@
             },
             {
               "dataKey": "mondo_id",
+              "noWrap": true,
               "label": {
                 "ja": "Mondo ID",
                 "en": "Mondo ID"
@@ -312,8 +326,8 @@
             {
               "dataKey": "nando2mondo_match",
               "label": {
-                "ja": "NANDOとMONDOの疾患類似",
-                "en": "NANDO-MONDO disease match"
+                "ja": "NANDOとMondoの疾患類似",
+                "en": "NANDO-Mondo disease match"
               },
               "tooltip": {
                 "ja": "NANDO 疾患と MONDO 疾患の対応関係（exactMatch: 完全一致、closeMatch: 近似一致）",
@@ -324,14 +338,20 @@
         },
         {
           "id": "by-disease",
+          "countDataKey": "genesymbol",
           "label": {
             "ja": "NANDO中心",
             "en": "NANDO-centered"
+          },
+          "tooltip": {
+            "ja": "test",
+            "en": "test"
           },
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_Glycogene_table_2",
           "columns": [
             {
               "dataKey": "nando_id",
+              "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
                 "en": "NANDO ID"
@@ -344,6 +364,7 @@
             },
             {
               "dataKey": "nando_label",
+              "noWrap": false,
               "label": {
                 "ja": "疾患",
                 "en": "Disease"
@@ -383,6 +404,7 @@
                 "ja": "NCBI Gene ID",
                 "en": "NCBI Gene ID"
               },
+              "noWrap": true,
               "tooltip": {
                 "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
                 "en": "Unique gene identifier in the NCBI Gene database"
@@ -394,15 +416,16 @@
                 "ja": "Mondo ID",
                 "en": "Mondo ID"
               },
+              "noWrap": true,
               "tooltip": {
                 "ja": "MONDO 疾患オントロジーにおける疾患の識別子",
-                "en": "Disease identifier in the MONDO Disease Ontology"
+                "en": "Disease identifier in the Mondo Disease Ontology"
               }
             },
             {
               "dataKey": "nando2mondo_match",
               "label": {
-                "ja": "NANDOとMONDOの疾患類似",
+                "ja": "NANDOとMondoの疾患類似",
                 "en": "NANDO-MONDO disease match"
               },
               "tooltip": {
@@ -467,6 +490,79 @@
       ]
     },
     {
+      "id": "clinical-features-content",
+      "title": {
+        "ja": "臨床的特徴",
+        "en": "Clinical Features"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "description": {
+        "ja": "個別テーブルです。",
+        "en": "Individual table."
+      },
+      "hasTabs": false,
+      "dataApi": "/sparqlist/api/test_get_nbdc_human_databases_info_by_nando_id_list",
+      "columns": [
+        {
+          "dataKeyByLocale": {
+            "ja": "label_ja",
+            "en": "label_en"
+          },
+          "label": {
+            "ja": "研究題目",
+            "en": "Study Title"
+          },
+          "tooltip": {
+            "ja": "ヒトデータベースに登録されている研究題目",
+            "en": "Study title registered in the human database"
+          }
+        },
+        {
+          "dataKey": "hum_id",
+          "noWrap": true,
+          "label": {
+            "ja": "Hum ID",
+            "en": "Hum ID"
+          },
+          "tooltip": {
+            "ja": "ヒトデータベースの識別子",
+            "en": "Identifier in the human database"
+          }
+        },
+        {
+          "dataKeyByLocale": {
+            "ja": "type_study_ja",
+            "en": "type_study_en"
+          },
+          "label": {
+            "ja": "データの種類",
+            "en": "Type of Study"
+          },
+          "tooltip": {
+            "ja": "登録データの種類",
+            "en": "Type of registered data"
+          }
+        },
+        {
+          "dataKeyByLocale": {
+            "ja": "type_data_ja",
+            "en": "type_data_en"
+          },
+          "label": {
+            "ja": "アクセス制限",
+            "en": "Type of Data"
+          },
+          "tooltip": {
+            "ja": "アクセス制限区分",
+            "en": "Access control category"
+          }
+        }
+      ]
+    },
+    {
       "id": "bioresources-content",
       "title": {
         "ja": "難病特異的バイオリソース",
@@ -487,6 +583,10 @@
           "label": {
             "ja": "細胞",
             "en": "Cell"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
           },
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_cell_list",
           "columns": [
@@ -531,8 +631,14 @@
             {
               "dataKey": "Description_j",
               "dataKeysByLocale": {
-                "ja": ["Description_j", "Description_e"],
-                "en": ["Description_e", "Description_j"]
+                "ja": [
+                  "Description_j",
+                  "Description_e"
+                ],
+                "en": [
+                  "Description_e",
+                  "Description_j"
+                ]
               },
               "label": {
                 "ja": "説明",
@@ -552,6 +658,10 @@
           "label": {
             "ja": "マウス",
             "en": "Mouse"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
           },
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_mouse_list",
           "columns": [
@@ -616,6 +726,10 @@
           "label": {
             "ja": "DNA",
             "en": "DNA"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
           },
           "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_dna_list",
           "columns": [

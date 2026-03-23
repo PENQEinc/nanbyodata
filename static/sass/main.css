@@ -1457,6 +1457,13 @@ Stats Overview Component
   border: 3px #e9ecef solid;
   border-top: 3px #20b2aa solid;
 }
+.loading-spinner.-count {
+  width: 12px;
+  height: 12px;
+  border-width: 2px;
+  border-color: rgba(255, 255, 255, 0.35);
+  border-top-color: var(--color-white);
+}
 
 @keyframes sp-anime {
   100% {
@@ -2045,6 +2052,18 @@ Stats Overview Component
   background-color: var(--color-primary-opacity7);
   text-align: center;
   border-radius: 0.5lh;
+}
+.data-num.is-loading {
+  padding: 0 5px;
+  min-width: 18px;
+  min-height: 18px;
+}
+
+.stats-count-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }
 
 .summary-header-actions {
@@ -3196,6 +3215,30 @@ Stats Page Styles
   margin-top: 0.25rem;
 }
 
+.stats-table td.stats-cell--nowrap,
+.stats-table th.stats-cell--nowrap {
+  white-space: nowrap;
+}
+
+.card-detail-section .table-contents .stats-table td.stats-cell--nowrap,
+.card-detail-section .table-contents .stats-table th.stats-cell--nowrap,
+.card-detail-section .table-contents .table.stats-table td.stats-cell--nowrap,
+.card-detail-section .table-contents .table.stats-table th.stats-cell--nowrap {
+  white-space: nowrap;
+  min-width: max-content;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.card-detail-section .table-contents .stats-table td.stats-cell--nowrap a,
+.card-detail-section .table-contents .table.stats-table td.stats-cell--nowrap a {
+  white-space: nowrap;
+  word-wrap: normal;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
 #nanbyodata-in-numbers-original .table-contents .table.stats-table {
   table-layout: fixed;
 }
@@ -3261,7 +3304,8 @@ Stats Page Styles
 }
 
 .stats-th-tooltip[data-tooltip-active]::after,
-.stats-section-title-tooltip[data-tooltip-active]::after {
+.stats-section-title-tooltip[data-tooltip-active]::after,
+.stats-tab-tooltip[data-tooltip-active]::after {
   display: none !important;
 }
 
@@ -3306,6 +3350,49 @@ Stats Page Styles
   visibility: visible;
 }
 
+.stats-tab-tooltip {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85em;
+  color: var(--color-secondary, #6c757d);
+  cursor: help;
+  vertical-align: middle;
+  margin-left: 0.2rem;
+  flex-shrink: 0;
+}
+.stats-tab-tooltip .fa-info-circle {
+  font-size: inherit;
+}
+.stats-tab-tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  transform: translateX(-50%) translateY(-6px);
+  padding: 6px 10px;
+  width: 200px;
+  box-sizing: border-box;
+  font-size: 0.8rem;
+  font-weight: normal;
+  line-height: 1.4;
+  color: #fff;
+  background: #333;
+  border-radius: 4px;
+  white-space: normal;
+  word-break: normal;
+  text-align: left;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.2s, visibility 0.2s;
+  z-index: 1000;
+  pointer-events: none;
+}
+.stats-tab-tooltip:hover::after {
+  opacity: 1;
+  visibility: visible;
+}
+
 .stats-tabs {
   display: flex;
   gap: 0;
@@ -3330,6 +3417,8 @@ Stats Page Styles
 }
 
 .stats-tab {
+  display: inline-flex;
+  align-items: center;
   padding: 0.35rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
@@ -3341,6 +3430,10 @@ Stats Page Styles
   cursor: pointer;
   margin-bottom: -2px;
   outline: none;
+}
+.stats-tab .stats-tab-label {
+  display: inline-flex;
+  align-items: center;
 }
 .stats-tab .data-num {
   margin-left: 6px;

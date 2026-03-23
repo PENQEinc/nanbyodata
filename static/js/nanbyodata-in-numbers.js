@@ -30,6 +30,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const CARD_DETAIL_FETCH_TIMEOUT_MS = 10000;
 
+const DETAIL_HASH_ALIASES = {
+  nando: 'nando-content',
+  'nando-content': 'nando-content',
+  genes: 'genes-content',
+  'genes-content': 'genes-content',
+  'clinical-features': 'clinical-features-content',
+  'clinical-features-content': 'clinical-features-content',
+  'glycan-related-genes': 'related-data-content',
+  'related-data-content': 'related-data-content',
+  bioresources: 'bioresources-content',
+  'bioresources-content': 'bioresources-content',
+  links: 'links-content',
+  'links-content': 'links-content',
+  variants: 'variants-content',
+  'variants-content': 'variants-content',
+};
+
 /** トップページのカードで使っているAPIと合計抽出ロジック（sectionId → { api, extract }） */
 const TOP_PAGE_API_MAP = {
   'nando-content': {
@@ -45,6 +62,14 @@ const TOP_PAGE_API_MAP = {
     extract: (d) => {
       const s = parseInt(d.shitei_gene?.gene || 0);
       const m = parseInt(d.shoman_gene?.gene || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+  'clinical-features-content': {
+    api: '/sparqlist/api/NANDO_link_count2',
+    extract: (d) => {
+      const s = parseInt(d.shitei_hp?.hp || 0);
+      const m = parseInt(d.shoman_hp?.hp || 0);
       return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
     },
   },
@@ -158,7 +183,7 @@ function setupTooltipPortal() {
     function (e) {
       if (!e.target || typeof e.target.closest !== 'function') return;
       const trigger = e.target.closest(
-        '.stats-th-tooltip, .stats-section-title-tooltip',
+        '.stats-th-tooltip, .stats-section-title-tooltip, .stats-tab-tooltip',
       );
       if (!trigger) return;
       if (hideTimer) {
@@ -176,7 +201,7 @@ function setupTooltipPortal() {
     function (e) {
       if (!e.target || typeof e.target.closest !== 'function') return;
       const trigger = e.target.closest(
-        '.stats-th-tooltip, .stats-section-title-tooltip',
+        '.stats-th-tooltip, .stats-section-title-tooltip, .stats-tab-tooltip',
       );
       if (!trigger) return;
       hideTimer = setTimeout(function () {
@@ -357,23 +382,76 @@ function downloadCsv(csv, filename) {
   URL.revokeObjectURL(url);
 }
 
+function getCountLoadingMarkup() {
+  return '<span class="stats-count-loading" aria-label="Loading"><span class="loading-spinner -stats -count" aria-hidden="true"></span></span>';
+}
+
+function setCountLoading(element) {
+  if (!element) return;
+  element.classList.add('is-loading');
+  element.innerHTML = getCountLoadingMarkup();
+}
+
+function setCountValue(element, value) {
+  if (!element) return;
+  element.classList.remove('is-loading');
+  element.textContent =
+    Number.isFinite(value) && value >= 0 ? value.toLocaleString() : '-';
+}
+
+function setCountUnavailable(element) {
+  if (!element) return;
+  element.classList.remove('is-loading');
+  element.textContent = '-';
+}
+
+function getLocalizedConfigText(configValue, locale) {
+  if (!configValue || typeof configValue !== 'object') return '';
+  return configValue[locale] || configValue.en || configValue.ja || '';
+}
+
+function createStatsTooltipIcon(className, tooltipText) {
+  if (!tooltipText) return null;
+  const tooltip = document.createElement('span');
+  tooltip.className = className;
+  tooltip.setAttribute('data-tooltip', tooltipText);
+  tooltip.setAttribute('aria-label', tooltipText);
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-info-circle';
+  tooltip.appendChild(icon);
+  return tooltip;
+}
+
+function getTabCountValue(rows, tab) {
+  if (!Array.isArray(rows)) return 0;
+  const countKey =
+    tab?.countDataKey || (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
+  if (!countKey) return rows.length;
+  return new Set(
+    rows
+      .map((row) => row?.[countKey])
+      .filter((value) => value != null && String(value).trim() !== ''),
+  ).size;
+}
+
 /**
  * ハッシュの有無で表示を切り替え。
  * ハッシュあり → そのカード用の新規テーブルを config JSON で表示。
  * ハッシュなし → 従来の NanbyoData in numbers テーブルを表示。
  */
 function updateViewByHash() {
-  const hash = window.location.hash.slice(1);
+  const rawHash = window.location.hash.slice(1);
+  const hashTarget = resolveStatsHashTarget(rawHash);
   const originalEl = document.getElementById('nanbyodata-in-numbers-original');
   const cardDetailEl = document.getElementById('card-detail-view');
   if (!originalEl || !cardDetailEl) return;
 
-  if (hash) {
+  if (hashTarget?.mode === 'detail') {
     originalEl.style.display = 'none';
     originalEl.setAttribute('aria-hidden', 'true');
     cardDetailEl.style.display = 'block';
     cardDetailEl.removeAttribute('aria-hidden');
-    showCardDetailTable(hash);
+    showCardDetailTable(hashTarget.sectionId);
   } else {
     originalEl.style.display = '';
     originalEl.removeAttribute('aria-hidden');
@@ -381,6 +459,52 @@ function updateViewByHash() {
     cardDetailEl.setAttribute('aria-hidden', 'true');
     loadStatsData();
   }
+}
+
+function resolveStatsHashTarget(hash) {
+  if (!hash) return '';
+  if (DETAIL_HASH_ALIASES[hash]) {
+    return {
+      mode: 'detail',
+      sectionId: DETAIL_HASH_ALIASES[hash],
+    };
+  }
+  return '';
+}
+
+function getValueByPath(obj, path) {
+  if (!obj || !path) return undefined;
+  return String(path)
+    .split('.')
+    .reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
+}
+
+function getSectionTotalFromRows(rows, columns) {
+  if (!Array.isArray(rows) || !Array.isArray(columns)) return NaN;
+  return rows.reduce((sum, row) => {
+    const rowTotal = columns.reduce((rowSum, col) => {
+      if (!col || col.dataKey === 'category') return rowSum;
+      const raw = row?.[col.dataKey];
+      const value = Number(
+        typeof raw === 'number'
+          ? raw
+          : String(raw ?? '')
+              .replace(/,/g, '')
+              .trim(),
+      );
+      return Number.isFinite(value) ? rowSum + value : rowSum;
+    }, 0);
+    return sum + rowTotal;
+  }, 0);
+}
+
+function getConfigDataKeyForLocale(col, locale) {
+  if (!col) return null;
+  const byLocale = col.dataKeyByLocale;
+  if (byLocale && typeof byLocale === 'object') {
+    return byLocale[locale] || byLocale.en || byLocale.ja || col.dataKey;
+  }
+  return col.dataKey;
 }
 
 /**
@@ -420,22 +544,14 @@ async function showCardDetailTable(sectionId) {
     title.className = 'stats-section-title';
     title.textContent =
       sectionConfig.title?.[locale] || sectionConfig.title?.en || sectionId;
-    const titleTooltip =
-      sectionConfig.titleTooltip &&
-      (sectionConfig.titleTooltip[locale] || sectionConfig.titleTooltip.en);
+    const titleTooltip = getLocalizedConfigText(sectionConfig.titleTooltip, locale);
     if (titleTooltip) {
-      const tw = document.createElement('span');
-      tw.className = 'stats-section-title-tooltip';
-      tw.setAttribute('data-tooltip', titleTooltip);
-      tw.setAttribute('aria-label', titleTooltip);
-      const icon = document.createElement('i');
-      icon.className = 'fas fa-info-circle';
-      tw.appendChild(icon);
-      title.appendChild(tw);
+      const tw = createStatsTooltipIcon('stats-section-title-tooltip', titleTooltip);
+      if (tw) title.appendChild(tw);
     }
     const titleCount = document.createElement('span');
     titleCount.className = 'stats-title-count data-num';
-    titleCount.textContent = '-';
+    setCountLoading(titleCount);
     title.appendChild(titleCount);
     header.appendChild(title);
     let loadedRowsFromApi = [];
@@ -626,7 +742,7 @@ async function showCardDetailTable(sectionId) {
           0,
         );
         if (Number.isFinite(total)) {
-          titleCount.textContent = total.toLocaleString();
+          setCountValue(titleCount, total);
         }
       }
 
@@ -638,20 +754,19 @@ async function showCardDetailTable(sectionId) {
           : (typeof window !== 'undefined' && window.location?.origin
               ? window.location.origin
               : '') + topPageApiDef.api;
-        try {
-          const r = await fetchWithTimeout(apiUrl);
-          if (r.ok) {
-            const data = await r.json();
+        fetchWithTimeout(apiUrl)
+          .then((r) => (r.ok ? r.json() : null))
+          .then((data) => {
             if (data && typeof topPageApiDef.extract === 'function') {
               const total = topPageApiDef.extract(data);
               if (Number.isFinite(total) && total >= 0) {
-                titleCount.textContent = total.toLocaleString();
+                setCountValue(titleCount, total);
               }
             }
-          }
-        } catch (_) {
-          // API 停止時はタイトル横は初期値 '-' のまま表示
-        }
+          })
+          .catch(() => {
+            setCountUnavailable(titleCount);
+          });
       }
 
       loadTabTable = async (tabIndex, options = {}) => {
@@ -664,23 +779,12 @@ async function showCardDetailTable(sectionId) {
             renderTableFromRows(table, tab.columns, cachedRows, locale);
           }
           // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
-          const idKeyCache =
-            tab.columns && tab.columns[0] ? tab.columns[0].dataKey : null;
-          const uniqueCountCache =
-            idKeyCache && Array.isArray(cachedRows)
-              ? new Set(
-                  cachedRows
-                    .map((r) => r[idKeyCache])
-                    .filter((v) => v != null && String(v).trim() !== ''),
-                ).size
-              : Array.isArray(cachedRows)
-                ? cachedRows.length
-                : 0;
+          const uniqueCountCache = getTabCountValue(cachedRows, tab);
           const cachedCountEl = tabBar.querySelector(
             `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
           );
           if (cachedCountEl) {
-            cachedCountEl.textContent = uniqueCountCache.toLocaleString();
+            setCountValue(cachedCountEl, uniqueCountCache);
           }
           if (!silent) {
             updateTitleCountFromCache();
@@ -705,28 +809,24 @@ async function showCardDetailTable(sectionId) {
             renderTableFromRows(table, tab.columns, rows, locale);
           }
           // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
-          const idKey =
-            tab.columns && tab.columns[0] ? tab.columns[0].dataKey : null;
-          const uniqueCount =
-            idKey && Array.isArray(rows)
-              ? new Set(
-                  rows
-                    .map((r) => r[idKey])
-                    .filter((v) => v != null && String(v).trim() !== ''),
-                ).size
-              : Array.isArray(rows)
-                ? rows.length
-                : 0;
+          const uniqueCount = getTabCountValue(rows, tab);
           const countEl = tabBar.querySelector(
             `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
           );
           if (countEl) {
-            countEl.textContent = uniqueCount.toLocaleString();
+            setCountValue(countEl, uniqueCount);
           }
           updateTitleCountFromCache();
           return rows;
         } catch (e) {
           console.warn('Stats tab API エラー (' + tab.id + '):', e);
+          const countEl = tabBar.querySelector(
+            `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
+          );
+          setCountUnavailable(countEl);
+          if (!topPageApiDef && Object.keys(tabCache).length === 0) {
+            setCountUnavailable(titleCount);
+          }
           if (!silent) {
             tbody.innerHTML =
               '<tr><td colspan="' +
@@ -947,6 +1047,9 @@ async function showCardDetailTable(sectionId) {
           const newTr = document.createElement('tr');
           cols.forEach((col) => {
             const th = document.createElement('th');
+            if (col.noWrap) {
+              th.classList.add('stats-cell--nowrap');
+            }
             const labelSpan = document.createElement('span');
             labelSpan.className = 'stats-th-label';
             labelSpan.appendChild(
@@ -1045,11 +1148,13 @@ async function showCardDetailTable(sectionId) {
               if (!group) return;
               const td = document.createElement('td');
               td.rowSpan = group.span;
+              if (col.noWrap) {
+                td.classList.add('stats-cell--nowrap');
+              }
               if (hasNandoLink) {
                 const a = document.createElement('a');
                 a.href = '/disease/' + encodeURIComponent(linkTarget);
-                a.textContent =
-                  linkTarget !== String(val) ? linkTarget : displayVal;
+                a.textContent = displayVal;
                 td.appendChild(a);
               } else if (col.link === 'external') {
                 const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
@@ -1081,11 +1186,13 @@ async function showCardDetailTable(sectionId) {
               r.appendChild(td);
             } else {
               const td = document.createElement('td');
+              if (col.noWrap) {
+                td.classList.add('stats-cell--nowrap');
+              }
               if (hasNandoLink) {
                 const a = document.createElement('a');
                 a.href = '/disease/' + encodeURIComponent(linkTarget);
-                a.textContent =
-                  linkTarget !== String(val) ? linkTarget : displayVal;
+                a.textContent = displayVal;
                 td.appendChild(a);
               } else if (col.link === 'external') {
                 const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
@@ -1127,12 +1234,19 @@ async function showCardDetailTable(sectionId) {
         btn.type = 'button';
         btn.className = 'stats-tab' + (idx === 0 ? ' active' : '');
         const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-tab-label';
         labelSpan.textContent = tab.label[locale] || tab.label.en || tab.id;
+        const tabTooltip = createStatsTooltipIcon(
+          'stats-tab-tooltip',
+          getLocalizedConfigText(tab.tooltip, locale),
+        );
         const countSpan = document.createElement('span');
         countSpan.className = 'data-num';
-        // 読み込み前・エラー時のデフォルト表示は半角ダッシュ
-        countSpan.textContent = '-';
+        setCountLoading(countSpan);
         btn.appendChild(labelSpan);
+        if (tabTooltip) {
+          btn.appendChild(tabTooltip);
+        }
         btn.appendChild(countSpan);
         btn.dataset.tabIndex = String(idx);
         btn.addEventListener('click', function () {
@@ -1175,7 +1289,21 @@ async function showCardDetailTable(sectionId) {
         }
         theadTr.appendChild(th);
       });
-      loadSectionTableFromColumnApis(table, tbody, sectionConfig, locale);
+      const rowsFromColumnApis = await loadSectionTableFromColumnApis(
+        table,
+        tbody,
+        sectionConfig,
+        locale,
+      );
+      const total = getSectionTotalFromRows(
+        rowsFromColumnApis,
+        sectionConfig.columns || [],
+      );
+      if (Number.isFinite(total)) {
+        setCountValue(titleCount, total);
+      } else {
+        setCountUnavailable(titleCount);
+      }
     } else if (sectionConfig.dataApi && columns.length) {
       let tabBar = null;
       columns.forEach((col) => {
@@ -1202,7 +1330,17 @@ async function showCardDetailTable(sectionId) {
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'stats-tab' + (idx === 0 ? ' active' : '');
-          btn.textContent = tab.label[locale] || tab.label.en || tab.id;
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'stats-tab-label';
+          labelSpan.textContent = tab.label[locale] || tab.label.en || tab.id;
+          btn.appendChild(labelSpan);
+          const tabTooltip = createStatsTooltipIcon(
+            'stats-tab-tooltip',
+            getLocalizedConfigText(tab.tooltip, locale),
+          );
+          if (tabTooltip) {
+            btn.appendChild(tabTooltip);
+          }
           btn.dataset.tabId = tab.id;
           tabBar.appendChild(btn);
         });
@@ -1223,11 +1361,13 @@ async function showCardDetailTable(sectionId) {
             if (data && typeof topPageApiDefSingle.extract === 'function') {
               const total = topPageApiDefSingle.extract(data);
               if (Number.isFinite(total) && total >= 0) {
-                titleCount.textContent = total.toLocaleString();
+                setCountValue(titleCount, total);
               }
             }
           })
-          .catch(() => {});
+          .catch(() => {
+            setCountUnavailable(titleCount);
+          });
       }
       if (
         !topPageApiDefSingle &&
@@ -1312,10 +1452,12 @@ async function showCardDetailTable(sectionId) {
               (Number.isFinite(c) ? c : 0) + (Number.isFinite(m) ? m : 0);
             return sum + part;
           }, 0);
+        } else {
+          total = rowsFromApi.length;
         }
 
         if (Number.isFinite(total)) {
-          titleCount.textContent = total.toLocaleString();
+          setCountValue(titleCount, total);
         }
       }
       if (tabBar) {
@@ -1412,6 +1554,12 @@ async function loadSectionTableFromColumnApis(
             if (id != null) byId[id] = r.value ?? r.count ?? r;
           });
           columnData[col.dataKey] = byId;
+        } else if (col.valuePathByRow && typeof col.valuePathByRow === 'object') {
+          const byId = {};
+          Object.entries(col.valuePathByRow).forEach(([rowId, path]) => {
+            byId[rowId] = getValueByPath(data, path);
+          });
+          columnData[col.dataKey] = byId;
         } else {
           columnData[col.dataKey] = data;
         }
@@ -1420,10 +1568,12 @@ async function loadSectionTableFromColumnApis(
       }
     }
 
+    const renderedRows = [];
     tbody.innerHTML = '';
     rows.forEach((rowDef) => {
       const tr = document.createElement('tr');
       const rowId = rowDef.id;
+      const renderedRow = {};
       columns.forEach((col) => {
         const td = document.createElement('td');
         let val;
@@ -1441,15 +1591,19 @@ async function loadSectionTableFromColumnApis(
         } else {
           td.textContent = String(val);
         }
+        renderedRow[col.dataKey] = val;
         tr.appendChild(td);
       });
+      renderedRows.push(renderedRow);
       tbody.appendChild(tr);
     });
     if (thead) thead.style.display = '';
+    return renderedRows;
   } catch (e) {
     console.warn(`Stats column API エラー (${sectionConfig.id}):`, e);
     tbody.innerHTML = `<tr><td colspan="${colCount}" class="stats-table-error">${errorText}</td></tr>`;
     if (thead) thead.style.display = '';
+    return [];
   }
 }
 
@@ -1497,7 +1651,11 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
       }
       columns.forEach((col) => {
         const td = document.createElement('td');
-        const val = row[col.dataKey];
+        const dataKey = getConfigDataKeyForLocale(col, locale);
+        const val = dataKey ? row[dataKey] : undefined;
+        if (col.noWrap) {
+          td.classList.add('stats-cell--nowrap');
+        }
         if (val === undefined || val === null) {
           td.textContent = '—';
         } else if (typeof val === 'number') {

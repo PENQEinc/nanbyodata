@@ -307,6 +307,32 @@ $stats-tooltip-width: 200px;
   }
 }
 
+.stats-table td.stats-cell--nowrap,
+.stats-table th.stats-cell--nowrap {
+  white-space: nowrap;
+}
+
+.card-detail-section .table-contents {
+  .stats-table td.stats-cell--nowrap,
+  .stats-table th.stats-cell--nowrap,
+  .table.stats-table td.stats-cell--nowrap,
+  .table.stats-table th.stats-cell--nowrap {
+    white-space: nowrap;
+    min-width: max-content;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+
+  .stats-table td.stats-cell--nowrap a,
+  .table.stats-table td.stats-cell--nowrap a {
+    white-space: nowrap;
+    word-wrap: normal;
+    overflow-wrap: normal;
+    word-break: keep-all;
+  }
+}
+
 // NanbyoData in numbers（通常ページ）の stats-table は、汎用 table の nowrap を上書きして折り返す
 #nanbyodata-in-numbers-original {
   .table-contents {
@@ -400,7 +426,8 @@ $stats-tooltip-width: 200px;
 
 // ポータル表示中は CSS の ::after ツールチップを非表示
 .stats-th-tooltip[data-tooltip-active]::after,
-.stats-section-title-tooltip[data-tooltip-active]::after {
+.stats-section-title-tooltip[data-tooltip-active]::after,
+.stats-tab-tooltip[data-tooltip-active]::after {
   display: none !important;
 }
 
@@ -451,6 +478,12 @@ $stats-tooltip-width: 200px;
   }
 }
 
+.stats-tab-tooltip {
+  @extend .stats-th-tooltip;
+  margin-left: 0.2rem;
+  flex-shrink: 0;
+}
+
 // 糖鎖・外部リンクなどのタブ切替（特定医療費受給者証所持者数と同じデザイン）
 .stats-tabs {
   display: flex;
@@ -477,6 +510,8 @@ $stats-tooltip-width: 200px;
 }
 
 .stats-tab {
+  display: inline-flex;
+  align-items: center;
   padding: 0.35rem 1rem;
   font-size: 0.95rem;
   font-weight: 600;
@@ -488,6 +523,11 @@ $stats-tooltip-width: 200px;
   cursor: pointer;
   margin-bottom: -2px;
   outline: none;
+
+  .stats-tab-label {
+    display: inline-flex;
+    align-items: center;
+  }
 
   .data-num {
     margin-left: 6px;
