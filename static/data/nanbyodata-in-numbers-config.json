@@ -11,65 +11,73 @@
         "en": ""
       },
       "description": {
-        "ja": "指定難病・小児慢性特定疾病について、NANDO に登録されている件数を区分別に示した表です。",
-        "en": "This table shows counts of entries registered in NANDO for designated intractable diseases and pediatric chronic diseases by category."
+        "ja": "NANDO に登録された疾患の一覧データです（download/latest の nando.json）。",
+        "en": "List of diseases registered in NANDO (from download/latest nando.json)."
       },
       "hasTabs": false,
-      "dataApi": "/sparqlist/api/nanbyodata_stats_nando",
+      "dataUrl": "/download/latest/nando.json",
+      "downloadLatestBasename": "nando",
       "columns": [
         {
+          "dataKey": "id",
+          "noWrap": true,
+          "label": {
+            "ja": "NANDO ID",
+            "en": "NANDO ID"
+          },
+          "tooltip": {
+            "ja": "難病オントロジー（NANDO）の識別子。クリックで疾患ページへ",
+            "en": "NANDO identifier. Click to open the disease page"
+          },
+          "link": "nando"
+        },
+        {
+          "dataKeyByLocale": {
+            "ja": "label_ja",
+            "en": "label_en"
+          },
+          "label": {
+            "ja": "疾患名",
+            "en": "Disease name"
+          },
+          "tooltip": {
+            "ja": "疾患の名称",
+            "en": "Disease name"
+          }
+        },
+        {
+          "dataKey": "label_hira",
+          "label": {
+            "ja": "読み",
+            "en": "Reading"
+          },
+          "tooltip": {
+            "ja": "読み（ひらがな）",
+            "en": "Reading in hiragana"
+          }
+        },
+        {
           "dataKey": "category",
+          "noWrap": true,
           "label": {
             "ja": "区分",
             "en": "Category"
           },
           "tooltip": {
-            "ja": "指定難病または小児慢性特定疾病の区分",
-            "en": "Category: Shitei (designated nanbyo) or Shoman (pediatric chronic)"
+            "ja": "データ上の区分コード（例: 指定難病・小児慢性特定疾病）",
+            "en": "Category code in the dataset"
           }
         },
         {
-          "dataKey": "all",
+          "dataKey": "notification_number",
+          "noWrap": true,
           "label": {
-            "ja": "All",
-            "en": "All"
+            "ja": "告示番号",
+            "en": "Notification No."
           },
           "tooltip": {
-            "ja": "該当区分の全件数",
-            "en": "Total count for this category"
-          }
-        },
-        {
-          "dataKey": "nanbyo_group",
-          "label": {
-            "ja": "Nanbyo group",
-            "en": "Nanbyo group"
-          },
-          "tooltip": {
-            "ja": "難病グループの件数",
-            "en": "Number of nanbyo groups"
-          }
-        },
-        {
-          "dataKey": "nanbyo_disease",
-          "label": {
-            "ja": "Nanbyo disease",
-            "en": "Nanbyo disease"
-          },
-          "tooltip": {
-            "ja": "難病疾患の件数",
-            "en": "Number of nanbyo diseases"
-          }
-        },
-        {
-          "dataKey": "nanbyo_subtype",
-          "label": {
-            "ja": "Nanbyo subtype",
-            "en": "Nanbyo subtype"
-          },
-          "tooltip": {
-            "ja": "難病サブタイプの件数",
-            "en": "Number of nanbyo subtypes"
+            "ja": "告示番号（データに含まれる場合）",
+            "en": "Notification number when present in data"
           }
         }
       ]
@@ -89,7 +97,7 @@
         "en": "This table shows counts of disease definitions, inheritance information, and alternative names by category."
       },
       "hasTabs": false,
-      "dataApi": "/sparqlist/api/nanbyodata_stats_disease_overview",
+      "dataUrl": "/sparqlist/api/nanbyodata_stats_disease_overview",
       "columns": [
         {
           "dataKey": "category",
@@ -148,90 +156,78 @@
         "en": ""
       },
       "description": {
-        "ja": "各外部疾患リソースへのリンク件数を、指定難病・小児慢性特定疾病ごとに示した表です。",
-        "en": "This table shows counts of links to external disease resources for each disease category."
+        "ja": "外部リソースへのリンク一覧です。リソース種別ごとにタブで切り替えます（現在は KEGG。今後タブを追加予定）。",
+        "en": "Links to external resources by resource type (KEGG tab now; more tabs planned)."
       },
       "hasTabs": true,
-      "dataApi": "/sparqlist/api/nanbyodata_stats_links",
       "tabs": [
         {
-          "id": "shitei",
-          "label": {
-            "ja": "指定難病",
-            "en": "Shitei"
-          },
-          "tooltip": {
-            "ja": "",
-            "en": ""
-          }
-        },
-        {
-          "id": "shoman",
-          "label": {
-            "ja": "小児慢性特定疾病",
-            "en": "Shoman"
-          },
-          "tooltip": {
-            "ja": "",
-            "en": ""
-          }
-        }
-      ],
-      "columns": [
-        {
-          "dataKey": "monarchExact",
-          "label": {
-            "ja": "Monarch Initiative (exact)",
-            "en": "Monarch Initiative (exact)"
-          },
-          "tooltip": {
-            "ja": "Monarch Initiative との完全一致リンク数",
-            "en": "Exact match links to Monarch Initiative"
-          }
-        },
-        {
-          "dataKey": "monarchClose",
-          "label": {
-            "ja": "Monarch Initiative (close)",
-            "en": "Monarch Initiative (close)"
-          },
-          "tooltip": {
-            "ja": "Monarch Initiative との近い一致リンク数",
-            "en": "Close match links to Monarch Initiative"
-          }
-        },
-        {
-          "dataKey": "orphanet",
-          "label": {
-            "ja": "Orphanet",
-            "en": "Orphanet"
-          },
-          "tooltip": {
-            "ja": "Orphanet へのリンク数",
-            "en": "Links to Orphanet"
-          }
-        },
-        {
-          "dataKey": "medgen",
-          "label": {
-            "ja": "MedGen",
-            "en": "MedGen"
-          },
-          "tooltip": {
-            "ja": "MedGen へのリンク数",
-            "en": "Links to MedGen"
-          }
-        },
-        {
-          "dataKey": "kegg",
+          "id": "kegg",
           "label": {
             "ja": "KEGG",
             "en": "KEGG"
           },
           "tooltip": {
-            "ja": "KEGG へのリンク数",
-            "en": "Links to KEGG"
-          }
+            "ja": "KEGG へのリンク（download/latest の kegg.json）",
+            "en": "KEGG links (kegg.json under download/latest)"
+          },
+          "dataUrl": "/download/latest/kegg.json",
+          "downloadLatestBasename": "kegg",
+          "columns": [
+            {
+              "dataKey": "nando",
+              "noWrap": true,
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "NANDO:xxxx 形式。クリックで疾患ページへ（nando_id のみのデータは JSON 側で nando に揃えるか列を追加してください）",
+                "en": "NANDO:xxxx. Click for disease page (use nando field or add a column if only nando_id exists)"
+              },
+              "link": "nando"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "label_ja",
+                "en": "label_en"
+              },
+              "label": {
+                "ja": "疾患名",
+                "en": "Disease name"
+              },
+              "tooltip": {
+                "ja": "疾患名",
+                "en": "Disease name"
+              }
+            },
+            {
+              "dataKey": "pathway_id",
+              "noWrap": true,
+              "label": {
+                "ja": "パスウェイID",
+                "en": "Pathway ID"
+              },
+              "tooltip": {
+                "ja": "KEGG パスウェイ ID（データに含まれる場合）",
+                "en": "KEGG pathway id when present"
+              }
+            },
+            {
+              "dataKey": "kegg",
+              "label": {
+                "ja": "KEGG",
+                "en": "KEGG"
+              },
+              "tooltip": {
+                "ja": "KEGG へのリンク（URL を kegg または kegg_url で格納する想定）",
+                "en": "KEGG link URL in kegg or kegg_url field"
+              },
+              "link": "external",
+              "linkHrefKey": "kegg",
+              "linkTextKey": "pathway_id"
+            }
+          ]
         }
       ]
     },
@@ -261,7 +257,7 @@
             "ja": "test",
             "en": "test"
           },
-          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_Glycogene_table_2",
+          "dataUrl": "/sparqlist/api/test_Glycogene_table_2",
           "columns": [
             {
               "dataKey": "genesymbol",
@@ -347,7 +343,7 @@
             "ja": "test",
             "en": "test"
           },
-          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_Glycogene_table_2",
+          "dataUrl": "/sparqlist/api/test_Glycogene_table_2",
           "columns": [
             {
               "dataKey": "nando_id",
@@ -448,44 +444,125 @@
         "en": ""
       },
       "description": {
-        "ja": "疾患関連遺伝子の件数を、国内基準由来・国際リソース由来に分けて区分別に示した表です。",
-        "en": "This table shows counts of disease-related genes by category, separated into Japan-curated and internationally curated sources."
+        "ja": "疾患関連遺伝子の一覧です。国内基準由来は japan_curated_gene.json。国際リソース由来のタブは今後追加予定です。",
+        "en": "Disease-related genes. Japan-curated data from japan_curated_gene.json; an international-resource tab will be added later."
       },
-      "hasTabs": false,
-      "dataApi": "/sparqlist/api/nanbyodata_stats_genes",
-      "columns": [
+      "hasTabs": true,
+      "tabs": [
         {
-          "dataKey": "category",
-          "label": {
-            "ja": "区分",
-            "en": "Category"
-          },
-          "tooltip": {
-            "ja": "指定難病または小児慢性特定疾病の区分",
-            "en": "Category: Shitei or Shoman"
-          }
-        },
-        {
-          "dataKey": "domestic",
+          "id": "japan-curated",
           "label": {
             "ja": "国内基準由来",
             "en": "Japan-curated"
           },
           "tooltip": {
-            "ja": "国内基準に由来する遺伝子情報の件数",
-            "en": "Count of Japan-curated gene data"
-          }
-        },
-        {
-          "dataKey": "international",
-          "label": {
-            "ja": "国際リソース由来",
-            "en": "Internationally curated"
+            "ja": "国内基準に由来する遺伝子情報（download/latest の japan_curated_gene.json）",
+            "en": "Japan-curated genes (japan_curated_gene.json)"
           },
-          "tooltip": {
-            "ja": "国際リソースに由来する遺伝子情報の件数",
-            "en": "Count of internationally curated gene data"
-          }
+          "countDataKey": "symbol",
+          "dataUrl": "/download/latest/japan_curated_gene.json",
+          "downloadLatestBasename": "japan_curated_gene",
+          "columns": [
+            {
+              "dataKey": "symbol",
+              "noWrap": true,
+              "label": {
+                "ja": "遺伝子シンボル",
+                "en": "Gene symbol"
+              },
+              "tooltip": {
+                "ja": "遺伝子シンボル",
+                "en": "Gene symbol"
+              }
+            },
+            {
+              "dataKey": "nando",
+              "noWrap": true,
+              "label": {
+                "ja": "NANDO",
+                "en": "NANDO"
+              },
+              "tooltip": {
+                "ja": "NANDO:xxxx。クリックで疾患ページへ",
+                "en": "NANDO:xxxx. Click for disease page"
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "ncbi_id",
+              "noWrap": true,
+              "label": {
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
+              },
+              "tooltip": {
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
+              }
+            },
+            {
+              "dataKey": "ncbi",
+              "label": {
+                "ja": "NCBI Gene",
+                "en": "NCBI Gene"
+              },
+              "tooltip": {
+                "ja": "NCBI Gene へのリンク",
+                "en": "Link to NCBI Gene"
+              },
+              "link": "external",
+              "linkHrefKey": "ncbi",
+              "linkTextKey": "ncbi_id"
+            },
+            {
+              "dataKey": "hgnc_id",
+              "noWrap": true,
+              "label": {
+                "ja": "HGNC ID",
+                "en": "HGNC ID"
+              },
+              "tooltip": {
+                "ja": "HGNC ID",
+                "en": "HGNC ID"
+              }
+            },
+            {
+              "dataKey": "hgnc",
+              "label": {
+                "ja": "HGNC",
+                "en": "HGNC"
+              },
+              "tooltip": {
+                "ja": "HGNC へのリンク",
+                "en": "Link to HGNC"
+              },
+              "link": "external",
+              "linkHrefKey": "hgnc",
+              "linkTextKey": "hgnc_id"
+            },
+            {
+              "dataKey": "gene_name",
+              "label": {
+                "ja": "遺伝子名",
+                "en": "Gene name"
+              },
+              "tooltip": {
+                "ja": "遺伝子の名称",
+                "en": "Gene name"
+              }
+            },
+            {
+              "dataKey": "gene_description",
+              "label": {
+                "ja": "説明",
+                "en": "Description"
+              },
+              "tooltip": {
+                "ja": "遺伝子の説明（RefSeq 等）",
+                "en": "Gene description"
+              }
+            }
+          ]
         }
       ]
     },
@@ -504,7 +581,8 @@
         "en": "Individual table."
       },
       "hasTabs": false,
-      "dataApi": "/sparqlist/api/test_get_nbdc_human_databases_info_by_nando_id_list",
+      "dataUrl": "/download/latest/nbdc_human_databases_info_by_nando_id.json",
+      "downloadLatestBasename": "nbdc_human_databases_info_by_nando_id",
       "columns": [
         {
           "dataKeyByLocale": {
@@ -588,7 +666,8 @@
             "ja": "",
             "en": ""
           },
-          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_cell_list",
+          "dataUrl": "/download/latest/riken_brc_cell.json",
+          "downloadLatestBasename": "riken_brc_cell",
           "columns": [
             {
               "dataKey": "ID",
@@ -663,7 +742,8 @@
             "ja": "",
             "en": ""
           },
-          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_mouse_list",
+          "dataUrl": "/download/latest/riken_brc_mouse.json",
+          "downloadLatestBasename": "riken_brc_mouse",
           "columns": [
             {
               "dataKey": "mouse_id",
@@ -731,7 +811,8 @@
             "ja": "",
             "en": ""
           },
-          "dataApi": "https://dev-nanbyodata.dbcls.jp/sparqlist/api/test_get_riken_brc_dna_list",
+          "dataUrl": "/download/latest/riken_brc_dna.json",
+          "downloadLatestBasename": "riken_brc_dna",
           "columns": [
             {
               "dataKey": "gene_id",
@@ -798,7 +879,7 @@
         "en": "This table shows counts of variants registered in ClinVar and MGeND by category."
       },
       "hasTabs": false,
-      "dataApi": "/sparqlist/api/nanbyodata_stats_variants",
+      "dataUrl": "/sparqlist/api/nanbyodata_stats_variants",
       "columns": [
         {
           "dataKey": "category",

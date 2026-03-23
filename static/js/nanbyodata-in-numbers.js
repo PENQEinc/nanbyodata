@@ -49,22 +49,6 @@ const DETAIL_HASH_ALIASES = {
 
 /** トップページのカードで使っているAPIと合計抽出ロジック（sectionId → { api, extract }） */
 const TOP_PAGE_API_MAP = {
-  'nando-content': {
-    api: '/sparqlist/api/NANDO_count',
-    extract: (d) => {
-      const s = parseInt(d.shitei_all?.['callret-0'] || 0);
-      const m = parseInt(d.shoman_all?.['callret-0'] || 0);
-      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
-    },
-  },
-  'genes-content': {
-    api: '/sparqlist/api/NANDO_link_count2',
-    extract: (d) => {
-      const s = parseInt(d.shitei_gene?.gene || 0);
-      const m = parseInt(d.shoman_gene?.gene || 0);
-      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
-    },
-  },
   'clinical-features-content': {
     api: '/sparqlist/api/NANDO_link_count2',
     extract: (d) => {
@@ -92,27 +76,6 @@ const TOP_PAGE_API_MAP = {
       );
     },
   },
-  'links-content': {
-    api: '/sparqlist/api/NANDO_link_count',
-    extract: (d) => {
-      const keys = [
-        ['name2', 'mondo'],
-        ['name4', 'mondo'],
-        ['name12', 'mondo'],
-        ['name10', 'medgen'],
-        ['name5', 'kegg'],
-        ['name1', 'mondo'],
-        ['name3', 'mondo'],
-        ['name11', 'mondo'],
-        ['name9', 'medgen'],
-        ['name6', 'kegg'],
-      ];
-      return keys.reduce((sum, [k1, k2]) => {
-        const v = parseInt(d[k1]?.[k2] || 0);
-        return sum + (Number.isFinite(v) ? v : 0);
-      }, 0);
-    },
-  },
 };
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS) {
@@ -126,6 +89,40 @@ async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH
   } finally {
     clearTimeout(timerId);
   }
+}
+
+/** セクション・タブ・カラムのデータ取得先（静的 JSON 兼 API）。旧キー dataApi も解決する。 */
+function resolveDataUrl(source) {
+  if (!source || typeof source !== 'object') return '';
+  const u = source.dataUrl ?? source.dataApi;
+  return typeof u === 'string' && u.trim() !== '' ? u.trim() : '';
+}
+
+const STATS_DEV_DATA_ORIGIN = 'https://dev-nanbyodata.dbcls.jp';
+
+function isLocalhostHostname() {
+  const h = typeof window !== 'undefined' ? window.location.hostname : '';
+  return (
+    h === 'localhost' ||
+    h === '127.0.0.1' ||
+    h === '[::1]' ||
+    h === '0.0.0.0'
+  );
+}
+
+/**
+ * localhost では SparqList・download/latest 等を dev 環境に向ける。
+ * `/static/` はローカル Flask のまま。
+ */
+function resolveStatsFetchUrl(pathOrUrl) {
+  if (!pathOrUrl || typeof pathOrUrl !== 'string') return pathOrUrl;
+  const s = pathOrUrl.trim();
+  if (!s) return s;
+  if (/^https?:\/\//i.test(s)) return s;
+  if (!isLocalhostHostname()) return s;
+  const path = s.startsWith('/') ? s : `/${s}`;
+  if (path.startsWith('/static/')) return s;
+  return `${STATS_DEV_DATA_ORIGIN}${path}`;
 }
 
 /**
@@ -229,11 +226,15 @@ function setupStatsDownloadButtons() {
     if (!section) return;
     const table = section.querySelector('.table-contents table.stats-table');
     if (!table) return;
-    const csv = tableToCsv(table);
-    if (!csv) return;
     const sectionId = btn.getAttribute('data-section-id') || 'stats-table';
-    const filename = sectionId + '.csv';
-    downloadCsv(csv, filename);
+    const json = tableToJson(table);
+    if (!json) return;
+    downloadTextFile(
+      json,
+      `${sectionId}.json`,
+      'application/json;charset=utf-8',
+      false,
+    );
   });
 
   document.addEventListener('click', function (e) {
@@ -252,34 +253,32 @@ function setupStatsDownloadButtons() {
 }
 
 /**
- * HTML テーブルを CSV 文字列に変換
+ * HTML テーブルから JSON 配列（オブジェクトの列）を生成
  */
-function tableToCsv(table) {
-  const rows = [];
+function tableToJson(table) {
   const theadTr = table.querySelector('thead tr');
   const ths = theadTr ? theadTr.querySelectorAll('th') : [];
   const headers = Array.from(ths).map((th) => {
     const span = th.querySelector('.stats-th-label');
     const text = span ? span.textContent : th.textContent;
-    return escapeCsvCell(text || '');
+    return (text || '').trim();
   });
-  if (headers.length) rows.push(headers.join(','));
-
   const tbodyTrs = table.querySelectorAll('tbody tr');
+  const objects = [];
   tbodyTrs.forEach((tr) => {
-    const cells = [];
+    const obj = {};
     const tds = tr.querySelectorAll('td');
-    tds.forEach((td) => {
+    tds.forEach((td, i) => {
       let text = td.textContent || '';
       const link = td.querySelector('a[href]');
-      if (link && link.href) {
-        text = link.href;
-      }
-      cells.push(escapeCsvCell(text.trim()));
+      if (link && link.href) text = link.href;
+      const key = headers[i] || `column_${i}`;
+      obj[key] = text.trim();
     });
-    if (cells.length) rows.push(cells.join(','));
+    if (Object.keys(obj).length) objects.push(obj);
   });
-  return rows.length ? rows.join('\n') : null;
+  if (!headers.length && !objects.length) return null;
+  return JSON.stringify(objects, null, 2);
 }
 
 function getConfigDataKeysForLocale(col, locale) {
@@ -343,43 +342,91 @@ function getCsvCellValueFromRow(row, col, locale) {
   return values.map((value) => String(value)).join('\n');
 }
 
-function buildCsvFromConfigRows(columns, rows, locale) {
-  const header = (columns || []).map((col) =>
-    escapeCsvCell(col?.label?.[locale] || col?.label?.en || ''),
-  );
-  const body = (rows || []).map((row) =>
-    (columns || [])
-      .map((col) => escapeCsvCell(getCsvCellValueFromRow(row, col, locale)))
-      .join(','),
-  );
-  const allRows = [];
-  if (header.length > 0) allRows.push(header.join(','));
-  allRows.push(...body);
-  return allRows.length > 0 ? allRows.join('\n') : null;
+function getExportColumnLabel(col, locale) {
+  return col?.label?.[locale] || col?.label?.en || col?.label?.ja || col?.dataKey || '';
 }
 
-function escapeCsvCell(str) {
-  if (str == null) return '""';
-  const s = String(str);
-  if (
-    s.includes('"') ||
-    s.includes(',') ||
-    s.includes('\n') ||
-    s.includes('\r')
-  ) {
-    return '"' + s.replace(/"/g, '""') + '"';
+function buildExportColumnKeys(columns, locale) {
+  const used = new Set();
+  const keys = [];
+  for (const col of columns || []) {
+    let base = getExportColumnLabel(col, locale) || 'column';
+    let k = base;
+    let n = 2;
+    while (used.has(k)) {
+      k = `${base}_${n++}`;
+    }
+    used.add(k);
+    keys.push(k);
   }
-  return s;
+  return keys;
 }
 
-function downloadCsv(csv, filename) {
-  const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8' });
+function escapeTxtCell(str) {
+  if (str == null) return '';
+  return String(str).replace(/\r\n|\r|\n/g, ' ').replace(/\t/g, ' ');
+}
+
+function buildJsonFromConfigRows(columns, rows, locale) {
+  if (!columns?.length) return null;
+  const keys = buildExportColumnKeys(columns, locale);
+  const objects = (rows || []).map((row) => {
+    const obj = {};
+    (columns || []).forEach((col, i) => {
+      obj[keys[i]] = getCsvCellValueFromRow(row, col, locale);
+    });
+    return obj;
+  });
+  return JSON.stringify(objects, null, 2);
+}
+
+function buildTxtFromConfigRows(columns, rows, locale) {
+  if (!columns?.length) return null;
+  const keys = buildExportColumnKeys(columns, locale);
+  const lines = [keys.map(escapeTxtCell).join('\t')];
+  for (const row of rows || []) {
+    const cells = (columns || []).map((col) =>
+      escapeTxtCell(getCsvCellValueFromRow(row, col, locale)),
+    );
+    lines.push(cells.join('\t'));
+  }
+  return lines.join('\n');
+}
+
+function downloadTextFile(content, filename, mimeType, useBom) {
+  const payload = useBom ? '\uFEFF' + content : content;
+  const blob = new Blob([payload], { type: mimeType });
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
   a.download = filename;
   a.click();
   URL.revokeObjectURL(url);
+}
+
+/**
+ * /download/latest/{basename}.{json|txt} を取得して保存する。
+ * dev / 本番は同一オリジン、localhost は dev 環境を参照する。
+ */
+async function downloadFromLatestPath(basename, format, closePanel) {
+  if (!basename || (format !== 'json' && format !== 'txt')) return false;
+  try {
+    const url = resolveStatsFetchUrl(`/download/latest/${basename}.${format}`);
+    const res = await fetchWithTimeout(url);
+    if (!res.ok) return false;
+    const blob = await res.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objUrl;
+    a.download = `${basename}.${format}`;
+    a.click();
+    URL.revokeObjectURL(objUrl);
+    if (typeof closePanel === 'function') closePanel();
+    return true;
+  } catch (err) {
+    console.warn('download/latest の取得に失敗:', basename, err);
+    return false;
+  }
 }
 
 function getCountLoadingMarkup() {
@@ -498,15 +545,6 @@ function getSectionTotalFromRows(rows, columns) {
   }, 0);
 }
 
-function getConfigDataKeyForLocale(col, locale) {
-  if (!col) return null;
-  const byLocale = col.dataKeyByLocale;
-  if (byLocale && typeof byLocale === 'object') {
-    return byLocale[locale] || byLocale.en || byLocale.ja || col.dataKey;
-  }
-  return col.dataKey;
-}
-
 /**
  * カード用の新規テーブルを config に基づいて表示する（ハッシュで指定されたセクション）
  */
@@ -567,7 +605,10 @@ async function showCardDetailTable(sectionId) {
     downloadBtn.setAttribute('data-section-id', sectionId);
     downloadBtn.setAttribute('aria-controls', `popup-download-${sectionId}`);
     downloadBtn.setAttribute('aria-expanded', 'false');
-    downloadBtn.setAttribute('aria-label', 'Download as CSV');
+    downloadBtn.setAttribute(
+      'aria-label',
+      locale === 'ja' ? 'JSON または TXT でダウンロード' : 'Download as JSON or TXT',
+    );
     downloadBtn.innerHTML =
       '<i class="fas fa-download" aria-hidden="true"></i> Download';
     downloadWrap.appendChild(downloadBtn);
@@ -616,10 +657,14 @@ async function showCardDetailTable(sectionId) {
     formatLabel.textContent = 'Format :';
     downloadFormatSelect = document.createElement('select');
     downloadFormatSelect.className = 'stats-download-select';
-    const csvOption = document.createElement('option');
-    csvOption.value = 'csv';
-    csvOption.textContent = 'CSV';
-    downloadFormatSelect.appendChild(csvOption);
+    const jsonOption = document.createElement('option');
+    jsonOption.value = 'json';
+    jsonOption.textContent = 'JSON';
+    downloadFormatSelect.appendChild(jsonOption);
+    const txtOption = document.createElement('option');
+    txtOption.value = 'txt';
+    txtOption.textContent = 'TXT';
+    downloadFormatSelect.appendChild(txtOption);
     formatWrapper.appendChild(formatLabel);
     formatWrapper.appendChild(downloadFormatSelect);
     downloadBody.appendChild(formatWrapper);
@@ -629,27 +674,57 @@ async function showCardDetailTable(sectionId) {
     downloadConfirmBtn.className = 'popup-btn';
     downloadConfirmBtn.textContent = 'Download';
     downloadConfirmBtn.addEventListener('click', async () => {
-      if (downloadFormatSelect?.value !== 'csv') return;
+      const format = downloadFormatSelect?.value;
+      if (format !== 'json' && format !== 'txt') return;
+
+      const closePanel = () => {
+        downloadBtn.setAttribute('aria-expanded', 'false');
+        downloadPanel.setAttribute('aria-hidden', 'true');
+      };
+
+      const emitDownload = (columns, rows, basename) => {
+        let content;
+        let ext;
+        let mime;
+        let bom;
+        if (format === 'json') {
+          content = buildJsonFromConfigRows(columns, rows, locale);
+          ext = 'json';
+          mime = 'application/json;charset=utf-8';
+          bom = false;
+        } else {
+          content = buildTxtFromConfigRows(columns, rows, locale);
+          ext = 'txt';
+          mime = 'text/plain;charset=utf-8';
+          bom = true;
+        }
+        if (!content) return;
+        downloadTextFile(content, `${basename}.${ext}`, mime, bom);
+        closePanel();
+      };
 
       if (hasTabs) {
         const selectedTabId = downloadTabSelect?.value;
         if (!selectedTabId) return;
 
-        if (sectionConfig.tabs?.some((tab) => tab.dataApi && tab.columns?.length)) {
+        if (sectionConfig.tabs?.some((tab) => resolveDataUrl(tab) && tab.columns?.length)) {
           const selectedIndex = sectionConfig.tabs.findIndex(
             (tab) => tab.id === selectedTabId,
           );
           if (selectedIndex < 0) return;
           const selectedTab = sectionConfig.tabs[selectedIndex];
+          const officialBasename = selectedTab.downloadLatestBasename;
+          if (
+            officialBasename &&
+            (await downloadFromLatestPath(officialBasename, format, closePanel))
+          ) {
+            return;
+          }
           const rows =
             typeof loadTabTable === 'function'
               ? await loadTabTable(selectedIndex, { silent: true })
               : [];
-          const csv = buildCsvFromConfigRows(selectedTab.columns || [], rows, locale);
-          if (!csv) return;
-          downloadCsv(csv, `${sectionId}-${selectedTabId}.csv`);
-          downloadBtn.setAttribute('aria-expanded', 'false');
-          downloadPanel.setAttribute('aria-hidden', 'true');
+          emitDownload(selectedTab.columns || [], rows, `${sectionId}-${selectedTabId}`);
           return;
         }
 
@@ -659,28 +734,27 @@ async function showCardDetailTable(sectionId) {
           );
           if (selectedIndex < 0) return;
           const row = loadedRowsFromApi[selectedIndex];
-          const csv = buildCsvFromConfigRows(
+          emitDownload(
             sectionConfig.columns || [],
             row ? [row] : [],
-            locale,
+            `${sectionId}-${selectedTabId}`,
           );
-          if (!csv) return;
-          downloadCsv(csv, `${sectionId}-${selectedTabId}.csv`);
-          downloadBtn.setAttribute('aria-expanded', 'false');
-          downloadPanel.setAttribute('aria-hidden', 'true');
           return;
         }
       }
 
-      const csv = buildCsvFromConfigRows(
-        sectionConfig.columns || [],
-        loadedRowsFromApi,
-        locale,
-      );
-      if (!csv) return;
-      downloadCsv(csv, `${sectionId}.csv`);
-      downloadBtn.setAttribute('aria-expanded', 'false');
-      downloadPanel.setAttribute('aria-hidden', 'true');
+      if (
+        sectionConfig.downloadLatestBasename &&
+        (await downloadFromLatestPath(
+          sectionConfig.downloadLatestBasename,
+          format,
+          closePanel,
+        ))
+      ) {
+        return;
+      }
+
+      emitDownload(sectionConfig.columns || [], loadedRowsFromApi, sectionId);
     });
     downloadBody.appendChild(downloadConfirmBtn);
     downloadPanel.appendChild(downloadBody);
@@ -726,7 +800,7 @@ async function showCardDetailTable(sectionId) {
 
     // タブごとに別テーブル（BRC の Cell / Mouse / DNA など）
     const tabsWithApi = sectionConfig.tabs?.filter(
-      (t) => t.dataApi && t.columns?.length,
+      (t) => resolveDataUrl(t) && t.columns?.length,
     );
     if (tabsWithApi && tabsWithApi.length > 0) {
       const tabBar = document.createElement('div');
@@ -749,11 +823,7 @@ async function showCardDetailTable(sectionId) {
       // タイトル横の合計をトップページのBioresourcesカードと同じAPI（NANDO_link_count3 等）で取得
       // API が失敗・停止している場合はタイトル横は '-' のまま（タブ合計では上書きしない）
       if (topPageApiDef && titleCount) {
-        const apiUrl = topPageApiDef.api.startsWith('http')
-          ? topPageApiDef.api
-          : (typeof window !== 'undefined' && window.location?.origin
-              ? window.location.origin
-              : '') + topPageApiDef.api;
+        const apiUrl = resolveStatsFetchUrl(topPageApiDef.api);
         fetchWithTimeout(apiUrl)
           .then((r) => (r.ok ? r.json() : null))
           .then((data) => {
@@ -772,7 +842,7 @@ async function showCardDetailTable(sectionId) {
       loadTabTable = async (tabIndex, options = {}) => {
         const { silent = false } = options;
         const tab = sectionConfig.tabs[tabIndex];
-        if (!tab?.dataApi || !tab.columns) return [];
+        if (!resolveDataUrl(tab) || !tab.columns) return [];
         if (tabCache[tabIndex]) {
           const cachedRows = tabCache[tabIndex];
           if (!silent) {
@@ -800,10 +870,17 @@ async function showCardDetailTable(sectionId) {
             '" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>';
         }
         try {
-          const r = await fetchWithTimeout(tab.dataApi);
+          const r = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(tab)));
           if (!r.ok) throw new Error(r.statusText);
           const data = await r.json();
-          const rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+          let rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+          if (Array.isArray(rows)) {
+            rows.forEach((row) => {
+              if (row && row.kegg_url != null && row.kegg == null) {
+                row.kegg = row.kegg_url;
+              }
+            });
+          }
           tabCache[tabIndex] = rows;
           if (!silent) {
             renderTableFromRows(table, tab.columns, rows, locale);
@@ -1264,14 +1341,14 @@ async function showCardDetailTable(sectionId) {
       section.insertBefore(tabBar, tableWrap);
       // ページ表示時に全タブを並列で読み込む（先頭タブは表示、他は silent でキャッシュ）
       loadTabTable(0);
-      for (let i = 1; i < tabsWithApi.length; i++) {
+      for (let i = 1; i < sectionConfig.tabs.length; i++) {
         loadTabTable(i, { silent: true });
       }
     } else if (
       sectionConfig.rows?.length &&
-      sectionConfig.columns?.some((c) => c.dataApi)
+      sectionConfig.columns?.some((c) => resolveDataUrl(c))
     ) {
-      // カラムごと dataApi（行キーでマージ）
+      // カラムごと dataUrl（行キーでマージ）
       columns.forEach((col) => {
         const th = document.createElement('th');
         th.appendChild(
@@ -1304,7 +1381,7 @@ async function showCardDetailTable(sectionId) {
       } else {
         setCountUnavailable(titleCount);
       }
-    } else if (sectionConfig.dataApi && columns.length) {
+    } else if (resolveDataUrl(sectionConfig) && columns.length) {
       let tabBar = null;
       columns.forEach((col) => {
         const th = document.createElement('th');
@@ -1355,7 +1432,7 @@ async function showCardDetailTable(sectionId) {
       loadedRowsFromApi = Array.isArray(rowsFromApi) ? rowsFromApi : [];
       const topPageApiDefSingle = TOP_PAGE_API_MAP[sectionId];
       if (topPageApiDefSingle && titleCount) {
-        fetchWithTimeout(topPageApiDefSingle.api)
+        fetchWithTimeout(resolveStatsFetchUrl(topPageApiDefSingle.api))
           .then((r) => (r.ok ? r.json() : null))
           .then((data) => {
             if (data && typeof topPageApiDefSingle.extract === 'function') {
@@ -1377,17 +1454,21 @@ async function showCardDetailTable(sectionId) {
       ) {
         let total = NaN;
         if (sectionId === 'nando-content') {
-          // All 列の合計（指定＋小慢）
-          total = rowsFromApi.reduce((sum, row) => {
-            const raw = row.all;
-            if (raw === undefined || raw === null) return sum;
-            const v = Number(
-              typeof raw === 'number'
-                ? raw
-                : String(raw).replace(/,/g, '').trim(),
-            );
-            return Number.isFinite(v) ? sum + v : sum;
-          }, 0);
+          // 集計行（all 列あり）のときは All 合計、nando.json 一覧のときは行数
+          if (rowsFromApi.some((row) => row && row.all != null)) {
+            total = rowsFromApi.reduce((sum, row) => {
+              const raw = row.all;
+              if (raw === undefined || raw === null) return sum;
+              const v = Number(
+                typeof raw === 'number'
+                  ? raw
+                  : String(raw).replace(/,/g, '').trim(),
+              );
+              return Number.isFinite(v) ? sum + v : sum;
+            }, 0);
+          } else {
+            total = rowsFromApi.length;
+          }
         } else if (sectionId === 'genes-content') {
           // 疾患関連遺伝子: 国内基準由来＋国際リソース由来の合計
           total = rowsFromApi.reduce((sum, row) => {
@@ -1517,7 +1598,7 @@ function getStatsLocale() {
 // loadSectionTableFromApi, loadSectionTableFromColumnApis 等は個別テーブル表示時に使用
 
 /**
- * カラムごとの dataApi からデータを取得し、行ごとにマージして tbody を生成する。
+ * カラムごとの dataUrl からデータを取得し、行ごとにマージして tbody を生成する。
  * 例: BRC の cells / mouse / dna でそれぞれ別API。
  * 各APIのレスポンス形式: { "shitei": value, "shoman": value } など行 id をキーとしたオブジェクト。
  */
@@ -1542,8 +1623,8 @@ async function loadSectionTableFromColumnApis(
   try {
     const columnData = {};
     for (const col of columns) {
-      if (!col.dataApi) continue;
-      const res = await fetchWithTimeout(col.dataApi);
+      if (!resolveDataUrl(col)) continue;
+      const res = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(col)));
       if (!res.ok) throw new Error(`${col.dataKey}: ${res.statusText}`);
       const data = await res.json();
       if (data && typeof data === 'object' && !Array.isArray(data)) {
@@ -1579,7 +1660,7 @@ async function loadSectionTableFromColumnApis(
         let val;
         if (col.dataKey === 'category') {
           val = rowDef.label?.[locale] ?? rowDef.label?.en ?? rowId;
-        } else if (col.dataApi && columnData[col.dataKey]) {
+        } else if (resolveDataUrl(col) && columnData[col.dataKey]) {
           val = columnData[col.dataKey][rowId];
         } else {
           val = undefined;
@@ -1608,7 +1689,7 @@ async function loadSectionTableFromColumnApis(
 }
 
 /**
- * セクションの dataApi からデータを取得し、tbody を生成して表示する。
+ * セクションの dataUrl からデータを取得し、tbody を生成して表示する。
  * API レスポンス形式: { "rows": [ { "dataKey1": value1, "dataKey2": value2, ... }, ... ] }
  * 各オブジェクトのキーは config の columns[].dataKey に対応すること。
  */
@@ -1624,7 +1705,9 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
   tbody.innerHTML = loadingSpinnerHtml;
 
   try {
-    const res = await fetchWithTimeout(sectionConfig.dataApi);
+    const res = await fetchWithTimeout(
+      resolveStatsFetchUrl(resolveDataUrl(sectionConfig)),
+    );
     if (!res.ok) throw new Error(res.statusText);
     const data = await res.json();
     const rows = data.rows || data.data || (Array.isArray(data) ? data : []);
@@ -1651,12 +1734,50 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
       }
       columns.forEach((col) => {
         const td = document.createElement('td');
-        const dataKey = getConfigDataKeyForLocale(col, locale);
-        const val = dataKey ? row[dataKey] : undefined;
         if (col.noWrap) {
           td.classList.add('stats-cell--nowrap');
         }
-        if (val === undefined || val === null) {
+        const keys = getConfigDataKeysForLocale(col, locale);
+        const val =
+          keys.length > 0
+            ? keys.map((k) => row[k]).find((v) => v != null && v !== '')
+            : undefined;
+        const displayVal =
+          val === undefined || val === null
+            ? '—'
+            : typeof val === 'number'
+              ? String(val.toLocaleString())
+              : String(val);
+
+        if (col.link === 'nando') {
+          const raw =
+            row.nando_id != null ? row.nando_id : val != null ? val : undefined;
+          const linkTarget = getNandoIdForCsv(raw);
+          if (linkTarget && raw != null && raw !== '') {
+            const a = document.createElement('a');
+            a.href = '/disease/' + encodeURIComponent(linkTarget);
+            a.textContent = displayVal === '—' ? linkTarget : displayVal;
+            td.appendChild(a);
+          } else {
+            td.textContent = displayVal;
+          }
+        } else if (col.link === 'external') {
+          const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
+          const textVal =
+            col.linkTextKey && row[col.linkTextKey] != null
+              ? String(row[col.linkTextKey])
+              : displayVal;
+          if (hrefVal) {
+            const a = document.createElement('a');
+            a.href = String(hrefVal);
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = textVal === '—' ? String(hrefVal) : textVal;
+            td.appendChild(a);
+          } else {
+            td.textContent = displayVal;
+          }
+        } else if (val === undefined || val === null) {
           td.textContent = '—';
         } else if (typeof val === 'number') {
           td.textContent = val.toLocaleString();
@@ -2126,7 +2247,7 @@ function updateAllTables(statsData) {
 // NANDO_count APIからデータを取得する関数
 async function fetchNANDOData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_count');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_count'));
 
     if (!response.ok) {
       throw new Error(
@@ -2154,7 +2275,7 @@ async function fetchNANDOData() {
 // BRC APIからデータを取得する関数
 async function fetchBRCData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count3');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count3'));
 
     if (!response.ok) {
       throw new Error(
@@ -2182,7 +2303,7 @@ async function fetchBRCData() {
 // NANDO_link_count APIからデータを取得する関数
 async function fetchLinkData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count'));
 
     if (!response.ok) {
       throw new Error(
@@ -2210,7 +2331,7 @@ async function fetchLinkData() {
 // NANDO_link_count2 APIからデータを取得する関数
 async function fetchLinkData2() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count2');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count2'));
 
     if (!response.ok) {
       throw new Error(
@@ -2238,7 +2359,7 @@ async function fetchLinkData2() {
 // NANDO_link_count4 APIからデータを取得する関数
 async function fetchLinkData4() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count4');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count4'));
 
     if (!response.ok) {
       throw new Error(
@@ -2266,7 +2387,7 @@ async function fetchLinkData4() {
 // NANDO_link_count5 APIからデータを取得する関数
 async function fetchLinkData5() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count5');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count5'));
 
     if (!response.ok) {
       throw new Error(
@@ -2294,7 +2415,7 @@ async function fetchLinkData5() {
 // NANDO_link_count7 APIからデータを取得する関数（ClinVar）
 async function fetchLinkData7() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count7');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count7'));
 
     if (!response.ok) {
       throw new Error(
@@ -2322,7 +2443,7 @@ async function fetchLinkData7() {
 // NANDO_link_count8 APIから糖鎖関連遺伝子データを取得する関数
 async function fetchGlycoGeneData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count8');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count8'));
 
     if (!response.ok) {
       throw new Error(
@@ -2486,7 +2607,7 @@ function updateLinks(links) {
   updateLinksData(links);
 }
 
-/** 要素が存在するときだけ textContent を設定（dataApi で tbody 差し替え時は null になるため） */
+/** 要素が存在するときだけ textContent を設定（dataUrl で tbody 差し替え時は null になるため） */
 function setStatsCell(id, value) {
   const el = document.getElementById(id);
   if (!el) return;
