@@ -262,8 +262,8 @@
             {
               "dataKey": "genesymbol",
               "label": {
-                "ja": "Genesymbol (GlyCosmos Glycogene)",
-                "en": "Genesymbol (GlyCosmos Glycogene)"
+                "ja": "Gene Symbol (GlyCosmos Glycogene)",
+                "en": "Gene Symbol (GlyCosmos Glycogene)"
               },
               "tooltip": {
                 "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
@@ -739,11 +739,12 @@
               "rowspan": true
             },
             {
-              "dataKey": "nando",
+              "dataKey": "nando_id",
               "label": {
                 "ja": "NANDO",
                 "en": "NANDO"
               },
+              "noWrap": true,
               "tooltip": {
                 "ja": "",
                 "en": ""
