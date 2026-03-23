@@ -198,15 +198,11 @@ $stats-tooltip-width: 200px;
 }
 
 .stats-section-description {
-  width: min(100%, 72ch);
   margin-bottom: 1.5rem;
-  padding: 0.9rem 1rem;
-  color: #4b5563;
+  padding: 0.9rem 1rem 0.9rem 0;
   font-size: 0.95rem;
   line-height: 1.85;
   white-space: pre-line;
-  background: rgba(36, 158, 179, 0.06);
-  border-left: 3px solid rgba(36, 158, 179, 0.45);
   border-radius: 0 8px 8px 0;
   box-sizing: border-box;
 }
@@ -383,17 +379,26 @@ $stats-tooltip-width: 200px;
       text-align: right;
     }
 
+    // 長い見出しは折り返し可。flex の2アイテム分割だと i だけ次行に落ちやすいのでインライン流しにする。
+    .stats-th-label {
+      display: inline;
+      line-height: inherit;
+
+      .stats-th-tooltip {
+        display: inline-flex;
+        align-items: center;
+        vertical-align: middle;
+        margin-left: 0.25em;
+        white-space: nowrap;
+      }
+    }
+
     &.stats-sortable {
       cursor: pointer;
       user-select: none;
 
-      .stats-th-label {
-        display: inline-flex;
-        align-items: center;
-        gap: 4px;
-      }
-
       .sort-icon {
+        vertical-align: middle;
         margin-left: 6px;
         font-size: 0.85rem;
         color: #8a8a8a;

@@ -489,53 +489,31 @@
               "link": "nando"
             },
             {
-              "dataKey": "ncbi_id",
-              "noWrap": true,
-              "label": {
-                "ja": "NCBI Gene ID",
-                "en": "NCBI Gene ID"
-              },
-              "tooltip": {
-                "ja": "NCBI Gene ID",
-                "en": "NCBI Gene ID"
-              }
-            },
-            {
               "dataKey": "ncbi",
               "label": {
-                "ja": "NCBI Gene",
-                "en": "NCBI Gene"
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
               },
               "tooltip": {
                 "ja": "NCBI Gene へのリンク",
                 "en": "Link to NCBI Gene"
               },
+              "noWrap": true,
               "link": "external",
               "linkHrefKey": "ncbi",
               "linkTextKey": "ncbi_id"
             },
             {
-              "dataKey": "hgnc_id",
-              "noWrap": true,
-              "label": {
-                "ja": "HGNC ID",
-                "en": "HGNC ID"
-              },
-              "tooltip": {
-                "ja": "HGNC ID",
-                "en": "HGNC ID"
-              }
-            },
-            {
               "dataKey": "hgnc",
               "label": {
-                "ja": "HGNC",
-                "en": "HGNC"
+                "ja": "HGNC ID",
+                "en": "HGNC ID"
               },
               "tooltip": {
                 "ja": "HGNC へのリンク",
                 "en": "Link to HGNC"
               },
+              "noWrap": true,
               "link": "external",
               "linkHrefKey": "hgnc",
               "linkTextKey": "hgnc_id"
@@ -633,6 +611,7 @@
             "ja": "アクセス制限",
             "en": "Type of Data"
           },
+          "noWrap": true,
           "tooltip": {
             "ja": "アクセス制限区分",
             "en": "Access control category"

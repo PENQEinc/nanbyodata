@@ -76,6 +76,28 @@ const TOP_PAGE_API_MAP = {
       );
     },
   },
+  /** トップの外部リンク表（指定・小慢の全リソース列の合計）と同じ NANDO_link_count を参照 */
+  'links-content': {
+    api: '/sparqlist/api/NANDO_link_count',
+    extract: (d) => {
+      const keys = [
+        ['name2', 'mondo'],
+        ['name4', 'mondo'],
+        ['name12', 'mondo'],
+        ['name10', 'medgen'],
+        ['name5', 'kegg'],
+        ['name1', 'mondo'],
+        ['name3', 'mondo'],
+        ['name11', 'mondo'],
+        ['name9', 'medgen'],
+        ['name6', 'kegg'],
+      ];
+      return keys.reduce((sum, [k1, k2]) => {
+        const v = parseInt(d[k1]?.[k2] || 0);
+        return sum + (Number.isFinite(v) ? v : 0);
+      }, 0);
+    },
+  },
 };
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS) {
@@ -1142,7 +1164,6 @@ async function showCardDetailTable(sectionId) {
               const i = document.createElement('i');
               i.className = 'fas fa-info-circle';
               w.appendChild(i);
-              labelSpan.appendChild(document.createTextNode(' '));
               labelSpan.appendChild(w);
             }
 
@@ -1351,7 +1372,12 @@ async function showCardDetailTable(sectionId) {
       // カラムごと dataUrl（行キーでマージ）
       columns.forEach((col) => {
         const th = document.createElement('th');
-        th.appendChild(
+        if (col.noWrap) {
+          th.classList.add('stats-cell--nowrap');
+        }
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-th-label';
+        labelSpan.appendChild(
           document.createTextNode(col.label[locale] || col.label.en || ''),
         );
         if (col.tooltip && (col.tooltip[locale] || col.tooltip.en)) {
@@ -1361,9 +1387,9 @@ async function showCardDetailTable(sectionId) {
           const i = document.createElement('i');
           i.className = 'fas fa-info-circle';
           w.appendChild(i);
-          th.appendChild(document.createTextNode(' '));
-          th.appendChild(w);
+          labelSpan.appendChild(w);
         }
+        th.appendChild(labelSpan);
         theadTr.appendChild(th);
       });
       const rowsFromColumnApis = await loadSectionTableFromColumnApis(
@@ -1385,7 +1411,12 @@ async function showCardDetailTable(sectionId) {
       let tabBar = null;
       columns.forEach((col) => {
         const th = document.createElement('th');
-        th.appendChild(
+        if (col.noWrap) {
+          th.classList.add('stats-cell--nowrap');
+        }
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-th-label';
+        labelSpan.appendChild(
           document.createTextNode(col.label[locale] || col.label.en || ''),
         );
         if (col.tooltip && (col.tooltip[locale] || col.tooltip.en)) {
@@ -1395,9 +1426,9 @@ async function showCardDetailTable(sectionId) {
           const i = document.createElement('i');
           i.className = 'fas fa-info-circle';
           w.appendChild(i);
-          th.appendChild(document.createTextNode(' '));
-          th.appendChild(w);
+          labelSpan.appendChild(w);
         }
+        th.appendChild(labelSpan);
         theadTr.appendChild(th);
       });
       if (sectionConfig.hasTabs && sectionConfig.tabs?.length) {

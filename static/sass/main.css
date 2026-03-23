@@ -3113,15 +3113,11 @@ Stats Page Styles
 }
 
 .stats-section-description {
-  width: min(100%, 72ch);
   margin-bottom: 1.5rem;
-  padding: 0.9rem 1rem;
-  color: #4b5563;
+  padding: 0.9rem 1rem 0.9rem 0;
   font-size: 0.95rem;
   line-height: 1.85;
   white-space: pre-line;
-  background: rgba(36, 158, 179, 0.06);
-  border-left: 3px solid rgba(36, 158, 179, 0.45);
   border-radius: 0 8px 8px 0;
   box-sizing: border-box;
 }
@@ -3230,7 +3226,6 @@ Stats Page Styles
   overflow-wrap: normal;
   word-break: keep-all;
 }
-
 .card-detail-section .table-contents .stats-table td.stats-cell--nowrap a,
 .card-detail-section .table-contents .table.stats-table td.stats-cell--nowrap a {
   white-space: nowrap;
@@ -3269,16 +3264,23 @@ Stats Page Styles
 .stats-table thead th:not(:first-child) {
   text-align: right;
 }
+.stats-table thead th .stats-th-label {
+  display: inline;
+  line-height: inherit;
+}
+.stats-table thead th .stats-th-label .stats-th-tooltip, .stats-table thead th .stats-th-label .stats-tab-tooltip {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 0.25em;
+  white-space: nowrap;
+}
 .stats-table thead th.stats-sortable {
   cursor: pointer;
   user-select: none;
 }
-.stats-table thead th.stats-sortable .stats-th-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
 .stats-table thead th.stats-sortable .sort-icon {
+  vertical-align: middle;
   margin-left: 6px;
   font-size: 0.85rem;
   color: #8a8a8a;
@@ -3309,7 +3311,7 @@ Stats Page Styles
   display: none !important;
 }
 
-.stats-th-tooltip {
+.stats-th-tooltip, .stats-tab-tooltip {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -3318,10 +3320,10 @@ Stats Page Styles
   cursor: help;
   vertical-align: middle;
 }
-.stats-th-tooltip .fa-info-circle {
+.stats-th-tooltip .fa-info-circle, .stats-tab-tooltip .fa-info-circle {
   font-size: inherit;
 }
-.stats-th-tooltip::after {
+.stats-th-tooltip::after, .stats-tab-tooltip::after {
   content: attr(data-tooltip);
   position: absolute;
   left: 50%;
@@ -3345,52 +3347,14 @@ Stats Page Styles
   z-index: 1000;
   pointer-events: none;
 }
-.stats-th-tooltip:hover::after {
+.stats-th-tooltip:hover::after, .stats-tab-tooltip:hover::after {
   opacity: 1;
   visibility: visible;
 }
 
 .stats-tab-tooltip {
-  position: relative;
-  display: inline-flex;
-  align-items: center;
-  font-size: 0.85em;
-  color: var(--color-secondary, #6c757d);
-  cursor: help;
-  vertical-align: middle;
   margin-left: 0.2rem;
   flex-shrink: 0;
-}
-.stats-tab-tooltip .fa-info-circle {
-  font-size: inherit;
-}
-.stats-tab-tooltip::after {
-  content: attr(data-tooltip);
-  position: absolute;
-  left: 50%;
-  bottom: 100%;
-  transform: translateX(-50%) translateY(-6px);
-  padding: 6px 10px;
-  width: 200px;
-  box-sizing: border-box;
-  font-size: 0.8rem;
-  font-weight: normal;
-  line-height: 1.4;
-  color: #fff;
-  background: #333;
-  border-radius: 4px;
-  white-space: normal;
-  word-break: normal;
-  text-align: left;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 0.2s, visibility 0.2s;
-  z-index: 1000;
-  pointer-events: none;
-}
-.stats-tab-tooltip:hover::after {
-  opacity: 1;
-  visibility: visible;
 }
 
 .stats-tabs {
