@@ -49,6 +49,15 @@ const DETAIL_HASH_ALIASES = {
 
 /** トップページのカードで使っているAPIと合計抽出ロジック（sectionId → { api, extract }） */
 const TOP_PAGE_API_MAP = {
+  /** トップの難病（NANDO）表と同じ NANDO_count（指定・小慢の All 合計） */
+  'nando-content': {
+    api: '/sparqlist/api/NANDO_count',
+    extract: (d) => {
+      const s = parseInt(d.shitei_all?.['callret-0'] || 0);
+      const m = parseInt(d.shoman_all?.['callret-0'] || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
   'clinical-features-content': {
     api: '/sparqlist/api/NANDO_link_count2',
     extract: (d) => {
@@ -98,6 +107,18 @@ const TOP_PAGE_API_MAP = {
       }, 0);
     },
   },
+  /**
+   * トップの「疾患関連遺伝子」カード（stats-overview.js disease_genes）と同じ:
+   * NANDO_link_count2 の shitei_gene.gene + shoman_gene.gene
+   */
+  'genes-content': {
+    api: '/sparqlist/api/NANDO_link_count2',
+    extract: (d) => {
+      const s = parseInt(d.shitei_gene?.gene || 0);
+      const m = parseInt(d.shoman_gene?.gene || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
 };
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS) {
@@ -145,6 +166,64 @@ function resolveStatsFetchUrl(pathOrUrl) {
   const path = s.startsWith('/') ? s : `/${s}`;
   if (path.startsWith('/static/')) return s;
   return `${STATS_DEV_DATA_ORIGIN}${path}`;
+}
+
+/**
+ * カード詳細タイトル横の件数をトップページ相当の SparqList で更新する。
+ * `api` + `extract` または `apis`（複数レスポンスの extract 合算）。
+ */
+function fetchAndSetTopPageTitleCount(sectionId, titleCount) {
+  const def = TOP_PAGE_API_MAP[sectionId];
+  if (!def || !titleCount) return;
+
+  if (Array.isArray(def.apis) && def.apis.length > 0) {
+    Promise.all(
+      def.apis.map(({ api }) =>
+        fetchWithTimeout(resolveStatsFetchUrl(api)).then((r) =>
+          r.ok ? r.json() : null,
+        ),
+      ),
+    )
+      .then((results) => {
+        let sum = 0;
+        let any = false;
+        def.apis.forEach((part, i) => {
+          const data = results[i];
+          if (data && typeof part.extract === 'function') {
+            const v = part.extract(data);
+            if (Number.isFinite(v)) {
+              sum += v;
+              any = true;
+            }
+          }
+        });
+        if (any) {
+          setCountValue(titleCount, sum);
+        } else {
+          setCountUnavailable(titleCount);
+        }
+      })
+      .catch(() => {
+        setCountUnavailable(titleCount);
+      });
+    return;
+  }
+
+  if (def.api && typeof def.extract === 'function') {
+    fetchWithTimeout(resolveStatsFetchUrl(def.api))
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data) {
+          const total = def.extract(data);
+          if (Number.isFinite(total) && total >= 0) {
+            setCountValue(titleCount, total);
+          }
+        }
+      })
+      .catch(() => {
+        setCountUnavailable(titleCount);
+      });
+  }
 }
 
 /**
@@ -842,23 +921,9 @@ async function showCardDetailTable(sectionId) {
         }
       }
 
-      // タイトル横の合計をトップページのBioresourcesカードと同じAPI（NANDO_link_count3 等）で取得
-      // API が失敗・停止している場合はタイトル横は '-' のまま（タブ合計では上書きしない）
+      // タイトル横の合計をトップページと同じ API（単一または複数）で取得
       if (topPageApiDef && titleCount) {
-        const apiUrl = resolveStatsFetchUrl(topPageApiDef.api);
-        fetchWithTimeout(apiUrl)
-          .then((r) => (r.ok ? r.json() : null))
-          .then((data) => {
-            if (data && typeof topPageApiDef.extract === 'function') {
-              const total = topPageApiDef.extract(data);
-              if (Number.isFinite(total) && total >= 0) {
-                setCountValue(titleCount, total);
-              }
-            }
-          })
-          .catch(() => {
-            setCountUnavailable(titleCount);
-          });
+        fetchAndSetTopPageTitleCount(sectionId, titleCount);
       }
 
       loadTabTable = async (tabIndex, options = {}) => {
@@ -1463,19 +1528,7 @@ async function showCardDetailTable(sectionId) {
       loadedRowsFromApi = Array.isArray(rowsFromApi) ? rowsFromApi : [];
       const topPageApiDefSingle = TOP_PAGE_API_MAP[sectionId];
       if (topPageApiDefSingle && titleCount) {
-        fetchWithTimeout(resolveStatsFetchUrl(topPageApiDefSingle.api))
-          .then((r) => (r.ok ? r.json() : null))
-          .then((data) => {
-            if (data && typeof topPageApiDefSingle.extract === 'function') {
-              const total = topPageApiDefSingle.extract(data);
-              if (Number.isFinite(total) && total >= 0) {
-                setCountValue(titleCount, total);
-              }
-            }
-          })
-          .catch(() => {
-            setCountUnavailable(titleCount);
-          });
+        fetchAndSetTopPageTitleCount(sectionId, titleCount);
       }
       if (
         !topPageApiDefSingle &&
