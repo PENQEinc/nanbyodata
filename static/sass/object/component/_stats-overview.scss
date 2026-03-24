@@ -31,6 +31,30 @@ Stats Overview Component
   margin: 0 auto;
 }
 
+/* カードをラップするリンク（クリック可能な項目用） */
+.stats-card-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  height: 100%;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  /* 統計カードでは外部リンクアイコンを表示しない */
+  &[target='_blank']::after {
+    content: none;
+    display: none;
+  }
+
+  &:hover {
+    opacity: 0.9;
+
+    .stats-card {
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+    }
+  }
+}
+
 .stats-card {
   background: white;
   padding: 24px 10px;
@@ -40,6 +64,13 @@ Stats Overview Component
   display: flex;
   flex-direction: column;
   position: relative;
+  transition: box-shadow 0.2s ease;
+
+  /* 準備中などで押せないカード（例: 顔貌特徴） */
+  &--disabled {
+    cursor: default;
+    pointer-events: none;
+  }
 }
 
 .stats-icon {

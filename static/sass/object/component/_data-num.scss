@@ -3,4 +3,17 @@
   background-color: var(--color-primary-opacity7);
   text-align: center;
   border-radius: 0.5lh;
+
+  &.is-loading {
+    padding: 0 5px;
+    min-width: 18px;
+    min-height: 18px;
+  }
+}
+
+.stats-count-loading {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
 }

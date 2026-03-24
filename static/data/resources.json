@@ -1,84 +1,184 @@
 {
   "ja": [
     {
-      "id": "2025-12-10-resource1",
-      "date": "2025.12.10",
-      "publisher": "サンプル誌名",
-      "title": "未診断希少疾患の同定に向けた機械学習アプローチ（サンプル）",
-      "url": "https://example.com/paper1",
+      "id": "2025-12-03-resource1",
+      "date": "2025.12.03",
+      "publisher": "第48回日本分子生物学会年会",
+      "title": "NANDO（Nanbyo Disease Ontology）から広がるデータ連携",
+      "url": "",
       "tags": [
-        "paper",
+        "poster",
         "domestic"
       ],
-      "description": "【サンプル】Resourcesページの表示例です。EHRデータにおけるパターン認識のための新規MLアルゴリズムにより、未診断の希少疾患患者をスクリーニング対象としてフラグ付けする手法を検討。検出率の15%向上が示唆された。",
-      "authors": "サンプル著者名"
+      "description": "パシフィコ横浜、2025年12月3日-5日",
+      "authors": "高月照江, 菊地敦生, 申在紋, 細田正恵, 櫛田達矢, 藤原豊史"
     },
     {
-      "id": "2025-11-01-resource1",
-      "date": "2025.11.01",
-      "publisher": "サンプル出版社",
-      "title": "精密医療のための希少疾患オントロジー統合（サンプル）",
-      "url": "https://example.com/paper2",
+      "id": "2025-10-20-resource1",
+      "date": "2025.10.20",
+      "publisher": "トーゴーの日シンポジウム2025",
+      "title": "NanbyoData：難病研究・診療の促進に向けた国際連携および領域横断型連携",
+      "url": "",
       "tags": [
-        "paper",
-        "international"
-      ],
-      "description": "【サンプル】Resourcesページの表示例です。NANDOと国際オントロジーリソースの統合により、横断検索と表現型に基づく診断を支援。",
-      "authors": "サンプル著者"
-    },
-    {
-      "id": "2024-08-15-resource1",
-      "date": "2024.08.15",
-      "publisher": "サンプル学会名",
-      "title": "NanbyoData: 難病情報ポータル（サンプル）",
-      "url": "https://example.com/paper1",
-      "tags": [
-        "oral",
+        "poster",
         "domestic"
       ],
-      "description": "【サンプル】Resourcesページの表示例です。希少疾患情報学分野の年次大会での発表。NanbyoDataの機能と利用統計の概要。",
-      "authors": "サンプルチーム名"
+      "description": "品川ザ・グランドホール、2025年10月20日",
+      "authors": "細田正恵, 申在紋, 高月照江, 三橋信孝, 菊池敦生, 藤原豊史"
+    },
+    {
+      "id": "2025-10-06-resource1",
+      "date": "2025.10.06",
+      "publisher": "Genetics",
+      "title": "Mondo: Integrating Disease Terminology Across Communities",
+      "url": "https://doi.org/10.1093/genetics/iyaf215",
+      "tags": [
+        "paper"
+      ],
+      "description": "",
+      "authors": "Vasilevsky, Nicole, Toyofumi Fujiwara, Terue Takatsuki, et al."
+    },
+    {
+      "id": "2025-10-03-resource1",
+      "date": "2025.10.03",
+      "publisher": "第44回日本糖質学会年会",
+      "title": "難病ポータルサイト(NanbyoData)への糖鎖遺伝子データ統合",
+      "url": "",
+      "tags": [
+        "poster",
+        "domestic"
+      ],
+      "description": "弘前文化センター、2025年10月3日",
+      "authors": "細田正恵, 申在紋, 高月照江, 三橋信孝, 藤原豊史"
+    },
+    {
+      "id": "2025-09-03-resource1",
+      "date": "2025.09.03",
+      "publisher": "生命医薬情報学連合大会(IIBMP)",
+      "title": "Facilitating International Collaboration and Utilization through the Japanese Translation of Phenotype Ontologies",
+      "url": "",
+      "tags": [
+        "poster",
+        "domestic"
+      ],
+      "description": "愛知県 名古屋市、2025年9月3-4日",
+      "authors": "高月照江, 藤原豊史"
+    },
+    {
+      "id": "2025-09-03-resource2",
+      "date": "2025.09.03",
+      "publisher": "生命医薬情報学連合大会(IIBMP)2025",
+      "title": "NanbyoData: A Cross-Domain Integration Platform for Rare Disease Knowledge Sharing",
+      "url": "",
+      "tags": [
+        "poster",
+        "domestic"
+      ],
+      "description": "名古屋大学豊田講堂、2025年9月3-4日",
+      "authors": "細田正恵, 高月照江, 申在紋, 三橋信孝, 藤原豊史"
+    },
+    {
+      "id": "2025-09-01-resource1",
+      "date": "2025.09.01",
+      "publisher": "人工知能",
+      "title": "希少疾患診断支援における医療データ活用の現状と展望",
+      "url": "https://doi.org/10.11517/jjsai.40.5_718",
+      "tags": [
+        "other"
+      ],
+      "description": "",
+      "authors": "藤原豊史"
     }
   ],
   "en": [
     {
-      "id": "2025-12-10-resource1",
-      "date": "2025.12.10",
-      "publisher": "Sample Journal",
-      "title": "Machine Learning Approaches to Identifying Undiagnosed Rare Conditions (Sample)",
-      "url": "https://example.com/paper1",
+      "id": "2025-12-03-resource1",
+      "date": "2025.12.03",
+      "publisher": "第48回日本分子生物学会年会",
+      "title": "NANDO（Nanbyo Disease Ontology）から広がるデータ連携",
+      "url": "",
       "tags": [
-        "paper",
+        "poster",
         "domestic"
       ],
-      "description": "[Sample] This is a sample resource for the Resources page. Exploring novel ML algorithms for pattern recognition in EHR data to flag potential undiagnosed rare disease patients for screening. Results suggest a 15% increase in detection rates.",
-      "authors": "Sample Authors"
+      "description": "パシフィコ横浜、2025年12月3日-5日",
+      "authors": "高月照江, 菊地敦生, 申在紋, 細田正恵, 櫛田達矢, 藤原豊史"
     },
     {
-      "id": "2025-11-01-resource1",
-      "date": "2025.11.01",
-      "publisher": "Sample Publisher",
-      "title": "Rare Disease Ontology Integration for Precision Medicine (Sample)",
-      "url": "https://example.com/paper2",
+      "id": "2025-10-20-resource1",
+      "date": "2025.10.20",
+      "publisher": "トーゴーの日シンポジウム2025",
+      "title": "NanbyoData：難病研究・診療の促進に向けた国際連携および領域横断型連携",
+      "url": "",
       "tags": [
-        "paper",
-        "international"
-      ],
-      "description": "[Sample] This is a sample resource for the Resources page. Integration of NANDO with international ontology resources to support cross-database queries and phenotype-driven diagnosis.",
-      "authors": "Sample Author"
-    },
-    {
-      "id": "2024-08-15-resource1",
-      "date": "2024.08.15",
-      "publisher": "Sample Conference",
-      "title": "NanbyoData: A Portal for Intractable Disease Information (Sample)",
-      "url": "https://example.com/paper1",
-      "tags": [
-        "oral",
+        "poster",
         "domestic"
       ],
-      "description": "[Sample] This is a sample resource for the Resources page. Presentation at the annual rare disease informatics conference. Overview of NanbyoData features and usage statistics.",
-      "authors": "Sample Team"
+      "description": "品川ザ・グランドホール、2025年10月20日",
+      "authors": "細田正恵, 申在紋, 高月照江, 三橋信孝, 菊池敦生, 藤原豊史"
+    },
+    {
+      "id": "2025-10-06-resource1",
+      "date": "2025.10.06",
+      "publisher": "Genetics",
+      "title": "Mondo: Integrating Disease Terminology Across Communities",
+      "url": "https://doi.org/10.1093/genetics/iyaf215",
+      "tags": [
+        "paper"
+      ],
+      "description": "",
+      "authors": "Vasilevsky, Nicole, Toyofumi Fujiwara, Terue Takatsuki, et al."
+    },
+    {
+      "id": "2025-10-03-resource1",
+      "date": "2025.10.03",
+      "publisher": "第44回日本糖質学会年会",
+      "title": "難病ポータルサイト(NanbyoData)への糖鎖遺伝子データ統合",
+      "url": "",
+      "tags": [
+        "poster",
+        "domestic"
+      ],
+      "description": "弘前文化センター、2025年10月3日",
+      "authors": "細田正恵, 申在紋, 高月照江, 三橋信孝, 藤原豊史"
+    },
+    {
+      "id": "2025-09-03-resource1",
+      "date": "2025.09.03",
+      "publisher": "生命医薬情報学連合大会(IIBMP)",
+      "title": "Facilitating International Collaboration and Utilization through the Japanese Translation of Phenotype Ontologies",
+      "url": "",
+      "tags": [
+        "poster",
+        "domestic"
+      ],
+      "description": "愛知県 名古屋市、2025年9月3-4日",
+      "authors": "高月照江, 藤原豊史"
+    },
+    {
+      "id": "2025-09-03-resource2",
+      "date": "2025.09.03",
+      "publisher": "生命医薬情報学連合大会(IIBMP)2025",
+      "title": "NanbyoData: A Cross-Domain Integration Platform for Rare Disease Knowledge Sharing",
+      "url": "",
+      "tags": [
+        "poster",
+        "domestic"
+      ],
+      "description": "名古屋大学豊田講堂、2025年9月3-4日",
+      "authors": "細田正恵, 高月照江, 申在紋, 三橋信孝, 藤原豊史"
+    },
+    {
+      "id": "2025-09-01-resource1",
+      "date": "2025.09.01",
+      "publisher": "人工知能",
+      "title": "希少疾患診断支援における医療データ活用の現状と展望",
+      "url": "https://doi.org/10.11517/jjsai.40.5_718",
+      "tags": [
+        "other"
+      ],
+      "description": "",
+      "authors": "藤原豊史"
     }
   ]
 }

@@ -12,6 +12,8 @@ import pronto
 #from werkzeug import secure_filename
 from io import StringIO, BytesIO
 import csv
+import zipfile
+import xml.etree.ElementTree as ET
 # https://blog.capilano-fw.com/?p=398
 from flask_babel import Babel
 from flask_cors import CORS
@@ -20,6 +22,7 @@ import requests
 import MySQLdb
 import MySQLdb.cursors
 from contextlib import contextmanager
+from functools import lru_cache
 
 
 app = Flask(__name__)
@@ -56,6 +59,122 @@ babel = Babel(app, locale_selector=get_locale)
 # debug
 app.debug = True
 
+XLSX_MAIN_NS = 'http://schemas.openxmlformats.org/spreadsheetml/2006/main'
+XLSX_REL_NS = 'http://schemas.openxmlformats.org/package/2006/relationships'
+XLSX_DOC_REL_NS = 'http://schemas.openxmlformats.org/officeDocument/2006/relationships'
+XLSX_NS = {
+    'main': XLSX_MAIN_NS,
+    'rel': XLSX_REL_NS,
+}
+
+
+def _xlsx_join_text_nodes(parent):
+    return ''.join(node.text or '' for node in parent.findall('.//main:t', XLSX_NS))
+
+
+def _xlsx_column_index(cell_ref):
+    match = re.match(r'([A-Z]+)', cell_ref or '')
+    if not match:
+        return 0
+
+    index = 0
+    for char in match.group(1):
+        index = index * 26 + (ord(char) - ord('A') + 1)
+    return index - 1
+
+
+def _xlsx_cell_value(cell, shared_strings):
+    cell_type = cell.attrib.get('t')
+    if cell_type == 'inlineStr':
+        return _xlsx_join_text_nodes(cell)
+
+    value_node = cell.find('main:v', XLSX_NS)
+    if value_node is None or value_node.text is None:
+        return ''
+
+    raw_value = value_node.text
+    if cell_type == 's':
+        index = int(raw_value)
+        return shared_strings[index] if 0 <= index < len(shared_strings) else ''
+    if cell_type == 'b':
+        return raw_value == '1'
+
+    try:
+        number = float(raw_value)
+        return int(number) if number.is_integer() else number
+    except ValueError:
+        return raw_value
+
+
+@lru_cache(maxsize=1)
+def load_hpo_top50_with_nando():
+    xlsx_path = os.path.join(
+        app.root_path,
+        'static',
+        'xlsx',
+        'hpo_top50_with_NANDO.xlsx',
+    )
+
+    with zipfile.ZipFile(xlsx_path) as zf:
+        shared_strings = []
+        if 'xl/sharedStrings.xml' in zf.namelist():
+            shared_root = ET.fromstring(zf.read('xl/sharedStrings.xml'))
+            shared_strings = [
+                _xlsx_join_text_nodes(item)
+                for item in shared_root.findall('main:si', XLSX_NS)
+            ]
+
+        workbook_root = ET.fromstring(zf.read('xl/workbook.xml'))
+        first_sheet = workbook_root.find('main:sheets/main:sheet', XLSX_NS)
+        if first_sheet is None:
+            return []
+
+        rel_id = first_sheet.attrib.get(f'{{{XLSX_DOC_REL_NS}}}id')
+        rels_root = ET.fromstring(zf.read('xl/_rels/workbook.xml.rels'))
+        sheet_target = None
+        for rel in rels_root.findall('rel:Relationship', XLSX_NS):
+            if rel.attrib.get('Id') == rel_id:
+                sheet_target = rel.attrib.get('Target')
+                break
+
+        if not sheet_target:
+            return []
+
+        sheet_path = sheet_target.lstrip('/')
+        if not sheet_path.startswith('xl/'):
+            sheet_path = f'xl/{sheet_path}'
+
+        sheet_root = ET.fromstring(zf.read(sheet_path))
+        rows = []
+        for row in sheet_root.findall('.//main:sheetData/main:row', XLSX_NS):
+            row_values = []
+            current_index = 0
+            for cell in row.findall('main:c', XLSX_NS):
+                cell_index = _xlsx_column_index(cell.attrib.get('r', ''))
+                while current_index < cell_index:
+                    row_values.append('')
+                    current_index += 1
+                row_values.append(_xlsx_cell_value(cell, shared_strings))
+                current_index += 1
+            rows.append(row_values)
+
+    if not rows:
+        return []
+
+    headers = [str(header).strip() for header in rows[0]]
+    records = []
+    for values in rows[1:]:
+        if not any(str(value).strip() for value in values):
+            continue
+        record = {}
+        for index, header in enumerate(headers):
+            if not header:
+                continue
+            record[header] = values[index] if index < len(values) else ''
+        records.append(record)
+
+    return records
+
 
 
 #####
@@ -78,6 +197,15 @@ def index():
 @app.route('/api')
 def api():
     return render_template('api.html')
+
+
+@app.route('/api/hpo-top50-symptoms')
+def api_hpo_top50_symptoms():
+    try:
+        return jsonify(load_hpo_top50_with_nando())
+    except Exception:
+        app.logger.exception('Failed to load hpo_top50_with_NANDO.xlsx')
+        return jsonify({'error': 'failed to load hpo_top50_with_NANDO.xlsx'}), 500
 
 
 #####

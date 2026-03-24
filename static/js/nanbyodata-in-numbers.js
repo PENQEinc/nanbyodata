@@ -1,7 +1,10 @@
 // Stats page JavaScript
 document.addEventListener('DOMContentLoaded', function () {
-  // 統計データを読み込んで表示
-  loadStatsData();
+  updateViewByHash();
+  window.addEventListener('hashchange', updateViewByHash);
+
+  setupTooltipPortal();
+  setupStatsDownloadButtons();
 
   // 言語切り替えイベントリスナーを追加
   const languageSelect = document.querySelector('.language-select');
@@ -24,6 +27,1860 @@ document.addEventListener('DOMContentLoaded', function () {
     });
   }
 });
+
+const CARD_DETAIL_FETCH_TIMEOUT_MS = 10000;
+
+const DETAIL_HASH_ALIASES = {
+  nando: 'nando-content',
+  'nando-content': 'nando-content',
+  genes: 'genes-content',
+  'genes-content': 'genes-content',
+  'clinical-features': 'clinical-features-content',
+  'clinical-features-content': 'clinical-features-content',
+  'glycan-related-genes': 'related-data-content',
+  'related-data-content': 'related-data-content',
+  bioresources: 'bioresources-content',
+  'bioresources-content': 'bioresources-content',
+  links: 'links-content',
+  'links-content': 'links-content',
+  variants: 'variants-content',
+  'variants-content': 'variants-content',
+};
+
+/** トップページのカードで使っているAPIと合計抽出ロジック（sectionId → { api, extract }） */
+const TOP_PAGE_API_MAP = {
+  /** トップの難病（NANDO）表と同じ NANDO_count（指定・小慢の All 合計） */
+  'nando-content': {
+    api: '/sparqlist/api/NANDO_count',
+    extract: (d) => {
+      const s = parseInt(d.shitei_all?.['callret-0'] || 0);
+      const m = parseInt(d.shoman_all?.['callret-0'] || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+  'clinical-features-content': {
+    api: '/sparqlist/api/NANDO_link_count2',
+    extract: (d) => {
+      const s = parseInt(d.shitei_hp?.hp || 0);
+      const m = parseInt(d.shoman_hp?.hp || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+  'related-data-content': {
+    api: '/sparqlist/api/NANDO_link_count8',
+    extract: (d) => parseInt(d.glyco_gene_total?.num || 0) || 0,
+  },
+  'bioresources-content': {
+    api: '/sparqlist/api/NANDO_link_count3',
+    extract: (d) => {
+      const sc = parseInt(d.shitei_cell?.cell || 0);
+      const mc = parseInt(d.shoman_cell?.cell || 0);
+      const sm = parseInt(d.shitei_mouse?.mouse || 0);
+      const mm = parseInt(d.shoman_mouse?.mouse || 0);
+      const sd = parseInt(d.shitei_DNA?.gene || 0);
+      const md = parseInt(d.shoman_DNA?.gene || 0);
+      return [sc, mc, sm, mm, sd, md].reduce(
+        (a, v) => a + (Number.isFinite(v) ? v : 0),
+        0,
+      );
+    },
+  },
+  /** トップの外部リンク表（指定・小慢の全リソース列の合計）と同じ NANDO_link_count を参照 */
+  'links-content': {
+    api: '/sparqlist/api/NANDO_link_count',
+    extract: (d) => {
+      const keys = [
+        ['name2', 'mondo'],
+        ['name4', 'mondo'],
+        ['name12', 'mondo'],
+        ['name10', 'medgen'],
+        ['name5', 'kegg'],
+        ['name1', 'mondo'],
+        ['name3', 'mondo'],
+        ['name11', 'mondo'],
+        ['name9', 'medgen'],
+        ['name6', 'kegg'],
+      ];
+      return keys.reduce((sum, [k1, k2]) => {
+        const v = parseInt(d[k1]?.[k2] || 0);
+        return sum + (Number.isFinite(v) ? v : 0);
+      }, 0);
+    },
+  },
+  /**
+   * トップの「疾患関連遺伝子」カード（stats-overview.js disease_genes）と同じ:
+   * NANDO_link_count2 の shitei_gene.gene + shoman_gene.gene
+   */
+  'genes-content': {
+    api: '/sparqlist/api/NANDO_link_count2',
+    extract: (d) => {
+      const s = parseInt(d.shitei_gene?.gene || 0);
+      const m = parseInt(d.shoman_gene?.gene || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+};
+
+async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS) {
+  const controller = new AbortController();
+  const timerId = setTimeout(() => controller.abort(), timeoutMs);
+  try {
+    return await fetch(url, {
+      ...options,
+      signal: controller.signal,
+    });
+  } finally {
+    clearTimeout(timerId);
+  }
+}
+
+/** セクション・タブ・カラムのデータ取得先（静的 JSON 兼 API）。旧キー dataApi も解決する。 */
+function resolveDataUrl(source) {
+  if (!source || typeof source !== 'object') return '';
+  const u = source.dataUrl ?? source.dataApi;
+  return typeof u === 'string' && u.trim() !== '' ? u.trim() : '';
+}
+
+const STATS_DEV_DATA_ORIGIN = 'https://dev-nanbyodata.dbcls.jp';
+
+function isLocalhostHostname() {
+  const h = typeof window !== 'undefined' ? window.location.hostname : '';
+  return (
+    h === 'localhost' ||
+    h === '127.0.0.1' ||
+    h === '[::1]' ||
+    h === '0.0.0.0'
+  );
+}
+
+/**
+ * localhost では SparqList・download/latest 等を dev 環境に向ける。
+ * `/static/` はローカル Flask のまま。
+ */
+function resolveStatsFetchUrl(pathOrUrl) {
+  if (!pathOrUrl || typeof pathOrUrl !== 'string') return pathOrUrl;
+  const s = pathOrUrl.trim();
+  if (!s) return s;
+  if (/^https?:\/\//i.test(s)) return s;
+  if (!isLocalhostHostname()) return s;
+  const path = s.startsWith('/') ? s : `/${s}`;
+  if (path.startsWith('/static/')) return s;
+  return `${STATS_DEV_DATA_ORIGIN}${path}`;
+}
+
+/**
+ * カード詳細タイトル横の件数をトップページ相当の SparqList で更新する。
+ * `api` + `extract` または `apis`（複数レスポンスの extract 合算）。
+ */
+function fetchAndSetTopPageTitleCount(sectionId, titleCount) {
+  const def = TOP_PAGE_API_MAP[sectionId];
+  if (!def || !titleCount) return;
+
+  if (Array.isArray(def.apis) && def.apis.length > 0) {
+    Promise.all(
+      def.apis.map(({ api }) =>
+        fetchWithTimeout(resolveStatsFetchUrl(api)).then((r) =>
+          r.ok ? r.json() : null,
+        ),
+      ),
+    )
+      .then((results) => {
+        let sum = 0;
+        let any = false;
+        def.apis.forEach((part, i) => {
+          const data = results[i];
+          if (data && typeof part.extract === 'function') {
+            const v = part.extract(data);
+            if (Number.isFinite(v)) {
+              sum += v;
+              any = true;
+            }
+          }
+        });
+        if (any) {
+          setCountValue(titleCount, sum);
+        } else {
+          setCountUnavailable(titleCount);
+        }
+      })
+      .catch(() => {
+        setCountUnavailable(titleCount);
+      });
+    return;
+  }
+
+  if (def.api && typeof def.extract === 'function') {
+    fetchWithTimeout(resolveStatsFetchUrl(def.api))
+      .then((r) => (r.ok ? r.json() : null))
+      .then((data) => {
+        if (data) {
+          const total = def.extract(data);
+          if (Number.isFinite(total) && total >= 0) {
+            setCountValue(titleCount, total);
+          }
+        }
+      })
+      .catch(() => {
+        setCountUnavailable(titleCount);
+      });
+  }
+}
+
+/**
+ * ツールチップを body 直下に表示して、テーブルの overflow で切れないようにする。
+ */
+function setupTooltipPortal() {
+  let portalEl = null;
+  let hideTimer = null;
+
+  function showTooltip(trigger, text) {
+    if (!text || !trigger) return;
+    if (!portalEl) {
+      portalEl = document.createElement('div');
+      portalEl.className = 'stats-tooltip-portal';
+      portalEl.setAttribute('role', 'tooltip');
+      portalEl.setAttribute('aria-hidden', 'true');
+      document.body.appendChild(portalEl);
+    }
+    trigger.setAttribute('data-tooltip-active', '1');
+    portalEl.textContent = text;
+    portalEl.setAttribute('aria-hidden', 'false');
+    portalEl.style.position = 'fixed';
+    portalEl.style.left = '0';
+    portalEl.style.top = '0';
+    portalEl.style.display = 'block';
+    portalEl.style.visibility = 'hidden';
+
+    const rect = trigger.getBoundingClientRect();
+    const padding = 8;
+    const portalRect = portalEl.getBoundingClientRect();
+    let left = rect.left + rect.width / 2 - portalRect.width / 2;
+    let top = rect.top - portalRect.height - padding;
+
+    if (left < padding) left = padding;
+    if (left + portalRect.width > window.innerWidth - padding)
+      left = window.innerWidth - portalRect.width - padding;
+    if (top < padding) top = rect.bottom + padding;
+
+    portalEl.style.left = left + 'px';
+    portalEl.style.top = top + 'px';
+    portalEl.style.zIndex = '100000';
+    portalEl.style.visibility = 'visible';
+  }
+
+  function hideTooltip(trigger) {
+    if (trigger) trigger.removeAttribute('data-tooltip-active');
+    if (portalEl) {
+      portalEl.style.display = 'none';
+      portalEl.setAttribute('aria-hidden', 'true');
+    }
+  }
+
+  document.addEventListener(
+    'mouseenter',
+    function (e) {
+      if (!e.target || typeof e.target.closest !== 'function') return;
+      const trigger = e.target.closest(
+        '.stats-th-tooltip, .stats-section-title-tooltip, .stats-tab-tooltip',
+      );
+      if (!trigger) return;
+      if (hideTimer) {
+        clearTimeout(hideTimer);
+        hideTimer = null;
+      }
+      const text = trigger.getAttribute('data-tooltip');
+      if (text) showTooltip(trigger, text);
+    },
+    true,
+  );
+
+  document.addEventListener(
+    'mouseleave',
+    function (e) {
+      if (!e.target || typeof e.target.closest !== 'function') return;
+      const trigger = e.target.closest(
+        '.stats-th-tooltip, .stats-section-title-tooltip, .stats-tab-tooltip',
+      );
+      if (!trigger) return;
+      hideTimer = setTimeout(function () {
+        hideTooltip(trigger);
+        hideTimer = null;
+      }, 50);
+    },
+    true,
+  );
+}
+
+/**
+ * テーブル Download ボタンのクリックハンドラをセットアップ（イベント委譲）
+ */
+function setupStatsDownloadButtons() {
+  document.addEventListener('click', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
+    const btn = e.target.closest('.stats-download-btn');
+    if (!btn) return;
+    if (typeof btn._statsDownloadHandler === 'function') {
+      btn._statsDownloadHandler(e);
+      return;
+    }
+    const section = btn.closest('.stats-section');
+    if (!section) return;
+    const table = section.querySelector('.table-contents table.stats-table');
+    if (!table) return;
+    const sectionId = btn.getAttribute('data-section-id') || 'stats-table';
+    const json = tableToJson(table);
+    if (!json) return;
+    downloadTextFile(
+      json,
+      `${sectionId}.json`,
+      'application/json;charset=utf-8',
+      false,
+    );
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
+    const isPopupButton = e.target.closest('.stats-header-actions .open-popup-btn');
+    const isInsidePopup = e.target.closest('.stats-header-actions .popup-view');
+    if (isPopupButton || isInsidePopup) return;
+
+    document
+      .querySelectorAll('.stats-header-actions .open-popup-btn')
+      .forEach((button) => button.setAttribute('aria-expanded', 'false'));
+    document
+      .querySelectorAll('.stats-header-actions .popup-view')
+      .forEach((popup) => popup.setAttribute('aria-hidden', 'true'));
+  });
+}
+
+/**
+ * HTML テーブルから JSON 配列（オブジェクトの列）を生成
+ */
+function tableToJson(table) {
+  const theadTr = table.querySelector('thead tr');
+  const ths = theadTr ? theadTr.querySelectorAll('th') : [];
+  const headers = Array.from(ths).map((th) => {
+    const span = th.querySelector('.stats-th-label');
+    const text = span ? span.textContent : th.textContent;
+    return (text || '').trim();
+  });
+  const tbodyTrs = table.querySelectorAll('tbody tr');
+  const objects = [];
+  tbodyTrs.forEach((tr) => {
+    const obj = {};
+    const tds = tr.querySelectorAll('td');
+    tds.forEach((td, i) => {
+      let text = td.textContent || '';
+      const link = td.querySelector('a[href]');
+      if (link && link.href) text = link.href;
+      const key = headers[i] || `column_${i}`;
+      obj[key] = text.trim();
+    });
+    if (Object.keys(obj).length) objects.push(obj);
+  });
+  if (!headers.length && !objects.length) return null;
+  return JSON.stringify(objects, null, 2);
+}
+
+function getConfigDataKeysForLocale(col, locale) {
+  if (!col) return [];
+  const multi = col.dataKeysByLocale;
+  if (multi && typeof multi === 'object') {
+    const keys = multi[locale] || multi.en || multi.ja;
+    return Array.isArray(keys) ? keys.filter(Boolean) : [];
+  }
+  const single = col.dataKeyByLocale;
+  if (single && typeof single === 'object') {
+    const key = single[locale] || single.en || single.ja || col.dataKey;
+    return key ? [key] : [];
+  }
+  return col.dataKey ? [col.dataKey] : [];
+}
+
+function getNandoIdForCsv(val) {
+  if (val == null || val === '') return '';
+  const s = String(val).trim();
+  const fromUrl = s.match(/\/?(NANDO_\d+)$/i);
+  if (fromUrl) return fromUrl[1];
+  const fromColon = s.match(/^NANDO:(\d+)$/i);
+  if (fromColon) return 'NANDO_' + fromColon[1];
+  return s;
+}
+
+function htmlToPlainText(html) {
+  if (html == null || html === '') return '';
+  const div = document.createElement('div');
+  div.innerHTML = String(html).replace(/\r\n|\r|\n/g, '<br>');
+  return (div.textContent || div.innerText || '').trim();
+}
+
+function getCsvCellValueFromRow(row, col, locale) {
+  const keys = getConfigDataKeysForLocale(col, locale);
+  const values = keys
+    .map((key) => row?.[key])
+    .filter((value) => value != null && value !== '');
+
+  if (col.link === 'external') {
+    const hrefVal = col.linkHrefKey ? row?.[col.linkHrefKey] : values[0];
+    return hrefVal != null && hrefVal !== '' ? String(hrefVal) : '—';
+  }
+
+  if (col.link === 'nando') {
+    const raw = row?.nando_id != null ? row.nando_id : values[0];
+    const normalized = getNandoIdForCsv(raw);
+    return normalized
+      ? `${window.location.origin}/disease/${encodeURIComponent(normalized)}`
+      : '—';
+  }
+
+  if (col.html) {
+    const htmlValues = values.map((value) => htmlToPlainText(value)).filter(Boolean);
+    return htmlValues.length > 0 ? htmlValues.join('\n') : '—';
+  }
+
+  if (values.length === 0) return '—';
+  if (values.length === 1) return String(values[0]);
+  return values.map((value) => String(value)).join('\n');
+}
+
+function getExportColumnLabel(col, locale) {
+  return col?.label?.[locale] || col?.label?.en || col?.label?.ja || col?.dataKey || '';
+}
+
+function buildExportColumnKeys(columns, locale) {
+  const used = new Set();
+  const keys = [];
+  for (const col of columns || []) {
+    let base = getExportColumnLabel(col, locale) || 'column';
+    let k = base;
+    let n = 2;
+    while (used.has(k)) {
+      k = `${base}_${n++}`;
+    }
+    used.add(k);
+    keys.push(k);
+  }
+  return keys;
+}
+
+function escapeTxtCell(str) {
+  if (str == null) return '';
+  return String(str).replace(/\r\n|\r|\n/g, ' ').replace(/\t/g, ' ');
+}
+
+function buildJsonFromConfigRows(columns, rows, locale) {
+  if (!columns?.length) return null;
+  const keys = buildExportColumnKeys(columns, locale);
+  const objects = (rows || []).map((row) => {
+    const obj = {};
+    (columns || []).forEach((col, i) => {
+      obj[keys[i]] = getCsvCellValueFromRow(row, col, locale);
+    });
+    return obj;
+  });
+  return JSON.stringify(objects, null, 2);
+}
+
+function buildTxtFromConfigRows(columns, rows, locale) {
+  if (!columns?.length) return null;
+  const keys = buildExportColumnKeys(columns, locale);
+  const lines = [keys.map(escapeTxtCell).join('\t')];
+  for (const row of rows || []) {
+    const cells = (columns || []).map((col) =>
+      escapeTxtCell(getCsvCellValueFromRow(row, col, locale)),
+    );
+    lines.push(cells.join('\t'));
+  }
+  return lines.join('\n');
+}
+
+function downloadTextFile(content, filename, mimeType, useBom) {
+  const payload = useBom ? '\uFEFF' + content : content;
+  const blob = new Blob([payload], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+/**
+ * /download/latest/{basename}.{json|txt} を取得して保存する。
+ * dev / 本番は同一オリジン、localhost は dev 環境を参照する。
+ */
+async function downloadFromLatestPath(basename, format, closePanel) {
+  if (!basename || (format !== 'json' && format !== 'txt')) return false;
+  try {
+    const url = resolveStatsFetchUrl(`/download/latest/${basename}.${format}`);
+    const res = await fetchWithTimeout(url);
+    if (!res.ok) return false;
+    const blob = await res.blob();
+    const objUrl = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = objUrl;
+    a.download = `${basename}.${format}`;
+    a.click();
+    URL.revokeObjectURL(objUrl);
+    if (typeof closePanel === 'function') closePanel();
+    return true;
+  } catch (err) {
+    console.warn('download/latest の取得に失敗:', basename, err);
+    return false;
+  }
+}
+
+function getCountLoadingMarkup() {
+  return '<span class="stats-count-loading" aria-label="Loading"><span class="loading-spinner -stats -count" aria-hidden="true"></span></span>';
+}
+
+function setCountLoading(element) {
+  if (!element) return;
+  element.classList.add('is-loading');
+  element.innerHTML = getCountLoadingMarkup();
+}
+
+function setCountValue(element, value) {
+  if (!element) return;
+  element.classList.remove('is-loading');
+  element.textContent =
+    Number.isFinite(value) && value >= 0 ? value.toLocaleString() : '-';
+}
+
+function setCountUnavailable(element) {
+  if (!element) return;
+  element.classList.remove('is-loading');
+  element.textContent = '-';
+}
+
+function getLocalizedConfigText(configValue, locale) {
+  if (!configValue || typeof configValue !== 'object') return '';
+  return configValue[locale] || configValue.en || configValue.ja || '';
+}
+
+function createStatsTooltipIcon(className, tooltipText) {
+  if (!tooltipText) return null;
+  const tooltip = document.createElement('span');
+  tooltip.className = className;
+  tooltip.setAttribute('data-tooltip', tooltipText);
+  tooltip.setAttribute('aria-label', tooltipText);
+  const icon = document.createElement('i');
+  icon.className = 'fas fa-info-circle';
+  tooltip.appendChild(icon);
+  return tooltip;
+}
+
+function getTabCountValue(rows, tab) {
+  if (!Array.isArray(rows)) return 0;
+  const countKey =
+    tab?.countDataKey || (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
+  if (!countKey) return rows.length;
+  return new Set(
+    rows
+      .map((row) => row?.[countKey])
+      .filter((value) => value != null && String(value).trim() !== ''),
+  ).size;
+}
+
+/**
+ * ハッシュの有無で表示を切り替え。
+ * ハッシュあり → そのカード用の新規テーブルを config JSON で表示。
+ * ハッシュなし → 従来の NanbyoData in numbers テーブルを表示。
+ */
+function updateViewByHash() {
+  const rawHash = window.location.hash.slice(1);
+  const hashTarget = resolveStatsHashTarget(rawHash);
+  const originalEl = document.getElementById('nanbyodata-in-numbers-original');
+  const cardDetailEl = document.getElementById('card-detail-view');
+  if (!originalEl || !cardDetailEl) return;
+
+  if (hashTarget?.mode === 'detail') {
+    originalEl.style.display = 'none';
+    originalEl.setAttribute('aria-hidden', 'true');
+    cardDetailEl.style.display = 'block';
+    cardDetailEl.removeAttribute('aria-hidden');
+    showCardDetailTable(hashTarget.sectionId);
+  } else {
+    originalEl.style.display = '';
+    originalEl.removeAttribute('aria-hidden');
+    cardDetailEl.style.display = 'none';
+    cardDetailEl.setAttribute('aria-hidden', 'true');
+    loadStatsData();
+  }
+}
+
+function resolveStatsHashTarget(hash) {
+  if (!hash) return '';
+  if (DETAIL_HASH_ALIASES[hash]) {
+    return {
+      mode: 'detail',
+      sectionId: DETAIL_HASH_ALIASES[hash],
+    };
+  }
+  return '';
+}
+
+function getValueByPath(obj, path) {
+  if (!obj || !path) return undefined;
+  return String(path)
+    .split('.')
+    .reduce((acc, key) => (acc == null ? undefined : acc[key]), obj);
+}
+
+function getSectionTotalFromRows(rows, columns) {
+  if (!Array.isArray(rows) || !Array.isArray(columns)) return NaN;
+  return rows.reduce((sum, row) => {
+    const rowTotal = columns.reduce((rowSum, col) => {
+      if (!col || col.dataKey === 'category') return rowSum;
+      const raw = row?.[col.dataKey];
+      const value = Number(
+        typeof raw === 'number'
+          ? raw
+          : String(raw ?? '')
+              .replace(/,/g, '')
+              .trim(),
+      );
+      return Number.isFinite(value) ? rowSum + value : rowSum;
+    }, 0);
+    return sum + rowTotal;
+  }, 0);
+}
+
+/**
+ * カード用の新規テーブルを config に基づいて表示する（ハッシュで指定されたセクション）
+ */
+async function showCardDetailTable(sectionId) {
+  const container = document.getElementById('card-detail-content');
+  if (!container) return;
+  const locale = getStatsLocale();
+  const loadingSpinnerHtml =
+    '<div class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></div>';
+  container.innerHTML = loadingSpinnerHtml;
+
+  try {
+    const res = await fetchWithTimeout(
+      '/static/data/nanbyodata-in-numbers-config.json',
+    );
+    if (!res.ok) throw new Error(res.statusText);
+    const config = await res.json();
+    const sectionConfig = config.sections?.find((s) => s.id === sectionId);
+    if (!sectionConfig) {
+      container.innerHTML =
+        '<p>' +
+        (locale === 'ja'
+          ? '指定されたセクションが見つかりません。'
+          : 'Section not found.') +
+        '</p>';
+      return;
+    }
+
+    const section = document.createElement('div');
+    section.className = 'stats-section card-detail-section';
+
+    const header = document.createElement('div');
+    header.className = 'stats-section-header';
+    const title = document.createElement('h4');
+    title.className = 'stats-section-title';
+    title.textContent =
+      sectionConfig.title?.[locale] || sectionConfig.title?.en || sectionId;
+    const titleTooltip = getLocalizedConfigText(sectionConfig.titleTooltip, locale);
+    if (titleTooltip) {
+      const tw = createStatsTooltipIcon('stats-section-title-tooltip', titleTooltip);
+      if (tw) title.appendChild(tw);
+    }
+    const titleCount = document.createElement('span');
+    titleCount.className = 'stats-title-count data-num';
+    setCountLoading(titleCount);
+    title.appendChild(titleCount);
+    header.appendChild(title);
+    let loadedRowsFromApi = [];
+    let loadTabTable = null;
+    const hasTabs = Array.isArray(sectionConfig.tabs) && sectionConfig.tabs.length > 0;
+    const headerActions = document.createElement('div');
+    headerActions.className = 'stats-header-actions';
+    const downloadWrap = document.createElement('div');
+    downloadWrap.className = 'summary-download';
+    const downloadBtn = document.createElement('button');
+    downloadBtn.type = 'button';
+    downloadBtn.className = 'stats-download-btn open-popup-btn';
+    downloadBtn.setAttribute('data-section-id', sectionId);
+    downloadBtn.setAttribute('aria-controls', `popup-download-${sectionId}`);
+    downloadBtn.setAttribute('aria-expanded', 'false');
+    downloadBtn.setAttribute(
+      'aria-label',
+      locale === 'ja' ? 'JSON または TXT でダウンロード' : 'Download as JSON or TXT',
+    );
+    downloadBtn.innerHTML =
+      '<i class="fas fa-download" aria-hidden="true"></i> Download';
+    downloadWrap.appendChild(downloadBtn);
+    const downloadPanel = document.createElement('div');
+    downloadPanel.className = 'popup-view';
+    downloadPanel.id = `popup-download-${sectionId}`;
+    downloadPanel.setAttribute('aria-hidden', 'true');
+    downloadPanel.setAttribute('role', 'dialog');
+    downloadPanel.setAttribute('aria-labelledby', `popupDownloadTitle-${sectionId}`);
+
+    const downloadTitle = document.createElement('div');
+    downloadTitle.className = 'popup-title';
+    downloadTitle.id = `popupDownloadTitle-${sectionId}`;
+    downloadTitle.textContent = locale === 'ja' ? 'ダウンロード' : 'Download';
+    downloadPanel.appendChild(downloadTitle);
+
+    const downloadBody = document.createElement('div');
+    downloadBody.className = 'popup-body';
+
+    let downloadTabSelect = null;
+    let downloadFormatSelect = null;
+
+    if (hasTabs) {
+      const tabWrapper = document.createElement('div');
+      tabWrapper.className = 'popup-wrapper';
+      const tabLabel = document.createElement('label');
+      tabLabel.className = 'label';
+      tabLabel.textContent = locale === 'ja' ? 'Table :' : 'Table :';
+      downloadTabSelect = document.createElement('select');
+      downloadTabSelect.className = 'stats-download-select';
+      sectionConfig.tabs.forEach((tab) => {
+        const option = document.createElement('option');
+        option.value = tab.id;
+        option.textContent = tab.label?.[locale] || tab.label?.en || tab.id;
+        downloadTabSelect.appendChild(option);
+      });
+      tabWrapper.appendChild(tabLabel);
+      tabWrapper.appendChild(downloadTabSelect);
+      downloadBody.appendChild(tabWrapper);
+    }
+
+    const formatWrapper = document.createElement('div');
+    formatWrapper.className = 'popup-wrapper';
+    const formatLabel = document.createElement('label');
+    formatLabel.className = 'label';
+    formatLabel.textContent = 'Format :';
+    downloadFormatSelect = document.createElement('select');
+    downloadFormatSelect.className = 'stats-download-select';
+    const jsonOption = document.createElement('option');
+    jsonOption.value = 'json';
+    jsonOption.textContent = 'JSON';
+    downloadFormatSelect.appendChild(jsonOption);
+    const txtOption = document.createElement('option');
+    txtOption.value = 'txt';
+    txtOption.textContent = 'TXT';
+    downloadFormatSelect.appendChild(txtOption);
+    formatWrapper.appendChild(formatLabel);
+    formatWrapper.appendChild(downloadFormatSelect);
+    downloadBody.appendChild(formatWrapper);
+
+    const downloadConfirmBtn = document.createElement('button');
+    downloadConfirmBtn.type = 'button';
+    downloadConfirmBtn.className = 'popup-btn';
+    downloadConfirmBtn.textContent = 'Download';
+    downloadConfirmBtn.addEventListener('click', async () => {
+      const format = downloadFormatSelect?.value;
+      if (format !== 'json' && format !== 'txt') return;
+
+      const closePanel = () => {
+        downloadBtn.setAttribute('aria-expanded', 'false');
+        downloadPanel.setAttribute('aria-hidden', 'true');
+      };
+
+      const emitDownload = (columns, rows, basename) => {
+        let content;
+        let ext;
+        let mime;
+        let bom;
+        if (format === 'json') {
+          content = buildJsonFromConfigRows(columns, rows, locale);
+          ext = 'json';
+          mime = 'application/json;charset=utf-8';
+          bom = false;
+        } else {
+          content = buildTxtFromConfigRows(columns, rows, locale);
+          ext = 'txt';
+          mime = 'text/plain;charset=utf-8';
+          bom = true;
+        }
+        if (!content) return;
+        downloadTextFile(content, `${basename}.${ext}`, mime, bom);
+        closePanel();
+      };
+
+      if (hasTabs) {
+        const selectedTabId = downloadTabSelect?.value;
+        if (!selectedTabId) return;
+
+        if (sectionConfig.tabs?.some((tab) => resolveDataUrl(tab) && tab.columns?.length)) {
+          const selectedIndex = sectionConfig.tabs.findIndex(
+            (tab) => tab.id === selectedTabId,
+          );
+          if (selectedIndex < 0) return;
+          const selectedTab = sectionConfig.tabs[selectedIndex];
+          const officialBasename = selectedTab.downloadLatestBasename;
+          if (
+            officialBasename &&
+            (await downloadFromLatestPath(officialBasename, format, closePanel))
+          ) {
+            return;
+          }
+          const rows =
+            typeof loadTabTable === 'function'
+              ? await loadTabTable(selectedIndex, { silent: true })
+              : [];
+          emitDownload(selectedTab.columns || [], rows, `${sectionId}-${selectedTabId}`);
+          return;
+        }
+
+        if (sectionConfig.hasTabs && loadedRowsFromApi.length > 0) {
+          const selectedIndex = sectionConfig.tabs.findIndex(
+            (tab) => tab.id === selectedTabId,
+          );
+          if (selectedIndex < 0) return;
+          const row = loadedRowsFromApi[selectedIndex];
+          emitDownload(
+            sectionConfig.columns || [],
+            row ? [row] : [],
+            `${sectionId}-${selectedTabId}`,
+          );
+          return;
+        }
+      }
+
+      if (
+        sectionConfig.downloadLatestBasename &&
+        (await downloadFromLatestPath(
+          sectionConfig.downloadLatestBasename,
+          format,
+          closePanel,
+        ))
+      ) {
+        return;
+      }
+
+      emitDownload(sectionConfig.columns || [], loadedRowsFromApi, sectionId);
+    });
+    downloadBody.appendChild(downloadConfirmBtn);
+    downloadPanel.appendChild(downloadBody);
+    downloadWrap.appendChild(downloadPanel);
+    headerActions.appendChild(downloadWrap);
+    downloadBtn._statsDownloadHandler = () => {
+      const isOpen = downloadBtn.getAttribute('aria-expanded') === 'true';
+      document
+        .querySelectorAll('.stats-header-actions .open-popup-btn')
+        .forEach((button) => button.setAttribute('aria-expanded', 'false'));
+      document
+        .querySelectorAll('.stats-header-actions .popup-view')
+        .forEach((popup) => popup.setAttribute('aria-hidden', 'true'));
+      downloadBtn.setAttribute('aria-expanded', String(!isOpen));
+      downloadPanel.setAttribute('aria-hidden', String(isOpen));
+    };
+    header.appendChild(headerActions);
+    section.appendChild(header);
+
+    const descriptionText =
+      sectionConfig.description?.[locale] || sectionConfig.description?.en || '';
+    if (descriptionText) {
+      const description = document.createElement('p');
+      description.className = 'stats-section-description';
+      description.textContent = descriptionText;
+      section.appendChild(description);
+    }
+
+    const tableWrap = document.createElement('div');
+    tableWrap.className = 'table-contents';
+    const table = document.createElement('table');
+    table.className = 'table stats-table';
+    const thead = document.createElement('thead');
+    thead.innerHTML = '<tr></tr>';
+    const tbody = document.createElement('tbody');
+    table.appendChild(thead);
+    table.appendChild(tbody);
+    tableWrap.appendChild(table);
+    section.appendChild(tableWrap);
+
+    const theadTr = thead.querySelector('tr');
+    const columns = sectionConfig.columns || [];
+
+    // タブごとに別テーブル（BRC の Cell / Mouse / DNA など）
+    const tabsWithApi = sectionConfig.tabs?.filter(
+      (t) => resolveDataUrl(t) && t.columns?.length,
+    );
+    if (tabsWithApi && tabsWithApi.length > 0) {
+      const tabBar = document.createElement('div');
+      tabBar.className = 'stats-tabs';
+      const tabCache = {};
+      const topPageApiDef = TOP_PAGE_API_MAP[sectionId];
+
+      /** タイトル横の件数表示を更新（タブ行数合計）。トップAPIがあるセクションでは呼ばない（API失敗時は '-' のまま） */
+      function updateTitleCountFromCache() {
+        if (topPageApiDef || !titleCount) return;
+        const total = Object.values(tabCache).reduce(
+          (sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0),
+          0,
+        );
+        if (Number.isFinite(total)) {
+          setCountValue(titleCount, total);
+        }
+      }
+
+      // タイトル横の合計をトップページと同じ API（単一または複数）で取得
+      if (topPageApiDef && titleCount) {
+        fetchAndSetTopPageTitleCount(sectionId, titleCount);
+      }
+
+      loadTabTable = async (tabIndex, options = {}) => {
+        const { silent = false } = options;
+        const tab = sectionConfig.tabs[tabIndex];
+        if (!resolveDataUrl(tab) || !tab.columns) return [];
+        if (tabCache[tabIndex]) {
+          const cachedRows = tabCache[tabIndex];
+          if (!silent) {
+            renderTableFromRows(table, tab.columns, cachedRows, locale);
+          }
+          // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
+          const uniqueCountCache = getTabCountValue(cachedRows, tab);
+          const cachedCountEl = tabBar.querySelector(
+            `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
+          );
+          if (cachedCountEl) {
+            setCountValue(cachedCountEl, uniqueCountCache);
+          }
+          if (!silent) {
+            updateTitleCountFromCache();
+          }
+          return cachedRows;
+        }
+        const colCount = tab.columns.length;
+        if (!silent) {
+          thead.style.display = 'none';
+          tbody.innerHTML =
+            '<tr><td colspan="' +
+            colCount +
+            '" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>';
+        }
+        try {
+          const r = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(tab)));
+          if (!r.ok) throw new Error(r.statusText);
+          const data = await r.json();
+          let rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+          if (Array.isArray(rows)) {
+            rows.forEach((row) => {
+              if (row && row.kegg_url != null && row.kegg == null) {
+                row.kegg = row.kegg_url;
+              }
+            });
+          }
+          tabCache[tabIndex] = rows;
+          if (!silent) {
+            renderTableFromRows(table, tab.columns, rows, locale);
+          }
+          // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
+          const uniqueCount = getTabCountValue(rows, tab);
+          const countEl = tabBar.querySelector(
+            `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
+          );
+          if (countEl) {
+            setCountValue(countEl, uniqueCount);
+          }
+          updateTitleCountFromCache();
+          return rows;
+        } catch (e) {
+          console.warn('Stats tab API エラー (' + tab.id + '):', e);
+          const countEl = tabBar.querySelector(
+            `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
+          );
+          setCountUnavailable(countEl);
+          if (!topPageApiDef && Object.keys(tabCache).length === 0) {
+            setCountUnavailable(titleCount);
+          }
+          if (!silent) {
+            tbody.innerHTML =
+              '<tr><td colspan="' +
+              colCount +
+              '" class="stats-table-error">' +
+              (locale === 'ja'
+                ? 'データの読み込みに失敗しました'
+                : 'Failed to load data') +
+              '</td></tr>';
+            thead.style.display = '';
+          }
+          return [];
+        }
+      };
+      /** NANDO URL または "NANDO:1100014" 形式から疾患IDを抽出（リンク用に NANDO_xxxxx に統一） */
+      function getNandoIdForLink(val) {
+        if (val == null || val === '') return val;
+        const s = String(val).trim();
+        const fromUrl = s.match(/\/?(NANDO_\d+)$/i);
+        if (fromUrl) return fromUrl[1];
+        const fromColon = s.match(/^NANDO:(\d+)$/i);
+        if (fromColon) return 'NANDO_' + fromColon[1];
+        return s;
+      }
+      function getDataKeysForLocale(col, loc) {
+        if (!col) return [];
+        const multi = col.dataKeysByLocale;
+        if (multi && typeof multi === 'object') {
+          const keys = multi[loc] || multi.en || multi.ja;
+          return Array.isArray(keys) ? keys.filter(Boolean) : [];
+        }
+        const single = col.dataKeyByLocale;
+        if (single && typeof single === 'object') {
+          const k = single[loc] || single.en || single.ja || col.dataKey;
+          return k ? [k] : [];
+        }
+        return col.dataKey ? [col.dataKey] : [];
+      }
+
+      function getPrimaryDataKeyForLocale(col, loc) {
+        const keys = getDataKeysForLocale(col, loc);
+        return keys.length > 0 ? keys[0] : null;
+      }
+
+      function getStatsSortState(table) {
+        if (!table._statsSortState) {
+          table._statsSortState = { key: null, order: 'asc' };
+        }
+        return table._statsSortState;
+      }
+
+      function sortStatsRows(rows, sortState, cols, loc) {
+        const list = Array.isArray(rows) ? rows.slice() : [];
+        if (!sortState || !sortState.key) return list;
+
+        const col = cols.find((c) => {
+          const key = getPrimaryDataKeyForLocale(c, loc);
+          return key === sortState.key;
+        });
+        const isNumericColumn =
+          col && col.sortType === 'number'
+            ? true
+            : col && col.sortType === 'string'
+              ? false
+              : undefined;
+
+        const locale =
+          loc === 'ja' ? 'ja-JP' : loc === 'en' ? 'en-US' : navigator.language;
+
+        const toComparable = (val) => {
+          if (val === undefined || val === null) return null;
+          if (typeof val === 'number') return val;
+          const s = String(val).trim();
+          const num = Number(s.replace(/,/g, ''));
+          if (!Number.isNaN(num) && s !== '') return num;
+          return s;
+        };
+
+        list.sort((a, b) => {
+          const va = toComparable(a[sortState.key]);
+          const vb = toComparable(b[sortState.key]);
+          if (va == null && vb == null) return 0;
+          if (va == null) return 1;
+          if (vb == null) return -1;
+
+          const bothNumbers =
+            isNumericColumn === true ||
+            (typeof va === 'number' && typeof vb === 'number');
+          let cmp;
+          if (bothNumbers) {
+            cmp = va === vb ? 0 : va < vb ? -1 : 1;
+          } else {
+            cmp = String(va).localeCompare(String(vb), locale, {
+              numeric: true,
+              sensitivity: 'base',
+            });
+          }
+          return sortState.order === 'asc' ? cmp : -cmp;
+        });
+        return list;
+      }
+
+      function setupStatsTableSorting(table, cols, rows, loc) {
+        table._statsRows = Array.isArray(rows) ? rows.slice() : [];
+        table._statsCols = cols;
+        table._statsLocale = loc;
+
+        const sortState = getStatsSortState(table);
+        const thead = table.querySelector('thead');
+        if (!thead) return;
+
+        const headers = thead.querySelectorAll('th.stats-sortable');
+        headers.forEach((th) => {
+          const key = th.dataset.sortKey;
+          if (!key) return;
+
+          th.onclick = function () {
+            const state = getStatsSortState(table);
+            if (state.key === key) {
+              state.order = state.order === 'asc' ? 'desc' : 'asc';
+            } else {
+              state.key = key;
+              state.order = 'asc';
+            }
+            table._statsSortState = state;
+            const baseRows = table._statsRows || [];
+            const colsDef = table._statsCols || cols;
+            const locale = table._statsLocale || loc;
+            const sorted = sortStatsRows(baseRows, state, colsDef, locale);
+            // 再描画（ヘッダーも含めて更新）
+            const tbodyEl = table.querySelector('tbody');
+            if (!tbodyEl) return;
+            renderTableFromRows(table, colsDef, sorted, locale);
+          };
+
+          th.onkeydown = function (e) {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              th.click();
+            }
+          };
+        });
+
+        // アイコンの状態を更新
+        headers.forEach((th) => {
+          const icon = th.querySelector('.sort-icon');
+          if (!icon) return;
+          icon.classList.remove('fa-sort', 'fa-sort-up', 'fa-sort-down');
+          const key = th.dataset.sortKey;
+          if (key && sortState.key === key) {
+            icon.classList.add(
+              sortState.order === 'asc' ? 'fa-sort-up' : 'fa-sort-down',
+            );
+          } else {
+            icon.classList.add('fa-sort');
+          }
+        });
+      }
+
+      /** 説明文などに含まれるHTMLをサニタイズ（&lt;a&gt;のhref・target・relのみ許可） */
+      function sanitizeHtmlForDisplay(html) {
+        if (html == null || html === '') return '';
+        // 改行は表示上の段落として扱いたいので <br> に寄せる
+        const s = String(html).replace(/\r\n|\r|\n/g, '<br>');
+        const div = document.createElement('div');
+        div.innerHTML = s;
+        const walk = (node) => {
+          if (node.nodeType === Node.TEXT_NODE) {
+            return document.createTextNode(node.textContent);
+          }
+          if (node.nodeType !== Node.ELEMENT_NODE) return null;
+          const tag = node.tagName.toLowerCase();
+          if (tag === 'br') {
+            return document.createElement('br');
+          }
+          if (tag === 'a') {
+            const a = document.createElement('a');
+            const href = node.getAttribute('href');
+            if (href && /^https?:\/\//i.test(href)) a.href = href;
+            a.setAttribute('target', '_blank');
+            a.setAttribute('rel', 'noopener noreferrer');
+            for (let i = 0; i < node.childNodes.length; i++) {
+              const c = walk(node.childNodes[i]);
+              if (c) a.appendChild(c);
+            }
+            return a;
+          }
+          if (tag === 'p' || tag === 'div') {
+            const block = document.createElement('div');
+            for (let i = 0; i < node.childNodes.length; i++) {
+              const c = walk(node.childNodes[i]);
+              if (c) block.appendChild(c);
+            }
+            return block;
+          }
+          const span = document.createElement('span');
+          for (let i = 0; i < node.childNodes.length; i++) {
+            const c = walk(node.childNodes[i]);
+            if (c) span.appendChild(c);
+          }
+          return span;
+        };
+        const fragment = document.createDocumentFragment();
+        for (let i = 0; i < div.childNodes.length; i++) {
+          const n = walk(div.childNodes[i]);
+          if (n) fragment.appendChild(n);
+        }
+        const out = document.createElement('div');
+        out.appendChild(fragment);
+        return out.innerHTML;
+      }
+      const renderTableFromRows = (tbl, cols, rows, loc) => {
+        const tbodyEl = tbl.querySelector('tbody');
+        const theadEl = tbl.querySelector('thead');
+        if (theadEl) theadEl.style.display = '';
+        const tr = tbl.querySelector('thead tr');
+        if (tr && cols.length) {
+          const newTr = document.createElement('tr');
+          cols.forEach((col) => {
+            const th = document.createElement('th');
+            if (col.noWrap) {
+              th.classList.add('stats-cell--nowrap');
+            }
+            const labelSpan = document.createElement('span');
+            labelSpan.className = 'stats-th-label';
+            labelSpan.appendChild(
+              document.createTextNode(col.label[loc] || col.label.en || ''),
+            );
+            if (col.tooltip && (col.tooltip[loc] || col.tooltip.en)) {
+              const w = document.createElement('span');
+              w.className = 'stats-th-tooltip';
+              w.setAttribute(
+                'data-tooltip',
+                col.tooltip[loc] || col.tooltip.en,
+              );
+              const i = document.createElement('i');
+              i.className = 'fas fa-info-circle';
+              w.appendChild(i);
+              labelSpan.appendChild(w);
+            }
+
+            const sortKey = getPrimaryDataKeyForLocale(col, loc);
+            const isSortable =
+              col.sortable !== false && !!sortKey && !col.disableSort;
+            if (isSortable) {
+              th.classList.add('stats-sortable');
+              th.dataset.sortKey = sortKey;
+              th.setAttribute('role', 'button');
+              th.setAttribute('tabindex', '0');
+              const icon = document.createElement('i');
+              icon.className = 'fas fa-sort sort-icon';
+              labelSpan.appendChild(icon);
+            }
+            th.appendChild(labelSpan);
+            newTr.appendChild(th);
+          });
+          tr.replaceWith(newTr);
+        }
+        if (!tbodyEl) return;
+        tbodyEl.innerHTML = '';
+        const sortState = getStatsSortState(tbl);
+        const rowList = sortStatsRows(rows, sortState, cols, loc);
+        if (rowList.length === 0) return;
+        // rowspan: 同じ値が続く列はまとめるためのグループを計算
+        const rowspanGroups = {};
+        cols.forEach((col, colIdx) => {
+          if (!col.rowspan) return;
+          const groups = [];
+          let i = 0;
+          while (i < rowList.length) {
+            const key = getPrimaryDataKeyForLocale(col, loc);
+            const val = key ? rowList[i][key] : undefined;
+            let span = 1;
+            while (
+              i + span < rowList.length &&
+              (function () {
+                const nextVal = key ? rowList[i + span][key] : undefined;
+                return String(nextVal) === String(val);
+              })()
+            )
+              span++;
+            groups.push({ startRow: i, span });
+            i += span;
+          }
+          rowspanGroups[colIdx] = groups;
+        });
+
+        rowList.forEach((row, rowIndex) => {
+          const r = document.createElement('tr');
+          cols.forEach((col, colIdx) => {
+            const key = getPrimaryDataKeyForLocale(col, loc);
+            const val = key ? row[key] : undefined;
+            const displayVal =
+              val === undefined || val === null
+                ? '—'
+                : typeof val === 'number'
+                  ? val.toLocaleString()
+                  : String(val);
+            const displayVals = (function () {
+              const keys = getDataKeysForLocale(col, loc);
+              if (!keys || keys.length <= 1) return null;
+              return keys
+                .map((k) => (k ? row[k] : undefined))
+                .filter((v) => v != null && v !== '');
+            })();
+            const linkTarget =
+              col.link === 'nando'
+                ? getNandoIdForLink(row.nando_id != null ? row.nando_id : val)
+                : null;
+            const hasNandoLink =
+              col.link === 'nando' &&
+              ((val != null && val !== '') || row.nando_id) &&
+              linkTarget;
+            if (col.rowspan && rowspanGroups[colIdx]) {
+              const group = rowspanGroups[colIdx].find(
+                (g) => g.startRow === rowIndex,
+              );
+              if (!group) return;
+              const td = document.createElement('td');
+              td.rowSpan = group.span;
+              if (col.noWrap) {
+                td.classList.add('stats-cell--nowrap');
+              }
+              if (hasNandoLink) {
+                const a = document.createElement('a');
+                a.href = '/disease/' + encodeURIComponent(linkTarget);
+                a.textContent = displayVal;
+                td.appendChild(a);
+              } else if (col.link === 'external') {
+                const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
+                if (hrefVal) {
+                  const a = document.createElement('a');
+                  a.href = String(hrefVal);
+                  a.target = '_blank';
+                  a.rel = 'noopener noreferrer';
+                  a.textContent =
+                    col.linkTextKey && row[col.linkTextKey] != null
+                      ? String(row[col.linkTextKey])
+                      : displayVal;
+                  td.appendChild(a);
+                } else {
+                  td.textContent = displayVal;
+                }
+              } else if (col.html && val != null && val !== '') {
+                td.classList.add('stats-cell--html');
+                if (displayVals && displayVals.length > 0) {
+                  td.innerHTML = displayVals
+                    .map((v) => `<div>${sanitizeHtmlForDisplay(v)}</div>`)
+                    .join('');
+                } else {
+                  td.innerHTML = sanitizeHtmlForDisplay(val);
+                }
+              } else {
+                td.textContent = displayVal;
+              }
+              r.appendChild(td);
+            } else {
+              const td = document.createElement('td');
+              if (col.noWrap) {
+                td.classList.add('stats-cell--nowrap');
+              }
+              if (hasNandoLink) {
+                const a = document.createElement('a');
+                a.href = '/disease/' + encodeURIComponent(linkTarget);
+                a.textContent = displayVal;
+                td.appendChild(a);
+              } else if (col.link === 'external') {
+                const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
+                if (hrefVal) {
+                  const a = document.createElement('a');
+                  a.href = String(hrefVal);
+                  a.target = '_blank';
+                  a.rel = 'noopener noreferrer';
+                  a.textContent =
+                    col.linkTextKey && row[col.linkTextKey] != null
+                      ? String(row[col.linkTextKey])
+                      : displayVal;
+                  td.appendChild(a);
+                } else {
+                  td.textContent = displayVal;
+                }
+              } else if (col.html && val != null && val !== '') {
+                td.classList.add('stats-cell--html');
+                if (displayVals && displayVals.length > 0) {
+                  td.innerHTML = displayVals
+                    .map((v) => `<div>${sanitizeHtmlForDisplay(v)}</div>`)
+                    .join('');
+                } else {
+                  td.innerHTML = sanitizeHtmlForDisplay(val);
+                }
+              } else {
+                td.textContent = displayVal;
+              }
+              r.appendChild(td);
+            }
+          });
+          tbodyEl.appendChild(r);
+        });
+
+        setupStatsTableSorting(tbl, cols, rowList, loc);
+      };
+      sectionConfig.tabs.forEach((tab, idx) => {
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'stats-tab' + (idx === 0 ? ' active' : '');
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-tab-label';
+        labelSpan.textContent = tab.label[locale] || tab.label.en || tab.id;
+        const tabTooltip = createStatsTooltipIcon(
+          'stats-tab-tooltip',
+          getLocalizedConfigText(tab.tooltip, locale),
+        );
+        const countSpan = document.createElement('span');
+        countSpan.className = 'data-num';
+        setCountLoading(countSpan);
+        btn.appendChild(labelSpan);
+        if (tabTooltip) {
+          btn.appendChild(tabTooltip);
+        }
+        btn.appendChild(countSpan);
+        btn.dataset.tabIndex = String(idx);
+        btn.addEventListener('click', function () {
+          tabBar
+            .querySelectorAll('.stats-tab')
+            .forEach((b) => b.classList.remove('active'));
+          this.classList.add('active');
+          if (downloadTabSelect) {
+            downloadTabSelect.value = tab.id;
+          }
+          loadTabTable(Number(this.dataset.tabIndex));
+        });
+        tabBar.appendChild(btn);
+      });
+      section.insertBefore(tabBar, tableWrap);
+      // ページ表示時に全タブを並列で読み込む（先頭タブは表示、他は silent でキャッシュ）
+      loadTabTable(0);
+      for (let i = 1; i < sectionConfig.tabs.length; i++) {
+        loadTabTable(i, { silent: true });
+      }
+    } else if (
+      sectionConfig.rows?.length &&
+      sectionConfig.columns?.some((c) => resolveDataUrl(c))
+    ) {
+      // カラムごと dataUrl（行キーでマージ）
+      columns.forEach((col) => {
+        const th = document.createElement('th');
+        if (col.noWrap) {
+          th.classList.add('stats-cell--nowrap');
+        }
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-th-label';
+        labelSpan.appendChild(
+          document.createTextNode(col.label[locale] || col.label.en || ''),
+        );
+        if (col.tooltip && (col.tooltip[locale] || col.tooltip.en)) {
+          const w = document.createElement('span');
+          w.className = 'stats-th-tooltip';
+          w.setAttribute('data-tooltip', col.tooltip[locale] || col.tooltip.en);
+          const i = document.createElement('i');
+          i.className = 'fas fa-info-circle';
+          w.appendChild(i);
+          labelSpan.appendChild(w);
+        }
+        th.appendChild(labelSpan);
+        theadTr.appendChild(th);
+      });
+      const rowsFromColumnApis = await loadSectionTableFromColumnApis(
+        table,
+        tbody,
+        sectionConfig,
+        locale,
+      );
+      const total = getSectionTotalFromRows(
+        rowsFromColumnApis,
+        sectionConfig.columns || [],
+      );
+      if (Number.isFinite(total)) {
+        setCountValue(titleCount, total);
+      } else {
+        setCountUnavailable(titleCount);
+      }
+    } else if (resolveDataUrl(sectionConfig) && columns.length) {
+      let tabBar = null;
+      columns.forEach((col) => {
+        const th = document.createElement('th');
+        if (col.noWrap) {
+          th.classList.add('stats-cell--nowrap');
+        }
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-th-label';
+        labelSpan.appendChild(
+          document.createTextNode(col.label[locale] || col.label.en || ''),
+        );
+        if (col.tooltip && (col.tooltip[locale] || col.tooltip.en)) {
+          const w = document.createElement('span');
+          w.className = 'stats-th-tooltip';
+          w.setAttribute('data-tooltip', col.tooltip[locale] || col.tooltip.en);
+          const i = document.createElement('i');
+          i.className = 'fas fa-info-circle';
+          w.appendChild(i);
+          labelSpan.appendChild(w);
+        }
+        th.appendChild(labelSpan);
+        theadTr.appendChild(th);
+      });
+      if (sectionConfig.hasTabs && sectionConfig.tabs?.length) {
+        tabBar = document.createElement('div');
+        tabBar.className = 'stats-tabs';
+        sectionConfig.tabs.forEach((tab, idx) => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'stats-tab' + (idx === 0 ? ' active' : '');
+          const labelSpan = document.createElement('span');
+          labelSpan.className = 'stats-tab-label';
+          labelSpan.textContent = tab.label[locale] || tab.label.en || tab.id;
+          btn.appendChild(labelSpan);
+          const tabTooltip = createStatsTooltipIcon(
+            'stats-tab-tooltip',
+            getLocalizedConfigText(tab.tooltip, locale),
+          );
+          if (tabTooltip) {
+            btn.appendChild(tabTooltip);
+          }
+          btn.dataset.tabId = tab.id;
+          tabBar.appendChild(btn);
+        });
+        section.insertBefore(tabBar, tableWrap);
+      }
+      const rowsFromApi = await loadSectionTableFromApi(
+        table,
+        tbody,
+        sectionConfig,
+        locale,
+      );
+      loadedRowsFromApi = Array.isArray(rowsFromApi) ? rowsFromApi : [];
+      const topPageApiDefSingle = TOP_PAGE_API_MAP[sectionId];
+      if (topPageApiDefSingle && titleCount) {
+        fetchAndSetTopPageTitleCount(sectionId, titleCount);
+      }
+      if (
+        !topPageApiDefSingle &&
+        Array.isArray(rowsFromApi) &&
+        titleCount &&
+        rowsFromApi.length > 0
+      ) {
+        let total = NaN;
+        if (sectionId === 'nando-content') {
+          // 集計行（all 列あり）のときは All 合計、nando.json 一覧のときは行数
+          if (rowsFromApi.some((row) => row && row.all != null)) {
+            total = rowsFromApi.reduce((sum, row) => {
+              const raw = row.all;
+              if (raw === undefined || raw === null) return sum;
+              const v = Number(
+                typeof raw === 'number'
+                  ? raw
+                  : String(raw).replace(/,/g, '').trim(),
+              );
+              return Number.isFinite(v) ? sum + v : sum;
+            }, 0);
+          } else {
+            total = rowsFromApi.length;
+          }
+        } else if (sectionId === 'genes-content') {
+          // 疾患関連遺伝子: 国内基準由来＋国際リソース由来の合計
+          total = rowsFromApi.reduce((sum, row) => {
+            const d = Number(
+              typeof row.domestic === 'number'
+                ? row.domestic
+                : String(row.domestic || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const i = Number(
+              typeof row.international === 'number'
+                ? row.international
+                : String(row.international || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const part =
+              (Number.isFinite(d) ? d : 0) + (Number.isFinite(i) ? i : 0);
+            return sum + part;
+          }, 0);
+        } else if (sectionId === 'links-content') {
+          // 外部リンク: 全リンク列の合計
+          total = rowsFromApi.reduce((sum, row) => {
+            const keys = [
+              'monarchExact',
+              'monarchClose',
+              'orphanet',
+              'medgen',
+              'kegg',
+            ];
+            const rowSum = keys.reduce((s, key) => {
+              const raw = row[key];
+              if (raw === undefined || raw === null) return s;
+              const v = Number(
+                typeof raw === 'number'
+                  ? raw
+                  : String(raw).replace(/,/g, '').trim(),
+              );
+              return Number.isFinite(v) ? s + v : s;
+            }, 0);
+            return sum + rowSum;
+          }, 0);
+        } else if (sectionId === 'variants-content') {
+          // バリアント: ClinVar＋MGeND
+          total = rowsFromApi.reduce((sum, row) => {
+            const c = Number(
+              typeof row.clinvar === 'number'
+                ? row.clinvar
+                : String(row.clinvar || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const m = Number(
+              typeof row.mgend === 'number'
+                ? row.mgend
+                : String(row.mgend || '')
+                    .replace(/,/g, '')
+                    .trim(),
+            );
+            const part =
+              (Number.isFinite(c) ? c : 0) + (Number.isFinite(m) ? m : 0);
+            return sum + part;
+          }, 0);
+        } else {
+          total = rowsFromApi.length;
+        }
+
+        if (Number.isFinite(total)) {
+          setCountValue(titleCount, total);
+        }
+      }
+      if (tabBar) {
+        const rows = tbody.querySelectorAll('tr');
+        sectionConfig.tabs.forEach((tab, idx) => {
+          if (rows[idx]) {
+            rows[idx].setAttribute('data-tab-id', tab.id);
+            rows[idx].classList.add('stats-tab-row');
+            rows[idx].style.display = idx === 0 ? '' : 'none';
+          }
+        });
+        tabBar.querySelectorAll('.stats-tab').forEach((btn, idx) => {
+          btn.addEventListener('click', function () {
+            tabBar
+              .querySelectorAll('.stats-tab')
+              .forEach((b) => b.classList.remove('active'));
+            this.classList.add('active');
+            const tabId = this.dataset.tabId;
+            if (downloadTabSelect) {
+              downloadTabSelect.value = tabId;
+            }
+            tbody.querySelectorAll('.stats-tab-row').forEach((tr) => {
+              tr.style.display = tr.dataset.tabId === tabId ? '' : 'none';
+            });
+          });
+        });
+      }
+    } else {
+      container.innerHTML =
+        '<p>' +
+        (locale === 'ja'
+          ? 'このセクションの表示設定がありません。'
+          : 'No display config for this section.') +
+        '</p>';
+      return;
+    }
+
+    container.innerHTML = '';
+    container.appendChild(section);
+  } catch (e) {
+    console.warn('カード詳細テーブルの表示に失敗しました', e);
+    container.innerHTML =
+      '<p class="stats-table-error">' +
+      (locale === 'ja'
+        ? 'データの読み込みに失敗しました'
+        : 'Failed to load data') +
+      '</p>';
+  }
+}
+
+function getStatsLocale() {
+  const lang = document.documentElement.lang;
+  return lang && lang.startsWith('ja') ? 'ja' : 'en';
+}
+
+// ----- 以下はトップのカードから飛んだときの個別テーブル用（別画面・別ルートで利用想定） -----
+// loadSectionTableFromApi, loadSectionTableFromColumnApis 等は個別テーブル表示時に使用
+
+/**
+ * カラムごとの dataUrl からデータを取得し、行ごとにマージして tbody を生成する。
+ * 例: BRC の cells / mouse / dna でそれぞれ別API。
+ * 各APIのレスポンス形式: { "shitei": value, "shoman": value } など行 id をキーとしたオブジェクト。
+ */
+async function loadSectionTableFromColumnApis(
+  table,
+  tbody,
+  sectionConfig,
+  locale,
+) {
+  const columns = sectionConfig.columns || [];
+  const rows = sectionConfig.rows || [];
+  const colCount = columns.length;
+  const errorText =
+    locale === 'ja' ? 'データの読み込みに失敗しました' : 'Failed to load data';
+  const loadingSpinnerHtml = `<tr><td colspan="${colCount}" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>`;
+
+  // 読み込み中はヘッダーを非表示
+  const thead = table.querySelector('thead');
+  if (thead) thead.style.display = 'none';
+  tbody.innerHTML = loadingSpinnerHtml;
+
+  try {
+    const columnData = {};
+    for (const col of columns) {
+      if (!resolveDataUrl(col)) continue;
+      const res = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(col)));
+      if (!res.ok) throw new Error(`${col.dataKey}: ${res.statusText}`);
+      const data = await res.json();
+      if (data && typeof data === 'object' && !Array.isArray(data)) {
+        if (data.rows && Array.isArray(data.rows)) {
+          const byId = {};
+          data.rows.forEach((r) => {
+            const id = r.tabId ?? r.id ?? r.category;
+            if (id != null) byId[id] = r.value ?? r.count ?? r;
+          });
+          columnData[col.dataKey] = byId;
+        } else if (col.valuePathByRow && typeof col.valuePathByRow === 'object') {
+          const byId = {};
+          Object.entries(col.valuePathByRow).forEach(([rowId, path]) => {
+            byId[rowId] = getValueByPath(data, path);
+          });
+          columnData[col.dataKey] = byId;
+        } else {
+          columnData[col.dataKey] = data;
+        }
+      } else {
+        columnData[col.dataKey] = {};
+      }
+    }
+
+    const renderedRows = [];
+    tbody.innerHTML = '';
+    rows.forEach((rowDef) => {
+      const tr = document.createElement('tr');
+      const rowId = rowDef.id;
+      const renderedRow = {};
+      columns.forEach((col) => {
+        const td = document.createElement('td');
+        let val;
+        if (col.dataKey === 'category') {
+          val = rowDef.label?.[locale] ?? rowDef.label?.en ?? rowId;
+        } else if (resolveDataUrl(col) && columnData[col.dataKey]) {
+          val = columnData[col.dataKey][rowId];
+        } else {
+          val = undefined;
+        }
+        if (val === undefined || val === null) {
+          td.textContent = '—';
+        } else if (typeof val === 'number') {
+          td.textContent = val.toLocaleString();
+        } else {
+          td.textContent = String(val);
+        }
+        renderedRow[col.dataKey] = val;
+        tr.appendChild(td);
+      });
+      renderedRows.push(renderedRow);
+      tbody.appendChild(tr);
+    });
+    if (thead) thead.style.display = '';
+    return renderedRows;
+  } catch (e) {
+    console.warn(`Stats column API エラー (${sectionConfig.id}):`, e);
+    tbody.innerHTML = `<tr><td colspan="${colCount}" class="stats-table-error">${errorText}</td></tr>`;
+    if (thead) thead.style.display = '';
+    return [];
+  }
+}
+
+/**
+ * セクションの dataUrl からデータを取得し、tbody を生成して表示する。
+ * API レスポンス形式: { "rows": [ { "dataKey1": value1, "dataKey2": value2, ... }, ... ] }
+ * 各オブジェクトのキーは config の columns[].dataKey に対応すること。
+ */
+async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
+  const colCount = sectionConfig.columns ? sectionConfig.columns.length : 0;
+  const errorText =
+    locale === 'ja' ? 'データの読み込みに失敗しました' : 'Failed to load data';
+  const loadingSpinnerHtml = `<tr><td colspan="${colCount}" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>`;
+
+  // 読み込み中はヘッダーを非表示
+  const thead = table.querySelector('thead');
+  if (thead) thead.style.display = 'none';
+  tbody.innerHTML = loadingSpinnerHtml;
+
+  try {
+    const res = await fetchWithTimeout(
+      resolveStatsFetchUrl(resolveDataUrl(sectionConfig)),
+    );
+    if (!res.ok) throw new Error(res.statusText);
+    const data = await res.json();
+    const rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+
+    if (!Array.isArray(rows) || rows.length === 0) {
+      tbody.innerHTML = `<tr><td colspan="${colCount}">—</td></tr>`;
+      if (thead) thead.style.display = '';
+      return rows;
+    }
+
+    tbody.innerHTML = '';
+    const columns = sectionConfig.columns || [];
+
+    rows.forEach((row, rowIndex) => {
+      const tr = document.createElement('tr');
+      if (
+        sectionConfig.hasTabs &&
+        sectionConfig.tabs &&
+        sectionConfig.tabs[rowIndex]
+      ) {
+        tr.setAttribute('data-tab-id', sectionConfig.tabs[rowIndex].id);
+        tr.classList.add('stats-tab-row');
+        tr.style.display = rowIndex === 0 ? '' : 'none';
+      }
+      columns.forEach((col) => {
+        const td = document.createElement('td');
+        if (col.noWrap) {
+          td.classList.add('stats-cell--nowrap');
+        }
+        const keys = getConfigDataKeysForLocale(col, locale);
+        const val =
+          keys.length > 0
+            ? keys.map((k) => row[k]).find((v) => v != null && v !== '')
+            : undefined;
+        const displayVal =
+          val === undefined || val === null
+            ? '—'
+            : typeof val === 'number'
+              ? String(val.toLocaleString())
+              : String(val);
+
+        if (col.link === 'nando') {
+          const raw =
+            row.nando_id != null ? row.nando_id : val != null ? val : undefined;
+          const linkTarget = getNandoIdForCsv(raw);
+          if (linkTarget && raw != null && raw !== '') {
+            const a = document.createElement('a');
+            a.href = '/disease/' + encodeURIComponent(linkTarget);
+            a.textContent = displayVal === '—' ? linkTarget : displayVal;
+            td.appendChild(a);
+          } else {
+            td.textContent = displayVal;
+          }
+        } else if (col.link === 'external') {
+          const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
+          const textVal =
+            col.linkTextKey && row[col.linkTextKey] != null
+              ? String(row[col.linkTextKey])
+              : displayVal;
+          if (hrefVal) {
+            const a = document.createElement('a');
+            a.href = String(hrefVal);
+            a.target = '_blank';
+            a.rel = 'noopener noreferrer';
+            a.textContent = textVal === '—' ? String(hrefVal) : textVal;
+            td.appendChild(a);
+          } else {
+            td.textContent = displayVal;
+          }
+        } else if (val === undefined || val === null) {
+          td.textContent = '—';
+        } else if (typeof val === 'number') {
+          td.textContent = val.toLocaleString();
+        } else {
+          td.textContent = String(val);
+        }
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+    if (thead) thead.style.display = '';
+    return rows;
+  } catch (e) {
+    console.warn(`Stats API エラー (${sectionConfig.id}):`, e);
+    tbody.innerHTML = `<tr><td colspan="${colCount}" class="stats-table-error">${errorText}</td></tr>`;
+    if (thead) thead.style.display = '';
+    return [];
+  }
+}
 
 async function loadStatsData() {
   try {
@@ -65,7 +1922,7 @@ async function loadStatsData() {
                 const all = safeParseInt(data.shitei_all?.['callret-0']);
                 const group = safeParseInt(data.shitei_group?.['callret-0']);
                 const disease = safeParseInt(
-                  data.shitei_disease?.['callret-0']
+                  data.shitei_disease?.['callret-0'],
                 );
                 if (all === '-' || group === '-' || disease === '-') return '-';
                 return all - group - disease;
@@ -79,7 +1936,7 @@ async function loadStatsData() {
                 const all = safeParseInt(data.shoman_all?.['callret-0']);
                 const group = safeParseInt(data.shoman_group?.['callret-0']);
                 const disease = safeParseInt(
-                  data.shoman_disease?.['callret-0']
+                  data.shoman_disease?.['callret-0'],
                 );
                 if (all === '-' || group === '-' || disease === '-') return '-';
                 return all - group - disease;
@@ -148,7 +2005,24 @@ async function loadStatsData() {
       })
       .catch((error) => {
         console.warn('Link API エラー:', error);
-        hideSection('links');
+        const dummyLinks = {
+          shitei: {
+            monarchExact: '-',
+            monarchClose: '-',
+            orphanet: '-',
+            medgen: '-',
+            kegg: '-',
+          },
+          shoman: {
+            monarchExact: '-',
+            monarchClose: '-',
+            orphanet: '-',
+            medgen: '-',
+            kegg: '-',
+          },
+        };
+        updateLinks(dummyLinks);
+        showSectionContent('links');
       });
 
     Promise.allSettled([
@@ -207,14 +2081,14 @@ async function loadStatsData() {
           shitei: {
             definition: safeParseInt(linkData2.shitei_description?.desc),
             inheritance: safeParseInt(
-              linkData2.shitei_inheritance?.inheritance
+              linkData2.shitei_inheritance?.inheritance,
             ),
             alternativeNames: safeParseInt(linkData2.shitei_altlabel?.alt),
           },
           shoman: {
             definition: safeParseInt(linkData2.shoman_description?.desc),
             inheritance: safeParseInt(
-              linkData2.shoman_inheritance?.inheritance
+              linkData2.shoman_inheritance?.inheritance,
             ),
             alternativeNames: safeParseInt(linkData2.shoman_altlabel?.alt),
           },
@@ -317,7 +2191,7 @@ function transformApiDataToStatsData(
   linkData,
   linkData2,
   linkData4,
-  linkData5
+  linkData5,
 ) {
   try {
     return {
@@ -331,7 +2205,7 @@ function transformApiDataToStatsData(
             const all = safeParseInt(nandoData.shitei_all?.['callret-0']);
             const group = safeParseInt(nandoData.shitei_group?.['callret-0']);
             const disease = safeParseInt(
-              nandoData.shitei_disease?.['callret-0']
+              nandoData.shitei_disease?.['callret-0'],
             );
             if (all === '-' || group === '-' || disease === '-') return '-';
             return all - group - disease;
@@ -345,7 +2219,7 @@ function transformApiDataToStatsData(
             const all = safeParseInt(nandoData.shoman_all?.['callret-0']);
             const group = safeParseInt(nandoData.shoman_group?.['callret-0']);
             const disease = safeParseInt(
-              nandoData.shoman_disease?.['callret-0']
+              nandoData.shoman_disease?.['callret-0'],
             );
             if (all === '-' || group === '-' || disease === '-') return '-';
             return all - group - disease;
@@ -457,11 +2331,11 @@ function updateAllTables(statsData) {
 // NANDO_count APIからデータを取得する関数
 async function fetchNANDOData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_count');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_count'));
 
     if (!response.ok) {
       throw new Error(
-        `NANDO_count API request failed: ${response.status} ${response.statusText}`
+        `NANDO_count API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -485,11 +2359,11 @@ async function fetchNANDOData() {
 // BRC APIからデータを取得する関数
 async function fetchBRCData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count3');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count3'));
 
     if (!response.ok) {
       throw new Error(
-        `BRC API request failed: ${response.status} ${response.statusText}`
+        `BRC API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -513,11 +2387,11 @@ async function fetchBRCData() {
 // NANDO_link_count APIからデータを取得する関数
 async function fetchLinkData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count'));
 
     if (!response.ok) {
       throw new Error(
-        `Link API request failed: ${response.status} ${response.statusText}`
+        `Link API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -541,11 +2415,11 @@ async function fetchLinkData() {
 // NANDO_link_count2 APIからデータを取得する関数
 async function fetchLinkData2() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count2');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count2'));
 
     if (!response.ok) {
       throw new Error(
-        `Link2 API request failed: ${response.status} ${response.statusText}`
+        `Link2 API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -569,11 +2443,11 @@ async function fetchLinkData2() {
 // NANDO_link_count4 APIからデータを取得する関数
 async function fetchLinkData4() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count4');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count4'));
 
     if (!response.ok) {
       throw new Error(
-        `Link4 API request failed: ${response.status} ${response.statusText}`
+        `Link4 API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -597,11 +2471,11 @@ async function fetchLinkData4() {
 // NANDO_link_count5 APIからデータを取得する関数
 async function fetchLinkData5() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count5');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count5'));
 
     if (!response.ok) {
       throw new Error(
-        `Link5 API request failed: ${response.status} ${response.statusText}`
+        `Link5 API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -625,11 +2499,11 @@ async function fetchLinkData5() {
 // NANDO_link_count7 APIからデータを取得する関数（ClinVar）
 async function fetchLinkData7() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count7');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count7'));
 
     if (!response.ok) {
       throw new Error(
-        `Link7 API request failed: ${response.status} ${response.statusText}`
+        `Link7 API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -653,11 +2527,11 @@ async function fetchLinkData7() {
 // NANDO_link_count8 APIから糖鎖関連遺伝子データを取得する関数
 async function fetchGlycoGeneData() {
   try {
-    const response = await fetch('/sparqlist/api/NANDO_link_count8');
+    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count8'));
 
     if (!response.ok) {
       throw new Error(
-        `GlycoGene API request failed: ${response.status} ${response.statusText}`
+        `GlycoGene API request failed: ${response.status} ${response.statusText}`,
       );
     }
 
@@ -741,7 +2615,7 @@ function showErrorMessage() {
 
   // 全てのテーブルセルにエラーメッセージを表示
   const allCells = document.querySelectorAll(
-    '[id$="-all"], [id$="-nanbyo-group"], [id$="-nanbyo-disease"], [id$="-nanbyo-subtype"], [id$="-definition"], [id$="-inheritance"], [id$="-alternative-names"], [id$="-monarch-exact"], [id$="-monarch-close"], [id$="-orphanet"], [id$="-medgen"], [id$="-kegg"], [id$="-genes"], [id$="-genetic-testings"], [id$="-clinical-features"], [id$="-facial-features"], [id$="-human-data"], [id$="-chemicals"], [id$="-domestic-genes"], [id$="-international-genes"], [id$="-clinvar"], [id$="-mgend"], [id$="-cells"], [id$="-mouse"], [id$="-dna"]'
+    '[id$="-all"], [id$="-nanbyo-group"], [id$="-nanbyo-disease"], [id$="-nanbyo-subtype"], [id$="-definition"], [id$="-inheritance"], [id$="-alternative-names"], [id$="-monarch-exact"], [id$="-monarch-close"], [id$="-orphanet"], [id$="-medgen"], [id$="-kegg"], [id$="-genes"], [id$="-genetic-testings"], [id$="-clinical-features"], [id$="-facial-features"], [id$="-human-data"], [id$="-chemicals"], [id$="-domestic-genes"], [id$="-international-genes"], [id$="-clinvar"], [id$="-mgend"], [id$="-cells"], [id$="-mouse"], [id$="-dna"]',
   );
 
   allCells.forEach((cell) => {
@@ -792,33 +2666,24 @@ function updateDiseaseOverview(diseaseOverview) {
 }
 
 function updateDiseaseOverviewData(diseaseOverview) {
-  // 指定の疾患概要データを更新
-  document.getElementById('shitei-definition').textContent =
-    diseaseOverview.shitei.definition === '-'
-      ? '-'
-      : diseaseOverview.shitei.definition.toLocaleString();
-  document.getElementById('shitei-inheritance').textContent =
-    diseaseOverview.shitei.inheritance === '-'
-      ? '-'
-      : diseaseOverview.shitei.inheritance.toLocaleString();
-  document.getElementById('shitei-alternative-names').textContent =
-    diseaseOverview.shitei.alternativeNames === '-'
-      ? '-'
-      : diseaseOverview.shitei.alternativeNames.toLocaleString();
-
-  // 小慢の疾患概要データを更新
-  document.getElementById('shoman-definition').textContent =
-    diseaseOverview.shoman.definition === '-'
-      ? '-'
-      : diseaseOverview.shoman.definition.toLocaleString();
-  document.getElementById('shoman-inheritance').textContent =
-    diseaseOverview.shoman.inheritance === '-'
-      ? '-'
-      : diseaseOverview.shoman.inheritance.toLocaleString();
-  document.getElementById('shoman-alternative-names').textContent =
-    diseaseOverview.shoman.alternativeNames === '-'
-      ? '-'
-      : diseaseOverview.shoman.alternativeNames.toLocaleString();
+  if (!diseaseOverview || !diseaseOverview.shitei || !diseaseOverview.shoman) {
+    diseaseOverview = {
+      shitei: { definition: '-', inheritance: '-', alternativeNames: '-' },
+      shoman: { definition: '-', inheritance: '-', alternativeNames: '-' },
+    };
+  }
+  setStatsCell('shitei-definition', diseaseOverview.shitei.definition);
+  setStatsCell('shitei-inheritance', diseaseOverview.shitei.inheritance);
+  setStatsCell(
+    'shitei-alternative-names',
+    diseaseOverview.shitei.alternativeNames,
+  );
+  setStatsCell('shoman-definition', diseaseOverview.shoman.definition);
+  setStatsCell('shoman-inheritance', diseaseOverview.shoman.inheritance);
+  setStatsCell(
+    'shoman-alternative-names',
+    diseaseOverview.shoman.alternativeNames,
+  );
 }
 
 function updateLinks(links) {
@@ -826,42 +2691,48 @@ function updateLinks(links) {
   updateLinksData(links);
 }
 
-function updateLinksData(links) {
-  // 指定のリンクデータを更新
-  document.getElementById('shitei-monarch-exact').textContent =
-    links.shitei.monarchExact === '-'
-      ? '-'
-      : links.shitei.monarchExact.toLocaleString();
-  document.getElementById('shitei-monarch-close').textContent =
-    links.shitei.monarchClose === '-'
-      ? '-'
-      : links.shitei.monarchClose.toLocaleString();
-  document.getElementById('shitei-orphanet').textContent =
-    links.shitei.orphanet === '-'
-      ? '-'
-      : links.shitei.orphanet.toLocaleString();
-  document.getElementById('shitei-medgen').textContent =
-    links.shitei.medgen === '-' ? '-' : links.shitei.medgen.toLocaleString();
-  document.getElementById('shitei-kegg').textContent =
-    links.shitei.kegg === '-' ? '-' : links.shitei.kegg.toLocaleString();
+/** 要素が存在するときだけ textContent を設定（dataUrl で tbody 差し替え時は null になるため） */
+function setStatsCell(id, value) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const text =
+    value === '-' || value === undefined || value === null
+      ? '—'
+      : typeof value === 'number'
+        ? value.toLocaleString()
+        : String(value);
+  el.textContent = text;
+}
 
-  // 小慢のリンクデータを更新
-  document.getElementById('shoman-monarch-exact').textContent =
-    links.shoman.monarchExact === '-'
-      ? '-'
-      : links.shoman.monarchExact.toLocaleString();
-  document.getElementById('shoman-monarch-close').textContent =
-    links.shoman.monarchClose === '-'
-      ? '-'
-      : links.shoman.monarchClose.toLocaleString();
-  document.getElementById('shoman-orphanet').textContent =
-    links.shoman.orphanet === '-'
-      ? '-'
-      : links.shoman.orphanet.toLocaleString();
-  document.getElementById('shoman-medgen').textContent =
-    links.shoman.medgen === '-' ? '-' : links.shoman.medgen.toLocaleString();
-  document.getElementById('shoman-kegg').textContent =
-    links.shoman.kegg === '-' ? '-' : links.shoman.kegg.toLocaleString();
+function updateLinksData(links) {
+  if (!links || !links.shitei || !links.shoman) {
+    links = {
+      shitei: {
+        monarchExact: '-',
+        monarchClose: '-',
+        orphanet: '-',
+        medgen: '-',
+        kegg: '-',
+      },
+      shoman: {
+        monarchExact: '-',
+        monarchClose: '-',
+        orphanet: '-',
+        medgen: '-',
+        kegg: '-',
+      },
+    };
+  }
+  setStatsCell('shitei-monarch-exact', links.shitei.monarchExact);
+  setStatsCell('shitei-monarch-close', links.shitei.monarchClose);
+  setStatsCell('shitei-orphanet', links.shitei.orphanet);
+  setStatsCell('shitei-medgen', links.shitei.medgen);
+  setStatsCell('shitei-kegg', links.shitei.kegg);
+  setStatsCell('shoman-monarch-exact', links.shoman.monarchExact);
+  setStatsCell('shoman-monarch-close', links.shoman.monarchClose);
+  setStatsCell('shoman-orphanet', links.shoman.orphanet);
+  setStatsCell('shoman-medgen', links.shoman.medgen);
+  setStatsCell('shoman-kegg', links.shoman.kegg);
 }
 
 function updateRelatedData(relatedData) {
@@ -915,10 +2786,10 @@ function updateGenes(genes) {
 function updateGenesRow(category, data) {
   try {
     const domesticElement = document.getElementById(
-      `${category}-domestic-genes`
+      `${category}-domestic-genes`,
     );
     const internationalElement = document.getElementById(
-      `${category}-international-genes`
+      `${category}-international-genes`,
     );
 
     if (!domesticElement) {

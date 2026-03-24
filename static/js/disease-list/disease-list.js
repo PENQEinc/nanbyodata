@@ -2,6 +2,7 @@ import { fetchDiseaseListJson } from '../utils/diseaseListJsonUrl.js';
 
 const currentLang = document.documentElement.lang === 'en' ? 'en' : 'ja';
 const isEnglish = currentLang === 'en';
+const HPO_TOP50_API_URL = '/api/hpo-top50-symptoms';
 
 const UI_LABELS = {
   ja: {
@@ -144,7 +145,7 @@ const state = {
   all: [],
   filtered: [],
   page: 1,
-  sortKey: null,
+  sortKey: 'id',
   sortOrder: 'asc',
   selectedKana: new Set(),
   expandedKanaRows: new Set(),
@@ -284,6 +285,15 @@ function uniqSorted(values) {
   );
 }
 
+function uniqInOrder(values) {
+  const seen = new Set();
+  return values.filter((value) => {
+    if (seen.has(value)) return false;
+    seen.add(value);
+    return true;
+  });
+}
+
 function getDisplayName(record) {
   if (!record) return '';
   if (isEnglish) return record.label_en || record.label_ja || '';
@@ -358,6 +368,19 @@ function normalizeSymptomList(values) {
   return merged;
 }
 
+async function fetchTopSymptomsFromWorkbook() {
+  const response = await fetch(HPO_TOP50_API_URL);
+  if (!response.ok) {
+    throw new Error(`Failed to fetch top symptoms: HTTP ${response.status}`);
+  }
+
+  const rows = await response.json();
+  const labelKey = isEnglish ? 'hpo_en' : 'hpo_ja';
+  return uniqInOrder(
+    rows.map((row) => String(row?.[labelKey] || '').trim()).filter(Boolean),
+  );
+}
+
 function buildGroupTree(records, idToLabelMap) {
   const usedGroupIds = new Set(records.map((r) => r.groupId).filter(Boolean));
   const byId = new Map(records.map((r) => [r.id, r]));
@@ -429,9 +452,7 @@ function setChevronExpanded(toggle, isExpanded) {
   toggle.setAttribute('aria-expanded', String(isExpanded));
   const icon = toggle.querySelector('i');
   if (!icon) return;
-  icon.className = isExpanded
-    ? 'fas fa-angle-down'
-    : 'fas fa-angle-right';
+  icon.className = isExpanded ? 'fas fa-angle-down' : 'fas fa-angle-right';
 }
 
 function renderCheckboxList(container, items, selectedSet, onToggle) {
@@ -513,8 +534,12 @@ function renderKanaFilter() {
     const childCheckboxes = [];
 
     function syncRowCheckboxState() {
-      const count = childCheckboxes.reduce((n, cb) => n + (cb.checked ? 1 : 0), 0);
-      rowCheckbox.checked = count === childCheckboxes.length && childCheckboxes.length > 0;
+      const count = childCheckboxes.reduce(
+        (n, cb) => n + (cb.checked ? 1 : 0),
+        0,
+      );
+      rowCheckbox.checked =
+        count === childCheckboxes.length && childCheckboxes.length > 0;
       rowCheckbox.indeterminate = count > 0 && count < childCheckboxes.length;
     }
 
@@ -589,7 +614,15 @@ function renderGroupFilter() {
   el.groupFilter.classList.add('group-tree');
   const groupControls = [];
 
-  function syncGroupControl({ checkbox, selectableIds }) {
+  function syncGroupControl({ checkbox, selectableIds, ownId, descendantIds }) {
+    if (ownId && descendantIds.length > 0) {
+      const allDescendantsSelected = descendantIds.every((gid) =>
+        state.selectedGroups.has(gid),
+      );
+      if (allDescendantsSelected) state.selectedGroups.add(ownId);
+      else state.selectedGroups.delete(ownId);
+    }
+
     const checkedNum = selectableIds.reduce(
       (n, gid) => n + (state.selectedGroups.has(gid) ? 1 : 0),
       0,
@@ -604,9 +637,10 @@ function renderGroupFilter() {
     groupControls.forEach(syncGroupControl);
   }
 
-  function bindGroupControl(checkbox, selectableIds) {
-    groupControls.push({ checkbox, selectableIds });
-    syncGroupControl({ checkbox, selectableIds });
+  function bindGroupControl(checkbox, selectableIds, ownId = null, descendantIds = []) {
+    const control = { checkbox, selectableIds, ownId, descendantIds };
+    groupControls.push(control);
+    syncGroupControl(control);
     checkbox.addEventListener('change', () => {
       if (checkbox.checked) {
         selectableIds.forEach((gid) => state.selectedGroups.add(gid));
@@ -635,10 +669,25 @@ function renderGroupFilter() {
     );
   }
 
+  function collectDescendantIds(id, visited = new Set(), allowedSet = null) {
+    if (visited.has(id)) return [];
+    visited.add(id);
+    const node = tree.nodes.get(id);
+    if (!node) return [];
+    return uniqInOrder(
+      node.children.flatMap((cid) =>
+        collectSelectableIds(cid, new Set(visited), allowedSet),
+      ),
+    );
+  }
+
   function renderNode(id, container, allowedSet = null, expandPrefix = '') {
     const node = tree.nodes.get(id);
     if (!node) return;
-    const selectableIds = collectSelectableIds(id, new Set(), allowedSet);
+    const selectableIds = uniqInOrder(
+      collectSelectableIds(id, new Set(), allowedSet),
+    );
+    const descendantIds = collectDescendantIds(id, new Set(), allowedSet);
     if (selectableIds.length === 0) return;
     const row = document.createElement('div');
     row.className = 'group-row';
@@ -677,7 +726,7 @@ function renderGroupFilter() {
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    bindGroupControl(checkbox, selectableIds);
+    bindGroupControl(checkbox, selectableIds, id, descendantIds);
 
     const span = document.createElement('span');
     span.textContent = node.label;
@@ -733,7 +782,12 @@ function renderGroupFilter() {
     const label = document.createElement('label');
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
-    bindGroupControl(checkbox, categorySelectableIds);
+    bindGroupControl(
+      checkbox,
+      uniqInOrder(categorySelectableIds),
+      null,
+      uniqInOrder(categorySelectableIds),
+    );
 
     const span = document.createElement('span');
     span.textContent = category.label;
@@ -816,7 +870,8 @@ function parseNoticeInput() {
 }
 
 function applyFilters() {
-  const isNoticeFilterActive = state.noticeMin !== null || state.noticeMax !== null;
+  const isNoticeFilterActive =
+    state.noticeMin !== null || state.noticeMax !== null;
   const hasKanaFilter = state.selectedKana.size > 0;
   const allGroupsSelected =
     state.allSelectableGroupIds.size > 0 &&
@@ -900,15 +955,26 @@ function renderTable() {
   });
 }
 
-function initFilters(records) {
+async function initFilters(records) {
   state.groupTree = buildGroupTree(
     records,
     new Map(records.map((r) => [r.id, getDisplayName(r) || r.id])),
   );
   state.allSelectableGroupIds = new Set(state.groupTree.usedGroupIds);
 
-  const symptoms = uniqSorted(records.flatMap((r) => r.symptoms_list || []));
-  state.allSymptoms = new Set(symptoms);
+  const fallbackSymptoms = uniqSorted(records.flatMap((r) => r.symptoms_list || []));
+  try {
+    const workbookSymptoms = await fetchTopSymptomsFromWorkbook();
+    state.allSymptoms = new Set(
+      workbookSymptoms.length > 0 ? workbookSymptoms : fallbackSymptoms,
+    );
+  } catch (err) {
+    console.warn(
+      'Failed to load symptom options from xlsx, falling back to disease list data:',
+      err,
+    );
+    state.allSymptoms = new Set(fallbackSymptoms);
+  }
 
   renderFilters();
 
@@ -936,11 +1002,14 @@ async function boot() {
   initTableSort();
   const raw = await fetchDiseaseData();
 
+  // テーブルには obsolete が 1 のアイテムを表示しない
+  const rawForTable = raw.filter((r) => r.obsolete !== 1 && r.obsolete !== '1');
+
   const idToLabelMap = new Map(
     raw.map((r) => [r.id, getDisplayName(r) || r.id]),
   );
 
-  state.all = raw.map((r) => {
+  state.all = rawForTable.map((r) => {
     const noticeNum = Number.parseInt(r.notificationNumber, 10);
     const hasNoticeNum = Number.isFinite(noticeNum) && noticeNum > 0;
     const symptomsJaList = normalizeSymptomList(r.symptoms_ja_list);
@@ -959,7 +1028,7 @@ async function boot() {
     };
   });
 
-  initFilters(state.all);
+  await initFilters(state.all);
   applyFilters();
 }
 

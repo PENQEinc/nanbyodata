@@ -57,7 +57,12 @@
       </header>
 
       <div class="contents-wrapper">
-        <div class="content-block">
+        <!-- トップのカードから飛んだときの新規テーブル用（config JSON で表示） -->
+        <div id="card-detail-view" class="content-block" style="display: none;" aria-hidden="true">
+          <div id="card-detail-content"></div>
+        </div>
+        <!-- 通常表示の NanbyoData in numbers テーブル -->
+        <div id="nanbyodata-in-numbers-original" class="content-block">
 
           <!-- 難病統計テーブル -->
           <div class="stats-section">
@@ -180,7 +185,7 @@
           </div>
 
           <!-- リンクテーブル -->
-          <div class="stats-section">
+          <div class="stats-section" id="related-data">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <h4 class="stats-section-title">外部リンク</h4>
             {% else %}
@@ -246,7 +251,7 @@
           </div>
 
           <!-- 疾患関連データテーブル -->
-          <div class="stats-section">
+          <div class="stats-section" id="related-data">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
             <h4 class="stats-section-title">疾患関連データ</h4>
             {% else %}
@@ -486,6 +491,7 @@
           </div>
 
         </div>
+      </div>
       </div>
     </section>
 

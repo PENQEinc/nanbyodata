@@ -27,7 +27,7 @@
       gap: 8px;
       font-size: var(--font-size-base);
       font-weight: 700;
-      color: var(--color-secondary);
+      color: #444;
       margin-bottom: 12px;
       padding-bottom: 8px;
       border-bottom: 1px dashed var(--color-table-border);
@@ -59,11 +59,11 @@
         color: #b0b0b0;
 
         &:hover {
-          color: var(--color-primary);
+          color: rgba(68, 68, 68, 0.8);
         }
 
         &.is-selected {
-          color: var(--color-secondary);
+          color: #444;
           font-weight: 600;
         }
       }

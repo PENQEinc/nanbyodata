@@ -63,7 +63,10 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     showLoading();
-    [tagsConfig, resourcesData] = await Promise.all([fetchTagsJson(), fetchResourcesJson()]);
+    [tagsConfig, resourcesData] = await Promise.all([
+      fetchTagsJson(),
+      fetchResourcesJson(),
+    ]);
     if (!resourcesData[lang]) resourcesData[lang] = [];
   } catch (e) {
     console.error('Resources or tags fetch error:', e);
@@ -73,7 +76,9 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   if (loadingEl) loadingEl.style.display = 'none';
 
-  const { getTagLabel, getTagStyle, SIDEBAR_TAGS } = buildTagHelpers(tagsConfig.resources);
+  const { getTagLabel, getTagStyle, SIDEBAR_TAGS } = buildTagHelpers(
+    tagsConfig.resources,
+  );
   const items = resourcesData[lang] || [];
 
   // 年リスト（重複なし・降順）
@@ -82,7 +87,7 @@ document.addEventListener('DOMContentLoaded', async () => {
   ].sort((a, b) => b - a);
 
   // サイドバー: Year
-  const yearAllLabel = lang === 'ja' ? '全期間' : 'All periods';
+  const yearAllLabel = lang === 'ja' ? 'すべて' : 'All';
   yearOptionsEl.innerHTML = [
     `<li><label class="is-selected" data-year=""><span class="option-check"></span><span>${yearAllLabel}</span></label></li>`,
     ...years.map(
