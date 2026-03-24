@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 280" role="img" aria-labelledby="title desc">
+  <title id="title">Stegosaurus base mascot</title>
+  <desc id="desc">Cartoon stegosaurus base mascot.</desc>
+  <defs>
+    <linearGradient id="card" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#f5fbf8"/>
+      <stop offset="100%" stop-color="#e4f1eb"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#7fc8aa"/>
+      <stop offset="100%" stop-color="#389174"/>
+    </linearGradient>
+    <linearGradient id="belly" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#fff6e6"/>
+      <stop offset="100%" stop-color="#eee0b8"/>
+    </linearGradient>
+    <linearGradient id="plate" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#ecf2df"/>
+      <stop offset="100%" stop-color="#c7dcb9"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="16" y="16" width="288" height="248" rx="34" fill="url(#card)"/>
+  <path d="M44 232c54-22 106-32 156-32 40 0 77 7 108 18" fill="none" stroke="#dce9e2" stroke-width="8" opacity=".8"/>
+
+  <g transform="translate(24 34)" stroke="#4d806c" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M74 132c18-40 70-64 128-64 63 0 110 28 110 67 0 42-45 69-122 69-76 0-126-24-126-61 0-4 0-7 1-11 3 2 7 3 11 3 18 0 33-14 33-31 0-13-9-24-23-29-4 0-8 0-12 1z" fill="url(#body)"/>
+
+    <path d="M101 145c20 9 50 13 88 13 46 0 83-6 109-18-9 24-51 41-116 41-55 0-96-11-113-30 10 0 21-2 32-6z" fill="url(#belly)" opacity=".95"/>
+
+    <g fill="url(#plate)">
+      <path d="M116 92 130 34 150 96Z"/>
+      <path d="M143 80 160 18 182 86Z"/>
+      <path d="M171 74 189 12 212 82Z"/>
+      <path d="M201 80 217 20 236 88Z"/>
+      <path d="M228 92 240 40 256 96Z"/>
+    </g>
+
+    <path d="M252 98c14-24 31-37 51-39 15-1 27 4 35 14 8 11 7 24-3 35-10 11-25 16-43 16-11 0-21 2-31 7l-16-17c2-6 4-11 7-16z" fill="url(#body)"/>
+    <ellipse cx="286" cy="92" rx="26" ry="22" fill="#98d5bb"/>
+    <circle cx="295" cy="88" r="5" fill="#17392e" stroke="none"/>
+    <circle cx="299" cy="85" r="1.8" fill="#fff" stroke="none"/>
+    <path d="M288 103c8 5 17 5 25 0" stroke="#fffdf8" stroke-width="4"/>
+
+    <path d="M74 145c-30 5-52 15-64 28-11 12-13 24-6 32 8 9 25 11 49 6z" fill="url(#body)"/>
+    <g fill="#eadab4">
+      <path d="M18 170-4 162l10 20Z"/>
+      <path d="M33 185 11 185l16 17Z"/>
+      <path d="M49 199 29 204l20 13Z"/>
+      <path d="M63 210 46 220l20 8Z"/>
+    </g>
+
+    <g fill="#fff8ea" stroke="#4d806c">
+      <rect x="118" y="163" width="16" height="50" rx="8"/>
+      <rect x="156" y="163" width="16" height="50" rx="8"/>
+      <rect x="212" y="160" width="16" height="54" rx="8"/>
+      <rect x="248" y="158" width="16" height="56" rx="8"/>
+    </g>
+  </g>
+</svg>

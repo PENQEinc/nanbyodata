@@ -1,0 +1,130 @@
+{
+  "categories": {
+    "bone-joint": {
+      "name_ja": "骨・関節系疾患",
+      "name_en": "Bone and joint disorders",
+      "theme_ja": "恐竜",
+      "theme_en": "Dinosaurs",
+      "series_reference_asset": "static/img/characters/base/tyrannosaurus.png",
+      "series_reference_role_ja": "シリーズ基準画像",
+      "series_reference_role_en": "series anchor image",
+      "common_style_ja": [
+        "医療情報サイトに置ける、清潔感のある穏やかなマスコット",
+        "症状や苦痛を直接見た目にしない",
+        "ポケモンのようにシルエットと顔で認識しやすいが、既存IPには似せない",
+        "太めで安定したアウトライン",
+        "つやのあるやわらかい塗り",
+        "大きくて読みやすい目",
+        "丸みのある体型",
+        "背景は白、またはごく淡い影だけ",
+        "既に作成済みのティラノサウルスベースと同じ絵柄・同じ塗り・同じデフォルメ感で、同じシリーズの仲間に見えるようにする"
+      ],
+      "common_style_en": [
+        "A calm and clean mascot suitable for a medical information website",
+        "Do not visualize symptoms or suffering directly",
+        "Readable like a game mascot, but do not resemble any existing Pokemon character",
+        "Thick stable outlines",
+        "Soft glossy shading",
+        "Large readable eyes",
+        "Rounded proportions",
+        "White background or only a very faint shadow",
+        "Keep the same visual style, paint quality, and deformation level as the approved tyrannosaurus base so they feel like one mascot series"
+      ],
+      "bases": {
+        "tyrannosaurus": {
+          "name_ja": "ティラノサウルス",
+          "name_en": "Tyrannosaurus",
+          "asset": "static/img/characters/base/tyrannosaurus.png",
+          "wikipedia_ja": "https://ja.wikipedia.org/wiki/%E3%83%86%E3%82%A3%E3%83%A9%E3%83%8E%E3%82%B5%E3%82%A6%E3%83%AB%E3%82%B9",
+          "wikipedia_en": "https://en.wikipedia.org/wiki/Tyrannosaurus",
+          "silhouette_ja": [
+            "大きな頭",
+            "大きな口",
+            "短い前脚",
+            "二足歩行",
+            "長い尾"
+          ],
+          "silhouette_en": [
+            "large head",
+            "big mouth",
+            "short arms",
+            "bipedal stance",
+            "long tail"
+          ]
+        },
+        "triceratops": {
+          "name_ja": "トリケラトプス",
+          "name_en": "Triceratops",
+          "asset": "static/img/characters/base/triceratops.png",
+          "wikipedia_ja": "https://ja.wikipedia.org/wiki/%E3%83%88%E3%83%AA%E3%82%B1%E3%83%A9%E3%83%88%E3%83%97%E3%82%B9",
+          "wikipedia_en": "https://en.wikipedia.org/wiki/Triceratops",
+          "silhouette_ja": [
+            "3本の角",
+            "大きなフリル",
+            "四足歩行"
+          ],
+          "silhouette_en": [
+            "three horns",
+            "large frill",
+            "four-legged silhouette"
+          ]
+        },
+        "stegosaurus": {
+          "name_ja": "ステゴサウルス",
+          "name_en": "Stegosaurus",
+          "asset": "static/img/characters/base/stegosaurus.png",
+          "wikipedia_ja": "https://ja.wikipedia.org/wiki/%E3%82%B9%E3%83%86%E3%82%B4%E3%82%B5%E3%82%A6%E3%83%AB%E3%82%B9",
+          "wikipedia_en": "https://en.wikipedia.org/wiki/Stegosaurus",
+          "silhouette_ja": [
+            "小さい頭",
+            "低く丸い胴体",
+            "大きな背板",
+            "長い尾",
+            "尾のスパイク"
+          ],
+          "silhouette_en": [
+            "small head",
+            "low rounded body",
+            "large back plates",
+            "long tail",
+            "visible tail spikes"
+          ]
+        },
+        "brachiosaurus": {
+          "name_ja": "ブラキオサウルス",
+          "name_en": "Brachiosaurus",
+          "asset": "static/img/characters/base/brachiosaurus.png",
+          "wikipedia_ja": "https://ja.wikipedia.org/wiki/%E3%83%96%E3%83%A9%E3%82%AD%E3%82%AA%E3%82%B5%E3%82%A6%E3%83%AB%E3%82%B9",
+          "wikipedia_en": "https://en.wikipedia.org/wiki/Brachiosaurus",
+          "silhouette_ja": [
+            "長い首",
+            "大きな体",
+            "四足歩行"
+          ],
+          "silhouette_en": [
+            "long neck",
+            "large body",
+            "four-legged silhouette"
+          ]
+        },
+        "pteranodon": {
+          "name_ja": "プテラノドン",
+          "name_en": "Pteranodon",
+          "asset": "static/img/characters/base/pteranodon.png",
+          "wikipedia_ja": "https://ja.wikipedia.org/wiki/%E3%83%97%E3%83%86%E3%83%A9%E3%83%8E%E3%83%89%E3%83%B3",
+          "wikipedia_en": "https://en.wikipedia.org/wiki/Pteranodon",
+          "silhouette_ja": [
+            "大きな翼",
+            "細長いくちばし",
+            "頭の crest"
+          ],
+          "silhouette_en": [
+            "large wings",
+            "long beak",
+            "head crest"
+          ]
+        }
+      }
+    }
+  }
+}

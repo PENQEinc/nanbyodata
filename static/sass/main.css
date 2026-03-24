@@ -175,6 +175,50 @@ Layout
   flex-grow: inherit;
   cursor: pointer;
 }
+.navbar a.my-diseases-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  box-sizing: border-box;
+  height: 32px;
+  padding: 4px 9px;
+  border: 1.5px solid rgba(255, 255, 255, 0.72);
+  border-radius: 12px;
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.08);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+.navbar a.my-diseases-link:hover, .navbar a.my-diseases-link:focus {
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.16);
+}
+.navbar a.my-diseases-link::after {
+  content: none;
+}
+.navbar a.my-diseases-link::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f02e";
+  font-size: 12px;
+  font-weight: 400;
+}
+.navbar .my-diseases-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 17px;
+  height: 17px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: var(--color-primary);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 1;
+}
 .navbar select.language-select option {
   color: var(--color-black);
   background-color: var(--color-background-gray);
@@ -229,9 +273,10 @@ Layout
 #mainNav .container .flex-wrapper .flex {
   display: flex;
   gap: 13px;
+  align-items: center;
 }
 #mainNav .container .flex-wrapper .flex select.language-select {
-  margin-top: 2px;
+  margin-top: 0;
 }
 #mainNav .container .flex-wrapper #navbarResponsive ul.navbar-nav {
   padding-top: 0;
@@ -2008,15 +2053,20 @@ Stats Overview Component
   align-items: center;
 }
 .summary-header-actions .summary-download,
-.summary-header-actions .summary-share {
+.summary-header-actions .summary-share,
+.summary-header-actions .summary-summary {
   position: relative;
 }
 .summary-header-actions .open-popup-btn {
   display: flex;
   gap: 4px;
+  align-items: center;
+  padding: 0.375rem 0.75rem;
   border: 1px solid var(--color-summary-border);
   border-radius: var(--radius-base);
   background-color: var(--color-button-background);
+  color: inherit;
+  text-decoration: none;
 }
 .summary-header-actions .open-popup-btn:focus {
   outline: none;
@@ -2724,12 +2774,61 @@ Disease page right top */
 .summary-header > .data-name {
   border-bottom: 1px dashed var(--color-summary-border);
 }
-.summary-header > .data-name > h3 {
+.summary-header > .data-name .data-name-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 6px;
+}
+.summary-header > .data-name .data-name-meta > h3 {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.summary-header > .data-name .disease-my-disease-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 0.5rem 0.9rem;
+  border: 1px solid rgba(29, 107, 82, 0.18);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.86);
+  color: #124d3c;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.summary-header > .data-name .disease-my-disease-toggle:hover,
+.summary-header > .data-name .disease-my-disease-toggle:focus {
+  transform: translateY(-1px);
+  background: rgba(255, 255, 255, 0.96);
+  border-color: rgba(29, 107, 82, 0.32);
+  box-shadow: 0 10px 24px rgba(29, 107, 82, 0.12);
+  text-decoration: none;
+  outline: none;
+}
+.summary-header > .data-name .disease-my-disease-toggle:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+.summary-header > .data-name .disease-my-disease-toggle.is-active {
+  background: linear-gradient(135deg, rgba(29, 107, 82, 0.16), rgba(219, 239, 231, 0.92));
+  border-color: rgba(29, 107, 82, 0.38);
+}
+.summary-header > .data-name .disease-my-disease-toggle i {
+  font-size: 15px;
+}
+.summary-header > .data-name > h3,
+.summary-header > .data-name .data-name-meta > h3 {
   font-size: var(--font-size-medium);
   font-weight: bold;
 }
 .summary-header > .data-name > h3 a.nando-link,
-.summary-header > .data-name > h3 span.nando-copy {
+.summary-header > .data-name > h3 span.nando-copy,
+.summary-header > .data-name .data-name-meta > h3 a.nando-link,
+.summary-header > .data-name .data-name-meta > h3 span.nando-copy {
   position: relative;
   top: -2px;
   margin-left: 5px;
@@ -2764,7 +2863,7 @@ Disease page right top */
 .summary-header > .data-name > h2#temp-label-ja,
 .summary-header > .data-name h2#temp-label-en {
   font-weight: bold;
-  padding-top: 25px;
+  padding-top: 10px;
   font-size: 32px;
 }
 .summary-header > .data-name > h2#temp-label-ja ruby,
@@ -2796,6 +2895,12 @@ Disease page right top */
 .summary-header .summary-header-links .summary-share .btn-text::before {
   font-family: "Font Awesome 5 Free";
   content: "\f1e0";
+  font-weight: 900;
+  margin-right: 6px;
+}
+.summary-header .summary-header-links .summary-summary .btn-text::before {
+  font-family: "Font Awesome 5 Free";
+  content: "\f15c";
   font-weight: 900;
   margin-right: 6px;
 }

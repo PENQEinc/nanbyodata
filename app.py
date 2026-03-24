@@ -111,6 +111,23 @@ def stats():
     return render_template('nanbyodata-in-numbers.html')
 
 #####
+# Disease summary page
+## GET:
+@app.route('/summary')
+@app.route('/summary/NANDO:<string:id_nando>')
+def summary(id_nando=""):
+    if not id_nando:
+        id_nando = request.args.get('id', '1200473')
+    return render_template('summary.html', id_nando=id_nando)
+
+#####
+# My diseases page
+## GET:
+@app.route('/my-diseases')
+def my_diseases():
+    return render_template('my_diseases.html')
+
+#####
 # TEAM
 ## GET: 
 @app.route('/team')
