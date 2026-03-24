@@ -10,3 +10,8 @@ memo.txt
 mysql/data
 mysql/logs
 mysql/scripts
+
+# current_release files prepared at startup
+ontology/current_release/nando.tsv
+ontology/current_release/nando_en.obo
+ontology/current_release/nando_ja.obo

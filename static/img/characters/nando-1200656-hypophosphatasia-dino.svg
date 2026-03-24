@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 280" role="img" aria-labelledby="title desc">
+  <title id="title">Boneasaur</title>
+  <desc id="desc">A friendly dinosaur mascot themed for bone and joint disorders.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#eef8f4"/>
+      <stop offset="100%" stop-color="#d7ebe4"/>
+    </linearGradient>
+    <linearGradient id="body" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="#6cb397"/>
+      <stop offset="100%" stop-color="#2d7f66"/>
+    </linearGradient>
+  </defs>
+  <rect x="14" y="14" width="292" height="252" rx="34" fill="url(#bg)"/>
+  <g fill="none" stroke="#d6e7df" stroke-width="8" opacity=".8">
+    <path d="M46 222c36-24 78-36 126-36 42 0 82 10 122 31"/>
+    <path d="M58 82c29-18 60-27 93-27 44 0 87 16 131 47"/>
+  </g>
+  <g transform="translate(34 28)">
+    <path d="M48 148c-8 23 10 41 31 41h95c26 0 52-14 63-36l17-36c7-15-2-34-18-38l-42-11c-7-27-36-47-72-47-48 0-84 34-84 79 0 16 5 32 10 48z" fill="url(#body)"/>
+    <path d="M170 42c12 2 29 9 38 20 12 14 10 33-4 43-13 9-26 7-38-5" fill="#78c4a5"/>
+    <path d="M203 92l35 10c9 3 14 12 10 20l-10 22-32-24z" fill="#4b987c"/>
+    <path d="M52 158c-7 20 6 31 24 31h73c16 0 30-10 37-24l13-28c4-8 1-18-7-23-22-14-48-21-77-21-30 0-56 10-63 65z" fill="#8dcbb2" opacity=".35"/>
+    <circle cx="122" cy="54" r="28" fill="#f4f0e3"/>
+    <circle cx="124" cy="54" r="18" fill="#fff9ef"/>
+    <circle cx="130" cy="50" r="4" fill="#13352a"/>
+    <path d="M116 61c8 5 18 5 25 0" stroke="#2d7f66" stroke-width="4" stroke-linecap="round"/>
+    <path d="M97 118c10-8 22-12 36-12 13 0 24 3 33 9" stroke="#e9dcc4" stroke-width="10" stroke-linecap="round"/>
+    <path d="M89 137c13-11 29-16 47-16 17 0 31 5 43 14" stroke="#fff9ef" stroke-width="6" stroke-linecap="round"/>
+    <g fill="#f7f0df">
+      <rect x="82" y="174" width="14" height="42" rx="7"/>
+      <rect x="119" y="172" width="14" height="44" rx="7"/>
+      <rect x="191" y="164" width="12" height="37" rx="6" transform="rotate(18 197 182)"/>
+    </g>
+    <g fill="#e7dac2">
+      <path d="M160 31l11-18 8 14 15-4-10 16z"/>
+      <path d="M183 39l12-13 7 15 16-2-13 15z"/>
+      <path d="M203 53l13-11 5 15 16 1-15 13z"/>
+    </g>
+    <g fill="#fffcf5" opacity=".9">
+      <circle cx="36" cy="170" r="8"/>
+      <circle cx="232" cy="36" r="5"/>
+      <circle cx="220" cy="166" r="6"/>
+    </g>
+  </g>
+</svg>

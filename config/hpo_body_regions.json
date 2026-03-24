@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "source_root": "HP:0000118",
+  "source_root_label": "Phenotypic abnormality",
+  "body_regions": [
+    {
+      "key": "head_neck",
+      "label_ja": "頭頚部",
+      "label_en": "Head and neck",
+      "hpo_id": "HP:0000152",
+      "hpo_label_en": "Abnormality of head or neck",
+      "target_area": "head"
+    },
+    {
+      "key": "eye",
+      "label_ja": "眼",
+      "label_en": "Eye",
+      "hpo_id": "HP:0000478",
+      "hpo_label_en": "Abnormality of the eye",
+      "target_area": "eye"
+    },
+    {
+      "key": "ear",
+      "label_ja": "耳",
+      "label_en": "Ear",
+      "hpo_id": "HP:0000598",
+      "hpo_label_en": "Abnormality of the ear",
+      "target_area": "ear"
+    },
+    {
+      "key": "nervous_system",
+      "label_ja": "神経系",
+      "label_en": "Nervous system",
+      "hpo_id": "HP:0000707",
+      "hpo_label_en": "Abnormality of the nervous system",
+      "target_area": "head"
+    },
+    {
+      "key": "endocrine",
+      "label_ja": "内分泌",
+      "label_en": "Endocrine",
+      "hpo_id": "HP:0000818",
+      "hpo_label_en": "Abnormality of the endocrine system",
+      "target_area": "torso"
+    },
+    {
+      "key": "cardiovascular",
+      "label_ja": "心血管",
+      "label_en": "Cardiovascular",
+      "hpo_id": "HP:0001626",
+      "hpo_label_en": "Abnormality of the cardiovascular system",
+      "target_area": "chest"
+    },
+    {
+      "key": "respiratory",
+      "label_ja": "呼吸器",
+      "label_en": "Respiratory",
+      "hpo_id": "HP:0002086",
+      "hpo_label_en": "Abnormality of the respiratory system",
+      "target_area": "chest"
+    },
+    {
+      "key": "thoracic_cavity",
+      "label_ja": "胸郭",
+      "label_en": "Thoracic cavity",
+      "hpo_id": "HP:0045027",
+      "hpo_label_en": "Abnormality of the thoracic cavity",
+      "target_area": "chest"
+    },
+    {
+      "key": "digestive_system",
+      "label_ja": "消化器",
+      "label_en": "Digestive system",
+      "hpo_id": "HP:0025031",
+      "hpo_label_en": "Abnormality of the digestive system",
+      "target_area": "abdomen"
+    },
+    {
+      "key": "genitourinary_system",
+      "label_ja": "泌尿生殖器",
+      "label_en": "Genitourinary system",
+      "hpo_id": "HP:0000119",
+      "hpo_label_en": "Abnormality of the genitourinary system",
+      "target_area": "pelvis"
+    },
+    {
+      "key": "blood",
+      "label_ja": "血液",
+      "label_en": "Blood",
+      "hpo_id": "HP:0001871",
+      "hpo_label_en": "Abnormality of blood and blood-forming tissues",
+      "target_area": "torso"
+    },
+    {
+      "key": "immune_system",
+      "label_ja": "免疫",
+      "label_en": "Immune system",
+      "hpo_id": "HP:0002715",
+      "hpo_label_en": "Abnormality of the immune system",
+      "target_area": "torso"
+    },
+    {
+      "key": "integument",
+      "label_ja": "皮膚",
+      "label_en": "Integument",
+      "hpo_id": "HP:0001574",
+      "hpo_label_en": "Abnormality of the integument",
+      "target_area": "skin"
+    },
+    {
+      "key": "musculoskeletal_system",
+      "label_ja": "筋骨格",
+      "label_en": "Musculoskeletal system",
+      "hpo_id": "HP:0033127",
+      "hpo_label_en": "Abnormality of the musculoskeletal system",
+      "target_area": "limbs"
+    },
+    {
+      "key": "limbs",
+      "label_ja": "四肢",
+      "label_en": "Limbs",
+      "hpo_id": "HP:0040064",
+      "hpo_label_en": "Abnormality of limbs",
+      "target_area": "limbs"
+    },
+    {
+      "key": "breast",
+      "label_ja": "乳房",
+      "label_en": "Breast",
+      "hpo_id": "HP:0000769",
+      "hpo_label_en": "Abnormality of the breast",
+      "target_area": "chest"
+    },
+    {
+      "key": "voice",
+      "label_ja": "音声",
+      "label_en": "Voice",
+      "hpo_id": "HP:0001608",
+      "hpo_label_en": "Abnormality of the voice",
+      "target_area": "head"
+    }
+  ],
+  "supplemental_categories": [
+    {
+      "hpo_id": "HP:0001507",
+      "label_en": "Growth abnormality",
+      "label_ja": "成長異常"
+    },
+    {
+      "hpo_id": "HP:0025142",
+      "label_en": "Constitutional symptom",
+      "label_ja": "全身症状"
+    },
+    {
+      "hpo_id": "HP:0001939",
+      "label_en": "Abnormality of metabolism/homeostasis",
+      "label_ja": "代謝・恒常性異常"
+    },
+    {
+      "hpo_id": "HP:0001197",
+      "label_en": "Abnormality of prenatal development or birth",
+      "label_ja": "胎生期発生・出生異常"
+    },
+    {
+      "hpo_id": "HP:0002664",
+      "label_en": "Neoplasm",
+      "label_ja": "腫瘍"
+    },
+    {
+      "hpo_id": "HP:0025354",
+      "label_en": "Abnormal cellular phenotype",
+      "label_ja": "細胞表現型異常"
+    }
+  ]
+}

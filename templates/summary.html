@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% elif get_locale() == "ko" or get_locale() == "ko_KR" %}
+<html lang="ko">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+  <title>疾患サマリー | NanbyoData</title>
+  <meta name="description" content="NanbyoData の疾患サマリーページです." />
+  <meta property="og:title" content="疾患サマリー | NanbyoData" />
+  <meta property="og:description" content="NanbyoData の疾患サマリーページです." />
+  {% else %}
+  <title>Disease Summary | NanbyoData</title>
+  <meta name="description" content="Disease summary page of NanbyoData." />
+  <meta property="og:title" content="Disease Summary | NanbyoData" />
+  <meta property="og:description" content="Disease summary page of NanbyoData." />
+  {% endif %}
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanbyodata.jp/summary/NANDO:{{ id_nando }}" />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet" />
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css" />
+  <link rel="stylesheet" type="text/css" href="/static/css/summary.css" />
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+</head>
+
+<body class="summary-body">
+  <main id="summary-root" data-initial-id="{{ id_nando }}" data-locale="{{ get_locale() }}">
+    {% include 'component/navigation.html' %}
+
+    <div class="summary-shell">
+      <aside class="summary-toc summary-toc-desktop" aria-label="Table of Contents">
+        <div class="summary-toc-title">
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+          このページの内容
+          {% else %}
+          Table of Contents
+          {% endif %}
+        </div>
+        <nav class="summary-toc-nav" id="summary-toc-nav">
+          <a class="summary-toc-link" href="#disease-profile" data-target="disease-profile">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            疾患プロフィール
+            {% else %}
+            Disease Profile
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#clinical-overview" data-target="clinical-overview">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            臨床概要
+            {% else %}
+            Clinical Overview
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#molecular-diagnosis" data-target="molecular-diagnosis">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            分子・診断
+            {% else %}
+            Molecular / Diagnosis
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#subtype-classification" data-target="subtype-classification">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            病型分類
+            {% else %}
+            Subtype Classification
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#patient-trend" data-target="patient-trend">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            患者数推移
+            {% else %}
+            Patient Trend
+            {% endif %}
+          </a>
+        </nav>
+      </aside>
+
+      <div class="summary-status-bar">
+        <div class="summary-status" id="status"></div>
+        <div class="summary-top-actions">
+          <a class="summary-top-link" id="detail-link" href="/disease/NANDO:{{ id_nando }}">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            詳細ページ
+            {% else %}
+            Detail page
+            {% endif %}
+          </a>
+          <button class="summary-top-link" id="txt-download" type="button">TXT Download</button>
+          <button class="summary-top-link" id="json-download" type="button">JSON Download</button>
+        </div>
+      </div>
+
+      <details class="summary-toc-mobile">
+        <summary>
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+          このページの内容
+          {% else %}
+          On this page
+          {% endif %}
+        </summary>
+        <nav class="summary-toc-nav">
+          <a class="summary-toc-link" href="#disease-profile" data-target="disease-profile">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            疾患プロフィール
+            {% else %}
+            Disease Profile
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#clinical-overview" data-target="clinical-overview">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            臨床概要
+            {% else %}
+            Clinical Overview
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#molecular-diagnosis" data-target="molecular-diagnosis">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            分子・診断
+            {% else %}
+            Molecular / Diagnosis
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#subtype-classification" data-target="subtype-classification">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            病型分類
+            {% else %}
+            Subtype Classification
+            {% endif %}
+          </a>
+          <a class="summary-toc-link" href="#patient-trend" data-target="patient-trend">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            患者数推移
+            {% else %}
+            Patient Trend
+            {% endif %}
+          </a>
+        </nav>
+      </details>
+
+      <section class="summary-layout">
+        <div class="summary-stack">
+          <section class="summary-panel summary-hero-main" id="disease-profile">
+            <div class="summary-hero-actions">
+              <button class="summary-my-disease-button" id="my-disease-toggle" type="button" disabled aria-pressed="false">
+                <span class="summary-my-disease-icon" aria-hidden="true"></span>
+                <span id="my-disease-toggle-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  マイ疾患に追加
+                  {% else %}
+                  Add to My Diseases
+                  {% endif %}
+                </span>
+              </button>
+            </div>
+            <div class="summary-hero-overview summary-hero-overview--single" id="summary-hero-overview">
+              <div class="summary-hero-copy">
+                <div class="summary-section-head">
+                  <div>
+                    <h1 id="title-ja">Loading...</h1>
+                    <div class="summary-subhead" id="title-en"></div>
+                  </div>
+                </div>
+                <div class="summary-description" id="description"></div>
+                <button class="summary-description-toggle" id="description-toggle" type="button" hidden>More</button>
+              </div>
+              <div class="summary-character-slot" id="summary-character-slot" hidden></div>
+            </div>
+
+            <div class="summary-meta-grid summary-profile-grid">
+              <a class="summary-meta-card summary-card-link" id="nando-id-link" href="/disease/NANDO:{{ id_nando }}">
+                <span class="summary-link-icon" aria-hidden="true"></span>
+                <div class="summary-meta-label">NANDO ID</div>
+                <div class="summary-meta-value" id="nando-id">-</div>
+              </a>
+              <div class="summary-meta-card">
+                <div class="summary-meta-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  告示番号
+                  {% else %}
+                  Notification No.
+                  {% endif %}
+                </div>
+                <div class="summary-meta-value" id="notification-number">-</div>
+              </div>
+              <div class="summary-meta-card">
+                <div class="summary-meta-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  代表略称
+                  {% else %}
+                  Primary alias
+                  {% endif %}
+                </div>
+                <div class="summary-meta-value" id="alias-primary">-</div>
+              </div>
+            </div>
+
+            <div class="summary-insight-grid summary-profile-grid">
+              <a class="summary-insight-card summary-card-link" id="mondo-link" target="_blank" rel="noopener noreferrer">
+                <span class="summary-link-icon" aria-hidden="true"></span>
+                <div class="summary-meta-label">MONDO ID</div>
+                <div class="summary-insight-value" id="insight-axis">-</div>
+                <div class="summary-tiny" id="insight-axis-note">-</div>
+              </a>
+              <div class="summary-insight-card">
+                <div class="summary-meta-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  特定医療費受給者証所持者数
+                  {% else %}
+                  Patients
+                  {% endif %}
+                </div>
+                <div class="summary-insight-value" id="insight-patients">-</div>
+                <div class="summary-tiny" id="insight-patients-note">-</div>
+              </div>
+              <a class="summary-insight-card summary-card-link" id="latest-paper-link" target="_blank" rel="noopener noreferrer">
+                <span class="summary-link-icon" aria-hidden="true"></span>
+                <div class="summary-meta-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  最新関連文献
+                  {% else %}
+                  Latest related paper
+                  {% endif %}
+                </div>
+                <div class="summary-insight-value" id="insight-paper">-</div>
+                <div class="summary-tiny" id="insight-paper-note">-</div>
+              </a>
+            </div>
+          </section>
+
+          <section class="summary-panel summary-detail-card" id="clinical-overview">
+            <div class="summary-section-head">
+              <div>
+                <h2>
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  臨床概要
+                  {% else %}
+                  Clinical Overview
+                  {% endif %}
+                </h2>
+              </div>
+            </div>
+            <div class="summary-bodymap-wrap" id="bodymap-wrap"></div>
+            <div class="summary-selection-summary" id="selection-summary"></div>
+            <div class="summary-feature-grid" id="feature-grid"></div>
+            <div class="summary-facial-panel summary-facial-panel-full" id="facial-panel" hidden></div>
+          </section>
+
+          <section class="summary-panel summary-detail-card" id="molecular-diagnosis">
+            <div class="summary-section-head">
+              <div>
+                <h2>
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  分子・診断
+                  {% else %}
+                  Molecular / Diagnosis
+                  {% endif %}
+                </h2>
+              </div>
+            </div>
+            <div class="summary-diagnostic-grid" id="diagnostic-grid"></div>
+            <div class="summary-gene-grid" id="gene-grid"></div>
+          </section>
+
+          <section class="summary-panel summary-subclass-card" id="subtype-classification">
+            <div class="summary-section-head">
+              <div>
+                <h2>
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  病型分類
+                  {% else %}
+                  Subtype classification
+                  {% endif %}
+                </h2>
+              </div>
+              <div class="summary-section-meta" id="subclass-meta"></div>
+            </div>
+            <div class="summary-subclass-tree" id="subclass-tree"></div>
+          </section>
+
+          <section class="summary-panel summary-trend-card" id="patient-trend">
+            <div class="summary-section-head">
+              <div>
+                <h2>
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  特定医療費受給者証所持者数の推移
+                  {% else %}
+                  Patient trend
+                  {% endif %}
+                </h2>
+              </div>
+            </div>
+            <div class="summary-trend-wrap" id="trend-chart"></div>
+          </section>
+        </div>
+
+        <div class="summary-stack">
+          <aside class="summary-panel summary-sidebar">
+            <section class="summary-sidebar-section">
+              <h2 class="summary-sidebar-title">
+                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                基本情報
+                {% else %}
+                Quick Facts
+                {% endif %}
+              </h2>
+              <div class="summary-compact-list" id="quick-facts-list"></div>
+            </section>
+
+            <section class="summary-sidebar-section" id="external-links">
+              <h2 class="summary-sidebar-title">
+                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                外部リンク
+                {% else %}
+                External Links
+                {% endif %}
+              </h2>
+              <div class="summary-compact-list" id="link-grid"></div>
+            </section>
+
+            <section class="summary-sidebar-section" id="literature">
+              <h2 class="summary-sidebar-title">
+                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                関連文献
+                {% else %}
+                Related literature
+                {% endif %}
+              </h2>
+              <div class="summary-compact-list" id="reference-list"></div>
+            </section>
+          </aside>
+        </div>
+      </section>
+
+      <div class="summary-footer-note" id="footer-note"></div>
+    </div>
+
+    {% include 'component/footer.html' %}
+
+    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+    {% include 'component/modal-tos.html' %}
+    {% else %}
+    {% include 'component/modal-tos_en.html' %}
+    {% endif %}
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+    crossorigin="anonymous"></script>
+  <script type="module" src="/static/js/main.js"></script>
+  <script src="/static/js/utils/disease-characters.js"></script>
+  <script src="/static/js/summary.js"></script>
+</body>
+
+</html>

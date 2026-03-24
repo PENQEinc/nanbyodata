@@ -12,6 +12,14 @@
           aria-label="Toggle navigation">
           <i class=" fas fa-bars"></i>
         </button>
+        <a class="my-diseases-link" href="/my-diseases">
+          {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+          <span>マイ疾患</span>
+          {% else %}
+          <span>My Diseases</span>
+          {% endif %}
+          <span class="my-diseases-count" id="my-diseases-nav-count">0</span>
+        </a>
         <select class="language-select">
           <option value="ja" {% if get_locale()=='ja' %}selected{% endif %}>日本語</option>
           <option value="en" {% if get_locale()=='en' %}selected{% endif %}>English</option>
@@ -65,3 +73,4 @@
     </div>
   </div>
 </nav>
+<script src="/static/js/utils/my-diseases-nav.js"></script>
