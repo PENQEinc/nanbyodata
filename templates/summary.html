@@ -81,9 +81,9 @@
           </a>
           <a class="summary-toc-link" href="#patient-trend" data-target="patient-trend">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-            患者数推移
+            特定医療費受給者証所持者数の推移
             {% else %}
-            Patient Trend
+            Certificate Holder Trend
             {% endif %}
           </a>
         </nav>
@@ -143,9 +143,9 @@
           </a>
           <a class="summary-toc-link" href="#patient-trend" data-target="patient-trend">
             {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-            患者数推移
+            特定医療費受給者証所持者数の推移
             {% else %}
-            Patient Trend
+            Certificate Holder Trend
             {% endif %}
           </a>
         </nav>
@@ -195,6 +195,7 @@
                   {% endif %}
                 </div>
                 <div class="summary-meta-value" id="notification-number">-</div>
+                <div class="summary-tiny" id="notification-program"></div>
               </div>
               <div class="summary-meta-card">
                 <div class="summary-meta-label">
@@ -215,6 +216,18 @@
                 <div class="summary-insight-value" id="insight-axis">-</div>
                 <div class="summary-tiny" id="insight-axis-note">-</div>
               </a>
+              <a class="summary-insight-card summary-card-link" id="inheritance-link" target="_blank" rel="noopener noreferrer">
+                <span class="summary-link-icon" aria-hidden="true"></span>
+                <div class="summary-meta-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  遺伝形式
+                  {% else %}
+                  Inheritance
+                  {% endif %}
+                </div>
+                <div class="summary-insight-value" id="insight-inheritance">-</div>
+                <div class="summary-tiny" id="insight-inheritance-note">-</div>
+              </a>
               <div class="summary-insight-card">
                 <div class="summary-meta-label">
                   {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
@@ -226,18 +239,6 @@
                 <div class="summary-insight-value" id="insight-patients">-</div>
                 <div class="summary-tiny" id="insight-patients-note">-</div>
               </div>
-              <a class="summary-insight-card summary-card-link" id="latest-paper-link" target="_blank" rel="noopener noreferrer">
-                <span class="summary-link-icon" aria-hidden="true"></span>
-                <div class="summary-meta-label">
-                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                  最新関連文献
-                  {% else %}
-                  Latest related paper
-                  {% endif %}
-                </div>
-                <div class="summary-insight-value" id="insight-paper">-</div>
-                <div class="summary-tiny" id="insight-paper-note">-</div>
-              </a>
             </div>
           </section>
 
@@ -272,6 +273,7 @@
               </div>
             </div>
             <div class="summary-diagnostic-grid" id="diagnostic-grid"></div>
+            <div id="diagnostic-detail"></div>
             <div class="summary-gene-grid" id="gene-grid"></div>
           </section>
 
@@ -298,7 +300,7 @@
                   {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
                   特定医療費受給者証所持者数の推移
                   {% else %}
-                  Patient trend
+                  Certificate Holder Trend
                   {% endif %}
                 </h2>
               </div>
@@ -332,13 +334,22 @@
             </section>
 
             <section class="summary-sidebar-section" id="literature">
-              <h2 class="summary-sidebar-title">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                関連文献
-                {% else %}
-                Related literature
-                {% endif %}
-              </h2>
+              <div class="summary-sidebar-head">
+                <h2 class="summary-sidebar-title">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  関連文献
+                  {% else %}
+                  Related literature
+                  {% endif %}
+                </h2>
+                <a class="summary-sidebar-link" id="reference-detail-link" href="/disease/NANDO:{{ id_nando }}#references">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  全文献を見る
+                  {% else %}
+                  View all references
+                  {% endif %}
+                </a>
+              </div>
               <div class="summary-compact-list" id="reference-list"></div>
             </section>
           </aside>
