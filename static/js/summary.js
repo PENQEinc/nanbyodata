@@ -14,6 +14,7 @@
     facialSelection: null,
   };
   const labelCache = new Map();
+  const monarchEntityCache = new Map();
   let bodyMapPromise = null;
   let facialMapPromise = null;
   let currentMyDiseaseEntry = null;
@@ -342,6 +343,27 @@
     return response.json();
   }
 
+  async function fetchMonarchEntity(mondoId) {
+    const normalizedId = String(mondoId || '').trim();
+    if (!normalizedId) return null;
+    if (monarchEntityCache.has(normalizedId)) return monarchEntityCache.get(normalizedId);
+
+    const promise = fetch(`https://api-v3.monarchinitiative.org/v3/api/entity/${encodeURIComponent(normalizedId)}`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Monarch entity ${normalizedId}: HTTP ${response.status}`);
+        }
+        return response.json();
+      })
+      .catch((error) => {
+        monarchEntityCache.delete(normalizedId);
+        throw error;
+      });
+
+    monarchEntityCache.set(normalizedId, promise);
+    return promise;
+  }
+
   async function fetchOntologyLabels(id) {
     const cacheKey = `NANDO:${normalizeNandoId(id)}`;
     if (labelCache.has(cacheKey)) return labelCache.get(cacheKey);
@@ -354,11 +376,20 @@
       .split('\n')
       .find((row) => row.startsWith(`${cacheKey}\t`));
 
-    const labels = { ja: '', en: '' };
+    const labels = { ja: '', en: '', programJa: '', programEn: '' };
     if (line) {
       const cols = line.split('\t');
-      labels.en = stripDiseasePrefix(cols[1] || '');
-      labels.ja = stripDiseasePrefix(cols[3] || '');
+      const rawEn = cols[1] || '';
+      const rawJa = cols[3] || '';
+      labels.en = stripDiseasePrefix(rawEn);
+      labels.ja = stripDiseasePrefix(rawJa);
+      if (/\[Shitei\]/.test(rawEn) || /\[指定\]/.test(rawJa)) {
+        labels.programJa = '指定難病';
+        labels.programEn = 'Designated Intractable Disease';
+      } else if (/\[Shoman\]/.test(rawEn) || /\[小慢\]/.test(rawJa)) {
+        labels.programJa = '小児慢性特定疾病';
+        labels.programEn = 'Chronic Pediatric Disease';
+      }
     }
 
     labelCache.set(cacheKey, labels);
@@ -531,13 +562,14 @@
     const base = `${window.location.origin}/disease/NANDO:${encodeURIComponent(id)}`;
     setHref('detail-link', base);
     setHref('nando-id-link', base);
+    setHref('reference-detail-link', `${base}#references`);
   }
 
   function renderQuickFactsList() {
     const facts = [
       {
         href: '#patient-trend',
-        label: t('患者数', 'Patients'),
+        label: t('特定医療費受給者証所持者数', 'Certificate Holders'),
         value: quickFactsState.patients || '-',
         note: quickFactsState.patientsNote || '',
       },
@@ -617,6 +649,127 @@
     );
   }
 
+  function slugifySegment(value) {
+    return String(value || '')
+      .normalize('NFKD')
+      .replace(/[^\w\s-]/g, '')
+      .trim()
+      .toLowerCase()
+      .replace(/[\s_-]+/g, '-')
+      .replace(/^-+|-+$/g, '');
+  }
+
+  function formatInheritanceItem(item) {
+    if (!item) return '-';
+    return (isJapaneseLocale() ? item.id || item.id_en : item.id_en || item.id) || '-';
+  }
+
+  function buildInheritanceSummary(items) {
+    const list = Array.isArray(items) ? items.filter(Boolean) : [];
+    if (!list.length) {
+      return {
+        value: '-',
+        note: '',
+        url: '#',
+      };
+    }
+
+    const primary = list[0];
+    const value = formatInheritanceItem(primary);
+    const englishLabel = String(primary.id_en || '').trim();
+    return {
+      value,
+      note: isJapaneseLocale() && englishLabel && englishLabel !== value ? englishLabel : '',
+      url: primary.url || primary.uri || '#',
+    };
+  }
+
+  function extractMondoId(overview, mondo) {
+    const mondoItem = (Array.isArray(mondo) ? mondo : []).find((item) => item.id?.startsWith('MONDO:'));
+    return mondoItem?.id || overview?.mondos?.[0]?.id || '';
+  }
+
+  async function fetchGardLinkByMondoId(mondoId, overview) {
+    if (!mondoId) return null;
+
+    const entity = await fetchMonarchEntity(mondoId);
+    const gardXref = Array.isArray(entity?.xref)
+      ? entity.xref.find((xref) => String(xref).startsWith('GARD:'))
+      : '';
+    if (!gardXref) return null;
+
+    const gardId = gardXref.split(':')[1];
+    if (!gardId) return null;
+
+    const slugSource =
+      pickDiseaseName(overview || {}, 'en') ||
+      entity?.name ||
+      pickDiseaseName(overview || {}, 'ja') ||
+      '';
+    const slug = slugifySegment(slugSource);
+
+    return {
+      label: 'GARD',
+      url: slug
+        ? `https://rarediseases.info.nih.gov/diseases/${encodeURIComponent(gardId)}/${slug}`
+        : `https://rarediseases.info.nih.gov/search?search=${encodeURIComponent(gardXref)}`,
+    };
+  }
+
+  function buildMonarchXrefLink(xref) {
+    const raw = String(xref || '').trim();
+    if (!raw || !raw.includes(':')) return null;
+
+    const [prefix, ...rest] = raw.split(':');
+    const localId = rest.join(':').trim();
+    if (!prefix || !localId) return null;
+
+    const normalizedPrefix = prefix.toUpperCase();
+    const mappings = {
+      DOID: {
+        label: 'DOID',
+        url: `http://purl.obolibrary.org/obo/DOID_${encodeURIComponent(localId)}`,
+      },
+      MESH: {
+        label: 'MESH',
+        url: `https://id.nlm.nih.gov/mesh/${encodeURIComponent(localId)}.html`,
+      },
+      NCIT: {
+        label: 'NCIT',
+        url: `https://evsexplore.semantics.cancer.gov/evsexplore/concept/ncit/${encodeURIComponent(localId)}`,
+      },
+      ICD10CM: {
+        label: 'ICD10CM',
+        url: `https://www.icd10data.com/search?s=${encodeURIComponent(localId)}`,
+      },
+      'ICD11.FOUNDATION': {
+        label: 'ICD11',
+        url: `https://icd.who.int/browse/2025-01/foundation/en#${encodeURIComponent(localId)}`,
+      },
+    };
+
+    const match = mappings[normalizedPrefix];
+    if (!match) return null;
+
+    return {
+      label: match.label,
+      url: match.url,
+    };
+  }
+
+  async function fetchMonarchXrefLinksByMondoId(mondoId) {
+    if (!mondoId) return [];
+
+    const entity = await fetchMonarchEntity(mondoId);
+    const xrefs = Array.isArray(entity?.xref) ? entity.xref : [];
+    return uniqueBy(
+      xrefs
+        .map((xref) => buildMonarchXrefLink(xref))
+        .filter(Boolean),
+      (item) => item.label
+    );
+  }
+
   function resetView(id) {
     document.title = 'Disease Summary | NanbyoData';
     currentMyDiseaseEntry = null;
@@ -661,24 +814,26 @@
     setHtml('primary-link-grid', '');
     setText('nando-id', `NANDO:${id}`);
     setText('notification-number', '-');
+    setText('notification-program', '');
     setText('alias-primary', '-');
     configureSummaryLinks(id);
     setHref('mondo-link', '#');
-    setHref('latest-paper-link', '#');
+    setHref('inheritance-link', '#');
 
     [
       'insight-axis',
       'insight-axis-note',
+      'insight-inheritance',
+      'insight-inheritance-note',
       'insight-patients',
       'insight-patients-note',
-      'insight-paper',
-      'insight-paper-note',
     ].forEach((key) => setText(key, '-'));
 
     $('trend-chart').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
     $('quick-facts-list').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
     $('gene-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
     $('diagnostic-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
+    $('diagnostic-detail').innerHTML = '';
     $('bodymap-wrap').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
     $('selection-summary').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
     $('feature-grid').innerHTML = `<div class="summary-tiny">${t('読み込み中...', 'Loading...')}</div>`;
@@ -759,7 +914,7 @@
       .join('');
 
     $('trend-chart').innerHTML = `
-      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(t('患者数推移', 'Patient trend'))}">
+      <svg viewBox="0 0 ${width} ${height}" role="img" aria-label="${escapeHtml(t('特定医療費受給者証所持者数の推移', 'Certificate Holder Trend'))}">
         <defs>
           <linearGradient id="summaryTrendFill" x1="0" x2="0" y1="0" y2="1">
             <stop offset="0%" stop-color="rgba(29,107,82,0.26)"></stop>
@@ -823,16 +978,76 @@
       ? cards
           .map(
             (card) => `
-        <a class="summary-diagnostic-card summary-card-link" href="${escapeHtml(card.href)}">
-          <span class="summary-link-icon" aria-hidden="true"></span>
+        ${
+          card.panelId
+            ? `<button class="summary-diagnostic-card summary-card-link summary-diagnostic-toggle" type="button" data-panel-target="${escapeHtml(card.panelId)}" aria-expanded="false">`
+            : `<a class="summary-diagnostic-card summary-card-link" href="${escapeHtml(card.href)}">`
+        }
+          ${card.panelId ? '' : '<span class="summary-link-icon" aria-hidden="true"></span>'}
           <h3>${escapeHtml(card.title)}</h3>
           <div class="summary-diagnostic-value">${escapeHtml(card.value)}</div>
-          <div class="summary-diagnostic-note">${escapeHtml(card.note)}</div>
-        </a>
+          <div class="summary-diagnostic-note">${card.noteHtml || escapeHtml(card.note)}</div>
+        ${card.panelId ? '</button>' : '</a>'}
       `
           )
           .join('')
       : `<div class="summary-tiny">${t('診断関連データはありません。', 'No diagnostic data available.')}</div>`;
+  }
+
+  function renderGeneticTestingPanel(items, detailHref) {
+    const panelHost = $('diagnostic-detail');
+    if (!panelHost) return;
+
+    const tests = Array.isArray(items) ? items.filter(Boolean) : [];
+    if (!tests.length) {
+      panelHost.innerHTML = '';
+      return;
+    }
+
+    panelHost.innerHTML = `
+      <section class="summary-inline-panel" id="genetic-testing-panel" hidden>
+        <div class="summary-inline-panel-head">
+          <div>
+            <h3 class="summary-inline-panel-title">${escapeHtml(t('診療用遺伝学的検査', 'Clinical genetic tests'))}</h3>
+          </div>
+          <a class="summary-inline-panel-link" href="${escapeHtml(detailHref)}">${escapeHtml(
+            t('詳細ページで見る', 'Open detail page')
+          )}</a>
+        </div>
+        <div class="summary-inline-panel-list">
+          ${tests
+            .map((test) => {
+              const label = String(test.label || test.hp || '-').trim();
+              const infoUrl = String(test.hp || '').trim();
+              const gene = String(test.gene || '').trim();
+              const facility = String(test.facility || '').trim();
+              return `
+                ${
+                  infoUrl
+                    ? `<a class="summary-inline-item summary-card-link summary-inline-item-link" href="${escapeHtml(infoUrl)}" target="_blank" rel="noopener noreferrer">`
+                    : '<article class="summary-inline-item">'
+                }
+                  ${infoUrl ? '<span class="summary-link-icon" aria-hidden="true"></span>' : ''}
+                  <h4>
+                    ${escapeHtml(label)}
+                  </h4>
+                  ${
+                    gene
+                      ? `<div class="summary-inline-item-meta"><strong>${escapeHtml(t('遺伝子', 'Gene'))}:</strong> ${escapeHtml(gene)}</div>`
+                      : ''
+                  }
+                  ${
+                    facility
+                      ? `<div class="summary-inline-item-meta"><strong>${escapeHtml(t('実施施設', 'Facility'))}:</strong> ${escapeHtml(facility)}</div>`
+                      : ''
+                  }
+                ${infoUrl ? '</a>' : '</article>'}
+              `;
+            })
+            .join('')}
+        </div>
+      </section>
+    `;
   }
 
   function pulseTarget(target) {
@@ -2178,8 +2393,24 @@
     );
   }
 
-  function mapLinks(overview, mondo, orphanet, medgen, kegg) {
+  function mapLinks(overview, mondo, orphanet, medgen, kegg, omim, gard, monarchXrefs) {
     const links = [];
+    const linkOrder = new Map([
+      ['MHLW 概要・診断基準', 10],
+      ['MHLW 個票', 20],
+      ['難病情報センター', 30],
+      ['MONDO', 100],
+      ['OMIM', 110],
+      ['Orphanet', 120],
+      ['MedGen', 130],
+      ['GARD', 140],
+      ['DOID', 150],
+      ['MESH', 160],
+      ['ICD10CM', 170],
+      ['ICD11', 180],
+      ['NCIT', 190],
+      ['KEGG Disease', 200],
+    ]);
 
     if (overview.mhlw?.url) links.push({ label: 'MHLW 概要・診断基準', url: overview.mhlw.url });
     if (overview.source) links.push({ label: 'MHLW 個票', url: overview.source });
@@ -2197,7 +2428,18 @@
     const keggItem = kegg.find((item) => item.kegg_url);
     if (keggItem?.kegg_url) links.push({ label: 'KEGG Disease', url: keggItem.kegg_url });
 
-    return uniqueBy(links, (link) => `${link.label}:${link.url}`);
+    const omimItem = (Array.isArray(omim) ? omim : []).find((item) => item.original_disease);
+    if (omimItem?.original_disease) links.push({ label: 'OMIM', url: omimItem.original_disease });
+
+    if (gard?.url) links.push({ label: 'GARD', url: gard.url });
+    if (Array.isArray(monarchXrefs) && monarchXrefs.length) links.push(...monarchXrefs);
+
+    return uniqueBy(links, (link) => `${link.label}:${link.url}`).sort((left, right) => {
+      const leftOrder = linkOrder.get(left.label) ?? 999;
+      const rightOrder = linkOrder.get(right.label) ?? 999;
+      if (leftOrder !== rightOrder) return leftOrder - rightOrder;
+      return left.label.localeCompare(right.label);
+    });
   }
 
   function getLinkDescription(label) {
@@ -2225,6 +2467,34 @@
       MedGen: t(
         'NCBI の疾患概念データベースで関連概念を確認できます。',
         'Related concept page in NCBI MedGen.'
+      ),
+      OMIM: t(
+        '遺伝性疾患と表現型の知識ベースで疾患概要を確認できます。',
+        'Disease overview in the OMIM knowledgebase of genes and phenotypes.'
+      ),
+      GARD: t(
+        '患者向けに整理された希少疾患情報を確認できます。',
+        'Patient-friendly rare disease information provided by GARD.'
+      ),
+      DOID: t(
+        'Disease Ontology の該当疾患エントリです。',
+        'Disease Ontology entry for the mapped disease.'
+      ),
+      MESH: t(
+        'MeSH の該当疾患概念を確認できます。',
+        'Mapped disease concept in MeSH.'
+      ),
+      NCIT: t(
+        'NCI Thesaurus の該当概念です。',
+        'Mapped concept in the NCI Thesaurus.'
+      ),
+      ICD11: t(
+        'WHO ICD-11 Foundation の該当概念です。',
+        'Mapped concept in the WHO ICD-11 Foundation.'
+      ),
+      ICD10CM: t(
+        'ICD-10-CM の該当コードを確認できます。',
+        'Mapped code in ICD-10-CM.'
       ),
       'KEGG Disease': t(
         'KEGG Disease に登録された疾患エントリです。',
@@ -2344,6 +2614,8 @@
     const ontologyLabelsPromise = fetchOntologyLabels(id).catch(() => ({
       ja: '',
       en: '',
+      programJa: '',
+      programEn: '',
     }));
     const patientPromise = fetchJson('nanbyodata_get_stats_on_patient_number_by_nando_id', id);
     const subClassPromise = fetchJson('nanbyodata_get_sub_class_by_nando_id', id);
@@ -2363,12 +2635,34 @@
     const mondoPromise = fetchJson('nanbyodata_get_link_mondo_by_nando_id', id);
     const orphanetPromise = fetchJson('nanbyodata_get_link_orphanet_by_nando_id', id);
     const medgenPromise = fetchJson('nanbyodata_get_link_medgen_by_nando_id', id);
+    const omimPromise = fetchJson('nanbyodata_get_link_omim_by_nando_id', id).catch((error) => {
+      if (isActiveLoad(loadToken)) {
+        console.warn('OMIM link fetch failed:', error);
+      }
+      return [];
+    });
     const keggPromise = fetchJson('nanbyodata_get_link_kegg_by_nando_id', id).catch((error) => {
       if (isActiveLoad(loadToken)) {
         console.warn('KEGG link fetch failed:', error);
       }
       return [];
     });
+    const gardPromise = Promise.all([overviewPromise, mondoPromise])
+      .then(([overview, mondo]) => fetchGardLinkByMondoId(extractMondoId(overview, mondo), overview))
+      .catch((error) => {
+        if (isActiveLoad(loadToken)) {
+          console.warn('GARD link fetch failed:', error);
+        }
+        return null;
+      });
+    const monarchXrefsPromise = Promise.all([overviewPromise, mondoPromise])
+      .then(([overview, mondo]) => fetchMonarchXrefLinksByMondoId(extractMondoId(overview, mondo)))
+      .catch((error) => {
+        if (isActiveLoad(loadToken)) {
+          console.warn('Monarch xref link fetch failed:', error);
+        }
+        return [];
+      });
     const clinvarPromise = fetchJson('nanbyodata_get_clinvar_variant_by_nando_id', id);
     const mgendPromise = fetchJson('nanbyodata_get_mgend_variant_by_nando_id', id);
     const geneticTestsPromise = fetchJson('nanbyodata_get_genetic_test_by_nando_id', id);
@@ -2424,7 +2718,12 @@
               )
         );
         setText('notification-number', overview.notification_number || '-');
+        setText('notification-program', isJapaneseLocale() ? ontologyLabels.programJa : ontologyLabels.programEn);
         setText('alias-primary', alias);
+        const inheritanceSummary = buildInheritanceSummary(overview.inheritance_uris);
+        setText('insight-inheritance', inheritanceSummary.value);
+        setText('insight-inheritance-note', inheritanceSummary.note);
+        setHref('inheritance-link', inheritanceSummary.url);
         updateDownloadData({
           overview: {
             ...(currentDownloadData?.overview || {}),
@@ -2433,6 +2732,7 @@
             labelEn: overview.label_en || '',
             notificationNumber: overview.notification_number || '-',
             aliasPrimary: alias,
+            inheritance: inheritanceSummary.value,
             description:
               overview.description ||
               overview.medgen_definition ||
@@ -2545,7 +2845,10 @@
           {
             title: t('遺伝学的検査', 'Genetic tests'),
             value: String(geneticTests.length),
-            note: t('診療用の遺伝学的検査', 'Clinical genetic testing entries'),
+            noteHtml: `<span class="summary-note-with-icon"><i class="far fa-hand-pointer" aria-hidden="true"></i> ${escapeHtml(
+              t('一覧を表示する', 'View list')
+            )}</span>`,
+            panelId: geneticTests.length ? 'genetic-testing-panel' : '',
             href: `${base}#genetic-testing`,
           },
           {
@@ -2567,6 +2870,7 @@
             href: `${base}#glycan-related-genes`,
           },
         ]);
+        renderGeneticTestingPanel(geneticTests, `${base}#genetic-testing`);
       })
       .catch(noteFailure);
 
@@ -2642,10 +2946,10 @@
       })
       .catch(noteFailure);
 
-    Promise.all([overviewPromise, mondoPromise, orphanetPromise, medgenPromise, keggPromise])
-      .then(([overview, mondo, orphanet, medgen, kegg]) => {
+    Promise.all([overviewPromise, mondoPromise, orphanetPromise, medgenPromise, keggPromise, omimPromise, gardPromise, monarchXrefsPromise])
+      .then(([overview, mondo, orphanet, medgen, kegg, omim, gard, monarchXrefs]) => {
         if (!isActiveLoad(loadToken)) return;
-        const links = mapLinks(overview, mondo, orphanet, medgen, kegg);
+        const links = mapLinks(overview, mondo, orphanet, medgen, kegg, omim, gard, monarchXrefs);
         renderPrimaryLinks(links.slice(0, 4));
         renderLinks(links);
         updateDownloadData({ links });
@@ -2655,10 +2959,7 @@
     referencesPromise
       .then((references) => {
         if (!isActiveLoad(loadToken)) return;
-        const recentReferences = references.slice(0, 6);
-        setText('insight-paper', recentReferences[0]?.date || '-');
-        setText('insight-paper-note', recentReferences[0]?.title || t('文献データなし', 'No reference data'));
-        setHref('latest-paper-link', recentReferences[0]?.url || '#');
+        const recentReferences = references.slice(0, 5);
         renderReferences(recentReferences);
         updateDownloadData({
           references: recentReferences,
@@ -2754,7 +3055,10 @@
       mondoPromise,
       orphanetPromise,
       medgenPromise,
+      omimPromise,
       keggPromise,
+      gardPromise,
+      monarchXrefsPromise,
       clinvarPromise,
       mgendPromise,
       geneticTestsPromise,
@@ -2803,6 +3107,21 @@
       const expanded = note.dataset.expanded === 'true';
       note.dataset.expanded = expanded ? 'false' : 'true';
       button.textContent = expanded ? 'More' : 'Less';
+    });
+
+    $('diagnostic-grid').addEventListener('click', (event) => {
+      const button = event.target.closest('.summary-diagnostic-toggle');
+      if (!button) return;
+      const panelId = button.dataset.panelTarget;
+      const panel = panelId ? $(panelId) : null;
+      if (!panel) return;
+      const expanded = button.getAttribute('aria-expanded') === 'true';
+      button.setAttribute('aria-expanded', expanded ? 'false' : 'true');
+      panel.hidden = expanded;
+      if (!expanded) {
+        pulseTarget(panel);
+        panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
     });
 
     $('txt-download').addEventListener('click', () => {

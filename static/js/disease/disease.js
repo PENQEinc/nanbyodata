@@ -108,8 +108,11 @@ const datasets = [
 (async () => {
   try {
     const hash = window.location.hash.replace('#', '');
-    async function fetchData(apiEndpoint) {
-      const url = `/sparqlist/api/${apiEndpoint}?nando_id=${nandoId}&timestamp=${timestamp}`;
+    async function fetchData(apiEndpoint, options = {}) {
+      const { useTimestamp = true } = options;
+      const url = useTimestamp
+        ? `/sparqlist/api/${apiEndpoint}?nando_id=${nandoId}&timestamp=${timestamp}`
+        : `/sparqlist/api/${apiEndpoint}?nando_id=${nandoId}`;
       try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -296,7 +299,9 @@ const datasets = [
           }
         }
       }),
-      fetchData('nanbyodata_get_pubmed_data_by_nando_id').then(
+      fetchData('nanbyodata_get_pubmed_data_by_nando_id', {
+        useTimestamp: false,
+      }).then(
         (referencesData) => {
           makeReferences(referencesData);
           datasets.find((d) => d.name === 'References').data = referencesData;

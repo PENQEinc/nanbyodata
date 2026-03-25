@@ -614,6 +614,31 @@
   font-weight: 700;
 }
 
+.summary-sidebar-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.summary-sidebar-head .summary-sidebar-title {
+  margin-bottom: 0;
+}
+
+.summary-sidebar-link {
+  color: var(--summary-accent-strong);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.summary-sidebar-link:hover,
+.summary-sidebar-link:focus {
+  text-decoration: underline;
+}
+
 .summary-compact-list {
   display: grid;
   gap: 8px;
@@ -1688,6 +1713,26 @@
 .summary-diagnostic-card {
   position: relative;
   min-height: 154px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.summary-diagnostic-toggle {
+  width: 100%;
+  text-align: left;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.summary-diagnostic-toggle:focus {
+  outline: none;
+}
+
+.summary-diagnostic-toggle:focus-visible {
+  outline: 3px solid rgba(17, 71, 54, 0.28);
+  outline-offset: 3px;
 }
 
 .summary-diagnostic-card h3 {
@@ -1705,6 +1750,80 @@
   color: var(--summary-muted);
   font-size: 13px;
   line-height: 1.6;
+}
+
+.summary-note-with-icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.summary-inline-panel {
+  margin-top: 16px;
+  padding: 18px;
+  border: 1px solid var(--summary-line);
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.72);
+}
+
+.summary-inline-panel-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.summary-inline-panel-title {
+  margin: 0 0 4px;
+  font-size: 16px;
+}
+
+.summary-inline-panel-note,
+.summary-inline-item-meta {
+  color: var(--summary-muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.summary-inline-panel-link {
+  color: var(--summary-accent-strong);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.summary-inline-panel-link:hover,
+.summary-inline-panel-link:focus {
+  text-decoration: underline;
+}
+
+.summary-inline-panel-list {
+  display: grid;
+  gap: 10px;
+}
+
+.summary-inline-item {
+  position: relative;
+  padding: 14px;
+  border-radius: 14px;
+  background: rgba(246, 249, 246, 0.94);
+}
+
+.summary-inline-item-link {
+  display: block;
+}
+
+.summary-inline-item h4 {
+  margin: 0 0 6px;
+  font-size: 15px;
+}
+
+.summary-inline-item h4,
+.summary-inline-item-link h4,
+.summary-inline-item-link h4 a {
+  color: var(--summary-accent-strong);
 }
 
 .summary-footer-note {
