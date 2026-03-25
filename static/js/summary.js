@@ -235,6 +235,15 @@
     });
   }
 
+  function countUniqueGlycanGenes(items) {
+    if (!Array.isArray(items) || items.length === 0) return 0;
+
+    return uniqueBy(
+      items.filter((item) => item?.gene_id),
+      (item) => String(item.gene_id).trim().toUpperCase()
+    ).length;
+  }
+
   function extractHpoId(value) {
     const raw = String(value || '');
     const colonMatch = raw.match(/HP:\d{7}/i);
@@ -857,12 +866,41 @@
     const counts = points.map((p) => p.count);
     const min = Math.min(...counts);
     const max = Math.max(...counts);
+    const hasTruncatedBaseline = min > 0;
+    const baselineGap = hasTruncatedBaseline ? 40 : 0;
+    const axisY = height - padY;
+    const chartBottom = axisY - baselineGap;
     const range = Math.max(max - min, 1);
     const xStep = (width - padX * 2) / Math.max(points.length - 1, 1);
-    const y = (value) => height - padY - ((value - min) / range) * (height - padY * 2);
+    const y = (value) => chartBottom - ((value - min) / range) * (chartBottom - padY);
     const x = (index) => padX + index * xStep;
     const d = points.map((point, index) => `${index === 0 ? 'M' : 'L'} ${x(index)} ${y(point.count)}`).join(' ');
-    const area = `${d} L ${x(points.length - 1)} ${height - padY} L ${x(0)} ${height - padY} Z`;
+    const area = `${d} L ${x(points.length - 1)} ${chartBottom} L ${x(0)} ${chartBottom} Z`;
+    const axisBreakTopY = chartBottom + 10;
+    const axisBreakMarker = hasTruncatedBaseline
+      ? `
+        <g aria-hidden="true">
+          <path
+            d="M ${padX - 11} ${axisBreakTopY}
+               C ${padX - 7} ${axisBreakTopY - 3}, ${padX - 3} ${axisBreakTopY - 3}, ${padX + 1} ${axisBreakTopY}
+               S ${padX + 9} ${axisBreakTopY + 3}, ${padX + 13} ${axisBreakTopY}"
+            fill="none"
+            stroke="#5f685f"
+            stroke-width="2"
+            stroke-linecap="round"
+          ></path>
+          <path
+            d="M ${padX - 11} ${axisBreakTopY + 10}
+               C ${padX - 7} ${axisBreakTopY + 7}, ${padX - 3} ${axisBreakTopY + 7}, ${padX + 1} ${axisBreakTopY + 10}
+               S ${padX + 9} ${axisBreakTopY + 13}, ${padX + 13} ${axisBreakTopY + 10}"
+            fill="none"
+            stroke="#5f685f"
+            stroke-width="2"
+            stroke-linecap="round"
+          ></path>
+        </g>
+      `
+      : '';
     const markers = points
       .map(
         (point, index) => `
@@ -883,13 +921,21 @@
             <stop offset="100%" stop-color="rgba(29,107,82,0.02)"></stop>
           </linearGradient>
         </defs>
-        <line x1="${padX}" y1="${height - padY}" x2="${width - padX}" y2="${height - padY}" stroke="rgba(21,32,24,0.14)"></line>
-        <line x1="${padX}" y1="${padY}" x2="${padX}" y2="${height - padY}" stroke="rgba(21,32,24,0.14)"></line>
+        <line x1="${padX}" y1="${axisY}" x2="${width - padX}" y2="${axisY}" stroke="rgba(21,32,24,0.14)"></line>
+        <line x1="${padX}" y1="${padY}" x2="${padX}" y2="${axisY}" stroke="rgba(21,32,24,0.14)"></line>
+        <text x="${18}" y="${padY + 8}" fill="#5f685f" font-size="12" font-weight="700">${escapeHtml(t('人', 'People'))}</text>
+        <text x="${width - 18}" y="${axisY + 14}" text-anchor="end" fill="#5f685f" font-size="12" font-weight="700">${escapeHtml(t('年', 'Year'))}</text>
+        ${axisBreakMarker}
         <path d="${area}" fill="url(#summaryTrendFill)"></path>
         <path d="${d}" fill="none" stroke="#1d6b52" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"></path>
         ${markers}
       </svg>
       <div class="summary-chart-caption">
+        ${
+          hasTruncatedBaseline
+            ? `<span>${escapeHtml(t('Y軸は 0 人から一部省略しています', 'Y-axis is truncated above 0'))}</span>`
+            : ''
+        }
         <span>${escapeHtml(t(`最小 ${min}人`, `Min ${min}`))}</span>
         <span>${escapeHtml(t(`最大 ${max}人`, `Max ${max}`))}</span>
       </div>
@@ -2789,6 +2835,7 @@
       .then(([glycanData, geneticTests, clinvarData, mgendData]) => {
         if (!isActiveLoad(loadToken)) return;
         const base = `${window.location.origin}/disease/NANDO:${encodeURIComponent(id)}`;
+        const uniqueGlycanGeneCount = countUniqueGlycanGenes(glycanData);
         quickFactsState.tests = String(geneticTests.length);
         quickFactsState.testsNote = isJapaneseLocale()
           ? '診療用の遺伝学的検査'
@@ -2818,7 +2865,7 @@
           },
           {
             title: 'GlyCosmos',
-            value: String(glycanData.length),
+            value: String(uniqueGlycanGeneCount),
             note: t('糖鎖関連遺伝子', 'Glycan-related genes'),
             href: `${base}#glycan-related-genes`,
           },
@@ -2927,7 +2974,12 @@
     glycanPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 糖鎖関連遺伝子: data.length } });
+        updateDownloadData({
+          stats: {
+            ...(currentDownloadData?.stats || {}),
+            糖鎖関連遺伝子: countUniqueGlycanGenes(data),
+          },
+        });
       })
       .catch(noteFailure);
     facialPromise
