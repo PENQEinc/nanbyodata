@@ -234,6 +234,15 @@
     });
   }
 
+  function countUniqueGlycanGenes(items) {
+    if (!Array.isArray(items) || items.length === 0) return 0;
+
+    return uniqueBy(
+      items.filter((item) => item?.gene_id),
+      (item) => String(item.gene_id).trim().toUpperCase()
+    ).length;
+  }
+
   function extractHpoId(value) {
     const raw = String(value || '');
     const colonMatch = raw.match(/HP:\d{7}/i);
@@ -2489,6 +2498,7 @@
       .then(([glycanData, geneticTests, clinvarData, mgendData]) => {
         if (!isActiveLoad(loadToken)) return;
         const base = `${window.location.origin}/disease/NANDO:${encodeURIComponent(id)}`;
+        const uniqueGlycanGeneCount = countUniqueGlycanGenes(glycanData);
         quickFactsState.tests = String(geneticTests.length);
         quickFactsState.testsNote = isJapaneseLocale()
           ? '診療用の遺伝学的検査'
@@ -2515,7 +2525,7 @@
           },
           {
             title: 'GlyCosmos',
-            value: String(glycanData.length),
+            value: String(uniqueGlycanGeneCount),
             note: t('糖鎖関連遺伝子', 'Glycan-related genes'),
             href: `${base}#glycan-related-genes`,
           },
@@ -2626,7 +2636,12 @@
     glycanPromise
       .then((data) => {
         if (!isActiveLoad(loadToken)) return;
-        updateDownloadData({ stats: { ...(currentDownloadData?.stats || {}), 糖鎖関連遺伝子: data.length } });
+        updateDownloadData({
+          stats: {
+            ...(currentDownloadData?.stats || {}),
+            糖鎖関連遺伝子: countUniqueGlycanGenes(data),
+          },
+        });
       })
       .catch(noteFailure);
     facialPromise
