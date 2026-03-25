@@ -26,7 +26,7 @@ flowchart TD
 | `/about_nando` | NANDO 説明ページ表示 | `templates/about_nando.html` | `static/js/main.js` | 静的説明ページ |
 | `/datasets` | データセット説明ページ表示 | `templates/datasets.html` | `static/js/main.js` | データ配布案内 |
 | `/stats` | 統計ページ表示 | `templates/stats.html` | `static/js/main.js`, `static/js/stats.js` | SPARQList API を複数呼ぶ |
-| `/summary` / `/summary/NANDO:<id>` | 疾患サマリーページ表示 | `templates/summary.html` | `static/js/main.js`, `static/js/summary.js` | 既存 API を使って俯瞰型サマリーを表示。顔貌パネルでは世界地図ベースの GestaltMatcher 可視化も行う |
+| `/summary` / `/summary/NANDO:<id>` | 疾患サマリーページ表示 | `templates/summary.html` | `static/js/main.js`, `static/js/summary.js` | 既存 API を使って俯瞰型サマリーを表示。顔貌パネルでは世界地図ベースの GestaltMatcher 可視化も行う。外部リンクの GARD 補完には Monarch API も利用している |
 | `/my-diseases` | マイ疾患一覧ページ表示 | `templates/my_diseases.html` | `static/js/main.js`, `static/js/my_diseases.js` | `localStorage` を読み、制度タブとカテゴリ別一覧を表示 |
 | `/team` | チームページ表示 | `templates/team.html` | `static/js/main.js`, `static/js/team/team.js` | `static/data/members.json` を読む |
 | `/epidemiology` | 疫学ページ表示 | `templates/epidemiology.html` | `static/js/main.js`, `static/js/epidemiology/epidemiology.js` | SPARQList API の患者数表を表示 |
@@ -83,6 +83,8 @@ flowchart TD
   - 疾患キャラクターが設定済みなら Hero に表示する
   - HPO データがある場合は、人体図ベースのカテゴリ選択 UI を表示する
   - GestaltMatcher データがある場合は、世界地図 + 単一地域選択の年齢分布 + Patient ID 一覧を表示する
+  - 外部リンクでは `OMIM` を NanbyoData API から取得し、`GARD` は現状 Monarch API から補完する
+  - 将来的に外部 API 依存を減らす場合、最初の改修候補は `static/js/summary.js` の GARD 補完処理
 
 ### マイ疾患ページ `/my-diseases`
 

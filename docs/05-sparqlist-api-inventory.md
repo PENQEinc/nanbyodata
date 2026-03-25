@@ -80,6 +80,7 @@ flowchart LR
 | `nanbyodata_get_link_orphanet_by_nando_id` | 外部リンク | `static/js/summary.js` |
 | `nanbyodata_get_link_medgen_by_nando_id` | 外部リンク | `static/js/summary.js` |
 | `nanbyodata_get_link_kegg_by_nando_id` | 外部リンク | `static/js/summary.js` |
+| `nanbyodata_get_link_omim_by_nando_id` | 外部リンク、OMIM リンク | `static/js/summary.js` |
 | `nanbyodata_get_genetic_test_by_nando_id` | 分子・診断パネルの遺伝学的検査 | `static/js/summary.js` |
 | `nanbyodata_get_clinvar_variant_by_nando_id` | 分子・診断パネルの ClinVar | `static/js/summary.js` |
 | `nanbyodata_get_mgend_variant_by_nando_id` | 分子・診断パネルの MGeND | `static/js/summary.js` |
@@ -89,6 +90,25 @@ flowchart LR
 | `nanbyodata_get_riken_brc_mouse_info_by_nando_id` | リソース件数 | `static/js/summary.js` |
 | `nanbyodata_get_riken_brc_dna_info_by_nando_id` | リソース件数 | `static/js/summary.js` |
 | `nanbyodata_get_pubchem_chemical_information_by_nando_id` | リソース件数 | `static/js/summary.js` |
+
+サマリーページでは、上の SPARQList API に加えて次の外部 API も利用しています。
+
+| API / URL | 主な用途 | 主な呼び出し元 |
+| --- | --- | --- |
+| `https://api-v3.monarchinitiative.org/v3/api/entity/{MONDO_ID}` | MONDO xref から `GARD:xxxx` を解決し、GARD 外部リンクを補完する | `static/js/summary.js` |
+
+補足:
+
+- 遺伝形式カードは `nanbyodata_get_overview_by_nando_id` の `inheritance_uris` を利用する
+- `OMIM` は `nanbyodata_get_link_omim_by_nando_id` から取得する
+- `GARD` は NanbyoData 側に専用 API がないため、現状は Monarch API 依存になっている
+- そのため、summary の外部リンクまわりで外部 API 依存を整理するときは、この Monarch 連携が改修対象になる
+
+TODO:
+
+- summary の `GARD` 取得は Monarch API 依存なので、NanbyoData 側に専用 API が追加できたら置き換える
+- 置き換え候補の責務は「`NANDO ID -> GARD 外部リンク` の解決」
+- 影響箇所は `static/js/summary.js` の外部リンク生成まわり
 
 ### 2. 統計ページで使う API
 
