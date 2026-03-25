@@ -9,7 +9,6 @@ memo.txt
 # DB data
 mysql/data
 mysql/logs
-mysql/scripts
 
 # current_release files prepared at startup
 ontology/current_release/nando.tsv
