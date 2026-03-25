@@ -400,9 +400,13 @@ const datasets = [
 function checkAndLogDatasets() {
   if (datasets.every((dataset) => dataset.data !== null)) {
     downloadDatasets(nandoId, datasets);
-    document.querySelector(
-      '.summary-download > .open-popup-btn'
-    ).disabled = false;
+    const downloadBtn = document.querySelector(
+      '.summary-download > .open-popup-btn',
+    );
+    if (downloadBtn) {
+      downloadBtn.disabled = false;
+      downloadBtn.setAttribute('aria-disabled', 'false');
+    }
   }
 }
 

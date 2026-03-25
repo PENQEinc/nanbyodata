@@ -12,54 +12,117 @@ Disease page right top */
   > .data-name {
     border-bottom: 1px dashed var(--color-summary-border);
 
+    .data-name-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 6px;
+
+      > h3 {
+        flex: 1 1 auto;
+        min-width: 0;
+        font-size: var(--font-size-medium);
+        font-weight: bold;
+
+        a.nando-link,
+        span.nando-copy {
+          position: relative;
+          top: -2px;
+          margin-left: 5px;
+          font-size: var(--font-size-small);
+          color: var(--color-summary-link);
+          font-weight: normal;
+          cursor: pointer;
+
+          &:hover {
+            color: #000;
+          }
+
+          &::after {
+            font-family: 'Font Awesome 5 Free';
+            padding-left: 3px;
+            margin: 0;
+          }
+        }
+
+        a.nando-link {
+          text-decoration: underline;
+          overflow-wrap: break-word;
+
+          &::after {
+            content: var(--icon-link);
+            font-weight: 900;
+          }
+        }
+
+        span.nando-copy {
+          &::after {
+            content: var(--icon-copy);
+            font-weight: normal;
+            vertical-align: middle;
+          }
+        }
+      }
+    }
+
+    .disease-my-disease-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      flex: 0 0 auto;
+      padding: 0.5rem 0.9rem;
+      border: 1px solid rgba(29, 107, 82, 0.18);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.86);
+      color: #124d3c;
+      font-weight: 700;
+      line-height: 1;
+      cursor: pointer;
+      transition:
+        transform 0.18s ease,
+        background-color 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease;
+
+      &:hover,
+      &:focus {
+        transform: translateY(-1px);
+        background: rgba(255, 255, 255, 0.96);
+        border-color: rgba(29, 107, 82, 0.32);
+        box-shadow: 0 10px 24px rgba(29, 107, 82, 0.12);
+        text-decoration: none;
+        outline: none;
+      }
+
+      &:disabled {
+        opacity: 0.5;
+        cursor: default;
+      }
+
+      &.is-active {
+        background: linear-gradient(
+          135deg,
+          rgba(29, 107, 82, 0.16),
+          rgba(219, 239, 231, 0.92)
+        );
+        border-color: rgba(29, 107, 82, 0.38);
+      }
+
+      i {
+        font-size: 15px;
+      }
+    }
+
     > h3 {
       font-size: var(--font-size-medium);
       font-weight: bold;
-
-      a.nando-link,
-      span.nando-copy {
-        position: relative;
-        top: -2px;
-        margin-left: 5px;
-        font-size: var(--font-size-small);
-        color: var(--color-summary-link);
-        font-weight: normal;
-        cursor: pointer;
-
-        &:hover {
-          color: #000;
-        }
-
-        &::after {
-          font-family: 'Font Awesome 5 Free';
-          padding-left: 3px;
-          margin: 0;
-        }
-      }
-
-      a.nando-link {
-        text-decoration: underline;
-        overflow-wrap: break-word;
-
-        &::after {
-          content: var(--icon-link);
-          font-weight: 900;
-        }
-      }
-
-      span.nando-copy {
-        &::after {
-          content: var(--icon-copy);
-          font-weight: normal;
-          vertical-align: middle;
-        }
-      }
     }
 
     > h2#temp-label-ja,
     h2#temp-label-en {
       font-weight: bold;
-      padding-top: 25px;
+      padding-top: 10px;
       font-size: 32px;
 
       ruby {
@@ -100,6 +163,17 @@ Disease page right top */
         &::before {
           font-family: 'Font Awesome 5 Free';
           content: '\f1e0';
+          font-weight: 900;
+          margin-right: 6px;
+        }
+      }
+    }
+
+    .summary-summary {
+      .btn-text {
+        &::before {
+          font-family: 'Font Awesome 5 Free';
+          content: '\f15c';
           font-weight: 900;
           margin-right: 6px;
         }

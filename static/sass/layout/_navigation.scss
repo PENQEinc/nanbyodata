@@ -46,6 +46,68 @@
     }
   }
 
+  a.my-diseases-link {
+    display: inline-flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+    box-sizing: border-box;
+    height: 32px;
+    padding: 4px 9px;
+    border: 1.5px solid rgba(255, 255, 255, 0.72);
+    border-radius: 12px;
+    color: #fff;
+    background-color: rgba(255, 255, 255, 0.08);
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: min-content;
+    writing-mode: horizontal-tb;
+
+    > span:not(.my-diseases-count) {
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    &:hover,
+    &:focus {
+      color: #fff;
+      background-color: rgba(255, 255, 255, 0.16);
+    }
+
+    &::after {
+      content: none;
+    }
+
+    &::before {
+      font-family: 'Font Awesome 5 Free';
+      content: '\f02e';
+      font-size: 12px;
+      font-weight: 400;
+    }
+  }
+
+  .my-diseases-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 17px;
+    height: 17px;
+    padding: 0 4px;
+    border-radius: 999px;
+    background-color: rgba(255, 255, 255, 0.92);
+    color: var(--color-primary);
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
   ul.navbar-nav {
     display: flex;
     gap: 22px;
@@ -102,8 +164,9 @@
       .flex {
         display: flex;
         gap: 13px;
+        align-items: center;
         select.language-select {
-          margin-top: 2px;
+          margin-top: 0;
         }
       }
 
@@ -149,6 +212,8 @@
     }
 
     .navbar-right {
+      flex-shrink: 0;
+
       .rigth-wrapper {
         position: relative;
         top: 4px;
@@ -156,6 +221,10 @@
         flex-wrap: nowrap;
         align-items: center;
         gap: 13px;
+
+        .my-diseases-link {
+          flex-shrink: 0;
+        }
       }
 
       ul.navbar-nav {
