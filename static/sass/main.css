@@ -1455,6 +1455,9 @@ Stats Overview Component
   border-bottom: 1px solid var(--color-table-dash);
   white-space: nowrap;
 }
+.table-contents .table tbody tr td[rowspan] {
+  vertical-align: middle;
+}
 .table-contents .table tbody tr:last-child td {
   border-bottom: 1px solid var(--color-black);
 }

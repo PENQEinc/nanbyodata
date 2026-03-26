@@ -16,7 +16,7 @@ export async function makeLinkedList(linkedListData, nandoId) {
 
   // linkedListDataが全て空の場合にoverviewSectionを削除
   const hasData = Object.values(linkedListData).some(
-    (dataArray) => Array.isArray(dataArray) && dataArray.length > 0
+    (dataArray) => Array.isArray(dataArray) && dataArray.length > 0,
   );
   if (!hasData) {
     overviewSection.remove();
@@ -45,7 +45,7 @@ export async function makeLinkedList(linkedListData, nandoId) {
       if (currentTab && isFirstTab) {
         currentTab.checked = true;
         isFirstTab = false;
-        addTableOrTree(content, item, 'table', linkedListData); // 初期表示はテーブル
+        addTableOrTree(content, item, 'table', linkedListData, nandoId); // 初期表示はテーブル
       }
 
       // タブのクリックイベントを追加
@@ -53,7 +53,7 @@ export async function makeLinkedList(linkedListData, nandoId) {
         if (this.checked) {
           // タブがアクティブになったときにテーブルまたはツリーを表示
           const displayType = selectGraphType.value || 'table'; // 選択された形式に従う
-          addTableOrTree(content, item, displayType, linkedListData);
+          addTableOrTree(content, item, displayType, linkedListData, nandoId);
         }
       });
 
@@ -61,10 +61,73 @@ export async function makeLinkedList(linkedListData, nandoId) {
       selectGraphType.addEventListener('change', function () {
         const displayType = this.value;
         if (currentTab.checked) {
-          addTableOrTree(content, item, displayType, linkedListData);
+          addTableOrTree(content, item, displayType, linkedListData, nandoId);
         }
       });
     }
+  }
+}
+
+/** 同一値が続く行をまとめるための rowspan グループ（開始行インデックスと結合行数） */
+function buildLinkedRowspanGroups(rows, key) {
+  const groups = [];
+  let i = 0;
+  while (i < rows.length) {
+    const val = rows[i][key];
+    let span = 1;
+    while (
+      i + span < rows.length &&
+      String(rows[i + span][key] ?? '') === String(val ?? '')
+    ) {
+      span++;
+    }
+    groups.push({ startRow: i, span });
+    i += span;
+  }
+  return groups;
+}
+
+function sortLinkedRowsForGrouping(rows, keys) {
+  return [...rows].sort((a, b) => {
+    for (const key of keys) {
+      const cmp = String(a[key] ?? '').localeCompare(
+        String(b[key] ?? ''),
+        undefined,
+        {
+          numeric: true,
+          sensitivity: 'base',
+        },
+      );
+      if (cmp !== 0) return cmp;
+    }
+    return 0;
+  });
+}
+
+function fillLinkedDataCell(cell, field, itemData, key) {
+  if (field && field.type === 'url' && field.hrefKey) {
+    const link = document.createElement('a');
+    link.href = itemData[field.hrefKey];
+    link.textContent = itemData[key];
+    link.target = '_blank';
+    cell.appendChild(link);
+  } else if (field && field.content === 'property') {
+    const propertyValue = itemData[key];
+    if (propertyValue == null || typeof propertyValue !== 'string') {
+      cell.textContent = propertyValue != null ? String(propertyValue) : '';
+    } else {
+      const matchType = propertyValue.split('#')[1];
+      cell.textContent =
+        matchType === 'closeMatch'
+          ? 'Close Match'
+          : matchType === 'exactMatch'
+            ? 'Exact Match'
+            : matchType === 'hasDbXref'
+              ? 'database_cross_reference'
+              : propertyValue;
+    }
+  } else {
+    cell.textContent = itemData[key] != null ? itemData[key] : '';
   }
 }
 
@@ -75,6 +138,19 @@ function makeLinksTable(item, content, linkedListData, nandoId) {
   }
 
   const filteredData = data.filter((itemData) => itemData.displayid);
+  const sortedData = sortLinkedRowsForGrouping(filteredData, item.keys);
+
+  const rowspanGroupsByColIndex = item.keys.map((key) => {
+    const field = item.labels.find((l) => l.content === key);
+    if (!field?.rowspan) return null;
+    return buildLinkedRowspanGroups(sortedData, key);
+  });
+
+  // Feedback は外部リンク ID（displayid）単位で1つにまとめる
+  const feedbackRowspanGroups = buildLinkedRowspanGroups(
+    sortedData,
+    'displayid',
+  );
 
   // 既存のテーブルを削除
   const existingTable = content.querySelector('table');
@@ -104,56 +180,57 @@ function makeLinksTable(item, content, linkedListData, nandoId) {
 
   const tbody = document.createElement('tbody');
 
-  filteredData.forEach((itemData) => {
+  sortedData.forEach((itemData, rowIndex) => {
     const row = document.createElement('tr');
-    item.keys.forEach((key) => {
-      const cell = document.createElement('td');
-
+    item.keys.forEach((key, colIdx) => {
       const field = item.labels.find((labelItem) => labelItem.content === key);
+      const groups = rowspanGroupsByColIndex[colIdx];
 
-      if (field && field.type === 'url' && field.hrefKey) {
-        const link = document.createElement('a');
-        link.href = itemData[field.hrefKey];
-        link.textContent = itemData[key];
-        link.target = '_blank';
-        cell.appendChild(link);
-      } else if (field && field.content === 'property') {
-        const propertyValue = itemData[key];
-        const matchType = propertyValue.split('#')[1];
-        cell.textContent =
-          matchType === 'closeMatch'
-            ? 'Close Match'
-            : matchType === 'exactMatch'
-            ? 'Exact Match'
-            : matchType === 'hasDbXref'
-            ? 'database_cross_reference'
-            : propertyValue;
-      } else {
-        cell.textContent = itemData[key];
+      if (field?.rowspan && groups) {
+        const group = groups.find((g) => g.startRow === rowIndex);
+        if (!group) {
+          return;
+        }
+        const cell = document.createElement('td');
+        cell.rowSpan = group.span;
+        fillLinkedDataCell(cell, field, itemData, key);
+        row.appendChild(cell);
+        return;
       }
+
+      const cell = document.createElement('td');
+      fillLinkedDataCell(cell, field, itemData, key);
       row.appendChild(cell);
     });
 
-    const feedbackCell = document.createElement('td');
-    feedbackCell.classList.add('feedback-cell');
-    feedbackCell.innerHTML = `
+    const feedbackGroup = feedbackRowspanGroups.find(
+      (g) => g.startRow === rowIndex,
+    );
+    if (feedbackGroup) {
+      const feedbackCell = document.createElement('td');
+      feedbackCell.classList.add('feedback-cell');
+      feedbackCell.rowSpan = feedbackGroup.span;
+      feedbackCell.innerHTML = `
         <a href="#" class="good-icon" title="Good"><i class="far fa-thumbs-up"></i></a>
         <a href="#" class="bad-icon" title="Bad"><i class="far fa-thumbs-down"></i></a>
         <a href="mailto:nanbyodata@dbcls.rois.ac.jp?subject=Feedback%20on%20NanbyoData&body=NANDO:${nandoId}%20-%20${itemData.displayid}" class="email-icon" title="Send Feedback">
           <i class="far fa-envelope"></i>
         </a>
       `;
-    row.appendChild(feedbackCell);
+      row.appendChild(feedbackCell);
 
-    feedbackCell.querySelector('.good-icon').addEventListener('click', (e) => {
-      e.preventDefault();
-      sendFeedback('GOOD', `NANDO:${nandoId}`, itemData.displayid);
-    });
+      feedbackCell
+        .querySelector('.good-icon')
+        .addEventListener('click', (e) => {
+          e.preventDefault();
+          sendFeedback('GOOD', `NANDO:${nandoId}`, itemData.displayid);
+        });
 
-    feedbackCell.querySelector('.bad-icon').addEventListener('click', (e) => {
-      e.preventDefault();
-      sendFeedback('BAD', `NANDO:${nandoId}`, itemData.displayid);
-    });
+      feedbackCell.querySelector('.bad-icon').addEventListener('click', (e) => {
+        e.preventDefault();
+        sendFeedback('BAD', `NANDO:${nandoId}`, itemData.displayid);
+      });
+    }
 
     tbody.appendChild(row);
   });
@@ -166,7 +243,6 @@ function makeLinksTable(item, content, linkedListData, nandoId) {
 }
 
 function sendFeedback(type, idFrom, idTo) {
-  // TODO: Cannot test locally with a relative link
   const url = `/feedback?id_from=${idFrom}&id_to=${idTo}&type=${type}`;
 
   fetch(url, {
@@ -184,7 +260,7 @@ function sendFeedback(type, idFrom, idTo) {
     });
 }
 
-function addTableOrTree(content, item, displayType, linkedListData) {
+function addTableOrTree(content, item, displayType, linkedListData, nandoId) {
   const currentLang = document.querySelector('.language-select').value;
 
   const table = content.querySelector('table');
@@ -271,19 +347,19 @@ function addTableOrTree(content, item, displayType, linkedListData) {
         const treeElement = document.getElementById(uniqueTreeId);
         treeElement.style.setProperty(
           '--togostanza-theme-series_0_color',
-          '#29697a'
+          '#29697a',
         );
         treeElement.style.setProperty(
           '--togostanza-fonts-font_size_default',
-          '14'
+          '14',
         );
         treeElement.style.setProperty(
           '--togostanza-canvas-height',
-          `${treeDepth.maxLength * 100} px`
+          `${treeDepth.maxLength * 100} px`,
         );
         treeElement.style.setProperty(
           '--togostanza-canvas-width',
-          `${treeDepth.maxDepth * 300} px`
+          `${treeDepth.maxDepth * 300} px`,
         );
       }, 0);
     }
