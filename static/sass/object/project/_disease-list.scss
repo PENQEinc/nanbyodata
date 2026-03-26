@@ -300,6 +300,15 @@
   .table-wrap {
     background: transparent;
     padding-top: 2px;
+    position: relative;
+  }
+
+  .table-meta {
+    display: flex;
+    justify-content: flex-end;
+    font-size: 13px;
+    color: #666;
+    margin-bottom: 4px;
   }
 
   table {

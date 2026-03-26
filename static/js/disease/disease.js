@@ -164,7 +164,7 @@ const datasets = [
           datasets.find((d) => d.name === 'Reference Genes').data =
             japanCuratedGeneData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_stats_on_patient_number_by_nando_id').then(
         (response) => {
@@ -173,17 +173,17 @@ const datasets = [
           datasets.find(
             (d) =>
               d.name ===
-              'Number of Specific Medical Expenses Beneficiary Certificate Holders'
+              'Number of Specific Medical Expenses Beneficiary Certificate Holders',
           ).data = numOfPatientsData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_sub_class_by_nando_id').then((response) => {
         const subClassData = response;
         makeSubClass(subClassData);
         // 親を持たないデータを除外
         const filteredDataForDL = subClassData.filter(
-          (item) => item.parent !== undefined
+          (item) => item.parent !== undefined,
         );
         datasets.find((d) => d.name === 'Sub-classes').data = filteredDataForDL;
         checkAndLogDatasets();
@@ -222,11 +222,11 @@ const datasets = [
 
           // 遺伝形式ダウンロードデータの用意
           const inheritanceUrisData = Object.fromEntries(
-            Object.entries({ inheritance_uris }).filter(([_, v]) => v != null)
+            Object.entries({ inheritance_uris }).filter(([_, v]) => v != null),
           );
 
           const inheritanceUrisDataset = datasets.find(
-            (d) => d.name === 'Modes of Inheritance'
+            (d) => d.name === 'Modes of Inheritance',
           );
           if (Object.keys(inheritanceUrisData).length > 0) {
             inheritanceUrisDataset.data = inheritanceUrisData;
@@ -237,8 +237,8 @@ const datasets = [
           // 別疾患名ダウンロードデータの用意
           const synonymsData = Object.fromEntries(
             Object.entries({ alt_label_en, alt_label_ja }).filter(
-              ([_, v]) => v != null
-            )
+              ([_, v]) => v != null,
+            ),
           );
 
           const synonymsDataset = datasets.find((d) => d.name === 'Synonyms');
@@ -256,11 +256,11 @@ const datasets = [
               medgen_definition,
               kegg_description,
               ordo_dif,
-            }).filter(([_, v]) => v != null)
+            }).filter(([_, v]) => v != null),
           );
 
           const definitionDataset = datasets.find(
-            (d) => d.name === 'Descriptions'
+            (d) => d.name === 'Descriptions',
           );
           if (Object.keys(definitionData).length > 0) {
             definitionDataset.data = definitionData;
@@ -280,7 +280,7 @@ const datasets = [
 
             // スピナーを削除
             const spinner = document.querySelector(
-              '#content > .loading-spinner'
+              '#content > .loading-spinner',
             );
             if (spinner) {
               spinner.remove();
@@ -301,13 +301,11 @@ const datasets = [
       }),
       fetchData('nanbyodata_get_pubmed_data_by_nando_id', {
         useTimestamp: false,
-      }).then(
-        (referencesData) => {
-          makeReferences(referencesData);
-          datasets.find((d) => d.name === 'References').data = referencesData;
-          checkAndLogDatasets();
-        }
-      ),
+      }).then((referencesData) => {
+        makeReferences(referencesData);
+        datasets.find((d) => d.name === 'References').data = referencesData;
+        checkAndLogDatasets();
+      }),
       fetchData('nanbyodata_get_causal_gene_by_nando_id').then((geneData) => {
         makeInternationallyCuratedGenes(geneData);
         datasets.find((d) => d.name === 'Internationally curated').data =
@@ -320,7 +318,7 @@ const datasets = [
           datasets.find((d) => d.name === 'Glycan-related Genes').data =
             glycanRelatedGeneData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_genetic_test_by_nando_id').then(
         (geneticTestingData) => {
@@ -328,7 +326,7 @@ const datasets = [
           datasets.find((d) => d.name === 'Genetic Testing').data =
             geneticTestingData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_hpo_data_by_nando_id').then(
         (phenotypesData) => {
@@ -336,7 +334,7 @@ const datasets = [
           datasets.find((d) => d.name === 'Clinical Features').data =
             phenotypesData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_nbdc_human_databases_info_by_nando_id').then(
         (humanGenomicDatasetsData) => {
@@ -344,42 +342,42 @@ const datasets = [
           datasets.find((d) => d.name === 'Human Genomic Datasets').data =
             humanGenomicDatasetsData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_riken_brc_cell_info_by_nando_id').then(
         (cellData) => {
           makeCell(cellData);
           datasets.find((d) => d.name === 'Cell').data = cellData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_riken_brc_mouse_info_by_nando_id').then(
         (mouseData) => {
           makeMouse(mouseData);
           datasets.find((d) => d.name === 'Mouse').data = mouseData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_riken_brc_dna_info_by_nando_id').then(
         (dnaData) => {
           makeDNA(dnaData);
           datasets.find((d) => d.name === 'DNA').data = dnaData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_clinvar_variant_by_nando_id').then(
         (clinvarData) => {
           makeClinvar(clinvarData);
           datasets.find((d) => d.name === 'Clinvar').data = clinvarData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_mgend_variant_by_nando_id').then(
         (mgendData) => {
           makeMgend(mgendData);
           datasets.find((d) => d.name === 'MGeND').data = mgendData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_gestaltmatcher_data_by_nando_id').then(
         (facialFeaturesData) => {
@@ -387,14 +385,14 @@ const datasets = [
           datasets.find((d) => d.name === 'Facial Features').data =
             facialFeaturesData;
           checkAndLogDatasets();
-        }
+        },
       ),
       fetchData('nanbyodata_get_pubchem_chemical_information_by_nando_id').then(
         (compoundsData) => {
           makeCompounds(compoundsData);
           datasets.find((d) => d.name === 'Compounds').data = compoundsData;
           checkAndLogDatasets();
-        }
+        },
       ),
     ]);
   } catch (error) {
@@ -405,9 +403,13 @@ const datasets = [
 function checkAndLogDatasets() {
   if (datasets.every((dataset) => dataset.data !== null)) {
     downloadDatasets(nandoId, datasets);
-    document.querySelector(
-      '.summary-download > .open-popup-btn'
-    ).disabled = false;
+    const downloadBtn = document.querySelector(
+      '.summary-download > .open-popup-btn',
+    );
+    if (downloadBtn) {
+      downloadBtn.disabled = false;
+      downloadBtn.setAttribute('aria-disabled', 'false');
+    }
   }
 }
 

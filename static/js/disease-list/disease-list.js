@@ -22,6 +22,11 @@ const UI_LABELS = {
 };
 const t = UI_LABELS[currentLang];
 
+function formatNumber(n) {
+  const locale = currentLang === 'en' ? 'en-US' : 'ja-JP';
+  return new Intl.NumberFormat(locale).format(n);
+}
+
 const categoryLabel = {
   ja: {
     shitei: '指定難病',
@@ -147,6 +152,7 @@ const state = {
   page: 1,
   sortKey: 'id',
   sortOrder: 'asc',
+  totalCount: 0,
   selectedKana: new Set(),
   expandedKanaRows: new Set(),
   selectedGroups: new Set(),
@@ -172,6 +178,7 @@ const el = {
   symptomFilter: document.getElementById('symptomFilter'),
   rows: document.getElementById('rows'),
   pager: document.getElementById('pager'),
+  resultCount: document.getElementById('resultCount'),
   sortableHeaders: Array.from(
     document.querySelectorAll('#disease-list-page thead th.sortable'),
   ),
@@ -908,6 +915,11 @@ function applyFilters() {
   });
 
   sortFiltered();
+  if (el.resultCount) {
+    el.resultCount.textContent = `${formatNumber(
+      state.filtered.length,
+    )}/${formatNumber(state.totalCount)}`;
+  }
   renderTable();
   el.pager.innerHTML = '';
 }
@@ -1004,6 +1016,7 @@ async function boot() {
 
   // テーブルには obsolete が 1 のアイテムを表示しない
   const rawForTable = raw.filter((r) => r.obsolete !== 1 && r.obsolete !== '1');
+  state.totalCount = rawForTable.length;
 
   const idToLabelMap = new Map(
     raw.map((r) => [r.id, getDisplayName(r) || r.id]),

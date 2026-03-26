@@ -175,8 +175,14 @@ Layout
   flex-grow: inherit;
   cursor: pointer;
 }
+.navbar select.language-select option {
+  color: var(--color-black);
+  background-color: var(--color-background-gray);
+}
 .navbar a.my-diseases-link {
   display: inline-flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
   align-items: center;
   gap: 6px;
   box-sizing: border-box;
@@ -191,6 +197,14 @@ Layout
   font-weight: 500;
   line-height: 1;
   letter-spacing: 0.01em;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-width: min-content;
+  writing-mode: horizontal-tb;
+}
+.navbar a.my-diseases-link > span:not(.my-diseases-count) {
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 .navbar a.my-diseases-link:hover, .navbar a.my-diseases-link:focus {
   color: #fff;
@@ -218,10 +232,7 @@ Layout
   font-size: 10px;
   font-weight: 700;
   line-height: 1;
-}
-.navbar select.language-select option {
-  color: var(--color-black);
-  background-color: var(--color-background-gray);
+  flex-shrink: 0;
 }
 .navbar ul.navbar-nav {
   display: flex;
@@ -308,6 +319,9 @@ Layout
 #diseaseNav .wrapper .navbar-left .intro-text ul.token-input-list-facebook li.token-input-input-token-facebook #token-input-tokeninput {
   height: 24px;
 }
+#diseaseNav .wrapper .navbar-right {
+  flex-shrink: 0;
+}
 #diseaseNav .wrapper .navbar-right .rigth-wrapper {
   position: relative;
   top: 4px;
@@ -315,6 +329,9 @@ Layout
   flex-wrap: nowrap;
   align-items: center;
   gap: 13px;
+}
+#diseaseNav .wrapper .navbar-right .rigth-wrapper .my-diseases-link {
+  flex-shrink: 0;
 }
 #diseaseNav .wrapper .navbar-right ul.navbar-nav {
   padding-top: 15px;
@@ -1438,6 +1455,9 @@ Stats Overview Component
   border-bottom: 1px solid var(--color-table-dash);
   white-space: nowrap;
 }
+.table-contents .table tbody tr td[rowspan] {
+  vertical-align: middle;
+}
 .table-contents .table tbody tr:last-child td {
   border-bottom: 1px solid var(--color-black);
 }
@@ -2125,7 +2145,10 @@ Stats Overview Component
   display: flex;
   gap: 4px;
   align-items: center;
-  padding: 0.375rem 0.75rem;
+  padding: 4px 8px;
+  font-size: var(--font-size-small);
+  line-height: 1.4;
+  box-sizing: border-box;
   border: 1px solid var(--color-summary-border);
   border-radius: var(--radius-base);
   background-color: var(--color-button-background);
@@ -2134,6 +2157,13 @@ Stats Overview Component
 }
 .summary-header-actions .open-popup-btn:focus {
   outline: none;
+}
+.summary-header-actions .open-popup-btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  color: #888;
+  border-color: #c8c8c8;
+  background-color: #f3f3f3;
 }
 .summary-header-actions .popup-view {
   position: absolute;
@@ -2848,6 +2878,41 @@ Disease page right top */
 .summary-header > .data-name .data-name-meta > h3 {
   flex: 1 1 auto;
   min-width: 0;
+  font-size: var(--font-size-medium);
+  font-weight: bold;
+}
+.summary-header > .data-name .data-name-meta > h3 a.nando-link,
+.summary-header > .data-name .data-name-meta > h3 span.nando-copy {
+  position: relative;
+  top: -2px;
+  margin-left: 5px;
+  font-size: var(--font-size-small);
+  color: var(--color-summary-link);
+  font-weight: normal;
+  cursor: pointer;
+}
+.summary-header > .data-name .data-name-meta > h3 a.nando-link:hover,
+.summary-header > .data-name .data-name-meta > h3 span.nando-copy:hover {
+  color: #000;
+}
+.summary-header > .data-name .data-name-meta > h3 a.nando-link::after,
+.summary-header > .data-name .data-name-meta > h3 span.nando-copy::after {
+  font-family: "Font Awesome 5 Free";
+  padding-left: 3px;
+  margin: 0;
+}
+.summary-header > .data-name .data-name-meta > h3 a.nando-link {
+  text-decoration: underline;
+  overflow-wrap: break-word;
+}
+.summary-header > .data-name .data-name-meta > h3 a.nando-link::after {
+  content: var(--icon-link);
+  font-weight: 900;
+}
+.summary-header > .data-name .data-name-meta > h3 span.nando-copy::after {
+  content: var(--icon-copy);
+  font-weight: normal;
+  vertical-align: middle;
 }
 .summary-header > .data-name .disease-my-disease-toggle {
   display: inline-flex;
@@ -2864,8 +2929,7 @@ Disease page right top */
   cursor: pointer;
   transition: transform 0.18s ease, background-color 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
 }
-.summary-header > .data-name .disease-my-disease-toggle:hover,
-.summary-header > .data-name .disease-my-disease-toggle:focus {
+.summary-header > .data-name .disease-my-disease-toggle:hover, .summary-header > .data-name .disease-my-disease-toggle:focus {
   transform: translateY(-1px);
   background: rgba(255, 255, 255, 0.96);
   border-color: rgba(29, 107, 82, 0.32);
@@ -2884,45 +2948,9 @@ Disease page right top */
 .summary-header > .data-name .disease-my-disease-toggle i {
   font-size: 15px;
 }
-.summary-header > .data-name > h3,
-.summary-header > .data-name .data-name-meta > h3 {
+.summary-header > .data-name > h3 {
   font-size: var(--font-size-medium);
   font-weight: bold;
-}
-.summary-header > .data-name > h3 a.nando-link,
-.summary-header > .data-name > h3 span.nando-copy,
-.summary-header > .data-name .data-name-meta > h3 a.nando-link,
-.summary-header > .data-name .data-name-meta > h3 span.nando-copy {
-  position: relative;
-  top: -2px;
-  margin-left: 5px;
-  font-size: var(--font-size-small);
-  color: var(--color-summary-link);
-  font-weight: normal;
-  cursor: pointer;
-}
-.summary-header > .data-name > h3 a.nando-link:hover,
-.summary-header > .data-name > h3 span.nando-copy:hover {
-  color: #000;
-}
-.summary-header > .data-name > h3 a.nando-link::after,
-.summary-header > .data-name > h3 span.nando-copy::after {
-  font-family: "Font Awesome 5 Free";
-  padding-left: 3px;
-  margin: 0;
-}
-.summary-header > .data-name > h3 a.nando-link {
-  text-decoration: underline;
-  overflow-wrap: break-word;
-}
-.summary-header > .data-name > h3 a.nando-link::after {
-  content: var(--icon-link);
-  font-weight: 900;
-}
-.summary-header > .data-name > h3 span.nando-copy::after {
-  content: var(--icon-copy);
-  font-weight: normal;
-  vertical-align: middle;
 }
 .summary-header > .data-name > h2#temp-label-ja,
 .summary-header > .data-name h2#temp-label-en {
@@ -4069,6 +4097,14 @@ html[lang=ja] #disease-list-page #categoryFilter .filter-children label > span:l
 #disease-list-page .table-wrap {
   background: transparent;
   padding-top: 2px;
+  position: relative;
+}
+#disease-list-page .table-meta {
+  display: flex;
+  justify-content: flex-end;
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 4px;
 }
 #disease-list-page table {
   width: 100%;

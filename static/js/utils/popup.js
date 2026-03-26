@@ -9,16 +9,17 @@ export const popup = () => {
   function togglePopup(popupId, isOpen) {
     const popup = document.querySelector(popupId);
     const activeButton = Array.from(openPopupBtns).find(
-      (button) => button.getAttribute('aria-controls') === popupId.substring(1)
+      (button) => button.getAttribute('aria-controls') === popupId.substring(1),
     );
     popup.setAttribute('aria-hidden', !isOpen);
     activeButton.setAttribute('aria-expanded', isOpen);
   }
 
-  // ボタンでのpopupの開閉
   openPopupBtns.forEach((button) => {
     button.addEventListener('click', () => {
+      if (button.disabled) return;
       const popupId = '#' + button.getAttribute('aria-controls');
+      if (!button.getAttribute('aria-controls')) return;
       const isOpen = button.getAttribute('aria-expanded') === 'true';
       togglePopup(popupId, !isOpen);
     });
