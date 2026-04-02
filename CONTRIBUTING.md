@@ -172,7 +172,7 @@ Tags used in the sidebar and list on the News and Resources pages are managed in
 
 ### 6. FAQ (Help page)
 
-Edit `static/data/faq.json` directly. No build step or Actions; the Help page loads this file. Add a new Q&A by appending an object to the right `items` array.
+Edit `static/data/faq.json` directly. No build step or Actions; the Help page loads this file. The FAQ sidebar sublinks under “よくある質問” are generated in `static/js/help/help.js` from each subsection’s `id` and `title`, so you do **not** need to change `templates/help.html` when adding or renaming FAQ categories. Add a new Q&A by appending an object to the right `items` array.
 
 **Structure sample**:
 

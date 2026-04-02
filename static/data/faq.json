@@ -8,68 +8,255 @@
       },
       "subsections": [
         {
-          "id": "download",
+          "id": "nanbyodata-general",
           "title": {
-            "ja": "ダウンロード",
-            "en": "Download"
+            "ja": "NanbyoData全般",
+            "en": "About NanbyoData"
           },
           "items": [
             {
               "question": {
-                "ja": "CSV形式でダウンロードするには？",
-                "en": "How do I download to CSV?"
+                "ja": "NanbyoDataとは何ですか。",
+                "en": "What is NanbyoData?"
               },
               "answer": {
-                "ja": "データセットをダウンロードするには、ダウンロードしたいデータセットのページに移動してください。データテーブルの右上にある「Download」ボタンを探してください。CSV形式を選択できます。大きなデータセットの場合は、生成に数秒かかる場合があります。",
-                "en": "To download a dataset, navigate to the specific dataset page you wish to download. Look for the \"Download\" button located in the top-right corner of the data table. You can choose CSV formats. Please note that large datasets may take a few moments to generate."
+                "ja": "<p>NanbyoDataは、日本の指定難病と小児慢性特定疾病に関する情報を整理して公開しているポータルサイトです。NanbyoDataの概要は<a href=\"/about_nanbyodata\" target=\"_blank\" rel=\"noopener noreferrer\">こちら</a>です。NANDO（Nanbyo Disease Ontology）を基盤として、国内外の関連データベースや制度情報をあわせて閲覧できます。</p>",
+                "en": "<p>NanbyoData is a portal that organizes and publishes information on designated intractable diseases and pediatric chronic specific diseases in Japan. See <a href=\"/about_nanbyodata\" target=\"_blank\" rel=\"noopener noreferrer\">About NanbyoData</a> for an overview. Built on NANDO (Nanbyo Disease Ontology), you can browse related databases and policy information from Japan and abroad.</p>"
               }
             },
             {
               "question": {
-                "ja": "TSV形式でダウンロードするには？",
-                "en": "How do I download to TSV?"
+                "ja": "NANDOとは何ですか。",
+                "en": "What is NANDO?"
               },
               "answer": {
-                "ja": "データセットをダウンロードするには、ダウンロードしたいデータセットのページに移動してください。データテーブルの右上にある「Download」ボタンを探してください。TSV形式を選択できます。大きなデータセットの場合は、生成に数秒かかる場合があります。",
-                "en": "To download a dataset, navigate to the specific dataset page you wish to download. Look for the \"Download\" button located in the top-right corner of the data table. You can choose TSV formats. Please note that large datasets may take a few moments to generate."
+                "ja": "<p>NANDOは、日本の難病制度（指定難病と小児慢性特定疾病）に基づく疾患名を整理した疾患オントロジー（語彙集）です。疾患の名称やIDを体系的に整理し、国内外のデータベースと接続できるように設計されています。NANDOの概要は<a href=\"/about_nando\" target=\"_blank\" rel=\"noopener noreferrer\">こちら</a>です。</p>",
+                "en": "<p>NANDO is a disease ontology (controlled vocabulary) that organizes disease names under Japan’s intractable disease policies (designated intractable diseases and pediatric chronic specific diseases). Disease names and IDs are structured so they can connect to databases worldwide. See <a href=\"/about_nando\" target=\"_blank\" rel=\"noopener noreferrer\">About NANDO</a> for an overview.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "NanbyoDataの目的は何ですか。",
+                "en": "What is the purpose of NanbyoData?"
+              },
+              "answer": {
+                "ja": "<p>国内の難病制度で扱われる疾患情報を整理し、関連する多様なデータへアクセスしやすくすることを目的としています。研究者、医療関係者、支援者が、難病に関する情報を一元的に調べられるようにするための基盤となるデータベースを構築しています。</p>",
+                "en": "<p>NanbyoData aims to organize disease information covered by domestic intractable disease policies and make diverse related data easier to access. We are building a foundation database so researchers, clinicians, and supporters can explore intractable disease information in one place.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "動画を使った説明はありますか。",
+                "en": "Are there video tutorials?"
+              },
+              "answer": {
+                "ja": "<p>はい、あります。NanbyoDataの基本的な使い方と、疾患ページで見られる情報を紹介している動画は<a href=\"https://togotv.dbcls.jp/20251226.html\" target=\"_blank\" rel=\"noopener noreferrer\">こちら</a>です。</p>",
+                "en": "<p>Yes. Videos introducing basic use of NanbyoData and what you see on disease pages are available <a href=\"https://togotv.dbcls.jp/en/20251226.html\" target=\"_blank\" rel=\"noopener noreferrer\">on TogoTV</a>.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "問い合わせ先を教えてください。",
+                "en": "How can I contact you?"
+              },
+              "answer": {
+                "ja": "<p>NANDOに関するお問い合わせは、以下のメールアドレスまでご連絡ください。ご質問・ご意見も受け付けております。</p><p><a href=\"mailto:nanbyodata@dbcls.rois.ac.jp\">nanbyodata@dbcls.rois.ac.jp</a></p>",
+                "en": "<p>For inquiries about NANDO, please email us at the address below. Questions and feedback are welcome.</p><p><a href=\"mailto:nanbyodata@dbcls.rois.ac.jp\">nanbyodata@dbcls.rois.ac.jp</a></p>"
               }
             }
           ]
         },
         {
-          "id": "team-page",
+          "id": "terms-citation",
           "title": {
-            "ja": "チームページ",
-            "en": "Team page"
+            "ja": "利用条件・引用に関して",
+            "en": "Terms of use and citation"
           },
           "items": [
             {
               "question": {
-                "ja": "NanbyoDataチームに参加するには？",
-                "en": "How to join NanbyoData team?"
+                "ja": "NanbyoDataは無償で利用できますか。",
+                "en": "Is NanbyoData free to use?"
               },
               "answer": {
-                "ja": "NanbyoDataチームへの参加については、お問い合わせページからご連絡ください。",
-                "en": "To join the NanbyoData team, please contact us through the contact page."
+                "ja": "<p>はい。NanbyoDataは公開サービスとして無償で利用できます。利用にあたっては、<a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#demoNormalModal_TOS\">サイト上の利用条件</a>や、<a href=\"/datasets\" target=\"_blank\" rel=\"noopener noreferrer\">各外部リソース</a>の条件もあわせて確認してください。</p>",
+                "en": "<p>Yes. NanbyoData is offered free of charge as a public service. Please also read the <a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#demoNormalModal_TOS\">terms of use</a> and the conditions of each external resource (datasets are described on the <a href=\"/datasets\" target=\"_blank\" rel=\"noopener noreferrer\">DATASETS</a> page).</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "NanbyoDataを論文で引用するにはどうすればよいですか。",
+                "en": "How should I cite NanbyoData in a paper?"
+              },
+              "answer": {
+                "ja": "<p>NanbyoDataを研究や論文で利用した場合は、関連論文を引用してください。引用の際は、NanbyoDataや希少疾患診断支援に関する背景を説明した文献を参考にするのが適切です。NanbyoDataの発表関連の<a href=\"/resources\" target=\"_blank\" rel=\"noopener noreferrer\">Resourcesページ</a>もご参考ください。</p><p>現時点では、以下の文献を引用してください。（2026年3月）</p><p>藤原 豊史, 希少疾患診断支援における医療データ活用の現状と展望, 人工知能, 2025, 40巻, 5号, p.718-725, <a href=\"https://doi.org/10.11517/jjsai.40.5_718\" target=\"_blank\" rel=\"noopener noreferrer\">https://doi.org/10.11517/jjsai.40.5_718</a></p>",
+                "en": "<p>If you use NanbyoData in research or publications, please cite the relevant papers. It is appropriate to cite literature that explains NanbyoData and the context of rare disease diagnostic support. See also the <a href=\"/resources\" target=\"_blank\" rel=\"noopener noreferrer\">Resources</a> page.</p><p>As of March 2026, please cite the following:</p><p>Toyofumi Fujiwara, Current status and prospects of medical data utilization in rare disease diagnostic support, Journal of Japanese Society for Artificial Intelligence, 2025, Vol. 40, No. 5, pp. 718–725, <a href=\"https://doi.org/10.11517/jjsai.40.5_718\" target=\"_blank\" rel=\"noopener noreferrer\">https://doi.org/10.11517/jjsai.40.5_718</a></p>"
               }
             }
           ]
         },
         {
-          "id": "other",
+          "id": "data-coverage",
           "title": {
-            "ja": "その他",
-            "en": "Other"
+            "ja": "NanbyoData収録データに関して",
+            "en": "Data covered by NanbyoData"
           },
           "items": [
             {
               "question": {
-                "ja": "ユーザーマニュアル",
-                "en": "User manual"
+                "ja": "どのような疾患が対象ですか。",
+                "en": "Which diseases are covered?"
               },
               "answer": {
-                "ja": "詳細な使用方法については、ユーザーマニュアルをご覧ください。",
-                "en": "For detailed usage instructions, please refer to the user manual."
+                "ja": "<p>主な対象は、厚生労働省の指定難病と小児慢性特定疾病です。それぞれの制度の対象疾患について、NANDOを通じて整理された情報を閲覧できます。</p>",
+                "en": "<p>The main scope is designated intractable diseases and pediatric chronic specific diseases under the Ministry of Health, Labour and Welfare. For diseases covered by each program, you can browse information organized through NANDO.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "疾患ページではどのような情報が見られますか。",
+                "en": "What information appears on a disease page?"
+              },
+              "answer": {
+                "ja": "<p>概要、診断基準等、臨床的特徴、関連遺伝子、文献、化合物など、疾患ごとに利用可能な情報が表示されます。表示される項目は疾患によって異なり、関連情報がない項目はグレイアウトされます。</p>",
+                "en": "<p>Depending on the disease, you may see overview, diagnostic criteria, clinical features, related genes, literature, compounds, and more. Available sections vary by disease; items without data are shown in a disabled (grayed-out) style.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "外部データベースとも連携していますか。",
+                "en": "Does NanbyoData integrate with external databases?"
+              },
+              "answer": {
+                "ja": "<p>はい。複数の外部データベースと連携しています。医療専門家の確認のもと、NANDOは、国際的にハブとなっている疾患名語彙集 Mondo と対応づけられており、これを介して OMIM・Orphanet・MedGen などの主要な国際データベースと連携しています。また、KEGGについては日本語の病名をもとに対応付けています。</p>",
+                "en": "<p>Yes. NanbyoData links to multiple external databases. With expert review, NANDO is mapped to Mondo, a widely used international disease vocabulary, and through Mondo to major resources such as OMIM, Orphanet, and MedGen. KEGG is linked using Japanese disease names.</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "disease-related-info",
+          "title": {
+            "ja": "疾患関連情報に関して",
+            "en": "Disease-related information"
+          },
+          "items": [
+            {
+              "question": {
+                "ja": "疾患関連遺伝子では何が見られますか。",
+                "en": "What can I see under related genes?"
+              },
+              "answer": {
+                "ja": "<p>厚労省の公文書から抽出した国内基準由来の関連遺伝子と、OMIM、Orphanet、GenCC等の国際リソース由来の関連遺伝子を確認できます。遺伝子シンボルやIDに加えて、参照元の情報もあわせて見ることができます。</p>",
+                "en": "<p>You can view related genes derived from domestic criteria extracted from MHLW official documents, and related genes from international resources such as OMIM, Orphanet, and GenCC. Gene symbols and IDs are shown together with their sources.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "臨床的特徴では何が見られますか。",
+                "en": "What appears under clinical features?"
+              },
+              "answer": {
+                "ja": "<p>疾患に関連する症状が、Human Phenotype Ontology（HPO）IDを用いて表示されるため、症状情報を標準化された形式で確認できます。</p>",
+                "en": "<p>Symptoms associated with the disease are shown using Human Phenotype Ontology (HPO) IDs, so you can review symptom information in a standardized form.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "そのほかにどのようなデータがありますか。",
+                "en": "What other kinds of data are available?"
+              },
+              "answer": {
+                "ja": "<p>疾患によっては、糖鎖関連遺伝子、診療用遺伝学的検査、顔貌特徴、ヒトゲノムデータセット、難病特異的バイオリソースなども閲覧できます。さらに、化合物、バリアント、文献など、研究や診療に役立つ関連情報も掲載されています。</p>",
+                "en": "<p>For some diseases you may also see glycan-related genes, clinical genetic testing, facial features, human genome datasets, and disease-specific bioresources. Related information such as compounds, variants, and literature useful for research and care is also provided where available.</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "search-system",
+          "title": {
+            "ja": "NanbyoData検索システムに関して",
+            "en": "Search in NanbyoData"
+          },
+          "items": [
+            {
+              "question": {
+                "ja": "どのように疾患を検索できますか。",
+                "en": "How do I search for a disease?"
+              },
+              "answer": {
+                "ja": "<p>トップページや疾患ページ上部の検索窓に、疾患名を入力して検索できます。入力中には候補が表示され、選択すると該当する疾患ページに移動できます。</p>",
+                "en": "<p>Enter a disease name in the search box on the home page or at the top of a disease page. Suggestions appear as you type; selecting one opens the corresponding disease page.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "疾患名以外でも検索できますか。",
+                "en": "Can I search by something other than the disease name?"
+              },
+              "answer": {
+                "ja": "<p>はい。NANDO IDや疾患の別名でも検索できます。英語名や略称を入力しても、対応する疾患が見つかる場合があります。</p>",
+                "en": "<p>Yes. You can search by NANDO ID or synonyms. English names and abbreviations may also resolve to a disease when a match exists.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "検索結果のページでは何ができますか。",
+                "en": "What can I do on the search results page?"
+              },
+              "answer": {
+                "ja": "<p>疾患の概要だけでなく、利用可能な各種データページへ移動できます。また、疾患選択ツリーを使って関連する疾患やその病型分類に基づく下位疾患へ移動することも可能です。</p>",
+                "en": "<p>You can go beyond the disease overview to various data views where information exists. You can also use the disease selection tree to move to related diseases or subtypes under the classification.</p>"
+              }
+            }
+          ]
+        },
+        {
+          "id": "display-download",
+          "title": {
+            "ja": "表示・ダウンロードに関して",
+            "en": "Display and download"
+          },
+          "items": [
+            {
+              "question": {
+                "ja": "英語表示はできますか。",
+                "en": "Can I view the site in English?"
+              },
+              "answer": {
+                "ja": "<p>はい。疾患ページ右上の言語切り替えボタンから、英語表示に変更できます。日本語と英語の両方で疾患情報を確認できるため、国際的な情報共有にも便利です。</p>",
+                "en": "<p>Yes. Use the language switcher at the top right of a disease page to switch to English. Disease information is available in Japanese and English, which helps international sharing.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "各疾患ページの「Download」では何が取得できますか。",
+                "en": "What does the Download button on a disease page provide?"
+              },
+              "answer": {
+                "ja": "<p>疾患ページの「Download」ボタンから、その疾患ページで利用可能な情報をテキストファイルとして取得できます。取得内容は、データが存在する項目に応じて、疾患ごとに内容は異なります。</p>",
+                "en": "<p>The Download button on a disease page lets you download available information for that page as a text file. The exact contents depend on which data exist for that disease.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "疾患のデータをまとめてダウンロードできますか。",
+                "en": "Can I bulk-download disease data?"
+              },
+              "answer": {
+                "ja": "<p><a href=\"/download/\" target=\"_blank\" rel=\"noopener noreferrer\">「DOWNLOAD」ページ</a>からNanbyoDataに収録されたデータを取得できます。ダウンロードページでは、日付ごとに整理された過去時点のデータや、最新状態を反映したデータをまとめた「latest」フォルダが提供されています。</p>",
+                "en": "<p>You can obtain NanbyoData datasets from the <a href=\"/download/\" target=\"_blank\" rel=\"noopener noreferrer\">DOWNLOAD</a> page. It provides snapshots by date and a “latest” folder reflecting the current state.</p>"
+              }
+            },
+            {
+              "question": {
+                "ja": "診断基準や臨床調査個人票・医療意見書も見られますか。",
+                "en": "Can I see diagnostic criteria, clinical survey forms, and medical opinion documents?"
+              },
+              "answer": {
+                "ja": "<p>はい。厚生労働省が提供している「概要、診断基準等」や「臨床調査個人票・医療意見書」を各疾患ページから、PDFを取得できます。制度に基づく公的資料へ直接アクセスできる点もNanbyoDataの特徴です。</p>",
+                "en": "<p>Yes. From each disease page you can obtain PDFs of “Overview and diagnostic criteria” and “Clinical survey forms and medical opinion documents” provided by the Ministry of Health, Labour and Welfare. A hallmark of NanbyoData is direct access to these official program documents.</p>"
               }
             }
           ]
