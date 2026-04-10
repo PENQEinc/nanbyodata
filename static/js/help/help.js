@@ -33,6 +33,7 @@ async function loadFAQ() {
       document.querySelector('.language-select')?.value ||
       (document.documentElement.lang === 'ja' ? 'ja' : 'en');
     const faqContainer = document.getElementById('faq-container');
+    const faqSidebarSublist = document.getElementById('faq-sidebar-sublist');
 
     if (!faqContainer) {
       console.error('FAQ container not found');
@@ -46,6 +47,24 @@ async function loadFAQ() {
       if (!obj || !obj[key]) return '';
       return obj[key][locale] || obj[key]['en'] || '';
     };
+
+    // サイドバーの FAQ サブリンク（faq.json の subsections から生成。help.html は固定でよい）
+    if (faqSidebarSublist) {
+      faqSidebarSublist.innerHTML = '';
+      faqData.sections.forEach((section) => {
+        if (!section.subsections?.length) return;
+        section.subsections.forEach((subsection) => {
+          if (!subsection.id) return;
+          const li = document.createElement('li');
+          const a = document.createElement('a');
+          a.href = `#faq-${subsection.id}`;
+          a.className = 'help-sidebar-sublink';
+          a.textContent = getLocalizedValue(subsection, 'title');
+          li.appendChild(a);
+          faqSidebarSublist.appendChild(li);
+        });
+      });
+    }
 
     faqData.sections.forEach((section) => {
       // サブセクションがない場合（その他セクションなど）にクラスを追加
@@ -143,6 +162,10 @@ async function loadFAQ() {
     const faqContainer = document.getElementById('faq-container');
     if (faqContainer) {
       faqContainer.innerHTML = '<p>FAQの読み込みに失敗しました。</p>';
+    }
+    const faqSidebarSublist = document.getElementById('faq-sidebar-sublist');
+    if (faqSidebarSublist) {
+      faqSidebarSublist.innerHTML = '';
     }
   }
 }
