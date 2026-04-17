@@ -280,6 +280,8 @@ $stats-tooltip-width: 200px;
     tbody td {
       text-align: left;
       font-weight: normal;
+      // 隣接列の rowspan で行高が伸びるとき、NANDO 列など rowspan がないセルも縦中央に揃える
+      vertical-align: middle;
     }
 
     thead th {
@@ -301,6 +303,11 @@ $stats-tooltip-width: 200px;
   > div + div {
     margin-top: 0.25rem;
   }
+}
+
+// 隣接列の rowspan で行高が伸びるため、tbody の td はすべて縦中央（NANDO 列など rowspan なしも含む）
+.stats-table tbody td {
+  vertical-align: middle;
 }
 
 .stats-table td.stats-cell--nowrap,
@@ -326,6 +333,23 @@ $stats-tooltip-width: 200px;
     word-wrap: normal;
     overflow-wrap: normal;
     word-break: keep-all;
+  }
+}
+
+// genes-content (japan-curated) の「Gene name」「Description」列が潰れないよう最小幅を確保
+.card-detail-section[data-section-id='genes-content'] .table-contents {
+  .stats-table thead th:nth-child(2),
+  .stats-table tbody td:nth-child(2),
+  .table.stats-table thead th:nth-child(2),
+  .table.stats-table tbody td:nth-child(2) {
+    min-width: 10rem;
+  }
+
+  .stats-table thead th:nth-child(6),
+  .stats-table tbody td:nth-child(6),
+  .table.stats-table thead th:nth-child(6),
+  .table.stats-table tbody td:nth-child(6) {
+    min-width: 12rem;
   }
 }
 

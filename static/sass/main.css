@@ -3325,6 +3325,7 @@ Stats Page Styles
 .card-detail-section .table-contents .table.stats-table tbody td {
   text-align: left;
   font-weight: normal;
+  vertical-align: middle;
 }
 .card-detail-section .table-contents .stats-table thead th,
 .card-detail-section .table-contents .table.stats-table thead th {
@@ -3342,6 +3343,10 @@ Stats Page Styles
 }
 .stats-table td.stats-cell--html > div + div {
   margin-top: 0.25rem;
+}
+
+.stats-table tbody td {
+  vertical-align: middle;
 }
 
 .stats-table td.stats-cell--nowrap,
@@ -3365,6 +3370,20 @@ Stats Page Styles
   word-wrap: normal;
   overflow-wrap: normal;
   word-break: keep-all;
+}
+
+.card-detail-section[data-section-id=genes-content] .table-contents .stats-table thead th:nth-child(2),
+.card-detail-section[data-section-id=genes-content] .table-contents .stats-table tbody td:nth-child(2),
+.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table thead th:nth-child(2),
+.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table tbody td:nth-child(2) {
+  min-width: 10rem;
+}
+
+.card-detail-section[data-section-id=genes-content] .table-contents .stats-table thead th:nth-child(6),
+.card-detail-section[data-section-id=genes-content] .table-contents .stats-table tbody td:nth-child(6),
+.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table thead th:nth-child(6),
+.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table tbody td:nth-child(6) {
+  min-width: 12rem;
 }
 
 #nanbyodata-in-numbers-original .table-contents .table.stats-table {

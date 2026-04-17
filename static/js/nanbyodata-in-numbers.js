@@ -1,5 +1,5 @@
 // Stats page JavaScript
-document.addEventListener('DOMContentLoaded', function () {
+function initNanbyodataInNumbersPage() {
   updateViewByHash();
   window.addEventListener('hashchange', updateViewByHash);
 
@@ -26,7 +26,13 @@ document.addEventListener('DOMContentLoaded', function () {
       window.location.href = newUrl;
     });
   }
-});
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initNanbyodataInNumbersPage);
+} else {
+  initNanbyodataInNumbersPage();
+}
 
 const CARD_DETAIL_FETCH_TIMEOUT_MS = 10000;
 
@@ -37,6 +43,8 @@ const DETAIL_HASH_ALIASES = {
   'genes-content': 'genes-content',
   'clinical-features': 'clinical-features-content',
   'clinical-features-content': 'clinical-features-content',
+  'facial-features': 'facial-features-content',
+  'facial-features-content': 'facial-features-content',
   'glycan-related-genes': 'related-data-content',
   'related-data-content': 'related-data-content',
   bioresources: 'bioresources-content',
@@ -63,6 +71,14 @@ const TOP_PAGE_API_MAP = {
     extract: (d) => {
       const s = parseInt(d.shitei_hp?.hp || 0);
       const m = parseInt(d.shoman_hp?.hp || 0);
+      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
+    },
+  },
+  'facial-features-content': {
+    api: '/sparqlist/api/NANDO_link_count4',
+    extract: (d) => {
+      const s = parseInt(d.shitei_gm?.GM || 0);
+      const m = parseInt(d.shoman_gm?.GM || 0);
       return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
     },
   },
@@ -139,6 +155,110 @@ function resolveDataUrl(source) {
   if (!source || typeof source !== 'object') return '';
   const u = source.dataUrl ?? source.dataApi;
   return typeof u === 'string' && u.trim() !== '' ? u.trim() : '';
+}
+
+function applyRowFilter(rows, filterConfig) {
+  if (!Array.isArray(rows) || !filterConfig || typeof filterConfig !== 'object') {
+    return rows;
+  }
+  const key = typeof filterConfig.key === 'string' ? filterConfig.key : '';
+  if (!key) return rows;
+
+  if (filterConfig.exists === true) {
+    return rows.filter((row) => row && row[key] != null && row[key] !== '');
+  }
+  if (filterConfig.exists === false) {
+    return rows.filter((row) => !row || row[key] == null || row[key] === '');
+  }
+  if (Object.prototype.hasOwnProperty.call(filterConfig, 'equals')) {
+    return rows.filter((row) => row && row[key] === filterConfig.equals);
+  }
+  if (Array.isArray(filterConfig.in)) {
+    const allowed = new Set(filterConfig.in);
+    return rows.filter((row) => row && allowed.has(row[key]));
+  }
+  return rows;
+}
+
+function applyRowGroup(rows, groupConfig) {
+  if (!Array.isArray(rows) || !groupConfig || typeof groupConfig !== 'object') {
+    return rows;
+  }
+  const groupKeys = Array.isArray(groupConfig.keys)
+    ? groupConfig.keys.filter((k) => typeof k === 'string' && k)
+    : [];
+  if (groupKeys.length === 0) return rows;
+  const mergeFields = Array.isArray(groupConfig.mergeFields)
+    ? groupConfig.mergeFields.filter((k) => typeof k === 'string' && k)
+    : [];
+  const separator =
+    typeof groupConfig.separator === 'string' && groupConfig.separator
+      ? groupConfig.separator
+      : ' / ';
+
+  const grouped = new Map();
+  rows.forEach((row) => {
+    if (!row || typeof row !== 'object') return;
+    const key = groupKeys.map((k) => String(row[k] ?? '')).join('\u0000');
+    if (!grouped.has(key)) {
+      const seed = { ...row };
+      mergeFields.forEach((field) => {
+        seed[field] = row[field] ?? '';
+      });
+      grouped.set(key, seed);
+      return;
+    }
+    const acc = grouped.get(key);
+    mergeFields.forEach((field) => {
+      const current = acc[field] == null ? '' : String(acc[field]);
+      const next = row[field] == null ? '' : String(row[field]);
+      if (!next) return;
+      const existing = current
+        ? current.split(separator).map((v) => v.trim()).filter(Boolean)
+        : [];
+      if (!existing.includes(next)) {
+        existing.push(next);
+      }
+      acc[field] = existing.join(separator);
+    });
+  });
+  return Array.from(grouped.values());
+}
+
+/**
+ * タブの preSortColumns で行を並べ替える（同一 gene_symbol が連続し rowspan しやすくする）
+ * @param {object[]} rows
+ * @param {{ dataKey: string, order?: 'asc' | 'desc' }[]|undefined} spec
+ */
+function applyPreSortColumns(rows, spec) {
+  if (!Array.isArray(rows) || rows.length === 0) return rows;
+  if (!Array.isArray(spec) || spec.length === 0) return rows;
+  const keys = spec.filter((p) => p && typeof p.dataKey === 'string');
+  if (keys.length === 0) return rows;
+  return rows.slice().sort((a, b) => {
+    for (let i = 0; i < keys.length; i++) {
+      const { dataKey, order } = keys[i];
+      const desc = order === 'desc';
+      const va = a?.[dataKey];
+      const vb = b?.[dataKey];
+      const cmp = String(va ?? '').localeCompare(String(vb ?? ''), undefined, {
+        numeric: true,
+        sensitivity: 'base',
+      });
+      if (cmp !== 0) return desc ? -cmp : cmp;
+    }
+    return 0;
+  });
+}
+
+function formatStatsValueByColumn(col, val) {
+  if (!col || val === undefined || val === null) return val;
+  if (col.dataKey !== 'property') return val;
+  const s = String(val);
+  if (/exactMatch$/i.test(s)) return 'Exact Match';
+  if (/closeMatch$/i.test(s)) return 'Close Match';
+  if (/hasDbXref$/i.test(s)) return 'database_cross_reference';
+  return s;
 }
 
 const STATS_DEV_DATA_ORIGIN = 'https://dev-nanbyodata.dbcls.jp';
@@ -400,11 +520,26 @@ function getConfigDataKeysForLocale(col, locale) {
 function getNandoIdForCsv(val) {
   if (val == null || val === '') return '';
   const s = String(val).trim();
-  const fromUrl = s.match(/\/?(NANDO_\d+)$/i);
-  if (fromUrl) return fromUrl[1];
+  const fromUrlUnderscore = s.match(/\/?NANDO_(\d+)$/i);
+  if (fromUrlUnderscore) return `NANDO:${fromUrlUnderscore[1]}`;
+  const fromUrlColon = s.match(/\/?NANDO:(\d+)$/i);
+  if (fromUrlColon) return `NANDO:${fromUrlColon[1]}`;
   const fromColon = s.match(/^NANDO:(\d+)$/i);
-  if (fromColon) return 'NANDO_' + fromColon[1];
+  if (fromColon) return `NANDO:${fromColon[1]}`;
+  const fromUnderscore = s.match(/^NANDO_(\d+)$/i);
+  if (fromUnderscore) return `NANDO:${fromUnderscore[1]}`;
   return s;
+}
+
+/** HPO ID（HP:123 または数字のみ）から HPO ブラウザの項目 URL を組み立てる */
+function getHpoBrowseUrlFromId(raw) {
+  if (raw == null || raw === '') return '';
+  const s = String(raw).trim();
+  if (!s) return '';
+  if (/^https?:\/\//i.test(s)) return s;
+  const m = s.match(/^(?:HP:)?(\d+)$/i);
+  if (m) return `https://hpo.jax.org/app/browse/term/HP:${m[1]}`;
+  return `https://hpo.jax.org/app/browse/term/${encodeURIComponent(s)}`;
 }
 
 function htmlToPlainText(html) {
@@ -422,23 +557,34 @@ function getCsvCellValueFromRow(row, col, locale) {
 
   if (col.link === 'external') {
     const hrefVal = col.linkHrefKey ? row?.[col.linkHrefKey] : values[0];
-    return hrefVal != null && hrefVal !== '' ? String(hrefVal) : '—';
+    return hrefVal != null && hrefVal !== '' ? String(hrefVal) : '-';
+  }
+
+  if (col.link === 'hpo') {
+    const raw =
+      values.length > 0
+        ? values[0]
+        : col.linkValueKey
+          ? row?.[col.linkValueKey]
+          : row?.hpo_id;
+    const url = getHpoBrowseUrlFromId(raw);
+    return url || '-';
   }
 
   if (col.link === 'nando') {
     const raw = row?.nando_id != null ? row.nando_id : values[0];
     const normalized = getNandoIdForCsv(raw);
     return normalized
-      ? `${window.location.origin}/disease/${encodeURIComponent(normalized)}`
-      : '—';
+      ? `${window.location.origin}/disease/${normalized}`
+      : '-';
   }
 
   if (col.html) {
     const htmlValues = values.map((value) => htmlToPlainText(value)).filter(Boolean);
-    return htmlValues.length > 0 ? htmlValues.join('\n') : '—';
+    return htmlValues.length > 0 ? htmlValues.join('\n') : '-';
   }
 
-  if (values.length === 0) return '—';
+  if (values.length === 0) return '-';
   if (values.length === 1) return String(values[0]);
   return values.map((value) => String(value)).join('\n');
 }
@@ -553,6 +699,12 @@ function setCountUnavailable(element) {
   element.textContent = '-';
 }
 
+function getRowspanVerticalAlign(col) {
+  const align = String(col?.rowspanVerticalAlign || '').toLowerCase();
+  if (align === 'top' || align === 'bottom') return align;
+  return 'middle';
+}
+
 function getLocalizedConfigText(configValue, locale) {
   if (!configValue || typeof configValue !== 'object') return '';
   return configValue[locale] || configValue.en || configValue.ja || '';
@@ -570,16 +722,32 @@ function createStatsTooltipIcon(className, tooltipText) {
   return tooltip;
 }
 
+/** summary.js の遺伝子件数と同様、Gene symbol 系は大文字化してユニーク化する */
+const TAB_COUNT_GENE_SYMBOL_KEYS = new Set(['symbol', 'gene_symbol', 'genesymbol']);
+
+function normalizeValueForTabCount(raw, countKey) {
+  if (raw == null) return '';
+  const trimmed = String(raw).trim();
+  if (trimmed === '') return '';
+  const key = String(countKey || '').toLowerCase();
+  if (TAB_COUNT_GENE_SYMBOL_KEYS.has(key)) {
+    return trimmed.toUpperCase();
+  }
+  return trimmed;
+}
+
 function getTabCountValue(rows, tab) {
   if (!Array.isArray(rows)) return 0;
   const countKey =
     tab?.countDataKey || (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
   if (!countKey) return rows.length;
-  return new Set(
-    rows
-      .map((row) => row?.[countKey])
-      .filter((value) => value != null && String(value).trim() !== ''),
-  ).size;
+  const seen = new Set();
+  for (const row of rows) {
+    if (!row || typeof row !== 'object') continue;
+    const v = normalizeValueForTabCount(row[countKey], countKey);
+    if (v !== '') seen.add(v);
+  }
+  return seen.size;
 }
 
 /**
@@ -676,6 +844,7 @@ async function showCardDetailTable(sectionId) {
 
     const section = document.createElement('div');
     section.className = 'stats-section card-detail-section';
+    section.dataset.sectionId = sectionId;
 
     const header = document.createElement('div');
     header.className = 'stats-section-header';
@@ -895,6 +1064,9 @@ async function showCardDetailTable(sectionId) {
     table.appendChild(tbody);
     tableWrap.appendChild(table);
     section.appendChild(tableWrap);
+    // タブ有無にかかわらず、タイトル・説明・テーブル枠は先に表示する
+    container.innerHTML = '';
+    container.appendChild(section);
 
     const theadTr = thead.querySelector('tr');
     const columns = sectionConfig.columns || [];
@@ -909,7 +1081,7 @@ async function showCardDetailTable(sectionId) {
       const tabCache = {};
       const topPageApiDef = TOP_PAGE_API_MAP[sectionId];
 
-      /** タイトル横の件数表示を更新（タブ行数合計）。トップAPIがあるセクションでは呼ばない（API失敗時は '-' のまま） */
+      /** タイトル横の件数表示を更新（タブごとの行数の合計。トップAPIがあるセクションでは呼ばない） */
       function updateTitleCountFromCache() {
         if (topPageApiDef || !titleCount) return;
         const total = Object.values(tabCache).reduce(
@@ -935,7 +1107,7 @@ async function showCardDetailTable(sectionId) {
           if (!silent) {
             renderTableFromRows(table, tab.columns, cachedRows, locale);
           }
-          // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
+          // タブ件数＝countDataKey（なければ先頭列）のユニーク数（Gene symbol 列は大文字比較）
           const uniqueCountCache = getTabCountValue(cachedRows, tab);
           const cachedCountEl = tabBar.querySelector(
             `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
@@ -967,12 +1139,15 @@ async function showCardDetailTable(sectionId) {
                 row.kegg = row.kegg_url;
               }
             });
+            rows = applyRowFilter(rows, tab.rowFilter);
+            rows = applyRowGroup(rows, tab.rowGroupBy);
+            rows = applyPreSortColumns(rows, tab.preSortColumns);
           }
           tabCache[tabIndex] = rows;
           if (!silent) {
             renderTableFromRows(table, tab.columns, rows, locale);
           }
-          // タブ件数＝各タブの Cell ID / Mouse ID / DNA ID の件数（重複なし、先頭列のユニーク数）
+          // タブ件数＝countDataKey（なければ先頭列）のユニーク数（Gene symbol 列は大文字比較）
           const uniqueCount = getTabCountValue(rows, tab);
           const countEl = tabBar.querySelector(
             `.stats-tab[data-tab-index="${tabIndex}"] .data-num`,
@@ -1005,14 +1180,18 @@ async function showCardDetailTable(sectionId) {
           return [];
         }
       };
-      /** NANDO URL または "NANDO:1100014" 形式から疾患IDを抽出（リンク用に NANDO_xxxxx に統一） */
+      /** NANDO URL/ID をリンク用に "NANDO:xxxx" へ正規化 */
       function getNandoIdForLink(val) {
         if (val == null || val === '') return val;
         const s = String(val).trim();
-        const fromUrl = s.match(/\/?(NANDO_\d+)$/i);
-        if (fromUrl) return fromUrl[1];
+        const fromUrlUnderscore = s.match(/\/?NANDO_(\d+)$/i);
+        if (fromUrlUnderscore) return `NANDO:${fromUrlUnderscore[1]}`;
+        const fromUrlColon = s.match(/\/?NANDO:(\d+)$/i);
+        if (fromUrlColon) return `NANDO:${fromUrlColon[1]}`;
         const fromColon = s.match(/^NANDO:(\d+)$/i);
-        if (fromColon) return 'NANDO_' + fromColon[1];
+        if (fromColon) return `NANDO:${fromColon[1]}`;
+        const fromUnderscore = s.match(/^NANDO_(\d+)$/i);
+        if (fromUnderscore) return `NANDO:${fromUnderscore[1]}`;
         return s;
       }
       function getDataKeysForLocale(col, loc) {
@@ -1283,12 +1462,13 @@ async function showCardDetailTable(sectionId) {
           cols.forEach((col, colIdx) => {
             const key = getPrimaryDataKeyForLocale(col, loc);
             const val = key ? row[key] : undefined;
+            const formattedVal = formatStatsValueByColumn(col, val);
             const displayVal =
-              val === undefined || val === null
-                ? '—'
-                : typeof val === 'number'
-                  ? val.toLocaleString()
-                  : String(val);
+              formattedVal === undefined || formattedVal === null
+                ? '-'
+                : typeof formattedVal === 'number'
+                  ? formattedVal.toLocaleString()
+                  : String(formattedVal);
             const displayVals = (function () {
               const keys = getDataKeysForLocale(col, loc);
               if (!keys || keys.length <= 1) return null;
@@ -1298,12 +1478,20 @@ async function showCardDetailTable(sectionId) {
             })();
             const linkTarget =
               col.link === 'nando'
-                ? getNandoIdForLink(row.nando_id != null ? row.nando_id : val)
+                ? getNandoIdForLink(
+                    col.linkValueKey
+                      ? row[col.linkValueKey]
+                      : row.nando_id != null
+                        ? row.nando_id
+                        : val,
+                  )
                 : null;
             const hasNandoLink =
               col.link === 'nando' &&
               ((val != null && val !== '') || row.nando_id) &&
               linkTarget;
+            const hpoLinkUrl =
+              col.link === 'hpo' ? getHpoBrowseUrlFromId(val) : '';
             if (col.rowspan && rowspanGroups[colIdx]) {
               const group = rowspanGroups[colIdx].find(
                 (g) => g.startRow === rowIndex,
@@ -1311,12 +1499,20 @@ async function showCardDetailTable(sectionId) {
               if (!group) return;
               const td = document.createElement('td');
               td.rowSpan = group.span;
+              td.style.verticalAlign = getRowspanVerticalAlign(col);
               if (col.noWrap) {
                 td.classList.add('stats-cell--nowrap');
               }
               if (hasNandoLink) {
                 const a = document.createElement('a');
-                a.href = '/disease/' + encodeURIComponent(linkTarget);
+                a.href = '/disease/' + linkTarget;
+                a.textContent = displayVal;
+                td.appendChild(a);
+              } else if (hpoLinkUrl) {
+                const a = document.createElement('a');
+                a.href = hpoLinkUrl;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
                 a.textContent = displayVal;
                 td.appendChild(a);
               } else if (col.link === 'external') {
@@ -1354,7 +1550,14 @@ async function showCardDetailTable(sectionId) {
               }
               if (hasNandoLink) {
                 const a = document.createElement('a');
-                a.href = '/disease/' + encodeURIComponent(linkTarget);
+                a.href = '/disease/' + linkTarget;
+                a.textContent = displayVal;
+                td.appendChild(a);
+              } else if (hpoLinkUrl) {
+                const a = document.createElement('a');
+                a.href = hpoLinkUrl;
+                a.target = '_blank';
+                a.rel = 'noopener noreferrer';
                 a.textContent = displayVal;
                 td.appendChild(a);
               } else if (col.link === 'external') {
@@ -1660,8 +1863,6 @@ async function showCardDetailTable(sectionId) {
       return;
     }
 
-    container.innerHTML = '';
-    container.appendChild(section);
   } catch (e) {
     console.warn('カード詳細テーブルの表示に失敗しました', e);
     container.innerHTML =
@@ -1697,17 +1898,55 @@ async function loadSectionTableFromColumnApis(
   const colCount = columns.length;
   const errorText =
     locale === 'ja' ? 'データの読み込みに失敗しました' : 'Failed to load data';
-  const loadingSpinnerHtml = `<tr><td colspan="${colCount}" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>`;
-
-  // 読み込み中はヘッダーを非表示
+  // 読み込み中もヘッダーは表示したままにする
   const thead = table.querySelector('thead');
-  if (thead) thead.style.display = 'none';
-  tbody.innerHTML = loadingSpinnerHtml;
+  const columnData = {};
+  let renderedRows = [];
 
-  try {
-    const columnData = {};
-    for (const col of columns) {
-      if (!resolveDataUrl(col)) continue;
+  function renderPartialTable() {
+    renderedRows = [];
+    tbody.innerHTML = '';
+    rows.forEach((rowDef) => {
+      const tr = document.createElement('tr');
+      const rowId = rowDef.id;
+      const renderedRow = {};
+      columns.forEach((col) => {
+        const td = document.createElement('td');
+        let val;
+        if (col.dataKey === 'category') {
+          val = rowDef.label?.[locale] ?? rowDef.label?.en ?? rowId;
+        } else if (resolveDataUrl(col) && columnData[col.dataKey]) {
+          val = columnData[col.dataKey][rowId];
+        } else {
+          val = undefined;
+        }
+        if (val === undefined || val === null) {
+          td.textContent = '-';
+        } else if (typeof val === 'number') {
+          td.textContent = val.toLocaleString();
+        } else {
+          td.textContent = String(val);
+        }
+        renderedRow[col.dataKey] = val;
+        tr.appendChild(td);
+      });
+      renderedRows.push(renderedRow);
+      tbody.appendChild(tr);
+    });
+  }
+
+  // 先にカテゴリ列など表示可能な情報だけ描画し、取得結果で順次更新する
+  renderPartialTable();
+  if (thead) thead.style.display = '';
+
+  const apiColumns = columns.filter((col) => resolveDataUrl(col));
+  if (apiColumns.length === 0) {
+    return renderedRows;
+  }
+
+  let successCount = 0;
+  const tasks = apiColumns.map(async (col) => {
+    try {
       const res = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(col)));
       if (!res.ok) throw new Error(`${col.dataKey}: ${res.statusText}`);
       const data = await res.json();
@@ -1731,45 +1970,21 @@ async function loadSectionTableFromColumnApis(
       } else {
         columnData[col.dataKey] = {};
       }
+      successCount += 1;
+      renderPartialTable();
+    } catch (e) {
+      console.warn(`Stats column API エラー (${sectionConfig.id}/${col.dataKey}):`, e);
     }
+  });
 
-    const renderedRows = [];
-    tbody.innerHTML = '';
-    rows.forEach((rowDef) => {
-      const tr = document.createElement('tr');
-      const rowId = rowDef.id;
-      const renderedRow = {};
-      columns.forEach((col) => {
-        const td = document.createElement('td');
-        let val;
-        if (col.dataKey === 'category') {
-          val = rowDef.label?.[locale] ?? rowDef.label?.en ?? rowId;
-        } else if (resolveDataUrl(col) && columnData[col.dataKey]) {
-          val = columnData[col.dataKey][rowId];
-        } else {
-          val = undefined;
-        }
-        if (val === undefined || val === null) {
-          td.textContent = '—';
-        } else if (typeof val === 'number') {
-          td.textContent = val.toLocaleString();
-        } else {
-          td.textContent = String(val);
-        }
-        renderedRow[col.dataKey] = val;
-        tr.appendChild(td);
-      });
-      renderedRows.push(renderedRow);
-      tbody.appendChild(tr);
-    });
-    if (thead) thead.style.display = '';
-    return renderedRows;
-  } catch (e) {
-    console.warn(`Stats column API エラー (${sectionConfig.id}):`, e);
+  await Promise.allSettled(tasks);
+
+  if (successCount === 0) {
     tbody.innerHTML = `<tr><td colspan="${colCount}" class="stats-table-error">${errorText}</td></tr>`;
-    if (thead) thead.style.display = '';
     return [];
   }
+
+  return renderedRows;
 }
 
 /**
@@ -1783,9 +1998,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
     locale === 'ja' ? 'データの読み込みに失敗しました' : 'Failed to load data';
   const loadingSpinnerHtml = `<tr><td colspan="${colCount}" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>`;
 
-  // 読み込み中はヘッダーを非表示
+  // 読み込み中もヘッダーは表示したままにする
   const thead = table.querySelector('thead');
-  if (thead) thead.style.display = 'none';
   tbody.innerHTML = loadingSpinnerHtml;
 
   try {
@@ -1794,86 +2008,264 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
     );
     if (!res.ok) throw new Error(res.statusText);
     const data = await res.json();
-    const rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+    let rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+    if (Array.isArray(rows)) {
+      rows = applyRowFilter(rows, sectionConfig.rowFilter);
+      rows = applyRowGroup(rows, sectionConfig.rowGroupBy);
+      rows = applyPreSortColumns(rows, sectionConfig.preSortColumns);
+    }
 
     if (!Array.isArray(rows) || rows.length === 0) {
-      tbody.innerHTML = `<tr><td colspan="${colCount}">—</td></tr>`;
+      tbody.innerHTML = `<tr><td colspan="${colCount}">-</td></tr>`;
       if (thead) thead.style.display = '';
       return rows;
     }
 
     tbody.innerHTML = '';
     const columns = sectionConfig.columns || [];
+    let workingRows = Array.isArray(rows) ? rows.slice() : [];
 
-    rows.forEach((row, rowIndex) => {
-      const tr = document.createElement('tr');
-      if (
-        sectionConfig.hasTabs &&
-        sectionConfig.tabs &&
-        sectionConfig.tabs[rowIndex]
-      ) {
-        tr.setAttribute('data-tab-id', sectionConfig.tabs[rowIndex].id);
-        tr.classList.add('stats-tab-row');
-        tr.style.display = rowIndex === 0 ? '' : 'none';
+    const getCellRawValue = (row, col) => {
+      const keys = getConfigDataKeysForLocale(col, locale);
+      return keys.length > 0
+        ? keys.map((k) => row[k]).find((v) => v != null && v !== '')
+        : undefined;
+    };
+
+    const getPrimaryDataKeyForColumn = (col) => {
+      const keys = getConfigDataKeysForLocale(col, locale);
+      return keys.length > 0 ? keys[0] : null;
+    };
+
+    const getSortState = () => {
+      if (!table._statsSortState) {
+        table._statsSortState = { key: null, order: 'asc' };
       }
-      columns.forEach((col) => {
-        const td = document.createElement('td');
-        if (col.noWrap) {
-          td.classList.add('stats-cell--nowrap');
-        }
-        const keys = getConfigDataKeysForLocale(col, locale);
-        const val =
-          keys.length > 0
-            ? keys.map((k) => row[k]).find((v) => v != null && v !== '')
-            : undefined;
-        const displayVal =
-          val === undefined || val === null
-            ? '—'
-            : typeof val === 'number'
-              ? String(val.toLocaleString())
-              : String(val);
+      return table._statsSortState;
+    };
 
-        if (col.link === 'nando') {
-          const raw =
-            row.nando_id != null ? row.nando_id : val != null ? val : undefined;
-          const linkTarget = getNandoIdForCsv(raw);
-          if (linkTarget && raw != null && raw !== '') {
-            const a = document.createElement('a');
-            a.href = '/disease/' + encodeURIComponent(linkTarget);
-            a.textContent = displayVal === '—' ? linkTarget : displayVal;
-            td.appendChild(a);
-          } else {
-            td.textContent = displayVal;
-          }
-        } else if (col.link === 'external') {
-          const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
-          const textVal =
-            col.linkTextKey && row[col.linkTextKey] != null
-              ? String(row[col.linkTextKey])
-              : displayVal;
-          if (hrefVal) {
-            const a = document.createElement('a');
-            a.href = String(hrefVal);
-            a.target = '_blank';
-            a.rel = 'noopener noreferrer';
-            a.textContent = textVal === '—' ? String(hrefVal) : textVal;
-            td.appendChild(a);
-          } else {
-            td.textContent = displayVal;
-          }
-        } else if (val === undefined || val === null) {
-          td.textContent = '—';
-        } else if (typeof val === 'number') {
-          td.textContent = val.toLocaleString();
+    const sortRows = (list, sortState) => {
+      const copied = Array.isArray(list) ? list.slice() : [];
+      if (!sortState || !sortState.key) return copied;
+      const col = columns.find((c) => getPrimaryDataKeyForColumn(c) === sortState.key);
+      const isNumericColumn =
+        col && col.sortType === 'number'
+          ? true
+          : col && col.sortType === 'string'
+            ? false
+            : undefined;
+      const localeCode =
+        locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : navigator.language;
+      const toComparable = (val) => {
+        if (val === undefined || val === null) return null;
+        if (typeof val === 'number') return val;
+        const s = String(val).trim();
+        const num = Number(s.replace(/,/g, ''));
+        if (!Number.isNaN(num) && s !== '') return num;
+        return s;
+      };
+      copied.sort((a, b) => {
+        const va = toComparable(a[sortState.key]);
+        const vb = toComparable(b[sortState.key]);
+        if (va == null && vb == null) return 0;
+        if (va == null) return 1;
+        if (vb == null) return -1;
+        const bothNumbers =
+          isNumericColumn === true || (typeof va === 'number' && typeof vb === 'number');
+        let cmp;
+        if (bothNumbers) {
+          cmp = va === vb ? 0 : va < vb ? -1 : 1;
         } else {
-          td.textContent = String(val);
+          cmp = String(va).localeCompare(String(vb), localeCode, {
+            numeric: true,
+            sensitivity: 'base',
+          });
         }
-        tr.appendChild(td);
+        return sortState.order === 'asc' ? cmp : -cmp;
       });
-      tbody.appendChild(tr);
-    });
+      return copied;
+    };
+
+    const renderHeader = () => {
+      const tr = table.querySelector('thead tr');
+      if (!tr) return;
+      const sortState = getSortState();
+      const newTr = document.createElement('tr');
+      columns.forEach((col) => {
+        const th = document.createElement('th');
+        if (col.noWrap) th.classList.add('stats-cell--nowrap');
+        const labelSpan = document.createElement('span');
+        labelSpan.className = 'stats-th-label';
+        labelSpan.appendChild(
+          document.createTextNode(col.label?.[locale] || col.label?.en || ''),
+        );
+        if (col.tooltip && (col.tooltip[locale] || col.tooltip.en)) {
+          const w = document.createElement('span');
+          w.className = 'stats-th-tooltip';
+          w.setAttribute('data-tooltip', col.tooltip[locale] || col.tooltip.en);
+          const i = document.createElement('i');
+          i.className = 'fas fa-info-circle';
+          w.appendChild(i);
+          labelSpan.appendChild(w);
+        }
+        const sortKey = getPrimaryDataKeyForColumn(col);
+        const isSortable = col.sortable !== false && !!sortKey && !col.disableSort;
+        if (isSortable) {
+          th.classList.add('stats-sortable');
+          th.dataset.sortKey = sortKey;
+          th.setAttribute('role', 'button');
+          th.setAttribute('tabindex', '0');
+          const icon = document.createElement('i');
+          icon.className = 'fas sort-icon';
+          if (sortState.key === sortKey) {
+            icon.classList.add(sortState.order === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+          } else {
+            icon.classList.add('fa-sort');
+          }
+          labelSpan.appendChild(icon);
+          const handleSort = () => {
+            const state = getSortState();
+            if (state.key === sortKey) {
+              state.order = state.order === 'asc' ? 'desc' : 'asc';
+            } else {
+              state.key = sortKey;
+              state.order = 'asc';
+            }
+            table._statsSortState = state;
+            renderHeader();
+            renderBody(sortRows(workingRows, state));
+          };
+          th.onclick = handleSort;
+          th.onkeydown = (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              handleSort();
+            }
+          };
+        }
+        th.appendChild(labelSpan);
+        newTr.appendChild(th);
+      });
+      tr.replaceWith(newTr);
+    };
+
+    const renderBody = (rowList) => {
+      tbody.innerHTML = '';
+      const rowspanGroups = {};
+      columns.forEach((col, colIdx) => {
+        if (!col.rowspan) return;
+        const groups = [];
+        let i = 0;
+        while (i < rowList.length) {
+          const val = getCellRawValue(rowList[i], col);
+          let span = 1;
+          while (i + span < rowList.length) {
+            const nextVal = getCellRawValue(rowList[i + span], col);
+            if (String(nextVal) !== String(val)) break;
+            span += 1;
+          }
+          groups.push({ startRow: i, span });
+          i += span;
+        }
+        rowspanGroups[colIdx] = groups;
+      });
+
+      rowList.forEach((row, rowIndex) => {
+        const tr = document.createElement('tr');
+        if (
+          sectionConfig.hasTabs &&
+          sectionConfig.tabs &&
+          sectionConfig.tabs[rowIndex]
+        ) {
+          tr.setAttribute('data-tab-id', sectionConfig.tabs[rowIndex].id);
+          tr.classList.add('stats-tab-row');
+          tr.style.display = rowIndex === 0 ? '' : 'none';
+        }
+        columns.forEach((col, colIdx) => {
+          if (col.rowspan && rowspanGroups[colIdx]) {
+            const group = rowspanGroups[colIdx].find((g) => g.startRow === rowIndex);
+            if (!group) return;
+          }
+          const td = document.createElement('td');
+          if (col.rowspan && rowspanGroups[colIdx]) {
+            const group = rowspanGroups[colIdx].find((g) => g.startRow === rowIndex);
+            if (group) {
+              td.rowSpan = group.span;
+              td.style.verticalAlign = getRowspanVerticalAlign(col);
+            }
+          }
+          if (col.noWrap) td.classList.add('stats-cell--nowrap');
+          const val = getCellRawValue(row, col);
+          const formattedVal = formatStatsValueByColumn(col, val);
+          const displayVal =
+            formattedVal === undefined || formattedVal === null
+              ? '-'
+              : typeof formattedVal === 'number'
+                ? String(formattedVal.toLocaleString())
+                : String(formattedVal);
+
+          if (col.link === 'nando') {
+            const raw = col.linkValueKey
+              ? row[col.linkValueKey]
+              : row.nando_id != null
+                ? row.nando_id
+                : val != null
+                  ? val
+                  : undefined;
+            const linkTarget = getNandoIdForCsv(raw);
+            if (linkTarget && raw != null && raw !== '') {
+              const a = document.createElement('a');
+              a.href = '/disease/' + linkTarget;
+              a.textContent = displayVal === '-' ? linkTarget : displayVal;
+              td.appendChild(a);
+            } else {
+              td.textContent = displayVal;
+            }
+          } else if (col.link === 'hpo') {
+            const hpoUrl = getHpoBrowseUrlFromId(val);
+            if (hpoUrl) {
+              const a = document.createElement('a');
+              a.href = hpoUrl;
+              a.target = '_blank';
+              a.rel = 'noopener noreferrer';
+              a.textContent = displayVal === '-' ? String(val).trim() : displayVal;
+              td.appendChild(a);
+            } else {
+              td.textContent = displayVal;
+            }
+          } else if (col.link === 'external') {
+            const hrefVal = col.linkHrefKey ? row[col.linkHrefKey] : val;
+            const textVal =
+              col.linkTextKey && row[col.linkTextKey] != null
+                ? String(row[col.linkTextKey])
+                : displayVal;
+            if (hrefVal) {
+              const a = document.createElement('a');
+              a.href = String(hrefVal);
+              a.target = '_blank';
+              a.rel = 'noopener noreferrer';
+              a.textContent = textVal === '-' ? String(hrefVal) : textVal;
+              td.appendChild(a);
+            } else {
+              td.textContent = displayVal;
+            }
+          } else if (formattedVal === undefined || formattedVal === null) {
+            td.textContent = '-';
+          } else if (typeof formattedVal === 'number') {
+            td.textContent = formattedVal.toLocaleString();
+          } else {
+            td.textContent = String(formattedVal);
+          }
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+    };
+
+    renderHeader();
+    renderBody(sortRows(workingRows, getSortState()));
     if (thead) thead.style.display = '';
-    return rows;
+    return workingRows;
   } catch (e) {
     console.warn(`Stats API エラー (${sectionConfig.id}):`, e);
     tbody.innerHTML = `<tr><td colspan="${colCount}" class="stats-table-error">${errorText}</td></tr>`;
@@ -2697,7 +3089,7 @@ function setStatsCell(id, value) {
   if (!el) return;
   const text =
     value === '-' || value === undefined || value === null
-      ? '—'
+      ? '-'
       : typeof value === 'number'
         ? value.toLocaleString()
         : String(value);
