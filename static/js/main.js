@@ -3,6 +3,7 @@ import { focusInput } from './utils/focusInput.js';
 import { setLangChange } from './utils/setLangChange.js';
 import { fetchNewsJson } from './utils/newsJsonUrl.js';
 import { fetchTagsJson, buildTagHelpers } from './utils/tagsJsonUrl.js';
+import { isNewsRecent } from './utils/newsRecency.js';
 import {
   drawDesignatedIntractableDiseaseColumnsTable,
   drawPediatricChronicSpecificDiseaseColumnsTable,
@@ -92,9 +93,6 @@ function renderNewsList(newsData, limitTo3 = true, tagHelpers = null) {
   const getTagStyle = tagHelpers ? tagHelpers.getTagStyle : () => 'background-color: #94a3b8';
 
   let html = '';
-  const now = new Date();
-  const threeMonthsAgo = new Date();
-  threeMonthsAgo.setMonth(now.getMonth() - 3);
 
   Object.entries(newsData)
     .sort((a, b) => {
@@ -107,8 +105,7 @@ function renderNewsList(newsData, limitTo3 = true, tagHelpers = null) {
       if (limitTo3 && index >= 3) return;
       if (!info.loaded) return;
 
-      const itemDate = new Date(info.date.replace(/\./g, '-'));
-      const isRecent = itemDate > threeMonthsAgo;
+      const isRecent = isNewsRecent(info.date);
       const recentClass = isRecent ? 'is-recent' : '';
       const tagsHtml = (info.tags || [])
         .map(
