@@ -994,7 +994,8 @@ async function showCardDetailTable(sectionId) {
             typeof loadTabTable === 'function'
               ? await loadTabTable(selectedIndex, { silent: true })
               : [];
-          emitDownload(selectedTab.columns || [], rows, `${sectionId}-${selectedTabId}`);
+          const fallbackBasename = officialBasename || `${sectionId}-${selectedTabId}`;
+          emitDownload(selectedTab.columns || [], rows, fallbackBasename);
           return;
         }
 
@@ -1024,7 +1025,8 @@ async function showCardDetailTable(sectionId) {
         return;
       }
 
-      emitDownload(sectionConfig.columns || [], loadedRowsFromApi, sectionId);
+      const fallbackBasename = sectionConfig.downloadLatestBasename || sectionId;
+      emitDownload(sectionConfig.columns || [], loadedRowsFromApi, fallbackBasename);
     });
     downloadBody.appendChild(downloadConfirmBtn);
     downloadPanel.appendChild(downloadBody);
