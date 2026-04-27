@@ -1,0 +1,85 @@
+<!doctype html>
+
+{% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+<html lang="ja">
+{% elif get_locale() == "ko" or get_locale() == "ko_KR" %}
+<html lang="ko">
+{% else %}
+<html lang="en">
+{% endif %}
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Terms | NanbyoData</title>
+  <meta name="description" content="NanbyoData Terms page" />
+  <meta property="og:site_name" content="NanbyoData" />
+  <meta property="og:title" content="Terms | NanbyoData" />
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://nanbyodata.jp/terms" />
+  <meta property="og:description" content="NanbyoData Terms page" />
+  <meta property="og:image" content="/static/img/ogp_img.png" />
+
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://indestructibletype-fonthosting.github.io/renner.css" type="text/css"
+    charset="utf-8" />
+  <link href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="/static/sass/main.css">
+
+  <link rel="icon" type="image/x-icon" href="/static/img/favicon.ico">
+</head>
+
+<body>
+  <main>
+    {% include 'component/navigation.html' %}
+
+    <div class="page-layout page-layout-help">
+      <header class="page-title">
+        {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+        <h2>Terms of Use</h2>
+        {% else %}
+        <h2>Terms of Use</h2>
+        {% endif %}
+      </header>
+
+      <section class="help-page-container">
+        <div class="help-main">
+          <section class="help-section section-block">
+            {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+            <h3 class="help-content-title">NanbyoData利用規約</h3>
+            <p>
+              NanbyoDataは誠実にデータを提供しますが、データの正確性、臨床的妥当性または有用性を検証することはありません。DBCLSは、明示的にも黙示的にも、利用者が当データを用いて行う一切の行為について、何ら責任を負うものではありません。DBCLSは、本サービスの変更、中断、または終了により被った損害に関しても、何ら責任を負うものではありません。また、ライフサイエンス統合データベースセンターのサイト・ポリシー内「<a
+                  class="policy" href="https://dbcls.rois.ac.jp/policy.html">免責事項</a>」にも準ずるものとします。
+            </p>
+            {% else %}
+            <h3 class="help-content-title">NanbyoData Terms of Use</h3>
+            <p>
+              NanbyoData provides data in good faith, but does not verify the accuracy, clinical validity, or utility of the
+              data. The Database Center for Life Science (DBCLS) does not assume any responsibility, either expressed or
+              implied, for any actions taken by users using this data. DBCLS also bears no responsibility for any damages
+              suffered due to changes, interruptions, or termination of this service. Additionally, these terms are in
+              accordance with the <a class="policy" href="https://dbcls.rois.ac.jp/policy.html">"Disclaimer"</a> section of the
+              Life Science Integrated Database Center's site policy.
+            </p>
+            {% endif %}
+          </section>
+        </div>
+      </section>
+    </div>
+
+    {% include 'component/footer.html' %}
+  </main>
+
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+    </script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+    </script>
+  <script type="module" src="/static/js/main.js"></script>
+</body>
+
+</html>

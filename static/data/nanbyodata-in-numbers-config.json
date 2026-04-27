@@ -11,8 +11,8 @@
         "en": ""
       },
       "description": {
-        "ja": "NANDO に登録された疾患の一覧データです（download/latest の nando.json）。",
-        "en": "List of diseases registered in NANDO (from download/latest nando.json)."
+        "ja": "NANDO に登録された疾患の一覧データです。",
+        "en": "List of diseases registered in NANDO."
       },
       "hasTabs": false,
       "dataUrl": "/download/latest/nando.json",
@@ -26,8 +26,8 @@
             "en": "NANDO ID"
           },
           "tooltip": {
-            "ja": "難病オントロジー（NANDO）の識別子。クリックで疾患ページへ",
-            "en": "NANDO identifier. Click to open the disease page"
+            "ja": "",
+            "en": ""
           },
           "link": "nando"
         },
@@ -41,8 +41,8 @@
             "en": "Disease name"
           },
           "tooltip": {
-            "ja": "疾患の名称",
-            "en": "Disease name"
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -52,8 +52,8 @@
             "en": "Reading"
           },
           "tooltip": {
-            "ja": "読み（ひらがな）",
-            "en": "Reading in hiragana"
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -64,8 +64,8 @@
             "en": "Category"
           },
           "tooltip": {
-            "ja": "データ上の区分コード（例: 指定難病・小児慢性特定疾病）",
-            "en": "Category code in the dataset"
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -76,8 +76,8 @@
             "en": "Notification No."
           },
           "tooltip": {
-            "ja": "告示番号（データに含まれる場合）",
-            "en": "Notification number when present in data"
+            "ja": "",
+            "en": ""
           }
         }
       ]
@@ -106,8 +106,8 @@
             "en": "Category"
           },
           "tooltip": {
-            "ja": "指定難病または小児慢性特定疾病の区分",
-            "en": "Category: Shitei or Shoman"
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -117,8 +117,8 @@
             "en": "Disease Definition"
           },
           "tooltip": {
-            "ja": "疾患定義が登録されている件数",
-            "en": "Count of entries with disease definition"
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -128,8 +128,8 @@
             "en": "Inheritance"
           },
           "tooltip": {
-            "ja": "遺伝形式が登録されている件数",
-            "en": "Count of entries with inheritance information"
+            "ja": "",
+            "en": ""
           }
         },
         {
@@ -139,8 +139,8 @@
             "en": "Alternative Disease Names"
           },
           "tooltip": {
-            "ja": "別名が登録されている件数",
-            "en": "Count of entries with alternative names"
+            "ja": "",
+            "en": ""
           }
         }
       ]
@@ -156,11 +156,334 @@
         "en": ""
       },
       "description": {
-        "ja": "外部リソースへのリンク一覧です。リソース種別ごとにタブで切り替えます（現在は KEGG。今後タブを追加予定）。",
-        "en": "Links to external resources by resource type (KEGG tab now; more tabs planned)."
+        "ja": "外部リソースへのリンク一覧です。リソース種別ごとにタブで切り替えて表示します。",
+        "en": "Links to external resources by resource type with tab switching."
       },
       "hasTabs": true,
       "tabs": [
+        {
+          "id": "omim",
+          "label": {
+            "ja": "OMIM",
+            "en": "OMIM"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "dataUrl": "/download/latest/nando-omim.json",
+          "downloadLatestBasename": "nando-omim",
+          "columns": [
+            {
+              "dataKey": "nando_id",
+              "noWrap": true,
+              "label": {
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "mondo_label_ja",
+                "en": "mondo_label_en"
+              },
+              "label": {
+                "ja": "Mondo label",
+                "en": "Mondo label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            },
+            {
+              "dataKey": "mondo_id",
+              "noWrap": true,
+              "label": {
+                "ja": "Mondo ID",
+                "en": "Mondo ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondoURI",
+              "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKey": "omimid",
+              "noWrap": true,
+              "label": {
+                "ja": "OMIM ID",
+                "en": "OMIM ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "omimURL",
+              "linkTextKey": "omimid"
+            },
+            {
+              "dataKey": "property",
+              "noWrap": true,
+              "label": {
+                "ja": "Match type",
+                "en": "Match type"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            }
+          ],
+          "countDataKey": "nando_id"
+        },
+        {
+          "id": "orphanet",
+          "label": {
+            "ja": "Orphanet",
+            "en": "Orphanet"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "dataUrl": "/download/latest/nando-orphanet.json",
+          "downloadLatestBasename": "nando-orphanet",
+          "columns": [
+            {
+              "dataKey": "nando_id",
+              "noWrap": true,
+              "label": {
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "mondo_label_ja",
+                "en": "mondo_label_en"
+              },
+              "label": {
+                "ja": "Mondo label",
+                "en": "Mondo label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            },
+            {
+              "dataKey": "mondo_id",
+              "noWrap": true,
+              "label": {
+                "ja": "Mondo ID",
+                "en": "Mondo ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondoUri",
+              "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKey": "orphanetid",
+              "noWrap": true,
+              "label": {
+                "ja": "Orphanet ID",
+                "en": "Orphanet ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "orphaneturi",
+              "linkTextKey": "orphanetid"
+            },
+            {
+              "dataKey": "property",
+              "noWrap": true,
+              "label": {
+                "ja": "Match type",
+                "en": "Match type"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            }
+          ],
+          "countDataKey": "nando_id"
+        },
+        {
+          "id": "monarch-initiative",
+          "label": {
+            "ja": "Monarch Initiative",
+            "en": "Monarch Initiative"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "dataUrl": "/download/latest/nando-mondo.json",
+          "downloadLatestBasename": "nando-mondo",
+          "columns": [
+            {
+              "dataKey": "nando_id",
+              "noWrap": true,
+              "linkValueKey": "nando_uid",
+              "label": {
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "mondo_label_ja",
+                "en": "mondo_label_en"
+              },
+              "label": {
+                "ja": "Mondo label",
+                "en": "Mondo label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            },
+            {
+              "dataKey": "mondo_id",
+              "noWrap": true,
+              "label": {
+                "ja": "Mondo ID",
+                "en": "Mondo ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondo_url",
+              "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKey": "property",
+              "noWrap": true,
+              "label": {
+                "ja": "Match type",
+                "en": "Match type"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            }
+          ],
+          "countDataKey": "nando_id"
+        },
+        {
+          "id": "medgen",
+          "label": {
+            "ja": "MedGen",
+            "en": "MedGen"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "dataUrl": "/download/latest/nando_medgen.json",
+          "downloadLatestBasename": "nando_medgen",
+          "columns": [
+            {
+              "dataKey": "nando_id",
+              "noWrap": true,
+              "label": {
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "medgen_label",
+              "label": {
+                "ja": "MedGen label",
+                "en": "MedGen label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            },
+            {
+              "dataKey": "mondo_id",
+              "noWrap": true,
+              "label": {
+                "ja": "Mondo ID",
+                "en": "Mondo ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondolink",
+              "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKey": "id2",
+              "noWrap": true,
+              "label": {
+                "ja": "MedGen ID",
+                "en": "MedGen ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "original_disease",
+              "linkTextKey": "id2"
+            },
+            {
+              "dataKey": "property",
+              "noWrap": true,
+              "label": {
+                "ja": "Match type",
+                "en": "Match type"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            }
+          ],
+          "countDataKey": "nando_id"
+        },
         {
           "id": "kegg",
           "label": {
@@ -168,66 +491,84 @@
             "en": "KEGG"
           },
           "tooltip": {
-            "ja": "KEGG へのリンク（download/latest の kegg.json）",
-            "en": "KEGG links (kegg.json under download/latest)"
+            "ja": "",
+            "en": ""
           },
-          "dataUrl": "/download/latest/kegg.json",
-          "downloadLatestBasename": "kegg",
+          "dataUrl": "/download/latest/nando-kegg.json",
+          "downloadLatestBasename": "nando-kegg",
+          "rowFilter": {
+            "key": "kegg_url",
+            "exists": true
+          },
+          "rowGroupBy": {
+            "keys": [
+              "parent",
+              "displayid"
+            ],
+            "mergeFields": [
+              "kegg_label_ja",
+              "kegg_label_en"
+            ],
+            "separator": "\n"
+          },
           "columns": [
             {
-              "dataKey": "nando",
+              "dataKey": "parent",
               "noWrap": true,
               "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
               },
               "tooltip": {
-                "ja": "NANDO:xxxx 形式。クリックで疾患ページへ（nando_id のみのデータは JSON 側で nando に揃えるか列を追加してください）",
-                "en": "NANDO:xxxx. Click for disease page (use nando field or add a column if only nando_id exists)"
+                "ja": "",
+                "en": ""
               },
               "link": "nando"
             },
             {
-              "dataKeyByLocale": {
-                "ja": "label_ja",
-                "en": "label_en"
-              },
-              "label": {
-                "ja": "疾患名",
-                "en": "Disease name"
-              },
-              "tooltip": {
-                "ja": "疾患名",
-                "en": "Disease name"
-              }
-            },
-            {
-              "dataKey": "pathway_id",
+              "dataKey": "displayid",
               "noWrap": true,
               "label": {
-                "ja": "パスウェイID",
-                "en": "Pathway ID"
+                "ja": "KEGG ID",
+                "en": "KEGG ID"
               },
               "tooltip": {
-                "ja": "KEGG パスウェイ ID（データに含まれる場合）",
-                "en": "KEGG pathway id when present"
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "kegg_url",
+              "linkTextKey": "displayid"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "kegg_label_ja",
+                "en": "kegg_label_en"
+              },
+              "label": {
+                "ja": "KEGG disease name",
+                "en": "KEGG disease name"
+              },
+              "html": true,
+              "tooltip": {
+                "ja": "",
+                "en": ""
               }
             },
             {
-              "dataKey": "kegg",
+              "dataKey": "property",
+              "noWrap": true,
               "label": {
-                "ja": "KEGG",
-                "en": "KEGG"
+                "ja": "Match type",
+                "en": "Match type"
               },
               "tooltip": {
-                "ja": "KEGG へのリンク（URL を kegg または kegg_url で格納する想定）",
-                "en": "KEGG link URL in kegg or kegg_url field"
-              },
-              "link": "external",
-              "linkHrefKey": "kegg",
-              "linkTextKey": "pathway_id"
+                "ja": "",
+                "en": ""
+              }
             }
-          ]
+          ],
+          "countDataKey": "parent"
         }
       ]
     },
@@ -238,8 +579,8 @@
         "en": "Glycan-Related Genes"
       },
       "titleTooltip": {
-        "ja": "糖鎖関連遺伝子の登録データ",
-        "en": "Glycan-related gene registration data"
+        "ja": "",
+        "en": ""
       },
       "description": {
         "ja": "糖鎖関連遺伝子と NANDO 疾患の対応を、糖鎖中心・NANDO 中心の 2 つの見方で確認できる表です。",
@@ -249,6 +590,7 @@
       "tabs": [
         {
           "id": "by-gene",
+          "countDataKey": "genesymbol",
           "label": {
             "ja": "糖鎖中心",
             "en": "Glycan-centered"
@@ -257,7 +599,7 @@
             "ja": "test",
             "en": "test"
           },
-          "dataUrl": "/sparqlist/api/test_Glycogene_table_2",
+          "dataUrl": "/download/latest/nando-glycogene.json",
           "columns": [
             {
               "dataKey": "genesymbol",
@@ -269,7 +611,8 @@
                 "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
                 "en": "Gene symbol used in the GlyCosmos glycogene database"
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "nando_label",
@@ -305,7 +648,8 @@
                 "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
                 "en": "Unique gene identifier in the NCBI Gene database"
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "mondo_id",
@@ -334,7 +678,7 @@
         },
         {
           "id": "by-disease",
-          "countDataKey": "genesymbol",
+          "countDataKey": "nando_id",
           "label": {
             "ja": "NANDO中心",
             "en": "NANDO-centered"
@@ -343,7 +687,7 @@
             "ja": "test",
             "en": "test"
           },
-          "dataUrl": "/sparqlist/api/test_Glycogene_table_2",
+          "dataUrl": "/download/latest/nando-glycogene.json",
           "columns": [
             {
               "dataKey": "nando_id",
@@ -356,7 +700,8 @@
                 "ja": "難病オントロジー（NANDO）における疾患の一意な識別子",
                 "en": "Unique disease identifier in the NANDO ontology"
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "nando_label",
@@ -370,7 +715,8 @@
                 "en": "Disease name registered in NANDO. Click to go to the disease page"
               },
               "link": "nando",
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "genesymbol",
@@ -422,7 +768,7 @@
               "dataKey": "nando2mondo_match",
               "label": {
                 "ja": "NANDOとMondoの疾患類似",
-                "en": "NANDO-MONDO disease match"
+                "en": "NANDO-Mondo disease match"
               },
               "tooltip": {
                 "ja": "NANDO 疾患と MONDO 疾患の対応関係（exactMatch: 完全一致、closeMatch: 近似一致）",
@@ -444,8 +790,8 @@
         "en": ""
       },
       "description": {
-        "ja": "疾患関連遺伝子の一覧です。国内基準由来は japan_curated_gene.json。国際リソース由来のタブは今後追加予定です。",
-        "en": "Disease-related genes. Japan-curated data from japan_curated_gene.json; an international-resource tab will be added later."
+        "ja": "疾患関連遺伝子の一覧です。国内基準由来（nando-japan_curated_gene.json）と国際リソース由来（nando_gene.json）を切り替えて表示できます。",
+        "en": "Disease-related genes from both Japan-curated (nando-japan_curated_gene.json) and international resources (nando_gene.json)."
       },
       "hasTabs": true,
       "tabs": [
@@ -456,89 +802,209 @@
             "en": "Japan-curated"
           },
           "tooltip": {
-            "ja": "国内基準に由来する遺伝子情報（download/latest の japan_curated_gene.json）",
-            "en": "Japan-curated genes (japan_curated_gene.json)"
+            "ja": "",
+            "en": ""
           },
-          "countDataKey": "symbol",
-          "dataUrl": "/download/latest/japan_curated_gene.json",
+          "countDataKey": "nando",
+          "dataUrl": "/download/latest/nando-japan_curated_gene.json ",
           "downloadLatestBasename": "japan_curated_gene",
-          "columns": [
-            {
-              "dataKey": "symbol",
-              "noWrap": true,
-              "label": {
-                "ja": "遺伝子シンボル",
-                "en": "Gene symbol"
-              },
-              "tooltip": {
-                "ja": "遺伝子シンボル",
-                "en": "Gene symbol"
-              }
-            },
+          "preSortColumns": [
             {
               "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "symbol",
+              "order": "asc"
+            }
+          ],
+          "columns": [
+            {
+              "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
               },
               "tooltip": {
-                "ja": "NANDO:xxxx。クリックで疾患ページへ",
-                "en": "NANDO:xxxx. Click for disease page"
+                "ja": "",
+                "en": ""
               },
               "link": "nando"
             },
             {
+              "dataKey": "symbol",
+              "rowspan": true,
+              "noWrap": true,
+              "label": {
+                "ja": "Gene symbol",
+                "en": "Gene symbol"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspanVerticalAlign": "top"
+            },
+            {
+              "dataKey": "gene_name",
+              "rowspan": true,
+              "label": {
+                "ja": "Gene name",
+                "en": "Gene name"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspanVerticalAlign": "top"
+            },
+            {
               "dataKey": "ncbi",
+              "rowspan": true,
               "label": {
                 "ja": "NCBI Gene ID",
                 "en": "NCBI Gene ID"
               },
               "tooltip": {
-                "ja": "NCBI Gene へのリンク",
-                "en": "Link to NCBI Gene"
+                "ja": "",
+                "en": ""
               },
               "noWrap": true,
               "link": "external",
               "linkHrefKey": "ncbi",
-              "linkTextKey": "ncbi_id"
+              "linkTextKey": "ncbi_id",
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "hgnc",
+              "rowspan": true,
               "label": {
                 "ja": "HGNC ID",
                 "en": "HGNC ID"
               },
               "tooltip": {
-                "ja": "HGNC へのリンク",
-                "en": "Link to HGNC"
+                "ja": "",
+                "en": ""
               },
               "noWrap": true,
               "link": "external",
               "linkHrefKey": "hgnc",
-              "linkTextKey": "hgnc_id"
-            },
-            {
-              "dataKey": "gene_name",
-              "label": {
-                "ja": "遺伝子名",
-                "en": "Gene name"
-              },
-              "tooltip": {
-                "ja": "遺伝子の名称",
-                "en": "Gene name"
-              }
+              "linkTextKey": "hgnc_id",
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "gene_description",
+              "rowspan": true,
               "label": {
-                "ja": "説明",
+                "ja": "Description",
                 "en": "Description"
               },
               "tooltip": {
-                "ja": "遺伝子の説明（RefSeq 等）",
-                "en": "Gene description"
+                "ja": "",
+                "en": ""
+              },
+              "rowspanVerticalAlign": "top"
+            }
+          ]
+        },
+        {
+          "id": "international-resource",
+          "label": {
+            "ja": "国際リソース由来",
+            "en": "Internationally curated"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "countDataKey": "nando_id",
+          "dataUrl": "/download/latest/nando_gene.json",
+          "downloadLatestBasename": "nando_gene",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            },
+            {
+              "dataKey": "gene_symbol",
+              "order": "asc"
+            }
+          ],
+          "columns": [
+            {
+              "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
+              "noWrap": true,
+              "label": {
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "nando"
+            },
+            {
+              "dataKey": "gene_symbol",
+              "rowspan": true,
+              "noWrap": true,
+              "label": {
+                "ja": "Gene symbol",
+                "en": "Gene symbol"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspanVerticalAlign": "top"
+            },
+            {
+              "dataKey": "ncbi_id",
+              "rowspan": true,
+              "noWrap": true,
+              "label": {
+                "ja": "NCBI Gene ID",
+                "en": "NCBI Gene ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "ncbi_url",
+              "linkTextKey": "ncbi_id",
+              "rowspanVerticalAlign": "top"
+            },
+            {
+              "dataKey": "source",
+              "label": {
+                "ja": "Source",
+                "en": "Source"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
               }
+            },
+            {
+              "dataKey": "mondo",
+              "noWrap": true,
+              "label": {
+                "ja": "Mondo",
+                "en": "Mondo"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondo_url",
+              "linkTextKey": "mondo"
             }
           ]
         }
@@ -555,67 +1021,236 @@
         "en": ""
       },
       "description": {
-        "ja": "個別テーブルです。",
-        "en": "Individual table."
+        "ja": "NANDO 疾患と HPO（臨床的特徴）の対応一覧です。",
+        "en": "Mapping table between NANDO diseases and HPO clinical features."
       },
       "hasTabs": false,
-      "dataUrl": "/download/latest/nbdc_human_databases_info_by_nando_id.json",
-      "downloadLatestBasename": "nbdc_human_databases_info_by_nando_id",
+      "dataUrl": "/download/latest/nando-hpo.json",
+      "downloadLatestBasename": "nando-hpo",
+      "rowGroupBy": {
+        "keys": [
+          "hpo_id",
+          "nando_id"
+        ]
+      },
+      "preSortColumns": [
+        {
+          "dataKey": "nando_id",
+          "order": "asc"
+        },
+        {
+          "dataKey": "hpo_id",
+          "order": "asc"
+        }
+      ],
       "columns": [
         {
-          "dataKeyByLocale": {
-            "ja": "label_ja",
-            "en": "label_en"
-          },
-          "label": {
-            "ja": "研究題目",
-            "en": "Study Title"
-          },
-          "tooltip": {
-            "ja": "ヒトデータベースに登録されている研究題目",
-            "en": "Study title registered in the human database"
-          }
-        },
-        {
-          "dataKey": "hum_id",
+          "dataKey": "nando_id",
+          "rowspan": true,
+          "rowspanVerticalAlign": "top",
           "noWrap": true,
           "label": {
-            "ja": "Hum ID",
-            "en": "Hum ID"
+            "ja": "NANDO ID",
+            "en": "NANDO ID"
           },
           "tooltip": {
-            "ja": "ヒトデータベースの識別子",
-            "en": "Identifier in the human database"
-          }
+            "ja": "",
+            "en": ""
+          },
+          "link": "nando"
         },
         {
-          "dataKeyByLocale": {
-            "ja": "type_study_ja",
-            "en": "type_study_en"
-          },
-          "label": {
-            "ja": "データの種類",
-            "en": "Type of Study"
-          },
-          "tooltip": {
-            "ja": "登録データの種類",
-            "en": "Type of registered data"
-          }
-        },
-        {
-          "dataKeyByLocale": {
-            "ja": "type_data_ja",
-            "en": "type_data_en"
-          },
-          "label": {
-            "ja": "アクセス制限",
-            "en": "Type of Data"
-          },
+          "dataKey": "hpo_id",
+          "rowspan": true,
+          "rowspanVerticalAlign": "top",
           "noWrap": true,
+          "label": {
+            "ja": "HPO ID",
+            "en": "HPO ID"
+          },
           "tooltip": {
-            "ja": "アクセス制限区分",
-            "en": "Access control category"
+            "ja": "",
+            "en": ""
+          },
+          "link": "hpo"
+        },
+        {
+          "dataKeyByLocale": {
+            "ja": "hpo_label_ja",
+            "en": "hpo_label_en"
+          },
+          "rowspan": true,
+          "rowspanVerticalAlign": "top",
+          "label": {
+            "ja": "HPO label",
+            "en": "HPO label"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
           }
+        },
+        {
+          "dataKeyByLocale": {
+            "ja": "nando_label_ja",
+            "en": "nando_label_en"
+          },
+          "rowspan": true,
+          "rowspanVerticalAlign": "top",
+          "label": {
+            "ja": "Disease",
+            "en": "Disease"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          }
+        }
+      ]
+    },
+    {
+      "id": "facial-features-content",
+      "title": {
+        "ja": "顔貌特徴",
+        "en": "Facial Features"
+      },
+      "titleTooltip": {
+        "ja": "",
+        "en": ""
+      },
+      "description": {
+        "ja": "GestaltMatcher に登録された顔貌特徴データです。",
+        "en": "Facial feature data registered in GestaltMatcher."
+      },
+      "hasTabs": false,
+      "dataUrl": "/download/latest/nando-gestaltmatcher_face_image_data.json",
+      "downloadLatestBasename": "nando-gestaltmatcher_face_image_data",
+      "rowGroupBy": {
+        "keys": [
+          "nando_id",
+          "disease",
+          "gene",
+          "image_id"
+        ]
+      },
+      "preSortColumns": [
+        {
+          "dataKey": "nando_id",
+          "order": "asc"
+        },
+        {
+          "dataKey": "disease",
+          "order": "asc"
+        },
+        {
+          "dataKey": "gene",
+          "order": "asc"
+        },
+        {
+          "dataKey": "image_id",
+          "order": "asc"
+        }
+      ],
+      "columns": [
+        {
+          "dataKey": "nando_id",
+          "rowspan": true,
+          "noWrap": true,
+          "label": {
+            "ja": "NANDO ID",
+            "en": "NANDO ID"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "link": "nando",
+          "rowspanVerticalAlign": "top"
+        },
+        {
+          "dataKey": "mondo_id",
+          "rowspan": true,
+          "noWrap": true,
+          "label": {
+            "ja": "Mondo ID",
+            "en": "Mondo ID"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "rowspanVerticalAlign": "top"
+        },
+        {
+          "dataKey": "omim_id",
+          "rowspan": true,
+          "noWrap": true,
+          "label": {
+            "ja": "OMIM ID",
+            "en": "OMIM ID"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "rowspanVerticalAlign": "top"
+        },
+        {
+          "dataKey": "disease",
+          "rowspan": true,
+          "label": {
+            "ja": "Disease",
+            "en": "Disease"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "rowspanVerticalAlign": "top"
+        },
+        {
+          "dataKey": "gene",
+          "rowspan": true,
+          "noWrap": true,
+          "label": {
+            "ja": "Gene",
+            "en": "Gene"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "rowspanVerticalAlign": "top"
+        },
+        {
+          "dataKey": "image_id",
+          "noWrap": true,
+          "label": {
+            "ja": "Image ID",
+            "en": "Image ID"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "link": "external",
+          "linkHrefKey": "image",
+          "linkTextKey": "image_id"
+        },
+        {
+          "dataKey": "pmid",
+          "noWrap": true,
+          "label": {
+            "ja": "PMID",
+            "en": "PMID"
+          },
+          "tooltip": {
+            "ja": "",
+            "en": ""
+          },
+          "link": "external",
+          "linkHrefKey": "pmid_url",
+          "linkTextKey": "pmid"
         }
       ]
     },
@@ -637,6 +1272,7 @@
       "tabs": [
         {
           "id": "cells",
+          "countDataKey": "nando",
           "label": {
             "ja": "細胞",
             "en": "Cell"
@@ -645,46 +1281,60 @@
             "ja": "",
             "en": ""
           },
-          "dataUrl": "/download/latest/riken_brc_cell.json",
-          "downloadLatestBasename": "riken_brc_cell",
-          "columns": [
-            {
-              "dataKey": "ID",
-              "label": {
-                "ja": "細胞ID",
-                "en": "Cell ID"
-              },
-              "tooltip": {
-                "ja": "理研BRC細胞バンクの登録ID。クリックでBRCのデータシートへ",
-                "en": "RIKEN BRC Cell Bank registration ID. Click to open BRC datasheet"
-              },
-              "link": "external",
-              "linkHrefKey": "HP",
-              "rowspan": true
-            },
+          "dataUrl": "/download/latest/nando-riken_brc_cell_data.json",
+          "downloadLatestBasename": "nando-riken_brc_cell_data",
+          "preSortColumns": [
             {
               "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "ID",
+              "order": "asc"
+            }
+          ],
+          "columns": [
+            {
+              "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
               },
               "tooltip": {
-                "ja": "難病オントロジー（NANDO）の疾患。クリックで疾患ページへ",
-                "en": "Disease in NANDO. Click to go to disease page"
+                "ja": "",
+                "en": ""
               },
               "link": "nando"
             },
             {
+              "dataKey": "ID",
+              "label": {
+                "ja": "Cell ID",
+                "en": "Cell ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "HP",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
+            },
+            {
               "dataKey": "Cell_name",
               "label": {
-                "ja": "細胞名",
+                "ja": "Cell name",
                 "en": "Cell name"
               },
               "tooltip": {
-                "ja": "細胞リソース名",
-                "en": "Cell resource name"
+                "ja": "",
+                "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "Description_j",
@@ -699,20 +1349,22 @@
                 ]
               },
               "label": {
-                "ja": "説明",
+                "ja": "Description",
                 "en": "Description"
               },
               "tooltip": {
-                "ja": "細胞の説明。リンクはBRC等へのリンクとして表示されます",
-                "en": "Cell description. Links are rendered as clickable"
+                "ja": "",
+                "en": ""
               },
               "html": true,
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             }
           ]
         },
         {
           "id": "mouse",
+          "countDataKey": "nando",
           "label": {
             "ja": "マウス",
             "en": "Mouse"
@@ -721,28 +1373,26 @@
             "ja": "",
             "en": ""
           },
-          "dataUrl": "/download/latest/riken_brc_mouse.json",
-          "downloadLatestBasename": "riken_brc_mouse",
-          "columns": [
+          "dataUrl": "/download/latest/nando-riken_brc_mouse_data.json",
+          "downloadLatestBasename": "nando-riken_brc_mouse_data",
+          "preSortColumns": [
             {
-              "dataKey": "mouse_id",
-              "label": {
-                "ja": "マウスID",
-                "en": "Mouse ID"
-              },
-              "tooltip": {
-                "ja": "理研BRCマウスバンクの登録ID。クリックでBRCの詳細ページへ",
-                "en": "RIKEN BRC Mouse Bank registration ID. Click to open BRC detail page"
-              },
-              "link": "external",
-              "linkHrefKey": "hp",
-              "rowspan": true
+              "dataKey": "nando",
+              "order": "asc"
             },
             {
-              "dataKey": "nando_id",
+              "dataKey": "mouse",
+              "order": "asc"
+            }
+          ],
+          "columns": [
+            {
+              "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
               },
               "noWrap": true,
               "tooltip": {
@@ -752,37 +1402,54 @@
               "link": "nando"
             },
             {
-              "dataKey": "mouse_name",
+              "dataKey": "mouse",
               "label": {
-                "ja": "マウス系統名",
+                "ja": "Mouse ID",
+                "en": "Mouse ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "hp",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
+            },
+            {
+              "dataKey": "strain",
+              "label": {
+                "ja": "Mouse strain name",
                 "en": "Mouse strain name"
               },
               "tooltip": {
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
-              "dataKey": "label_ja",
               "dataKeyByLocale": {
-                "ja": "label_ja",
-                "en": "label_en"
+                "ja": "mp_j",
+                "en": "mp_e"
               },
               "label": {
-                "ja": "表現型",
+                "ja": "Phenotype",
                 "en": "Phenotype"
               },
               "tooltip": {
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             }
           ]
         },
         {
           "id": "dna",
+          "countDataKey": "nando",
           "label": {
             "ja": "DNA",
             "en": "DNA"
@@ -791,28 +1458,26 @@
             "ja": "",
             "en": ""
           },
-          "dataUrl": "/download/latest/riken_brc_dna.json",
-          "downloadLatestBasename": "riken_brc_dna",
-          "columns": [
-            {
-              "dataKey": "gene_id",
-              "label": {
-                "ja": "DNA ID",
-                "en": "DNA ID"
-              },
-              "tooltip": {
-                "ja": "理研BRC DNAバンクの登録ID。クリックでBRCのデータシートへ",
-                "en": "RIKEN BRC DNA Bank registration ID. Click to open BRC datasheet"
-              },
-              "link": "external",
-              "linkHrefKey": "hp",
-              "rowspan": true
-            },
+          "dataUrl": "/download/latest/nando-riken_brc_dna_data.json",
+          "downloadLatestBasename": "nando-riken_brc_dna_data",
+          "preSortColumns": [
             {
               "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "gene_id",
+              "order": "asc"
+            }
+          ],
+          "columns": [
+            {
+              "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
-                "ja": "NANDO",
-                "en": "NANDO"
+                "ja": "NANDO ID",
+                "en": "NANDO ID"
               },
               "tooltip": {
                 "ja": "",
@@ -821,19 +1486,23 @@
               "link": "nando"
             },
             {
-              "dataKey": "gene",
+              "dataKey": "gene_id",
               "label": {
-                "ja": "遺伝子",
-                "en": "Gene"
+                "ja": "DNA ID",
+                "en": "DNA ID"
               },
               "tooltip": {
-                "ja": "遺伝子シンボル",
-                "en": "Gene symbol"
+                "ja": "",
+                "en": ""
               },
-              "rowspan": true
+              "link": "external",
+              "linkHrefKey": "hp",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "ncbi_gene_id",
+              "noWrap": true,
               "label": {
                 "ja": "NCBI Gene ID",
                 "en": "NCBI Gene ID"
@@ -842,7 +1511,24 @@
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "link": "external",
+              "linkHrefKey": "ncbi_gene",
+              "linkTextKey": "ncbi_gene_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
+            },
+            {
+              "dataKey": "gene",
+              "label": {
+                "ja": "Gene",
+                "en": "Gene"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             }
           ]
         }

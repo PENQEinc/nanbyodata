@@ -272,6 +272,14 @@ def help():
 
 
 #####
+# Terms
+## GET:
+@app.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+
+#####
 # NANDOについて
 ## GET: 
 @app.route('/epidemiology')

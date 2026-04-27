@@ -80,19 +80,22 @@
                   </tr>
                   <tr>
                     <td><a href="https://mus.brc.riken.jp/ja/">実験動物開発室</a></td>
-                    <td>APIで取得</td>
+                    <td data-release-file="nando-riken_brc_mouse_data.txt" data-release-datasource="RIKEN BRC">Get data
+                      from API</td>
                     <td></td>
                     <td>理研BRC</td>
                   </tr>
                   <tr>
                     <td><a href="https://cell.brc.riken.jp/ja/">細胞材料開発室</a></td>
-                    <td>APIで取得</td>
+                    <td data-release-file="nando-riken_brc_cell_data.txt" data-release-datasource="RIKEN BRC">Get data
+                      from API</td>
                     <td></td>
                     <td>理研BRC</td>
                   </tr>
                   <tr>
                     <td><a href="https://dna.brc.riken.jp/ja/">遺伝子材料開発室</a></td>
-                    <td>APIで取得</td>
+                    <td data-release-file="nando-riken_brc_dna_data.txt" data-release-datasource="RIKEN BRC">Get data
+                      from API</td>
                     <td></td>
                     <td>理研BRC</td>
                   </tr>
@@ -110,13 +113,14 @@
                   </tr>
                   <tr>
                     <td><a href="https://github.com/dbcls/mondo-japanese">Mondo Disease Ontology Japanese</a></td>
-                    <td>2024/09</td>
+                    <td data-release-file="nando-mondo.txt" data-release-datasource="Mondo Disease Ontology">2024/09
+                    </td>
                     <td></td>
                     <td>ライフサイエンス統合データベースセンター</td>
                   </tr>
                   <tr>
                     <td><a href="https://rdfportal.org/dataset/nando">Nanbyo Disease Ontology</a></td>
-                    <td>2025-08-26</td>
+                    <td data-release-file="nando.rdf" data-release-datasource="Nanbyo Disease Ontology">2025-08-26</td>
                     <td></td>
                     <td>ライフサイエンス統合データベースセンター</td>
                   </tr>
@@ -157,31 +161,33 @@
                   </tr>
                   <tr>
                     <td><a href="https://www.gestaltmatcher.org/">GestaltMatcher Database</a></td>
-                    <td>APIで取得</td>
+                    <td>Get data from API</td>
                     <td></td>
                     <td>Association for Genome Diagnostics</td>
                   </tr>
                   <tr>
                     <td><a href="https://glycosmos.org/">GlyCosmos Portal</a></td>
-                    <td>APIで取得</td>
+                    <td>Get data from API</td>
                     <td></td>
                     <td>GlyCosmos Project</td>
                   </tr>
                   <tr>
                     <td><a href="https://hpo.jax.org">Human Phenotype Ontology</a></td>
-                    <td>2024-03-06</td>
+                    <td data-release-file="nando-hpo.txt" data-release-datasource="Human Phenotype Ontology">2024-03-06
+                    </td>
                     <td></td>
                     <td>Human Phenotype Ontology</td>
                   </tr>
                   <tr>
                     <td><a href="https://www.ncbi.nlm.nih.gov/medgen">MedGen</a></td>
-                    <td>2023/06/05</td>
+                    <td data-release-file="nando_medgen.txt" data-release-datasource="MedGen">2023/06/05</td>
                     <td></td>
                     <td>NCBI</td>
                   </tr>
                   <tr>
                     <td><a href="https://mondo.monarchinitiative.org">Mondo Disease Ontology</a></td>
-                    <td>2024-03-04</td>
+                    <td data-release-file="nando-mondo.txt" data-release-datasource="Mondo Disease Ontology">2024-03-04
+                    </td>
                     <td></td>
                     <td>Monarch Initiative</td>
                   </tr>
@@ -204,13 +210,6 @@
     <!--- footer --->
     {% include 'component/footer.html' %}
 
-    <!--- NanbyoData利用規約 modal -->
-    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-    {% include 'component/modal-tos.html' %}
-    {% else %}
-    {% include 'component/modal-tos_en.html' %}
-    {% endif %}
-
   </main>
 
   <!-- Optional JavaScript -->
@@ -221,6 +220,7 @@
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
     integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
     crossorigin="anonymous"></script>
+  <script src="/static/js/datasets-release.js"></script>
   <script type="module" src="/static/js/main.js"></script>
 </body>
 

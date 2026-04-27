@@ -227,23 +227,24 @@
               </div>
             </a>
 
-            <!-- 顔貌特徴（準備中のため非クリック） -->
-            <div class="stats-card stats-card--disabled"
-              title="{% if get_locale() == 'ja' or get_locale() == 'ja_JP' %}準備中{% else %}Coming soon{% endif %}">
-              <div class="stats-icon">
-                <img src="/static/img/facial_features.svg" alt="顔貌特徴" class="stats-icon-svg">
+            <!-- 顔貌特徴 -->
+            <a href="/nanbyodata-in-numbers#facial-features" class="stats-card-link">
+              <div class="stats-card">
+                <div class="stats-icon">
+                  <img src="/static/img/facial_features.svg" alt="顔貌特徴" class="stats-icon-svg">
+                </div>
+                <div class="stats-number" data-api="facial_features">
+                  <div class="loading-spinner -stats"></div>
+                </div>
+                <div class="stats-label">
+                  {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
+                  顔貌特徴
+                  {% else %}
+                  Facial Features
+                  {% endif %}
+                </div>
               </div>
-              <div class="stats-number" data-api="facial_features">
-                <div class="loading-spinner -stats"></div>
-              </div>
-              <div class="stats-label">
-                {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-                顔貌特徴
-                {% else %}
-                Facial Features
-                {% endif %}
-              </div>
-            </div>
+            </a>
 
             <!-- 外部リンク -->
             <a href="/nanbyodata-in-numbers#links" class="stats-card-link">
@@ -441,13 +442,6 @@
       </div>
     </div>
     <!--- /#demoNormalModal --->
-
-    <!--- NanbyoData利用規約 modal -->
-    {% if get_locale() == "ja" or get_locale() == "ja_JP" %}
-    {% include 'component/modal-tos.html' %}
-    {% else %}
-    {% include 'component/modal-tos_en.html' %}
-    {% endif %}
 
   </main>
 

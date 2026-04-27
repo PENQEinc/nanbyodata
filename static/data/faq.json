@@ -79,8 +79,8 @@
                 "en": "Is NanbyoData free to use?"
               },
               "answer": {
-                "ja": "はい。NanbyoDataは公開サービスとして無償で利用できます。利用にあたっては、<a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#demoNormalModal_TOS\">サイト上の利用条件</a>や、<a href=\"/datasets\" target=\"_blank\" rel=\"noopener noreferrer\">各外部リソース</a>の条件もあわせて確認してください。",
-                "en": "Yes. NanbyoData is offered free of charge as a public service. Please also read the <a href=\"#\" role=\"button\" data-toggle=\"modal\" data-target=\"#demoNormalModal_TOS\">terms of use</a> and the conditions of each external resource (datasets are described on the <a href=\"/datasets\" target=\"_blank\" rel=\"noopener noreferrer\">DATASETS</a> page)."
+                "ja": "はい。NanbyoDataは公開サービスとして無償で利用できます。利用にあたっては、<a href=\"/terms\" target=\"_blank\" rel=\"noopener noreferrer\">サイト上の利用条件</a>や、<a href=\"/datasets\" target=\"_blank\" rel=\"noopener noreferrer\">各外部リソース</a>の条件もあわせて確認してください。",
+                "en": "Yes. NanbyoData is offered free of charge as a public service. Please also read the <a href=\"/terms\">terms of use</a> and the conditions of each external resource (datasets are described on the <a href=\"/datasets\" target=\"_blank\" rel=\"noopener noreferrer\">DATASETS</a> page)."
               }
             },
             {

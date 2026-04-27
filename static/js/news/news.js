@@ -5,6 +5,7 @@
  */
 import { fetchNewsJson } from '../utils/newsJsonUrl.js';
 import { fetchTagsJson, buildTagHelpers } from '../utils/tagsJsonUrl.js';
+import { isNewsRecent } from '../utils/newsRecency.js';
 
 function getLang() {
   const el = document.querySelector('.language-select');
@@ -154,15 +155,11 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   function renderList() {
     const filtered = getFilteredPosts();
-    const now = new Date();
-    const threeMonthsAgo = new Date();
-    threeMonthsAgo.setMonth(now.getMonth() - 3);
 
     listTitleEl.textContent = lang === 'ja' ? 'ニュース一覧' : 'News list';
     listEl.innerHTML = filtered
       .map((p) => {
-        const itemDate = new Date(p.date.replace(/\./g, '-'));
-        const isRecent = itemDate > threeMonthsAgo;
+        const isRecent = isNewsRecent(p.date);
         const newBadge = isRecent
           ? '<span class="news-item-new">new</span>'
           : '';
