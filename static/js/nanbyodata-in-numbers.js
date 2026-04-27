@@ -91,43 +91,6 @@ const TOP_PAGE_API_MAP = {
     api: '/sparqlist/api/NANDO_link_count8',
     extract: (d) => parseInt(d.glyco_gene_total?.num || 0) || 0,
   },
-  'bioresources-content': {
-    api: '/sparqlist/api/NANDO_link_count3',
-    extract: (d) => {
-      const sc = parseInt(d.shitei_cell?.cell || 0);
-      const mc = parseInt(d.shoman_cell?.cell || 0);
-      const sm = parseInt(d.shitei_mouse?.mouse || 0);
-      const mm = parseInt(d.shoman_mouse?.mouse || 0);
-      const sd = parseInt(d.shitei_DNA?.gene || 0);
-      const md = parseInt(d.shoman_DNA?.gene || 0);
-      return [sc, mc, sm, mm, sd, md].reduce(
-        (a, v) => a + (Number.isFinite(v) ? v : 0),
-        0,
-      );
-    },
-  },
-  /** トップの外部リンク表（指定・小慢の全リソース列の合計）と同じ NANDO_link_count を参照 */
-  'links-content': {
-    api: '/sparqlist/api/NANDO_link_count',
-    extract: (d) => {
-      const keys = [
-        ['name2', 'mondo'],
-        ['name4', 'mondo'],
-        ['name12', 'mondo'],
-        ['name10', 'medgen'],
-        ['name5', 'kegg'],
-        ['name1', 'mondo'],
-        ['name3', 'mondo'],
-        ['name11', 'mondo'],
-        ['name9', 'medgen'],
-        ['name6', 'kegg'],
-      ];
-      return keys.reduce((sum, [k1, k2]) => {
-        const v = parseInt(d[k1]?.[k2] || 0);
-        return sum + (Number.isFinite(v) ? v : 0);
-      }, 0);
-    },
-  },
   /**
    * トップの「疾患関連遺伝子」カード（stats-overview.js disease_genes）と同じ:
    * NANDO_link_count2 の shitei_gene.gene + shoman_gene.gene
@@ -745,6 +708,7 @@ function getTabCountValue(rows, tab) {
   if (!Array.isArray(rows)) return 0;
   const countKey =
     tab?.countDataKey || (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
+  if (countKey === '__row_count__') return rows.length;
   if (!countKey) return rows.length;
   const seen = new Set();
   for (const row of rows) {
@@ -1094,10 +1058,12 @@ async function showCardDetailTable(sectionId) {
       /** タイトル横の件数表示を更新（タブごとの行数の合計。トップAPIがあるセクションでは呼ばない） */
       function updateTitleCountFromCache() {
         if (topPageApiDef || !titleCount) return;
-        const total = Object.values(tabCache).reduce(
-          (sum, rows) => sum + (Array.isArray(rows) ? rows.length : 0),
-          0,
-        );
+        const total = Object.entries(tabCache).reduce((sum, [tabIndex, rows]) => {
+          if (!Array.isArray(rows)) return sum;
+          const tab = sectionConfig.tabs?.[Number(tabIndex)];
+          if (!tab) return sum;
+          return sum + getTabCountValue(rows, tab);
+        }, 0);
         if (Number.isFinite(total)) {
           setCountValue(titleCount, total);
         }

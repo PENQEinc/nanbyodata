@@ -336,12 +336,12 @@ $stats-tooltip-width: 200px;
   }
 }
 
-// genes-content (japan-curated) の「Gene name」「Description」列が潰れないよう最小幅を確保
+// genes-content の「Gene name」「Description」列が潰れないよう最小幅を確保
 .card-detail-section[data-section-id='genes-content'] .table-contents {
-  .stats-table thead th:nth-child(2),
-  .stats-table tbody td:nth-child(2),
-  .table.stats-table thead th:nth-child(2),
-  .table.stats-table tbody td:nth-child(2) {
+  .stats-table thead th:nth-child(3),
+  .stats-table tbody td:nth-child(3),
+  .table.stats-table thead th:nth-child(3),
+  .table.stats-table tbody td:nth-child(3) {
     min-width: 10rem;
   }
 
@@ -373,7 +373,7 @@ $stats-tooltip-width: 200px;
         overflow-wrap: normal;
       }
 
-      // 2列目（ID列）も極端に縦割りにならないよう nowrap
+      // 2列目も極端に縦割りにならないよう nowrap
       thead th:nth-child(2),
       tbody td:nth-child(2) {
         white-space: nowrap;

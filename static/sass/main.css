@@ -3372,13 +3372,12 @@ Stats Page Styles
   word-break: keep-all;
 }
 
-.card-detail-section[data-section-id=genes-content] .table-contents .stats-table thead th:nth-child(2),
-.card-detail-section[data-section-id=genes-content] .table-contents .stats-table tbody td:nth-child(2),
-.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table thead th:nth-child(2),
-.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table tbody td:nth-child(2) {
+.card-detail-section[data-section-id=genes-content] .table-contents .stats-table thead th:nth-child(3),
+.card-detail-section[data-section-id=genes-content] .table-contents .stats-table tbody td:nth-child(3),
+.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table thead th:nth-child(3),
+.card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table tbody td:nth-child(3) {
   min-width: 10rem;
 }
-
 .card-detail-section[data-section-id=genes-content] .table-contents .stats-table thead th:nth-child(6),
 .card-detail-section[data-section-id=genes-content] .table-contents .stats-table tbody td:nth-child(6),
 .card-detail-section[data-section-id=genes-content] .table-contents .table.stats-table thead th:nth-child(6),
