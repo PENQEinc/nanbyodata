@@ -55,6 +55,11 @@ const DETAIL_HASH_ALIASES = {
   'variants-content': 'variants-content',
 };
 
+const HIDE_TITLE_COUNT_SECTION_IDS = new Set([
+  'genes-content',
+  'related-data-content',
+]);
+
 /** トップページのカードで使っているAPIと合計抽出ロジック（sectionId → { api, extract }） */
 const TOP_PAGE_API_MAP = {
   /** トップの難病（NANDO）表と同じ NANDO_count（指定・小慢の All 合計） */
@@ -857,10 +862,13 @@ async function showCardDetailTable(sectionId) {
       const tw = createStatsTooltipIcon('stats-section-title-tooltip', titleTooltip);
       if (tw) title.appendChild(tw);
     }
-    const titleCount = document.createElement('span');
-    titleCount.className = 'stats-title-count data-num';
-    setCountLoading(titleCount);
-    title.appendChild(titleCount);
+    const shouldShowTitleCount = !HIDE_TITLE_COUNT_SECTION_IDS.has(sectionId);
+    const titleCount = shouldShowTitleCount ? document.createElement('span') : null;
+    if (titleCount) {
+      titleCount.className = 'stats-title-count data-num';
+      setCountLoading(titleCount);
+      title.appendChild(titleCount);
+    }
     header.appendChild(title);
     let loadedRowsFromApi = [];
     let loadTabTable = null;
