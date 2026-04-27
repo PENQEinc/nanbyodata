@@ -585,6 +585,7 @@
       "tabs": [
         {
           "id": "by-gene",
+          "countDataKey": "genesymbol",
           "label": {
             "ja": "糖鎖中心",
             "en": "Glycan-centered"
@@ -670,7 +671,7 @@
         },
         {
           "id": "by-disease",
-          "countDataKey": "genesymbol",
+          "countDataKey": "nando_id",
           "label": {
             "ja": "NANDO中心",
             "en": "NANDO-centered"
