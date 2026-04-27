@@ -611,7 +611,8 @@
                 "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
                 "en": "Gene symbol used in the GlyCosmos glycogene database"
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "nando_label",
@@ -647,7 +648,8 @@
                 "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
                 "en": "Unique gene identifier in the NCBI Gene database"
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "mondo_id",
@@ -698,7 +700,8 @@
                 "ja": "難病オントロジー（NANDO）における疾患の一意な識別子",
                 "en": "Unique disease identifier in the NANDO ontology"
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "nando_label",
@@ -712,7 +715,8 @@
                 "en": "Disease name registered in NANDO. Click to go to the disease page"
               },
               "link": "nando",
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "genesymbol",
@@ -804,9 +808,21 @@
           "countDataKey": "nando",
           "dataUrl": "/download/latest/nando-japan_curated_gene.json ",
           "downloadLatestBasename": "japan_curated_gene",
+          "preSortColumns": [
+            {
+              "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "symbol",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
@@ -829,7 +845,8 @@
               "tooltip": {
                 "ja": "",
                 "en": ""
-              }
+              },
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "gene_name",
@@ -841,7 +858,8 @@
               "tooltip": {
                 "ja": "",
                 "en": ""
-              }
+              },
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "ncbi",
@@ -857,7 +875,8 @@
               "noWrap": true,
               "link": "external",
               "linkHrefKey": "ncbi",
-              "linkTextKey": "ncbi_id"
+              "linkTextKey": "ncbi_id",
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "hgnc",
@@ -873,7 +892,8 @@
               "noWrap": true,
               "link": "external",
               "linkHrefKey": "hgnc",
-              "linkTextKey": "hgnc_id"
+              "linkTextKey": "hgnc_id",
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "gene_description",
@@ -885,7 +905,8 @@
               "tooltip": {
                 "ja": "",
                 "en": ""
-              }
+              },
+              "rowspanVerticalAlign": "top"
             }
           ]
         },
@@ -904,17 +925,19 @@
           "downloadLatestBasename": "nando_gene",
           "preSortColumns": [
             {
-              "dataKey": "gene_symbol",
+              "dataKey": "nando_id",
               "order": "asc"
             },
             {
-              "dataKey": "nando_id",
+              "dataKey": "gene_symbol",
               "order": "asc"
             }
           ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
@@ -937,7 +960,8 @@
               "tooltip": {
                 "ja": "",
                 "en": ""
-              }
+              },
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "ncbi_id",
@@ -953,7 +977,8 @@
               },
               "link": "external",
               "linkHrefKey": "ncbi_url",
-              "linkTextKey": "ncbi_id"
+              "linkTextKey": "ncbi_id",
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "source",
@@ -1010,17 +1035,19 @@
       },
       "preSortColumns": [
         {
-          "dataKey": "hpo_id",
+          "dataKey": "nando_id",
           "order": "asc"
         },
         {
-          "dataKey": "nando_id",
+          "dataKey": "hpo_id",
           "order": "asc"
         }
       ],
       "columns": [
         {
           "dataKey": "nando_id",
+          "rowspan": true,
+          "rowspanVerticalAlign": "top",
           "noWrap": true,
           "label": {
             "ja": "NANDO ID",
@@ -1068,6 +1095,8 @@
             "ja": "nando_label_ja",
             "en": "nando_label_en"
           },
+          "rowspan": true,
+          "rowspanVerticalAlign": "top",
           "label": {
             "ja": "Disease",
             "en": "Disease"
@@ -1243,7 +1272,7 @@
       "tabs": [
         {
           "id": "cells",
-          "countDataKey": "__row_count__",
+          "countDataKey": "nando",
           "label": {
             "ja": "細胞",
             "en": "Cell"
@@ -1254,9 +1283,21 @@
           },
           "dataUrl": "/download/latest/nando-riken_brc_cell_data.json",
           "downloadLatestBasename": "nando-riken_brc_cell_data",
+          "preSortColumns": [
+            {
+              "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "ID",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
                 "ja": "NANDO ID",
                 "en": "NANDO ID"
@@ -1279,7 +1320,8 @@
               },
               "link": "external",
               "linkHrefKey": "HP",
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "Cell_name",
@@ -1291,7 +1333,8 @@
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "Description_j",
@@ -1314,13 +1357,14 @@
                 "en": ""
               },
               "html": true,
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             }
           ]
         },
         {
           "id": "mouse",
-          "countDataKey": "__row_count__",
+          "countDataKey": "nando",
           "label": {
             "ja": "マウス",
             "en": "Mouse"
@@ -1331,9 +1375,21 @@
           },
           "dataUrl": "/download/latest/nando-riken_brc_mouse_data.json",
           "downloadLatestBasename": "nando-riken_brc_mouse_data",
+          "preSortColumns": [
+            {
+              "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "mouse",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
                 "ja": "NANDO ID",
                 "en": "NANDO ID"
@@ -1357,7 +1413,8 @@
               },
               "link": "external",
               "linkHrefKey": "hp",
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "strain",
@@ -1369,7 +1426,8 @@
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKeyByLocale": {
@@ -1384,13 +1442,14 @@
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             }
           ]
         },
         {
           "id": "dna",
-          "countDataKey": "__row_count__",
+          "countDataKey": "nando",
           "label": {
             "ja": "DNA",
             "en": "DNA"
@@ -1401,9 +1460,21 @@
           },
           "dataUrl": "/download/latest/nando-riken_brc_dna_data.json",
           "downloadLatestBasename": "nando-riken_brc_dna_data",
+          "preSortColumns": [
+            {
+              "dataKey": "nando",
+              "order": "asc"
+            },
+            {
+              "dataKey": "gene_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
                 "ja": "NANDO ID",
                 "en": "NANDO ID"
@@ -1426,7 +1497,8 @@
               },
               "link": "external",
               "linkHrefKey": "hp",
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "ncbi_gene_id",
@@ -1442,7 +1514,8 @@
               "link": "external",
               "linkHrefKey": "ncbi_gene",
               "linkTextKey": "ncbi_gene_id",
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             },
             {
               "dataKey": "gene",
@@ -1454,7 +1527,8 @@
                 "ja": "",
                 "en": ""
               },
-              "rowspan": true
+              "rowspan": true,
+              "rowspanVerticalAlign": "top"
             }
           ]
         }

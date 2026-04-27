@@ -1081,6 +1081,8 @@ async function showCardDetailTable(sectionId) {
         if (tabCache[tabIndex]) {
           const cachedRows = tabCache[tabIndex];
           if (!silent) {
+            // タブ切替時は前タブのソート列を引き継がない
+            table._statsSortState = { key: null, order: 'asc' };
             renderTableFromRows(table, tab.columns, cachedRows, locale);
           }
           // タブ件数＝countDataKey（なければ先頭列）のユニーク数（Gene symbol 列は大文字比較）
@@ -1121,6 +1123,8 @@ async function showCardDetailTable(sectionId) {
           }
           tabCache[tabIndex] = rows;
           if (!silent) {
+            // タブ切替時は前タブのソート列を引き継がない
+            table._statsSortState = { key: null, order: 'asc' };
             renderTableFromRows(table, tab.columns, rows, locale);
           }
           // タブ件数＝countDataKey（なければ先頭列）のユニーク数（Gene symbol 列は大文字比較）
@@ -1254,6 +1258,19 @@ async function showCardDetailTable(sectionId) {
         table._statsLocale = loc;
 
         const sortState = getStatsSortState(table);
+        if (!sortState.key) {
+          const firstSortableKey = (cols || []).reduce((found, col) => {
+            if (found) return found;
+            const key = getPrimaryDataKeyForLocale(col, loc);
+            const isSortable = col?.sortable !== false && !!key && !col?.disableSort;
+            return isSortable ? key : null;
+          }, null);
+          if (firstSortableKey) {
+            sortState.key = firstSortableKey;
+            sortState.order = 'asc';
+            table._statsSortState = sortState;
+          }
+        }
         const thead = table.querySelector('thead');
         if (!thead) return;
 
@@ -1303,6 +1320,23 @@ async function showCardDetailTable(sectionId) {
             icon.classList.add('fa-sort');
           }
         });
+
+        // 初期状態でソートキーがある場合は、表示行にも同じ順序を適用する
+        // （状態だけ desc にしても、再描画しないと見た目は未ソートのままになるため）
+        if (sortState.key) {
+          const baseRows = table._statsRows || [];
+          const colsDef = table._statsCols || cols;
+          const locale = table._statsLocale || loc;
+          const sorted = sortStatsRows(baseRows, sortState, colsDef, locale);
+          const isSameOrder =
+            Array.isArray(baseRows) &&
+            baseRows.length === sorted.length &&
+            baseRows.every((row, idx) => row === sorted[idx]);
+          if (!isSameOrder) {
+            renderTableFromRows(table, colsDef, sorted, locale);
+            return;
+          }
+        }
       }
 
       /** 説明文などに含まれるHTMLをサニタイズ（&lt;a&gt;のhref・target・relのみ許可） */
@@ -2015,7 +2049,15 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
 
     const getSortState = () => {
       if (!table._statsSortState) {
-        table._statsSortState = { key: null, order: 'asc' };
+        const firstSortableKey = (columns || []).reduce((found, col) => {
+          if (found) return found;
+          const key = getPrimaryDataKeyForColumn(col);
+          const isSortable = col?.sortable !== false && !!key && !col?.disableSort;
+          return isSortable ? key : null;
+        }, null);
+        table._statsSortState = firstSortableKey
+          ? { key: firstSortableKey, order: 'asc' }
+          : { key: null, order: 'asc' };
       }
       return table._statsSortState;
     };
