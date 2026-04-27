@@ -579,8 +579,8 @@
         "en": "Glycan-Related Genes"
       },
       "titleTooltip": {
-        "ja": "糖鎖関連遺伝子の登録データ",
-        "en": "Glycan-related gene registration data"
+        "ja": "",
+        "en": ""
       },
       "description": {
         "ja": "糖鎖関連遺伝子と NANDO 疾患の対応を、糖鎖中心・NANDO 中心の 2 つの見方で確認できる表です。",
