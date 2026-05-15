@@ -79,7 +79,7 @@ nanbyodata-nginx   nginx:1.27.1     "/docker-entrypoint.…"   nginx     15 hour
 ### 4. Load db data
 
 ```
-$ cp -a /your/path/nanbyodata_nando_panel.dump.sql mysql/sql/nanbyodata_nando_panel.dump.sql
+$ cp -a /your/path/nanbyodata_nando_panel.dump.sql mysql/scripts/sql/nanbyodata_nando_panel.dump.sql
 $ docker-compose exec -T mysql sh /scripts/exec_sql_file.sh /scripts/sql/nanbyodata_nando_panel.dump.sql
 ```
 
