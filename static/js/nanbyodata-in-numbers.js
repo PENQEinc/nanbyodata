@@ -125,6 +125,21 @@ function resolveDataUrl(source) {
   return typeof u === 'string' && u.trim() !== '' ? u.trim() : '';
 }
 
+/** 複数タブがすべて同じ dataUrl を参照する場合、その URL（ダウンロードがタブで変わらないとき用）。 */
+function getSharedTabDataUrlForDownload(tabs) {
+  if (!Array.isArray(tabs) || tabs.length < 2) return '';
+  const withTableData = tabs.filter((t) => resolveDataUrl(t) && t.columns?.length);
+  if (withTableData.length < 2) return '';
+  const u0 = resolveDataUrl(withTableData[0]);
+  return withTableData.every((t) => resolveDataUrl(t) === u0) ? u0 : '';
+}
+
+/** /download/latest/{basename}.json 形式から basename を取り出す。 */
+function statsLatestBasenameFromDataUrl(url) {
+  const m = String(url || '').trim().match(/\/download\/latest\/([^/?#]+)\.json$/i);
+  return m ? m[1] : '';
+}
+
 function applyRowFilter(rows, filterConfig) {
   if (!Array.isArray(rows) || !filterConfig || typeof filterConfig !== 'object') {
     return rows;
@@ -837,6 +852,14 @@ async function showCardDetailTable(sectionId) {
     let loadedRowsFromApi = [];
     let loadTabTable = null;
     const hasTabs = Array.isArray(sectionConfig.tabs) && sectionConfig.tabs.length > 0;
+    const sharedTabDataUrl = getSharedTabDataUrlForDownload(sectionConfig.tabs);
+    const derivedBasenameForSharedTabs = statsLatestBasenameFromDataUrl(sharedTabDataUrl);
+    const hideDownloadTableTabSelect = Boolean(
+      sharedTabDataUrl && derivedBasenameForSharedTabs,
+    );
+    const effectiveSectionLatestBasename = hideDownloadTableTabSelect
+      ? sectionConfig.downloadLatestBasename || derivedBasenameForSharedTabs
+      : sectionConfig.downloadLatestBasename || '';
     const headerActions = document.createElement('div');
     headerActions.className = 'stats-header-actions';
     const downloadWrap = document.createElement('div');
@@ -873,7 +896,7 @@ async function showCardDetailTable(sectionId) {
     let downloadTabSelect = null;
     let downloadFormatSelect = null;
 
-    if (hasTabs) {
+    if (hasTabs && !hideDownloadTableTabSelect) {
       const tabWrapper = document.createElement('div');
       tabWrapper.className = 'popup-wrapper';
       const tabLabel = document.createElement('label');
@@ -945,8 +968,8 @@ async function showCardDetailTable(sectionId) {
         closePanel();
       };
 
-      if (hasTabs) {
-        const selectedTabId = downloadTabSelect?.value;
+      if (hasTabs && downloadTabSelect) {
+        const selectedTabId = downloadTabSelect.value;
         if (!selectedTabId) return;
 
         if (sectionConfig.tabs?.some((tab) => resolveDataUrl(tab) && tab.columns?.length)) {
@@ -987,9 +1010,9 @@ async function showCardDetailTable(sectionId) {
       }
 
       if (
-        sectionConfig.downloadLatestBasename &&
+        effectiveSectionLatestBasename &&
         (await downloadFromLatestPath(
-          sectionConfig.downloadLatestBasename,
+          effectiveSectionLatestBasename,
           format,
           closePanel,
         ))
@@ -997,7 +1020,7 @@ async function showCardDetailTable(sectionId) {
         return;
       }
 
-      const fallbackBasename = sectionConfig.downloadLatestBasename || sectionId;
+      const fallbackBasename = effectiveSectionLatestBasename || sectionId;
       emitDownload(sectionConfig.columns || [], loadedRowsFromApi, fallbackBasename);
     });
     downloadBody.appendChild(downloadConfirmBtn);
