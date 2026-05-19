@@ -159,6 +159,7 @@
         "ja": "外部リソースへのリンク一覧です。リソース種別ごとにタブで切り替えて表示します。",
         "en": "Links to external resources by resource type with tab switching."
       },
+      "titleCountAcrossTabs": "unique_nando_id",
       "hasTabs": true,
       "tabs": [
         {
@@ -173,9 +174,17 @@
           },
           "dataUrl": "/download/latest/nando-omim.json",
           "downloadLatestBasename": "nando-omim",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
@@ -258,9 +267,17 @@
           },
           "dataUrl": "/download/latest/nando-orphanet.json",
           "downloadLatestBasename": "nando-orphanet",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
@@ -343,9 +360,17 @@
           },
           "dataUrl": "/download/latest/nando-mondo.json",
           "downloadLatestBasename": "nando-mondo",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "linkValueKey": "nando_uid",
               "label": {
@@ -414,9 +439,17 @@
           },
           "dataUrl": "/download/latest/nando_medgen.json",
           "downloadLatestBasename": "nando_medgen",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
@@ -511,9 +544,17 @@
             ],
             "separator": "\n"
           },
+          "preSortColumns": [
+            {
+              "dataKey": "parent",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "parent",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
                 "ja": "NANDO ID",
