@@ -500,6 +500,13 @@ function getConfigDataKeysForLocale(col, locale) {
   return col.dataKey ? [col.dataKey] : [];
 }
 
+/** dataKeyByLocale / dataKeysByLocale の候補から最初の非空値を取得 */
+function getCellValueFromRowByCol(row, col, locale) {
+  const keys = getConfigDataKeysForLocale(col, locale);
+  if (keys.length === 0) return undefined;
+  return keys.map((k) => row?.[k]).find((v) => v != null && v !== '');
+}
+
 function getNandoIdForCsv(val) {
   if (val == null || val === '') return '';
   const s = String(val).trim();
@@ -1473,13 +1480,12 @@ async function showCardDetailTable(sectionId) {
           const groups = [];
           let i = 0;
           while (i < rowList.length) {
-            const key = getPrimaryDataKeyForLocale(col, loc);
-            const val = key ? rowList[i][key] : undefined;
+            const val = getCellValueFromRowByCol(rowList[i], col, loc);
             let span = 1;
             while (
               i + span < rowList.length &&
               (function () {
-                const nextVal = key ? rowList[i + span][key] : undefined;
+                const nextVal = getCellValueFromRowByCol(rowList[i + span], col, loc);
                 return String(nextVal) === String(val);
               })()
             )
@@ -1493,8 +1499,7 @@ async function showCardDetailTable(sectionId) {
         rowList.forEach((row, rowIndex) => {
           const r = document.createElement('tr');
           cols.forEach((col, colIdx) => {
-            const key = getPrimaryDataKeyForLocale(col, loc);
-            const val = key ? row[key] : undefined;
+            const val = getCellValueFromRowByCol(row, col, loc);
             const formattedVal = formatStatsValueByColumn(col, val);
             const displayVal =
               formattedVal === undefined || formattedVal === null
