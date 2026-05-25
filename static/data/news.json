@@ -138,6 +138,15 @@
   ],
   "en": [
     {
+      "id": "2026-05-29-post1",
+      "date": "2026.05.29",
+      "title": "NanbyoData UI/UX Improvement Release (Version 2026-05-29)",
+      "tags": [
+        "services"
+      ],
+      "body": "<p>In this release, we improved the UI/UX of NanbyoData to help users access information more easily according to their needs. Major updates include the addition of a Help page and a new search method using the complete disease list.</p>\n\n<ul>\n<li>Main Updates\n<ul>\n<li>Statistical information on the top page can now be viewed and downloaded as detailed data lists.</li>\n<li>A new Help page has been added to the NanbyoData portal site.</li>\n<li>Users can now search from the complete disease list via the “Other Search Methods” section on the top page.</li>\n<li>A summary page has been added for each disease, allowing users to easily review disease-related information.</li>\n<li>The new “My Diseases” feature allows users to register and manage their selected diseases in a list.</li>\n</ul></li>\n</ul>\n"
+    },
+    {
       "id": "2025-08-26-post2",
       "date": "2025.08.26",
       "title": "NanbyoData Version 4.1.0, a portal site for intractable diseases, has been released.",
