@@ -125,6 +125,21 @@ function resolveDataUrl(source) {
   return typeof u === 'string' && u.trim() !== '' ? u.trim() : '';
 }
 
+/** 複数タブがすべて同じ dataUrl を参照する場合、その URL（ダウンロードがタブで変わらないとき用）。 */
+function getSharedTabDataUrlForDownload(tabs) {
+  if (!Array.isArray(tabs) || tabs.length < 2) return '';
+  const withTableData = tabs.filter((t) => resolveDataUrl(t) && t.columns?.length);
+  if (withTableData.length < 2) return '';
+  const u0 = resolveDataUrl(withTableData[0]);
+  return withTableData.every((t) => resolveDataUrl(t) === u0) ? u0 : '';
+}
+
+/** /download/latest/{basename}.json 形式から basename を取り出す。 */
+function statsLatestBasenameFromDataUrl(url) {
+  const m = String(url || '').trim().match(/\/download\/latest\/([^/?#]+)\.json$/i);
+  return m ? m[1] : '';
+}
+
 function applyRowFilter(rows, filterConfig) {
   if (!Array.isArray(rows) || !filterConfig || typeof filterConfig !== 'object') {
     return rows;
@@ -485,6 +500,13 @@ function getConfigDataKeysForLocale(col, locale) {
   return col.dataKey ? [col.dataKey] : [];
 }
 
+/** dataKeyByLocale / dataKeysByLocale の候補から最初の非空値を取得 */
+function getCellValueFromRowByCol(row, col, locale) {
+  const keys = getConfigDataKeysForLocale(col, locale);
+  if (keys.length === 0) return undefined;
+  return keys.map((k) => row?.[k]).find((v) => v != null && v !== '');
+}
+
 function getNandoIdForCsv(val) {
   if (val == null || val === '') return '';
   const s = String(val).trim();
@@ -837,6 +859,14 @@ async function showCardDetailTable(sectionId) {
     let loadedRowsFromApi = [];
     let loadTabTable = null;
     const hasTabs = Array.isArray(sectionConfig.tabs) && sectionConfig.tabs.length > 0;
+    const sharedTabDataUrl = getSharedTabDataUrlForDownload(sectionConfig.tabs);
+    const derivedBasenameForSharedTabs = statsLatestBasenameFromDataUrl(sharedTabDataUrl);
+    const hideDownloadTableTabSelect = Boolean(
+      sharedTabDataUrl && derivedBasenameForSharedTabs,
+    );
+    const effectiveSectionLatestBasename = hideDownloadTableTabSelect
+      ? sectionConfig.downloadLatestBasename || derivedBasenameForSharedTabs
+      : sectionConfig.downloadLatestBasename || '';
     const headerActions = document.createElement('div');
     headerActions.className = 'stats-header-actions';
     const downloadWrap = document.createElement('div');
@@ -873,7 +903,7 @@ async function showCardDetailTable(sectionId) {
     let downloadTabSelect = null;
     let downloadFormatSelect = null;
 
-    if (hasTabs) {
+    if (hasTabs && !hideDownloadTableTabSelect) {
       const tabWrapper = document.createElement('div');
       tabWrapper.className = 'popup-wrapper';
       const tabLabel = document.createElement('label');
@@ -945,8 +975,8 @@ async function showCardDetailTable(sectionId) {
         closePanel();
       };
 
-      if (hasTabs) {
-        const selectedTabId = downloadTabSelect?.value;
+      if (hasTabs && downloadTabSelect) {
+        const selectedTabId = downloadTabSelect.value;
         if (!selectedTabId) return;
 
         if (sectionConfig.tabs?.some((tab) => resolveDataUrl(tab) && tab.columns?.length)) {
@@ -987,9 +1017,9 @@ async function showCardDetailTable(sectionId) {
       }
 
       if (
-        sectionConfig.downloadLatestBasename &&
+        effectiveSectionLatestBasename &&
         (await downloadFromLatestPath(
-          sectionConfig.downloadLatestBasename,
+          effectiveSectionLatestBasename,
           format,
           closePanel,
         ))
@@ -997,7 +1027,7 @@ async function showCardDetailTable(sectionId) {
         return;
       }
 
-      const fallbackBasename = sectionConfig.downloadLatestBasename || sectionId;
+      const fallbackBasename = effectiveSectionLatestBasename || sectionId;
       emitDownload(sectionConfig.columns || [], loadedRowsFromApi, fallbackBasename);
     });
     downloadBody.appendChild(downloadConfirmBtn);
@@ -1450,13 +1480,12 @@ async function showCardDetailTable(sectionId) {
           const groups = [];
           let i = 0;
           while (i < rowList.length) {
-            const key = getPrimaryDataKeyForLocale(col, loc);
-            const val = key ? rowList[i][key] : undefined;
+            const val = getCellValueFromRowByCol(rowList[i], col, loc);
             let span = 1;
             while (
               i + span < rowList.length &&
               (function () {
-                const nextVal = key ? rowList[i + span][key] : undefined;
+                const nextVal = getCellValueFromRowByCol(rowList[i + span], col, loc);
                 return String(nextVal) === String(val);
               })()
             )
@@ -1470,8 +1499,7 @@ async function showCardDetailTable(sectionId) {
         rowList.forEach((row, rowIndex) => {
           const r = document.createElement('tr');
           cols.forEach((col, colIdx) => {
-            const key = getPrimaryDataKeyForLocale(col, loc);
-            const val = key ? row[key] : undefined;
+            const val = getCellValueFromRowByCol(row, col, loc);
             const formattedVal = formatStatsValueByColumn(col, val);
             const displayVal =
               formattedVal === undefined || formattedVal === null

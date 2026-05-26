@@ -159,6 +159,7 @@
         "ja": "外部リソースへのリンク一覧です。リソース種別ごとにタブで切り替えて表示します。",
         "en": "Links to external resources by resource type with tab switching."
       },
+      "titleCountAcrossTabs": "unique_nando_id",
       "hasTabs": true,
       "tabs": [
         {
@@ -173,13 +174,21 @@
           },
           "dataUrl": "/download/latest/nando-omim.json",
           "downloadLatestBasename": "nando-omim",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
-                "ja": "NANDO ID",
-                "en": "NANDO ID"
+                "ja": "NANDO",
+                "en": "NANDO"
               },
               "tooltip": {
                 "ja": "",
@@ -189,32 +198,19 @@
             },
             {
               "dataKeyByLocale": {
-                "ja": "mondo_label_ja",
-                "en": "mondo_label_en"
+                "ja": "nando_label_ja",
+                "en": "nando_label_en"
               },
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
-                "ja": "Mondo label",
-                "en": "Mondo label"
+                "ja": "NANDO label",
+                "en": "NANDO label"
               },
               "tooltip": {
                 "ja": "",
                 "en": ""
               }
-            },
-            {
-              "dataKey": "mondo_id",
-              "noWrap": true,
-              "label": {
-                "ja": "Mondo ID",
-                "en": "Mondo ID"
-              },
-              "tooltip": {
-                "ja": "",
-                "en": ""
-              },
-              "link": "external",
-              "linkHrefKey": "mondoURI",
-              "linkTextKey": "mondo_id"
             },
             {
               "dataKey": "omimid",
@@ -230,6 +226,35 @@
               "link": "external",
               "linkHrefKey": "omimURL",
               "linkTextKey": "omimid"
+            },
+            {
+              "dataKey": "mondo_id",
+              "noWrap": true,
+              "label": {
+                "ja": "MONDO ID",
+                "en": "MONDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondoURI",
+              "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "mondo_label_ja",
+                "en": "mondo_label_en"
+              },
+              "label": {
+                "ja": "MONDO label",
+                "en": "MONDO label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
             },
             {
               "dataKey": "property",
@@ -258,13 +283,21 @@
           },
           "dataUrl": "/download/latest/nando-orphanet.json",
           "downloadLatestBasename": "nando-orphanet",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
-                "ja": "NANDO ID",
-                "en": "NANDO ID"
+                "ja": "NANDO",
+                "en": "NANDO"
               },
               "tooltip": {
                 "ja": "",
@@ -274,32 +307,19 @@
             },
             {
               "dataKeyByLocale": {
-                "ja": "mondo_label_ja",
-                "en": "mondo_label_en"
+                "ja": "nando_label_ja",
+                "en": "nando_label_en"
               },
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
-                "ja": "Mondo label",
-                "en": "Mondo label"
+                "ja": "NANDO label",
+                "en": "NANDO label"
               },
               "tooltip": {
                 "ja": "",
                 "en": ""
               }
-            },
-            {
-              "dataKey": "mondo_id",
-              "noWrap": true,
-              "label": {
-                "ja": "Mondo ID",
-                "en": "Mondo ID"
-              },
-              "tooltip": {
-                "ja": "",
-                "en": ""
-              },
-              "link": "external",
-              "linkHrefKey": "mondoUri",
-              "linkTextKey": "mondo_id"
             },
             {
               "dataKey": "orphanetid",
@@ -315,6 +335,35 @@
               "link": "external",
               "linkHrefKey": "orphaneturi",
               "linkTextKey": "orphanetid"
+            },
+            {
+              "dataKey": "mondo_id",
+              "noWrap": true,
+              "label": {
+                "ja": "MONDO ID",
+                "en": "MONDO ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "mondoUri",
+              "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "mondo_label_ja",
+                "en": "mondo_label_en"
+              },
+              "label": {
+                "ja": "MONDO label",
+                "en": "MONDO label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
             },
             {
               "dataKey": "property",
@@ -343,14 +392,22 @@
           },
           "dataUrl": "/download/latest/nando-mondo.json",
           "downloadLatestBasename": "nando-mondo",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "linkValueKey": "nando_uid",
               "label": {
-                "ja": "NANDO ID",
-                "en": "NANDO ID"
+                "ja": "NANDO",
+                "en": "NANDO"
               },
               "tooltip": {
                 "ja": "",
@@ -360,12 +417,14 @@
             },
             {
               "dataKeyByLocale": {
-                "ja": "mondo_label_ja",
-                "en": "mondo_label_en"
+                "ja": "nando_label_ja",
+                "en": "nando_label_en"
               },
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "label": {
-                "ja": "Mondo label",
-                "en": "Mondo label"
+                "ja": "NANDO label",
+                "en": "NANDO label"
               },
               "tooltip": {
                 "ja": "",
@@ -376,8 +435,8 @@
               "dataKey": "mondo_id",
               "noWrap": true,
               "label": {
-                "ja": "Mondo ID",
-                "en": "Mondo ID"
+                "ja": "MONDO ID",
+                "en": "MONDO ID"
               },
               "tooltip": {
                 "ja": "",
@@ -386,6 +445,20 @@
               "link": "external",
               "linkHrefKey": "mondo_url",
               "linkTextKey": "mondo_id"
+            },
+            {
+              "dataKeyByLocale": {
+                "ja": "mondo_label_ja",
+                "en": "mondo_label_en"
+              },
+              "label": {
+                "ja": "MONDO label",
+                "en": "MONDO label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
             },
             {
               "dataKey": "property",
@@ -414,19 +487,64 @@
           },
           "dataUrl": "/download/latest/nando_medgen.json",
           "downloadLatestBasename": "nando_medgen",
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
               "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
               "label": {
-                "ja": "NANDO ID",
-                "en": "NANDO ID"
+                "ja": "NANDO",
+                "en": "NANDO"
               },
               "tooltip": {
                 "ja": "",
                 "en": ""
               },
               "link": "nando"
+            },
+            {
+              "dataKeysByLocale": {
+                "ja": [
+                  "nando_label_ja",
+                  "nando_label_je"
+                ],
+                "en": [
+                  "nando_label_en",
+                  "nanado_label_en"
+                ]
+              },
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
+              "label": {
+                "ja": "NANDO label",
+                "en": "NANDO label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            },
+            {
+              "dataKey": "id2",
+              "noWrap": true,
+              "label": {
+                "ja": "MedGen ID",
+                "en": "MedGen ID"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              },
+              "link": "external",
+              "linkHrefKey": "original_disease",
+              "linkTextKey": "id2"
             },
             {
               "dataKey": "medgen_label",
@@ -443,8 +561,8 @@
               "dataKey": "mondo_id",
               "noWrap": true,
               "label": {
-                "ja": "Mondo ID",
-                "en": "Mondo ID"
+                "ja": "MONDO ID",
+                "en": "MONDO ID"
               },
               "tooltip": {
                 "ja": "",
@@ -453,21 +571,6 @@
               "link": "external",
               "linkHrefKey": "mondolink",
               "linkTextKey": "mondo_id"
-            },
-            {
-              "dataKey": "id2",
-              "noWrap": true,
-              "label": {
-                "ja": "MedGen ID",
-                "en": "MedGen ID"
-              },
-              "tooltip": {
-                "ja": "",
-                "en": ""
-              },
-              "link": "external",
-              "linkHrefKey": "original_disease",
-              "linkTextKey": "id2"
             },
             {
               "dataKey": "property",
@@ -500,24 +603,26 @@
             "key": "kegg_url",
             "exists": true
           },
-          "rowGroupBy": {
-            "keys": [
-              "parent",
-              "displayid"
-            ],
-            "mergeFields": [
-              "kegg_label_ja",
-              "kegg_label_en"
-            ],
-            "separator": "\n"
-          },
+          "preSortColumns": [
+            {
+              "dataKey": "nando_id",
+              "order": "asc"
+            },
+            {
+              "dataKey": "kegg_id",
+              "order": "asc"
+            }
+          ],
           "columns": [
             {
-              "dataKey": "parent",
+              "dataKey": "nando_id",
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
               "noWrap": true,
+              "linkValueKey": "nando_uid",
               "label": {
-                "ja": "NANDO ID",
-                "en": "NANDO ID"
+                "ja": "NANDO",
+                "en": "NANDO"
               },
               "tooltip": {
                 "ja": "",
@@ -526,7 +631,23 @@
               "link": "nando"
             },
             {
-              "dataKey": "displayid",
+              "dataKeyByLocale": {
+                "ja": "nando_label_ja",
+                "en": "nando_label_en"
+              },
+              "rowspan": true,
+              "rowspanVerticalAlign": "top",
+              "label": {
+                "ja": "NANDO label",
+                "en": "NANDO label"
+              },
+              "tooltip": {
+                "ja": "",
+                "en": ""
+              }
+            },
+            {
+              "dataKey": "kegg_id",
               "noWrap": true,
               "label": {
                 "ja": "KEGG ID",
@@ -538,7 +659,7 @@
               },
               "link": "external",
               "linkHrefKey": "kegg_url",
-              "linkTextKey": "displayid"
+              "linkTextKey": "kegg_id"
             },
             {
               "dataKeyByLocale": {
@@ -546,10 +667,9 @@
                 "en": "kegg_label_en"
               },
               "label": {
-                "ja": "KEGG disease name",
-                "en": "KEGG disease name"
+                "ja": "KEGG label",
+                "en": "KEGG label"
               },
-              "html": true,
               "tooltip": {
                 "ja": "",
                 "en": ""
@@ -568,7 +688,7 @@
               }
             }
           ],
-          "countDataKey": "parent"
+          "countDataKey": "nando_id"
         }
       ]
     },
