@@ -1438,6 +1438,9 @@ async function showCardDetailTable(sectionId) {
             labelSpan.appendChild(
               document.createTextNode(col.label[loc] || col.label.en || ''),
             );
+            const iconGroup = document.createElement('span');
+            iconGroup.className = 'stats-th-icons';
+            let hasIcon = false;
             if (col.tooltip && (col.tooltip[loc] || col.tooltip.en)) {
               const w = document.createElement('span');
               w.className = 'stats-th-tooltip';
@@ -1448,7 +1451,8 @@ async function showCardDetailTable(sectionId) {
               const i = document.createElement('i');
               i.className = 'fas fa-info-circle';
               w.appendChild(i);
-              labelSpan.appendChild(w);
+              iconGroup.appendChild(w);
+              hasIcon = true;
             }
 
             const sortKey = getPrimaryDataKeyForLocale(col, loc);
@@ -1461,7 +1465,11 @@ async function showCardDetailTable(sectionId) {
               th.setAttribute('tabindex', '0');
               const icon = document.createElement('i');
               icon.className = 'fas fa-sort sort-icon';
-              labelSpan.appendChild(icon);
+              iconGroup.appendChild(icon);
+              hasIcon = true;
+            }
+            if (hasIcon) {
+              labelSpan.appendChild(iconGroup);
             }
             th.appendChild(labelSpan);
             newTr.appendChild(th);
@@ -2145,6 +2153,9 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
         labelSpan.appendChild(
           document.createTextNode(col.label?.[locale] || col.label?.en || ''),
         );
+        const iconGroup = document.createElement('span');
+        iconGroup.className = 'stats-th-icons';
+        let hasIcon = false;
         if (col.tooltip && (col.tooltip[locale] || col.tooltip.en)) {
           const w = document.createElement('span');
           w.className = 'stats-th-tooltip';
@@ -2152,7 +2163,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
           const i = document.createElement('i');
           i.className = 'fas fa-info-circle';
           w.appendChild(i);
-          labelSpan.appendChild(w);
+          iconGroup.appendChild(w);
+          hasIcon = true;
         }
         const sortKey = getPrimaryDataKeyForColumn(col);
         const isSortable = col.sortable !== false && !!sortKey && !col.disableSort;
@@ -2168,7 +2180,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
           } else {
             icon.classList.add('fa-sort');
           }
-          labelSpan.appendChild(icon);
+          iconGroup.appendChild(icon);
+          hasIcon = true;
           const handleSort = () => {
             const state = getSortState();
             if (state.key === sortKey) {
@@ -2188,6 +2201,9 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
               handleSort();
             }
           };
+        }
+        if (hasIcon) {
+          labelSpan.appendChild(iconGroup);
         }
         th.appendChild(labelSpan);
         newTr.appendChild(th);

@@ -269,7 +269,7 @@
               }
             }
           ],
-          "countDataKey": "nando_id"
+          "countDataKey": "omimid"
         },
         {
           "id": "orphanet",
@@ -378,7 +378,7 @@
               }
             }
           ],
-          "countDataKey": "nando_id"
+          "countDataKey": "orphanetid"
         },
         {
           "id": "monarch-initiative",
@@ -473,7 +473,7 @@
               }
             }
           ],
-          "countDataKey": "nando_id"
+          "countDataKey": "mondo_id"
         },
         {
           "id": "medgen",
@@ -585,7 +585,7 @@
               }
             }
           ],
-          "countDataKey": "nando_id"
+          "countDataKey": "id2"
         },
         {
           "id": "kegg",
@@ -688,7 +688,7 @@
               }
             }
           ],
-          "countDataKey": "nando_id"
+          "countDataKey": "kegg_id"
         }
       ]
     },
@@ -925,7 +925,7 @@
             "ja": "",
             "en": ""
           },
-          "countDataKey": "nando",
+          "countDataKey": "symbol",
           "dataUrl": "/download/latest/nando-japan_curated_gene.json ",
           "downloadLatestBasename": "japan_curated_gene",
           "preSortColumns": [
@@ -1040,7 +1040,7 @@
             "ja": "",
             "en": ""
           },
-          "countDataKey": "nando_id",
+          "countDataKey": "gene_symbol",
           "dataUrl": "/download/latest/nando_gene.json",
           "downloadLatestBasename": "nando_gene",
           "preSortColumns": [
@@ -1392,7 +1392,7 @@
       "tabs": [
         {
           "id": "cells",
-          "countDataKey": "nando",
+          "countDataKey": "ID",
           "label": {
             "ja": "細胞",
             "en": "Cell"
@@ -1484,7 +1484,7 @@
         },
         {
           "id": "mouse",
-          "countDataKey": "nando",
+          "countDataKey": "mouse",
           "label": {
             "ja": "マウス",
             "en": "Mouse"
@@ -1569,7 +1569,7 @@
         },
         {
           "id": "dna",
-          "countDataKey": "nando",
+          "countDataKey": "gene_id",
           "label": {
             "ja": "DNA",
             "en": "DNA"

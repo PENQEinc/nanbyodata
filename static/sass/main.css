@@ -3419,11 +3419,17 @@ Stats Page Styles
   display: inline;
   line-height: inherit;
 }
-.stats-table thead th .stats-th-label .stats-th-tooltip, .stats-table thead th .stats-th-label .stats-tab-tooltip {
+.stats-table thead th .stats-th-label .stats-th-icons {
   display: inline-flex;
   align-items: center;
   vertical-align: middle;
   margin-left: 0.25em;
+  white-space: nowrap;
+}
+.stats-table thead th .stats-th-label .stats-th-icons .stats-th-tooltip, .stats-table thead th .stats-th-label .stats-th-icons .stats-tab-tooltip {
+  display: inline-flex;
+  align-items: center;
+  vertical-align: middle;
   white-space: nowrap;
 }
 .stats-table thead th.stats-sortable {
@@ -3431,8 +3437,11 @@ Stats Page Styles
   user-select: none;
 }
 .stats-table thead th.stats-sortable .sort-icon {
+  display: inline-flex;
+  align-items: center;
   vertical-align: middle;
-  margin-left: 6px;
+  margin-left: 0.25em;
+  white-space: nowrap;
   font-size: 0.85rem;
   color: #8a8a8a;
 }

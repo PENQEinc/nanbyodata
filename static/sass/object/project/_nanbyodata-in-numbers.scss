@@ -408,12 +408,19 @@ $stats-tooltip-width: 200px;
       display: inline;
       line-height: inherit;
 
-      .stats-th-tooltip {
+      .stats-th-icons {
         display: inline-flex;
         align-items: center;
         vertical-align: middle;
         margin-left: 0.25em;
         white-space: nowrap;
+
+        .stats-th-tooltip {
+          display: inline-flex;
+          align-items: center;
+          vertical-align: middle;
+          white-space: nowrap;
+        }
       }
     }
 
@@ -422,8 +429,11 @@ $stats-tooltip-width: 200px;
       user-select: none;
 
       .sort-icon {
+        display: inline-flex;
+        align-items: center;
         vertical-align: middle;
-        margin-left: 6px;
+        margin-left: 0.25em;
+        white-space: nowrap;
         font-size: 0.85rem;
         color: #8a8a8a;
 
