@@ -712,24 +712,24 @@
           "id": "by-gene",
           "countDataKey": "genesymbol",
           "label": {
-            "ja": "糖鎖中心",
-            "en": "Glycan-centered"
+            "ja": "糖鎖遺伝子",
+            "en": "Glycan-related Genes"
           },
           "tooltip": {
-            "ja": "test",
-            "en": "test"
+            "ja": "糖鎖に関連する遺伝子に対応するNanbyoData疾患のリスト",
+            "en": "List of NanbyoData diseases associated with glycan-related genes"
           },
           "dataUrl": "/download/latest/nando-glycogene.json",
           "columns": [
             {
               "dataKey": "genesymbol",
               "label": {
-                "ja": "Gene Symbol (GlyCosmos Glycogene)",
-                "en": "Gene Symbol (GlyCosmos Glycogene)"
+                "ja": "Gene Symbol (GlyCosmos Genes)",
+                "en": "Gene Symbol (GlyCosmos Genes)"
               },
               "tooltip": {
-                "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
-                "en": "Gene symbol used in the GlyCosmos glycogene database"
+                "ja": "GlyCosmos Genesより提供されている遺伝子",
+                "en": "Genes provided by GlyCosmos Geness"
               },
               "rowspan": true,
               "rowspanVerticalAlign": "top"
@@ -742,8 +742,8 @@
                 "en": "Disease"
               },
               "tooltip": {
-                "ja": "難病オントロジー（NANDO）に登録された疾患名。クリックで疾患ページへ",
-                "en": "Disease name registered in NANDO. Click to go to the disease page"
+                "ja": "NanbyoDataの疾患名。疾患名をクリックすると、NanbyoDataの疾患情報ページへ移動できます。",
+                "en": "Disease name in NanbyoData. Clicking the disease name opens the corresponding disease information page in NanbyoData."
               },
               "link": "nando"
             },
@@ -751,11 +751,11 @@
               "dataKey": "nando_category",
               "label": {
                 "ja": "制度区分",
-                "en": "Category"
+                "en": "Medical Subsidy Category"
               },
               "tooltip": {
-                "ja": "指定難病または小児慢性特定疾病の制度上の区分",
-                "en": "Category under the designated intractable disease or pediatric chronic disease system"
+                "ja": "NanbyoDataが収載する指定難病制度および小児慢性特定疾病制度の区分",
+                "en": "Category of the Japanese medical subsidy systems included in NanbyoData, including the Designated Intractable Diseases System (DID System) and the Specific Chronic Pediatric Diseases System (SCPD System)."
               }
             },
             {
@@ -765,8 +765,8 @@
                 "en": "NCBI Gene ID"
               },
               "tooltip": {
-                "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
-                "en": "Unique gene identifier in the NCBI Gene database"
+                "ja": "NCBI Geneデータベースにおける遺伝子識別子",
+                "en": "Gene identifier assigned by the NCBI Gene database"
               },
               "rowspan": true,
               "rowspanVerticalAlign": "top"
@@ -779,19 +779,19 @@
                 "en": "Mondo ID"
               },
               "tooltip": {
-                "ja": "MONDO 疾患オントロジーにおける疾患の識別子",
-                "en": "Disease identifier in the MONDO Disease Ontology"
+                "ja": "国際的な疾患オントロジーであるMondo Disease Ontology（Mondo）における識別子",
+                "en": "Identifier in the Mondo Disease Ontology (Mondo), an international disease ontology"
               }
             },
             {
               "dataKey": "nando2mondo_match",
               "label": {
                 "ja": "NANDOとMondoの疾患類似",
-                "en": "NANDO-Mondo disease match"
+                "en": "NANDO–Mondo Mapping"
               },
               "tooltip": {
-                "ja": "NANDO 疾患と MONDO 疾患の対応関係（exactMatch: 完全一致、closeMatch: 近似一致）",
-                "en": "Mapping between NANDO and MONDO diseases (exactMatch: exact, closeMatch: close match)"
+                "ja": "日本の難病制度疾患（NANDO）と国際疾患オントロジー（Mondo）の対応付け。\n\nexactMatch は疾患概念が同一であることを示し、closeMatch は類似した疾患概念であることを示します。",
+                "en": "Mapping relationship between diseases in the Nanbyo Disease Ontology (NANDO) and the Mondo Disease Ontology (Mondo).\n\n“exactMatch” indicates equivalent disease concepts, while “closeMatch” indicates closely related disease concepts."
               }
             }
           ]
@@ -800,12 +800,12 @@
           "id": "by-disease",
           "countDataKey": "nando_id",
           "label": {
-            "ja": "NANDO中心",
-            "en": "NANDO-centered"
+            "ja": "NanbyoData疾患",
+            "en": "NanbyoData Diseases"
           },
           "tooltip": {
-            "ja": "test",
-            "en": "test"
+            "ja": "NanbyoData疾患に対応する糖鎖に関連する遺伝子のリスト",
+            "en": "List of glycan-related genes associated with NanbyoData diseases"
           },
           "dataUrl": "/download/latest/nando-glycogene.json",
           "columns": [
@@ -817,8 +817,8 @@
                 "en": "NANDO ID"
               },
               "tooltip": {
-                "ja": "難病オントロジー（NANDO）における疾患の一意な識別子",
-                "en": "Unique disease identifier in the NANDO ontology"
+                "ja": "NanbyoDataで利用されている疾患オントロジー（語彙集）の識別子",
+                "en": "Identifier in the Nanbyo Disease Ontology (NANDO) used in NanbyoData"
               },
               "rowspan": true,
               "rowspanVerticalAlign": "top"
@@ -831,8 +831,8 @@
                 "en": "Disease"
               },
               "tooltip": {
-                "ja": "難病オントロジー（NANDO）に登録された疾患名。クリックで疾患ページへ",
-                "en": "Disease name registered in NANDO. Click to go to the disease page"
+                "ja": "NanbyoDataの疾患名。疾患名をクリックすると、NanbyoDataの疾患情報ページへ移動できます。",
+                "en": "Disease name in NanbyoData. Clicking the disease name opens the corresponding disease information page in NanbyoData. "
               },
               "link": "nando",
               "rowspan": true,
@@ -841,23 +841,23 @@
             {
               "dataKey": "genesymbol",
               "label": {
-                "ja": "GlyCosmos Glycogene",
-                "en": "GlyCosmos Glycogene"
+                "ja": "Gene Symbol (GlyCosmos Genes)",
+                "en": "Gene Symbol (GlyCosmos Genes)"
               },
               "tooltip": {
-                "ja": "GlyCosmos 糖鎖関連遺伝子データベースで用いられる遺伝子シンボル",
-                "en": "Gene symbol used in the GlyCosmos glycogene database"
+                "ja": "GlyCosmos Genesより提供されている遺伝子",
+                "en": "Genes provided by GlyCosmos Genes"
               }
             },
             {
               "dataKey": "nando_category",
               "label": {
                 "ja": "制度区分",
-                "en": "Category"
+                "en": "Medical Subsidy Category"
               },
               "tooltip": {
-                "ja": "指定難病または小児慢性特定疾病の制度上の区分",
-                "en": "Category under the designated intractable disease or pediatric chronic disease system"
+                "ja": "NanbyoDataが収載する指定難病制度および小児慢性特定疾病制度の区分",
+                "en": "Category of the Japanese medical subsidy systems included in NanbyoData, including the Designated Intractable Diseases System (DID System) and the Specific Chronic Pediatric Diseases System (SCPD System)."
               }
             },
             {
@@ -868,8 +868,8 @@
               },
               "noWrap": true,
               "tooltip": {
-                "ja": "NCBI Gene データベースにおける遺伝子の一意な識別子",
-                "en": "Unique gene identifier in the NCBI Gene database"
+                "ja": "NCBI Geneデータベースにおける遺伝子識別子",
+                "en": "Gene identifier assigned by the NCBI Gene database"
               }
             },
             {
@@ -880,19 +880,19 @@
               },
               "noWrap": true,
               "tooltip": {
-                "ja": "MONDO 疾患オントロジーにおける疾患の識別子",
-                "en": "Disease identifier in the Mondo Disease Ontology"
+                "ja": "国際的な疾患オントロジーであるMondo Disease Ontology（Mondo）における識別子",
+                "en": "Identifier in the Mondo Disease Ontology (Mondo), an international disease ontology"
               }
             },
             {
               "dataKey": "nando2mondo_match",
               "label": {
                 "ja": "NANDOとMondoの疾患類似",
-                "en": "NANDO-Mondo disease match"
+                "en": "NANDO–Mondo Mapping"
               },
               "tooltip": {
-                "ja": "NANDO 疾患と MONDO 疾患の対応関係（exactMatch: 完全一致、closeMatch: 近似一致）",
-                "en": "Mapping between NANDO and MONDO diseases (exactMatch: exact, closeMatch: close match)"
+                "ja": "日本の難病制度疾患（NANDO）と国際疾患オントロジー（Mondo）の対応付け。\n\nexactMatch は疾患概念が同一であることを示し、closeMatch は類似した疾患概念であることを示します。",
+                "en": "Mapping relationship between diseases in the Nanbyo Disease Ontology (NANDO) and the Mondo Disease Ontology (Mondo).\n\n“exactMatch” indicates equivalent disease concepts, while “closeMatch” indicates closely related disease concepts."
               }
             }
           ]
