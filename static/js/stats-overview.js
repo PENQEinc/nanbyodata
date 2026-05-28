@@ -3,6 +3,87 @@ class StatsOverview {
   constructor() {
     this.apiEndpoint = 'NANDO_link_count2';
     this.timestamp = Date.now();
+    this.statsConfigPath = '/static/data/nanbyodata-in-numbers-config.json';
+    this.devDataOrigin = 'https://dev-nanbyodata.dbcls.jp';
+  }
+
+  isLocalhostHostname() {
+    const h = typeof window !== 'undefined' ? window.location.hostname : '';
+    return h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h === '0.0.0.0';
+  }
+
+  resolveFetchUrl(pathOrUrl) {
+    if (!pathOrUrl || typeof pathOrUrl !== 'string') return pathOrUrl;
+    const s = pathOrUrl.trim();
+    if (!s) return s;
+    if (/^https?:\/\//i.test(s)) return s;
+    if (!this.isLocalhostHostname()) return s;
+    const path = s.startsWith('/') ? s : `/${s}`;
+    if (path.startsWith('/static/')) return s;
+    return `${this.devDataOrigin}${path}`;
+  }
+
+  normalizeTabCountValue(raw, countKey) {
+    if (raw === null || raw === undefined) return '';
+    const trimmed = String(raw).trim();
+    if (!trimmed) return '';
+    const key = String(countKey || '').toLowerCase();
+    const geneSymbolKeys = new Set(['symbol', 'gene_symbol', 'genesymbol']);
+    return geneSymbolKeys.has(key) ? trimmed.toUpperCase() : trimmed;
+  }
+
+  getUniqueCountByKey(rows, countKey) {
+    if (!Array.isArray(rows)) return 0;
+    if (!countKey) return rows.length;
+    const seen = new Set();
+    rows.forEach((row) => {
+      if (!row || typeof row !== 'object') return;
+      const normalized = this.normalizeTabCountValue(row[countKey], countKey);
+      if (normalized !== '') seen.add(normalized);
+    });
+    return seen.size;
+  }
+
+  async fetchRowsFromDataUrl(dataUrl) {
+    const url = this.resolveFetchUrl(dataUrl);
+    const res = await fetch(`${url}?timestamp=${this.timestamp}`);
+    if (!res.ok) throw new Error(`Failed to fetch ${dataUrl}: ${res.status}`);
+    const json = await res.json();
+    return json.rows || json.data || (Array.isArray(json) ? json : []);
+  }
+
+  async fetchSectionTotalFromConfig(sectionId) {
+    const configUrl = this.resolveFetchUrl(this.statsConfigPath);
+    const res = await fetch(`${configUrl}?timestamp=${this.timestamp}`);
+    if (!res.ok) {
+      throw new Error(`Failed to fetch stats config: ${res.status}`);
+    }
+    const config = await res.json();
+    const sections = Array.isArray(config?.sections) ? config.sections : [];
+    const section = sections.find((s) => s?.id === sectionId);
+    if (!section || !Array.isArray(section.tabs)) {
+      throw new Error(`Section not found: ${sectionId}`);
+    }
+
+    const tabs = section.tabs.filter(
+      (tab) =>
+        typeof tab?.dataUrl === 'string' &&
+        tab.dataUrl.trim() !== '' &&
+        Array.isArray(tab.columns) &&
+        tab.columns.length > 0,
+    );
+    if (tabs.length === 0) {
+      throw new Error(`No data tabs found: ${sectionId}`);
+    }
+
+    const counts = await Promise.all(
+      tabs.map(async (tab) => {
+        const rows = await this.fetchRowsFromDataUrl(tab.dataUrl.trim());
+        const countKey = tab.countDataKey || tab.columns?.[0]?.dataKey || null;
+        return this.getUniqueCountByKey(rows, countKey);
+      }),
+    );
+    return counts.reduce((sum, value) => sum + value, 0);
   }
 
   // 各APIを個別に取得して、取得できたものから順次表示
@@ -29,21 +110,12 @@ class StatsOverview {
         this.updateCard('intractable_diseases', 'N/A');
       });
 
-    // NANDO_link_count2 APIから遺伝子・検査・臨床特徴データを取得
+    // NANDO_link_count2 APIから検査・臨床特徴データを取得
     fetch(`/sparqlist/api/NANDO_link_count2?timestamp=${this.timestamp}`)
       .then((res) => (res.ok ? res.json() : null))
       .then((linkData2) => {
         if (linkData2) {
           allData.linkData2 = linkData2;
-
-          // 疾患関連遺伝子
-          const shiteiGenes = parseInt(linkData2.shitei_gene?.gene || 0);
-          const shomanGenes = parseInt(linkData2.shoman_gene?.gene || 0);
-          const totalGenes = shiteiGenes + shomanGenes;
-          this.updateCard(
-            'disease_genes',
-            totalGenes > 0 ? totalGenes.toString() : '-',
-          );
 
           // 診療用遺伝学的検査
           const shiteiTests = parseInt(
@@ -70,36 +142,8 @@ class StatsOverview {
       })
       .catch((error) => {
         console.error('NANDO_link_count2 API failed:', error);
-        this.updateCard('disease_genes', 'N/A');
         this.updateCard('clinical_tests', 'N/A');
         this.updateCard('clinical_features', 'N/A');
-      });
-
-    // NANDO_link_count3 APIからバイオリソースデータを取得
-    fetch(`/sparqlist/api/NANDO_link_count3?timestamp=${this.timestamp}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((brcData) => {
-        if (brcData) {
-          allData.brcData = brcData;
-          const shiteiCells = parseInt(brcData.shitei_cell?.cell || 0);
-          const shomanCells = parseInt(brcData.shoman_cell?.cell || 0);
-          const shiteiMice = parseInt(brcData.shitei_mouse?.mouse || 0);
-          const shomanMice = parseInt(brcData.shoman_mouse?.mouse || 0);
-          const shiteiDna = parseInt(brcData.shitei_DNA?.gene || 0);
-          const shomanDna = parseInt(brcData.shoman_DNA?.gene || 0);
-          const total =
-            shiteiCells +
-            shomanCells +
-            shiteiMice +
-            shomanMice +
-            shiteiDna +
-            shomanDna;
-          this.updateCard('bioresources', total > 0 ? total.toString() : '-');
-        }
-      })
-      .catch((error) => {
-        console.error('NANDO_link_count3 API failed:', error);
-        this.updateCard('bioresources', 'N/A');
       });
 
     // NANDO_link_count4 APIから顔貌特徴データを取得
@@ -145,41 +189,105 @@ class StatsOverview {
       .then((linkData) => {
         if (linkData) {
           allData.linkData = linkData;
-          // 指定（shitei）
-          const shiteiMonarchExact = parseInt(linkData.name2?.mondo || 0);
-          const shiteiMonarchClose = parseInt(linkData.name4?.mondo || 0);
-          const shiteiOrphanet = parseInt(linkData.name12?.mondo || 0);
-          const shiteiMedgen = parseInt(linkData.name10?.medgen || 0);
-          const shiteiKegg = parseInt(linkData.name5?.kegg || 0);
-
-          // 小慢（shoman）
-          const shomanMonarchExact = parseInt(linkData.name1?.mondo || 0);
-          const shomanMonarchClose = parseInt(linkData.name3?.mondo || 0);
-          const shomanOrphanet = parseInt(linkData.name11?.mondo || 0);
-          const shomanMedgen = parseInt(linkData.name9?.medgen || 0);
-          const shomanKegg = parseInt(linkData.name6?.kegg || 0);
-
-          const totalExternalLinks =
-            shiteiMonarchExact +
-            shiteiMonarchClose +
-            shiteiOrphanet +
-            shiteiMedgen +
-            shiteiKegg +
-            shomanMonarchExact +
-            shomanMonarchClose +
-            shomanOrphanet +
-            shomanMedgen +
-            shomanKegg;
-
-          this.updateCard(
-            'external_links',
-            totalExternalLinks > 0 ? totalExternalLinks.toString() : '-',
-          );
         }
       })
       .catch((error) => {
         console.error('NANDO_link_count API failed:', error);
-        this.updateCard('external_links', 'N/A');
+      });
+
+    // 各ページの合計値（nanbyodata-in-numbers のタブ集計）でカード件数を更新
+    this.fetchSectionTotalFromConfig('genes-content')
+      .then((total) => {
+        this.updateCard('disease_genes', total > 0 ? total.toString() : '-');
+      })
+      .catch((error) => {
+        console.error('Failed to load genes total from stats config:', error);
+        const linkData2 = allData.linkData2;
+        if (!linkData2) {
+          this.updateCard('disease_genes', 'N/A');
+          return;
+        }
+        const shiteiGenes = parseInt(linkData2.shitei_gene?.gene || 0);
+        const shomanGenes = parseInt(linkData2.shoman_gene?.gene || 0);
+        const fallbackTotal = shiteiGenes + shomanGenes;
+        this.updateCard(
+          'disease_genes',
+          fallbackTotal > 0 ? fallbackTotal.toString() : '-',
+        );
+      });
+
+    this.fetchSectionTotalFromConfig('bioresources-content')
+      .then((total) => {
+        this.updateCard('bioresources', total > 0 ? total.toString() : '-');
+      })
+      .catch((error) => {
+        console.error('Failed to load bioresources total from stats config:', error);
+        fetch(`/sparqlist/api/NANDO_link_count3?timestamp=${this.timestamp}`)
+          .then((res) => (res.ok ? res.json() : null))
+          .then((brcData) => {
+            if (!brcData) {
+              this.updateCard('bioresources', 'N/A');
+              return;
+            }
+            const shiteiCells = parseInt(brcData.shitei_cell?.cell || 0);
+            const shomanCells = parseInt(brcData.shoman_cell?.cell || 0);
+            const shiteiMice = parseInt(brcData.shitei_mouse?.mouse || 0);
+            const shomanMice = parseInt(brcData.shoman_mouse?.mouse || 0);
+            const shiteiDna = parseInt(brcData.shitei_DNA?.gene || 0);
+            const shomanDna = parseInt(brcData.shoman_DNA?.gene || 0);
+            const fallbackTotal =
+              shiteiCells +
+              shomanCells +
+              shiteiMice +
+              shomanMice +
+              shiteiDna +
+              shomanDna;
+            this.updateCard(
+              'bioresources',
+              fallbackTotal > 0 ? fallbackTotal.toString() : '-',
+            );
+          })
+          .catch(() => {
+            this.updateCard('bioresources', 'N/A');
+          });
+      });
+
+    this.fetchSectionTotalFromConfig('links-content')
+      .then((total) => {
+        this.updateCard('external_links', total > 0 ? total.toString() : '-');
+      })
+      .catch((error) => {
+        console.error('Failed to load links total from stats config:', error);
+        const linkData = allData.linkData;
+        if (!linkData) {
+          this.updateCard('external_links', 'N/A');
+          return;
+        }
+        const shiteiMonarchExact = parseInt(linkData.name2?.mondo || 0);
+        const shiteiMonarchClose = parseInt(linkData.name4?.mondo || 0);
+        const shiteiOrphanet = parseInt(linkData.name12?.mondo || 0);
+        const shiteiMedgen = parseInt(linkData.name10?.medgen || 0);
+        const shiteiKegg = parseInt(linkData.name5?.kegg || 0);
+        const shomanMonarchExact = parseInt(linkData.name1?.mondo || 0);
+        const shomanMonarchClose = parseInt(linkData.name3?.mondo || 0);
+        const shomanOrphanet = parseInt(linkData.name11?.mondo || 0);
+        const shomanMedgen = parseInt(linkData.name9?.medgen || 0);
+        const shomanKegg = parseInt(linkData.name6?.kegg || 0);
+        const fallbackTotal =
+          shiteiMonarchExact +
+          shiteiMonarchClose +
+          shiteiOrphanet +
+          shiteiMedgen +
+          shiteiKegg +
+          shomanMonarchExact +
+          shomanMonarchClose +
+          shomanOrphanet +
+          shomanMedgen +
+          shomanKegg;
+        this.updateCard(
+          'external_links',
+          fallbackTotal > 0 ? fallbackTotal.toString() : '-',
+        );
       });
 
     return allData;
