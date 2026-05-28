@@ -703,8 +703,8 @@
         "en": ""
       },
       "description": {
-        "ja": "糖鎖関連遺伝子と NANDO 疾患の対応を、糖鎖中心・NANDO 中心の 2 つの見方で確認できる表です。",
-        "en": "This table shows mappings between glycan-related genes and NANDO diseases from glycan-centered and NANDO-centered views."
+        "ja": "NanbyoDataに収載されている国際リソース由来の疾患関連遺伝子のうち、糖鎖に関連する遺伝子を表示しています。糖鎖に関連する遺伝子は、糖鎖科学ポータルサイトGlyCosmosで提供されている GlyCosmos Genes を利用しています。\n\n本ページでは、NanbyoDataの疾患と国際疾患語彙集（オントロジー）である Mondo Disease Ontology（Mondo）との対応付け情報をもとに、疾患関連遺伝子を掲載しています。NANDO と Mondo の exactMatch（同一概念）および closeMatch（近似概念）の両方を含む対応付けを利用しています。\n\n本ページでは、「糖鎖遺伝子」および「NanbyoData疾患」のそれぞれを軸としたリストを、タブ切り替えで閲覧できます。また、右側の Download 機能から、NanbyoDataに収載されている糖鎖関連データを取得できます。",
+        "en": "Glycan-related genes associated with diseases in NanbyoData are displayed on this page.These glycan-related genes are based on Glycogenes provided by the glycoscience portal GlyCosmos.\n\nDisease-associated genes are integrated using mappings between the Nanbyo Disease Ontology (NANDO) and Mondo Disease Ontology.The displayed data include both exactMatch relationships (equivalent disease concepts) and closeMatch relationships (closely related disease concepts) between NANDO and Mondo.\n\nThe data can be explored from two perspectives using tab navigation: a glycan gene-centered view and a NanbyoData disease-centered view.\n\nRelated glycan datasets included in NanbyoData can also be downloaded using the Download function on the right side of the page."
       },
       "hasTabs": true,
       "tabs": [
