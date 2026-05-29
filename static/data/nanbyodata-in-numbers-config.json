@@ -156,8 +156,8 @@
         "en": ""
       },
       "description": {
-        "ja": "外部リソースへのリンク一覧です。リソース種別ごとにタブで切り替えて表示します。",
-        "en": "Links to external resources by resource type with tab switching."
+        "ja": "本ページに表示されている数字は、NANDOと外部リソースとの間に設定されたリンク（対応関係）の件数を示しています。",
+        "en": "The numbers displayed on this page indicate the number of links (mappings) between NANDO and external resources."
       },
       "titleCountAcrossTabs": "unique_nando_id",
       "hasTabs": true,
@@ -174,6 +174,7 @@
           },
           "dataUrl": "/download/latest/nando-omim.json",
           "downloadLatestBasename": "nando-omim",
+          "countDataKey": "__row_count__",
           "preSortColumns": [
             {
               "dataKey": "nando_id",
@@ -268,8 +269,7 @@
                 "en": ""
               }
             }
-          ],
-          "countDataKey": "omimid"
+          ]
         },
         {
           "id": "orphanet",
@@ -283,6 +283,7 @@
           },
           "dataUrl": "/download/latest/nando-orphanet.json",
           "downloadLatestBasename": "nando-orphanet",
+          "countDataKey": "__row_count__",
           "preSortColumns": [
             {
               "dataKey": "nando_id",
@@ -377,8 +378,7 @@
                 "en": ""
               }
             }
-          ],
-          "countDataKey": "orphanetid"
+          ]
         },
         {
           "id": "monarch-initiative",
@@ -392,6 +392,7 @@
           },
           "dataUrl": "/download/latest/nando-mondo.json",
           "downloadLatestBasename": "nando-mondo",
+          "countDataKey": "__row_count__",
           "preSortColumns": [
             {
               "dataKey": "nando_id",
@@ -472,8 +473,7 @@
                 "en": ""
               }
             }
-          ],
-          "countDataKey": "mondo_id"
+          ]
         },
         {
           "id": "medgen",
@@ -487,6 +487,7 @@
           },
           "dataUrl": "/download/latest/nando_medgen.json",
           "downloadLatestBasename": "nando_medgen",
+          "countDataKey": "__row_count__",
           "preSortColumns": [
             {
               "dataKey": "nando_id",
@@ -584,8 +585,7 @@
                 "en": ""
               }
             }
-          ],
-          "countDataKey": "id2"
+          ]
         },
         {
           "id": "kegg",
@@ -599,6 +599,7 @@
           },
           "dataUrl": "/download/latest/nando-kegg.json",
           "downloadLatestBasename": "nando-kegg",
+          "countDataKey": "__row_count__",
           "rowFilter": {
             "key": "kegg_url",
             "exists": true
@@ -687,8 +688,7 @@
                 "en": ""
               }
             }
-          ],
-          "countDataKey": "kegg_id"
+          ]
         }
       ]
     },
@@ -703,8 +703,8 @@
         "en": ""
       },
       "description": {
-        "ja": "NanbyoDataに収載されている国際リソース由来の疾患関連遺伝子のうち、糖鎖に関連する遺伝子を表示しています。糖鎖に関連する遺伝子は、糖鎖科学ポータルサイトGlyCosmosで提供されている GlyCosmos Genes を利用しています。\n\n本ページでは、NanbyoDataの疾患と国際疾患語彙集（オントロジー）である Mondo Disease Ontology（Mondo）との対応付け情報をもとに、疾患関連遺伝子を掲載しています。NANDO と Mondo の exactMatch（同一概念）および closeMatch（近似概念）の両方を含む対応付けを利用しています。\n\n本ページでは、「糖鎖遺伝子」および「NanbyoData疾患」のそれぞれを軸としたリストを、タブ切り替えで閲覧できます。また、右側の Download 機能から、NanbyoDataに収載されている糖鎖関連データを取得できます。",
-        "en": "Glycan-related genes associated with diseases in NanbyoData are displayed on this page.These glycan-related genes are based on Glycogenes provided by the glycoscience portal GlyCosmos.\n\nDisease-associated genes are integrated using mappings between the Nanbyo Disease Ontology (NANDO) and Mondo Disease Ontology.The displayed data include both exactMatch relationships (equivalent disease concepts) and closeMatch relationships (closely related disease concepts) between NANDO and Mondo.\n\nThe data can be explored from two perspectives using tab navigation: a glycan gene-centered view and a NanbyoData disease-centered view.\n\nRelated glycan datasets included in NanbyoData can also be downloaded using the Download function on the right side of the page."
+        "ja": "NanbyoDataに収載されている国際リソース由来の疾患関連遺伝子のうち、糖鎖に関連する遺伝子を表示しています。糖鎖に関連する遺伝子は、糖鎖科学ポータルサイトGlyCosmosで提供されている GlyCosmos Genes を利用しています。\n\n本ページでは、NanbyoDataの疾患と国際疾患語彙集（オントロジー）である Mondo Disease Ontology（Mondo）との対応付け情報をもとに、疾患関連遺伝子を掲載しています。NANDO と Mondo の exactMatch（同一概念）および closeMatch（近似概念）の両方を含む対応付けを利用しています。\n\n本ページでは、「糖鎖遺伝子」および「NanbyoData疾患」のそれぞれを軸としたリストを、タブ切り替えで閲覧できます。タブに表示される数値は、糖鎖遺伝子数およびNanbyoData疾患数を示します。また、右側の Download 機能から、NanbyoDataに収載されている糖鎖関連データを取得できます。",
+        "en": "This page displays glycan-related genes associated with diseases in NanbyoData. These genes are based on GlyCosmos Genes provided by the glycoscience portal GlyCosmos.\n\nDisease-associated genes are integrated using mappings between diseases in NanbyoData and the Mondo Disease Ontology (Mondo), an international disease vocabulary and ontology. The displayed data include both exactMatch relationships (equivalent disease concepts) and closeMatch relationships (closely related disease concepts) between NANDO and Mondo.\n\nThe data can be explored through two tab-based views: one centered on glycan-related genes and the other centered on NanbyoData diseases. The numbers displayed on the tabs indicate the total numbers of glycan-related genes and NanbyoData diseases, respectively.\n\nRelated glycan datasets included in NanbyoData can also be downloaded using the Download function on the right side of the page."
       },
       "hasTabs": true,
       "tabs": [
@@ -716,8 +716,8 @@
             "en": "Glycan-related Genes"
           },
           "tooltip": {
-            "ja": "糖鎖に関連する遺伝子に対応するNanbyoData疾患のリスト",
-            "en": "List of NanbyoData diseases associated with glycan-related genes"
+            "ja": "糖鎖に関連する遺伝子ごとに、関連するNanbyoData疾患をまとめたリスト",
+            "en": "List of NanbyoData diseases associated with each glycan-related genes"
           },
           "dataUrl": "/download/latest/nando-glycogene.json",
           "columns": [
@@ -731,6 +731,9 @@
                 "ja": "GlyCosmos Genesより提供されている遺伝子",
                 "en": "Genes provided by GlyCosmos Geness"
               },
+              "link": "external",
+              "linkHrefKey": "glycogene",
+              "linkTextKey": "genesymbol",
               "rowspan": true,
               "rowspanVerticalAlign": "top"
             },
@@ -804,8 +807,8 @@
             "en": "NanbyoData Diseases"
           },
           "tooltip": {
-            "ja": "NanbyoData疾患に対応する糖鎖に関連する遺伝子のリスト",
-            "en": "List of glycan-related genes associated with NanbyoData diseases"
+            "ja": "NanbyoData疾患ごとに、関連する糖鎖に関連する遺伝子をまとめたリスト",
+            "en": "List of glycan-related genes associated with each NanbyoData disease"
           },
           "dataUrl": "/download/latest/nando-glycogene.json",
           "columns": [
@@ -844,6 +847,9 @@
                 "ja": "Gene Symbol (GlyCosmos Genes)",
                 "en": "Gene Symbol (GlyCosmos Genes)"
               },
+              "link": "external",
+              "linkHrefKey": "glycogene",
+              "linkTextKey": "genesymbol",
               "tooltip": {
                 "ja": "GlyCosmos Genesより提供されている遺伝子",
                 "en": "Genes provided by GlyCosmos Genes"
@@ -910,8 +916,8 @@
         "en": ""
       },
       "description": {
-        "ja": "疾患関連遺伝子の一覧です。国内基準由来（nando-japan_curated_gene.json）と国際リソース由来（nando_gene.json）を切り替えて表示できます。",
-        "en": "Disease-related genes from both Japan-curated (nando-japan_curated_gene.json) and international resources (nando_gene.json)."
+        "ja": "本ページに表示されている数字は、NANDOに収録された疾患と遺伝子との対応関係の件数を示しています。",
+        "en": "The numbers displayed on this page represent the number of associations between diseases in NANDO and genes."
       },
       "hasTabs": true,
       "tabs": [
@@ -925,7 +931,7 @@
             "ja": "",
             "en": ""
           },
-          "countDataKey": "symbol",
+          "countDataKey": "__row_count__",
           "dataUrl": "/download/latest/nando-japan_curated_gene.json ",
           "downloadLatestBasename": "japan_curated_gene",
           "preSortColumns": [
@@ -1040,7 +1046,7 @@
             "ja": "",
             "en": ""
           },
-          "countDataKey": "gene_symbol",
+          "countDataKey": "__row_count__",
           "dataUrl": "/download/latest/nando_gene.json",
           "downloadLatestBasename": "nando_gene",
           "preSortColumns": [
@@ -1141,10 +1147,11 @@
         "en": ""
       },
       "description": {
-        "ja": "NANDO 疾患と HPO（臨床的特徴）の対応一覧です。",
-        "en": "Mapping table between NANDO diseases and HPO clinical features."
+        "ja": "本ページに表示されている数字は、NANDOに収録された疾患と臨床症状オントロジーとの対応関係の件数を示しています。",
+        "en": "The numbers displayed on this page represent the number of associations between diseases in NANDO and clinical feature ontologies."
       },
       "hasTabs": false,
+      "countDataKey": "__row_count__",
       "dataUrl": "/download/latest/nando-hpo.json",
       "downloadLatestBasename": "nando-hpo",
       "rowGroupBy": {
@@ -1239,10 +1246,11 @@
         "en": ""
       },
       "description": {
-        "ja": "GestaltMatcher に登録された顔貌特徴データです。",
-        "en": "Facial feature data registered in GestaltMatcher."
+        "ja": "本ページに表示されている数字は、NANDOに収録された疾患と顔貌特徴との対応関係の件数を示しています。",
+        "en": "The numbers displayed on this page represent the number of associations between diseases in NANDO and facial features."
       },
       "hasTabs": false,
+      "countDataKey": "__row_count__",
       "dataUrl": "/download/latest/nando-gestaltmatcher_face_image_data.json",
       "downloadLatestBasename": "nando-gestaltmatcher_face_image_data",
       "rowGroupBy": {
@@ -1385,14 +1393,14 @@
         "en": ""
       },
       "description": {
-        "ja": "理研 BRC で提供されている難病関連バイオリソースを、細胞・マウス・DNA ごとに示した表です。",
-        "en": "This table shows disease-related bioresources provided by RIKEN BRC, grouped into cells, mice, and DNA."
+        "ja": "本ページに表示されている数字は、NANDOに収録された疾患とバイオリソースとの対応関係の件数を示しています。",
+        "en": "The numbers displayed on this page represent the number of associations between diseases in NANDO and bioresources."
       },
       "hasTabs": true,
       "tabs": [
         {
           "id": "cells",
-          "countDataKey": "ID",
+          "countDataKey": "__row_count__",
           "label": {
             "ja": "細胞",
             "en": "Cell"
@@ -1484,7 +1492,7 @@
         },
         {
           "id": "mouse",
-          "countDataKey": "mouse",
+          "countDataKey": "__row_count__",
           "label": {
             "ja": "マウス",
             "en": "Mouse"
@@ -1569,7 +1577,7 @@
         },
         {
           "id": "dna",
-          "countDataKey": "gene_id",
+          "countDataKey": "__row_count__",
           "label": {
             "ja": "DNA",
             "en": "DNA"

@@ -71,37 +71,9 @@ const TOP_PAGE_API_MAP = {
       return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
     },
   },
-  'clinical-features-content': {
-    api: '/sparqlist/api/NANDO_link_count2',
-    extract: (d) => {
-      const s = parseInt(d.shitei_hp?.hp || 0);
-      const m = parseInt(d.shoman_hp?.hp || 0);
-      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
-    },
-  },
-  'facial-features-content': {
-    api: '/sparqlist/api/NANDO_link_count4',
-    extract: (d) => {
-      const s = parseInt(d.shitei_gm?.GM || 0);
-      const m = parseInt(d.shoman_gm?.GM || 0);
-      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
-    },
-  },
   'related-data-content': {
     api: '/sparqlist/api/NANDO_link_count8',
     extract: (d) => parseInt(d.glyco_gene_total?.num || 0) || 0,
-  },
-  /**
-   * トップの「疾患関連遺伝子」カード（stats-overview.js disease_genes）と同じ:
-   * NANDO_link_count2 の shitei_gene.gene + shoman_gene.gene
-   */
-  'genes-content': {
-    api: '/sparqlist/api/NANDO_link_count2',
-    extract: (d) => {
-      const s = parseInt(d.shitei_gene?.gene || 0);
-      const m = parseInt(d.shoman_gene?.gene || 0);
-      return (Number.isFinite(s) ? s : 0) + (Number.isFinite(m) ? m : 0);
-    },
   },
 };
 

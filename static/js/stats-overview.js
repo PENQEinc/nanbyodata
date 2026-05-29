@@ -32,8 +32,12 @@ class StatsOverview {
     return geneSymbolKeys.has(key) ? trimmed.toUpperCase() : trimmed;
   }
 
-  getUniqueCountByKey(rows, countKey) {
+  getTabCountValue(rows, tab) {
     if (!Array.isArray(rows)) return 0;
+    const countKey =
+      tab?.countDataKey ||
+      (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
+    if (countKey === '__row_count__') return rows.length;
     if (!countKey) return rows.length;
     const seen = new Set();
     rows.forEach((row) => {
@@ -42,6 +46,94 @@ class StatsOverview {
       if (normalized !== '') seen.add(normalized);
     });
     return seen.size;
+  }
+
+  applyRowFilter(rows, filterConfig) {
+    if (!Array.isArray(rows) || !filterConfig || typeof filterConfig !== 'object') {
+      return rows;
+    }
+    const key = typeof filterConfig.key === 'string' ? filterConfig.key : '';
+    if (!key) return rows;
+
+    if (filterConfig.exists === true) {
+      return rows.filter((row) => row && row[key] != null && row[key] !== '');
+    }
+    if (filterConfig.exists === false) {
+      return rows.filter((row) => !row || row[key] == null || row[key] === '');
+    }
+    if (Object.prototype.hasOwnProperty.call(filterConfig, 'equals')) {
+      return rows.filter((row) => row && row[key] === filterConfig.equals);
+    }
+    if (Array.isArray(filterConfig.in)) {
+      const allowed = new Set(filterConfig.in);
+      return rows.filter((row) => row && allowed.has(row[key]));
+    }
+    return rows;
+  }
+
+  applyRowGroup(rows, groupConfig) {
+    if (!Array.isArray(rows) || !groupConfig || typeof groupConfig !== 'object') {
+      return rows;
+    }
+    const groupKeys = Array.isArray(groupConfig.keys)
+      ? groupConfig.keys.filter((k) => typeof k === 'string' && k)
+      : [];
+    if (groupKeys.length === 0) return rows;
+    const mergeFields = Array.isArray(groupConfig.mergeFields)
+      ? groupConfig.mergeFields.filter((k) => typeof k === 'string' && k)
+      : [];
+    const separator =
+      typeof groupConfig.separator === 'string' && groupConfig.separator
+        ? groupConfig.separator
+        : ' / ';
+
+    const grouped = new Map();
+    rows.forEach((row) => {
+      if (!row || typeof row !== 'object') return;
+      const key = groupKeys.map((k) => String(row[k] ?? '')).join('\u0000');
+      if (!grouped.has(key)) {
+        const seed = { ...row };
+        mergeFields.forEach((field) => {
+          seed[field] = row[field] ?? '';
+        });
+        grouped.set(key, seed);
+        return;
+      }
+      const acc = grouped.get(key);
+      mergeFields.forEach((field) => {
+        const current = acc[field] == null ? '' : String(acc[field]);
+        const next = row[field] == null ? '' : String(row[field]);
+        if (!next) return;
+        const existing = current
+          ? current
+              .split(separator)
+              .map((v) => v.trim())
+              .filter(Boolean)
+          : [];
+        if (!existing.includes(next)) {
+          existing.push(next);
+        }
+        acc[field] = existing.join(separator);
+      });
+    });
+    return Array.from(grouped.values());
+  }
+
+  prepareSectionRows(rows, section) {
+    if (!Array.isArray(rows)) return [];
+    const prepared = rows.map((row) => ({ ...row }));
+    prepared.forEach((row) => {
+      if (row && row.kegg_url != null && row.kegg == null) {
+        row.kegg = row.kegg_url;
+      }
+    });
+    let result = this.applyRowFilter(prepared, section?.rowFilter);
+    result = this.applyRowGroup(result, section?.rowGroupBy);
+    return result;
+  }
+
+  prepareTabRows(rows, tab) {
+    return this.prepareSectionRows(rows, tab);
   }
 
   async fetchRowsFromDataUrl(dataUrl) {
@@ -61,29 +153,45 @@ class StatsOverview {
     const config = await res.json();
     const sections = Array.isArray(config?.sections) ? config.sections : [];
     const section = sections.find((s) => s?.id === sectionId);
-    if (!section || !Array.isArray(section.tabs)) {
+    if (!section) {
       throw new Error(`Section not found: ${sectionId}`);
     }
 
-    const tabs = section.tabs.filter(
-      (tab) =>
-        typeof tab?.dataUrl === 'string' &&
-        tab.dataUrl.trim() !== '' &&
-        Array.isArray(tab.columns) &&
-        tab.columns.length > 0,
-    );
-    if (tabs.length === 0) {
-      throw new Error(`No data tabs found: ${sectionId}`);
+    if (Array.isArray(section.tabs) && section.tabs.length > 0) {
+      const tabs = section.tabs.filter(
+        (tab) =>
+          typeof tab?.dataUrl === 'string' &&
+          tab.dataUrl.trim() !== '' &&
+          Array.isArray(tab.columns) &&
+          tab.columns.length > 0,
+      );
+      if (tabs.length === 0) {
+        throw new Error(`No data tabs found: ${sectionId}`);
+      }
+
+      const counts = await Promise.all(
+        tabs.map(async (tab) => {
+          const rows = await this.fetchRowsFromDataUrl(tab.dataUrl.trim());
+          const preparedRows = this.prepareTabRows(rows, tab);
+          return this.getTabCountValue(preparedRows, tab);
+        }),
+      );
+      return counts.reduce((sum, value) => sum + value, 0);
     }
 
-    const counts = await Promise.all(
-      tabs.map(async (tab) => {
-        const rows = await this.fetchRowsFromDataUrl(tab.dataUrl.trim());
-        const countKey = tab.countDataKey || tab.columns?.[0]?.dataKey || null;
-        return this.getUniqueCountByKey(rows, countKey);
-      }),
-    );
-    return counts.reduce((sum, value) => sum + value, 0);
+    const dataUrl = section.dataUrl ?? section.dataApi;
+    if (
+      typeof dataUrl === 'string' &&
+      dataUrl.trim() !== '' &&
+      Array.isArray(section.columns) &&
+      section.columns.length > 0
+    ) {
+      const rows = await this.fetchRowsFromDataUrl(dataUrl.trim());
+      const preparedRows = this.prepareSectionRows(rows, section);
+      return this.getTabCountValue(preparedRows, section);
+    }
+
+    throw new Error(`Section not found: ${sectionId}`);
   }
 
   // 各APIを個別に取得して、取得できたものから順次表示
@@ -129,41 +237,63 @@ class StatsOverview {
             'clinical_tests',
             totalTests > 0 ? totalTests.toString() : '-',
           );
-
-          // 臨床的特徴
-          const shiteiFeatures = parseInt(linkData2.shitei_hp?.hp || 0);
-          const shomanFeatures = parseInt(linkData2.shoman_hp?.hp || 0);
-          const totalFeatures = shiteiFeatures + shomanFeatures;
-          this.updateCard(
-            'clinical_features',
-            totalFeatures > 0 ? totalFeatures.toString() : '-',
-          );
         }
       })
       .catch((error) => {
         console.error('NANDO_link_count2 API failed:', error);
         this.updateCard('clinical_tests', 'N/A');
-        this.updateCard('clinical_features', 'N/A');
       });
 
-    // NANDO_link_count4 APIから顔貌特徴データを取得
-    fetch(`/sparqlist/api/NANDO_link_count4?timestamp=${this.timestamp}`)
-      .then((res) => (res.ok ? res.json() : null))
-      .then((linkData4) => {
-        if (linkData4) {
-          allData.linkData4 = linkData4;
-          const shiteiFacial = parseInt(linkData4.shitei_gm?.GM || 0);
-          const shomanFacial = parseInt(linkData4.shoman_gm?.GM || 0);
-          const totalFacial = shiteiFacial + shomanFacial;
-          this.updateCard(
-            'facial_features',
-            totalFacial > 0 ? totalFacial.toString() : '-',
-          );
-        }
+    this.fetchSectionTotalFromConfig('clinical-features-content')
+      .then((total) => {
+        this.updateCard(
+          'clinical_features',
+          total > 0 ? total.toString() : '-',
+        );
       })
       .catch((error) => {
-        console.error('NANDO_link_count4 API failed:', error);
-        this.updateCard('facial_features', 'N/A');
+        console.error('Failed to load clinical features total from stats config:', error);
+        const linkData2 = allData.linkData2;
+        if (!linkData2) {
+          this.updateCard('clinical_features', 'N/A');
+          return;
+        }
+        const shiteiFeatures = parseInt(linkData2.shitei_hp?.hp || 0);
+        const shomanFeatures = parseInt(linkData2.shoman_hp?.hp || 0);
+        const fallbackTotal = shiteiFeatures + shomanFeatures;
+        this.updateCard(
+          'clinical_features',
+          fallbackTotal > 0 ? fallbackTotal.toString() : '-',
+        );
+      });
+
+    this.fetchSectionTotalFromConfig('facial-features-content')
+      .then((total) => {
+        this.updateCard(
+          'facial_features',
+          total > 0 ? total.toString() : '-',
+        );
+      })
+      .catch((error) => {
+        console.error('Failed to load facial features total from stats config:', error);
+        fetch(`/sparqlist/api/NANDO_link_count4?timestamp=${this.timestamp}`)
+          .then((res) => (res.ok ? res.json() : null))
+          .then((linkData4) => {
+            if (!linkData4) {
+              this.updateCard('facial_features', 'N/A');
+              return;
+            }
+            const shiteiFacial = parseInt(linkData4.shitei_gm?.GM || 0);
+            const shomanFacial = parseInt(linkData4.shoman_gm?.GM || 0);
+            const fallbackTotal = shiteiFacial + shomanFacial;
+            this.updateCard(
+              'facial_features',
+              fallbackTotal > 0 ? fallbackTotal.toString() : '-',
+            );
+          })
+          .catch(() => {
+            this.updateCard('facial_features', 'N/A');
+          });
       });
 
     // APIから糖鎖関連遺伝子データを取得
