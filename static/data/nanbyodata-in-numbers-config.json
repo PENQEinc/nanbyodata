@@ -11,8 +11,8 @@
         "en": ""
       },
       "description": {
-        "ja": "NANDO に登録された疾患の一覧データです。",
-        "en": "List of diseases registered in NANDO."
+        "ja": "NANDOには、厚生労働省が定める指定難病と小児慢性特定疾病、それぞれの関連するサブタイプの疾患が収載されています。",
+        "en": "NANDO contains diseases designated as  Designated Intractable Diseases and Pediatric Chronic Diseases by the Ministry of Health, Labour and Welfare, along with their related subtype diseases."
       },
       "hasTabs": false,
       "dataUrl": "/download/latest/nando.json",

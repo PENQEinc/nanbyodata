@@ -105,7 +105,11 @@ const TOP_PAGE_API_MAP = {
   },
 };
 
-async function fetchWithTimeout(url, options = {}, timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS) {
+async function fetchWithTimeout(
+  url,
+  options = {},
+  timeoutMs = CARD_DETAIL_FETCH_TIMEOUT_MS,
+) {
   const controller = new AbortController();
   const timerId = setTimeout(() => controller.abort(), timeoutMs);
   try {
@@ -128,7 +132,9 @@ function resolveDataUrl(source) {
 /** 複数タブがすべて同じ dataUrl を参照する場合、その URL（ダウンロードがタブで変わらないとき用）。 */
 function getSharedTabDataUrlForDownload(tabs) {
   if (!Array.isArray(tabs) || tabs.length < 2) return '';
-  const withTableData = tabs.filter((t) => resolveDataUrl(t) && t.columns?.length);
+  const withTableData = tabs.filter(
+    (t) => resolveDataUrl(t) && t.columns?.length,
+  );
   if (withTableData.length < 2) return '';
   const u0 = resolveDataUrl(withTableData[0]);
   return withTableData.every((t) => resolveDataUrl(t) === u0) ? u0 : '';
@@ -136,12 +142,18 @@ function getSharedTabDataUrlForDownload(tabs) {
 
 /** /download/latest/{basename}.json 形式から basename を取り出す。 */
 function statsLatestBasenameFromDataUrl(url) {
-  const m = String(url || '').trim().match(/\/download\/latest\/([^/?#]+)\.json$/i);
+  const m = String(url || '')
+    .trim()
+    .match(/\/download\/latest\/([^/?#]+)\.json$/i);
   return m ? m[1] : '';
 }
 
 function applyRowFilter(rows, filterConfig) {
-  if (!Array.isArray(rows) || !filterConfig || typeof filterConfig !== 'object') {
+  if (
+    !Array.isArray(rows) ||
+    !filterConfig ||
+    typeof filterConfig !== 'object'
+  ) {
     return rows;
   }
   const key = typeof filterConfig.key === 'string' ? filterConfig.key : '';
@@ -197,7 +209,10 @@ function applyRowGroup(rows, groupConfig) {
       const next = row[field] == null ? '' : String(row[field]);
       if (!next) return;
       const existing = current
-        ? current.split(separator).map((v) => v.trim()).filter(Boolean)
+        ? current
+            .split(separator)
+            .map((v) => v.trim())
+            .filter(Boolean)
         : [];
       if (!existing.includes(next)) {
         existing.push(next);
@@ -249,10 +264,7 @@ const STATS_DEV_DATA_ORIGIN = 'https://dev-nanbyodata.dbcls.jp';
 function isLocalhostHostname() {
   const h = typeof window !== 'undefined' ? window.location.hostname : '';
   return (
-    h === 'localhost' ||
-    h === '127.0.0.1' ||
-    h === '[::1]' ||
-    h === '0.0.0.0'
+    h === 'localhost' || h === '127.0.0.1' || h === '[::1]' || h === '0.0.0.0'
   );
 }
 
@@ -443,7 +455,9 @@ function setupStatsDownloadButtons() {
 
   document.addEventListener('click', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    const isPopupButton = e.target.closest('.stats-header-actions .open-popup-btn');
+    const isPopupButton = e.target.closest(
+      '.stats-header-actions .open-popup-btn',
+    );
     const isInsidePopup = e.target.closest('.stats-header-actions .popup-view');
     if (isPopupButton || isInsidePopup) return;
 
@@ -564,13 +578,13 @@ function getCsvCellValueFromRow(row, col, locale) {
   if (col.link === 'nando') {
     const raw = row?.nando_id != null ? row.nando_id : values[0];
     const normalized = getNandoIdForCsv(raw);
-    return normalized
-      ? `${window.location.origin}/disease/${normalized}`
-      : '-';
+    return normalized ? `${window.location.origin}/disease/${normalized}` : '-';
   }
 
   if (col.html) {
-    const htmlValues = values.map((value) => htmlToPlainText(value)).filter(Boolean);
+    const htmlValues = values
+      .map((value) => htmlToPlainText(value))
+      .filter(Boolean);
     return htmlValues.length > 0 ? htmlValues.join('\n') : '-';
   }
 
@@ -580,7 +594,13 @@ function getCsvCellValueFromRow(row, col, locale) {
 }
 
 function getExportColumnLabel(col, locale) {
-  return col?.label?.[locale] || col?.label?.en || col?.label?.ja || col?.dataKey || '';
+  return (
+    col?.label?.[locale] ||
+    col?.label?.en ||
+    col?.label?.ja ||
+    col?.dataKey ||
+    ''
+  );
 }
 
 function buildExportColumnKeys(columns, locale) {
@@ -601,7 +621,9 @@ function buildExportColumnKeys(columns, locale) {
 
 function escapeTxtCell(str) {
   if (str == null) return '';
-  return String(str).replace(/\r\n|\r|\n/g, ' ').replace(/\t/g, ' ');
+  return String(str)
+    .replace(/\r\n|\r|\n/g, ' ')
+    .replace(/\t/g, ' ');
 }
 
 function buildJsonFromConfigRows(columns, rows, locale) {
@@ -713,7 +735,11 @@ function createStatsTooltipIcon(className, tooltipText) {
 }
 
 /** summary.js の遺伝子件数と同様、Gene symbol 系は大文字化してユニーク化する */
-const TAB_COUNT_GENE_SYMBOL_KEYS = new Set(['symbol', 'gene_symbol', 'genesymbol']);
+const TAB_COUNT_GENE_SYMBOL_KEYS = new Set([
+  'symbol',
+  'gene_symbol',
+  'genesymbol',
+]);
 
 function normalizeValueForTabCount(raw, countKey) {
   if (raw == null) return '';
@@ -729,7 +755,8 @@ function normalizeValueForTabCount(raw, countKey) {
 function getTabCountValue(rows, tab) {
   if (!Array.isArray(rows)) return 0;
   const countKey =
-    tab?.countDataKey || (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
+    tab?.countDataKey ||
+    (tab?.columns && tab.columns[0] ? tab.columns[0].dataKey : null);
   if (countKey === '__row_count__') return rows.length;
   if (!countKey) return rows.length;
   const seen = new Set();
@@ -805,6 +832,136 @@ function getSectionTotalFromRows(rows, columns) {
   }, 0);
 }
 
+function createCollapsibleDescription(descriptionText, locale) {
+  const COLLAPSED_LINE_COUNT = 5;
+  const INLINE_TOGGLE_LINE_BUFFER = 2;
+  const rawText = String(descriptionText || '').trim();
+  const wrapper = document.createElement('div');
+  wrapper.className = 'stats-section-description-wrap';
+
+  const description = document.createElement('p');
+  description.className = 'stats-section-description';
+  wrapper.appendChild(description);
+
+  const textSpan = document.createElement('span');
+  textSpan.className = 'stats-section-description-text';
+  const toggleButton = document.createElement('button');
+  toggleButton.type = 'button';
+  toggleButton.className = 'stats-section-description-toggle';
+  toggleButton.setAttribute('aria-expanded', 'false');
+  description.appendChild(textSpan);
+  description.appendChild(toggleButton);
+
+  let expanded = false;
+  let needsToggle = false;
+  let collapsedText = rawText;
+
+  const getCollapsedMaxHeight = () => {
+    const computed = window.getComputedStyle(description);
+    const fontSize = Number.parseFloat(computed.fontSize) || 16;
+    const lineHeight =
+      Number.parseFloat(computed.lineHeight) || fontSize * 1.85;
+    const effectiveLineCount = COLLAPSED_LINE_COUNT + INLINE_TOGGLE_LINE_BUFFER;
+    return lineHeight * effectiveLineCount + 1;
+  };
+
+  const measureFitsCollapsed = (text) => {
+    textSpan.textContent = `${text}... `;
+    toggleButton.textContent = 'more';
+    return description.scrollHeight <= getCollapsedMaxHeight();
+  };
+
+  const calculateCollapsedText = () => {
+    description.classList.add('is-collapsed');
+    let low = 0;
+    let high = rawText.length;
+    let best = 0;
+    while (low <= high) {
+      const mid = Math.floor((low + high) / 2);
+      const candidate = rawText.slice(0, mid).trimEnd();
+      if (measureFitsCollapsed(candidate)) {
+        best = mid;
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+    return rawText.slice(0, best - 1).trimEnd();
+  };
+
+  const renderExpanded = () => {
+    wrapper.classList.add('is-expanded');
+    description.classList.remove('is-collapsed');
+    textSpan.textContent = `${rawText} `;
+    toggleButton.textContent = 'close';
+    toggleButton.setAttribute('aria-expanded', 'true');
+  };
+
+  const renderCollapsed = () => {
+    wrapper.classList.remove('is-expanded');
+    description.classList.add('is-collapsed');
+    textSpan.textContent = `${collapsedText}... `;
+    toggleButton.textContent = 'more';
+    toggleButton.setAttribute('aria-expanded', 'false');
+  };
+
+  const recalculate = () => {
+    const previousExpanded = expanded;
+    const previousVisibility = description.style.visibility;
+    description.style.visibility = 'hidden';
+
+    description.classList.remove('is-collapsed');
+    textSpan.textContent = rawText;
+    toggleButton.textContent = 'more';
+    needsToggle = description.scrollHeight > getCollapsedMaxHeight();
+
+    if (!needsToggle) {
+      description.style.visibility = previousVisibility;
+      textSpan.textContent = rawText;
+      wrapper.classList.remove('is-expanded');
+      toggleButton.remove();
+      expanded = false;
+      return;
+    }
+
+    collapsedText = calculateCollapsedText();
+    description.style.visibility = previousVisibility;
+    expanded = previousExpanded;
+    if (expanded) {
+      renderExpanded();
+    } else {
+      renderCollapsed();
+    }
+  };
+
+  requestAnimationFrame(() => {
+    recalculate();
+    if (!needsToggle) {
+      return;
+    }
+
+    toggleButton.addEventListener('click', () => {
+      expanded = !expanded;
+      if (expanded) {
+        renderExpanded();
+      } else {
+        renderCollapsed();
+      }
+    });
+
+    let resizeRafId = null;
+    window.addEventListener('resize', () => {
+      if (!document.body.contains(wrapper)) return;
+      if (resizeRafId !== null) cancelAnimationFrame(resizeRafId);
+      resizeRafId = requestAnimationFrame(() => {
+        recalculate();
+      });
+    });
+  });
+
+  return wrapper;
+}
+
 /**
  * カード用の新規テーブルを config に基づいて表示する（ハッシュで指定されたセクション）
  */
@@ -843,13 +1000,21 @@ async function showCardDetailTable(sectionId) {
     title.className = 'stats-section-title';
     title.textContent =
       sectionConfig.title?.[locale] || sectionConfig.title?.en || sectionId;
-    const titleTooltip = getLocalizedConfigText(sectionConfig.titleTooltip, locale);
+    const titleTooltip = getLocalizedConfigText(
+      sectionConfig.titleTooltip,
+      locale,
+    );
     if (titleTooltip) {
-      const tw = createStatsTooltipIcon('stats-section-title-tooltip', titleTooltip);
+      const tw = createStatsTooltipIcon(
+        'stats-section-title-tooltip',
+        titleTooltip,
+      );
       if (tw) title.appendChild(tw);
     }
     const shouldShowTitleCount = !HIDE_TITLE_COUNT_SECTION_IDS.has(sectionId);
-    const titleCount = shouldShowTitleCount ? document.createElement('span') : null;
+    const titleCount = shouldShowTitleCount
+      ? document.createElement('span')
+      : null;
     if (titleCount) {
       titleCount.className = 'stats-title-count data-num';
       setCountLoading(titleCount);
@@ -858,9 +1023,11 @@ async function showCardDetailTable(sectionId) {
     header.appendChild(title);
     let loadedRowsFromApi = [];
     let loadTabTable = null;
-    const hasTabs = Array.isArray(sectionConfig.tabs) && sectionConfig.tabs.length > 0;
+    const hasTabs =
+      Array.isArray(sectionConfig.tabs) && sectionConfig.tabs.length > 0;
     const sharedTabDataUrl = getSharedTabDataUrlForDownload(sectionConfig.tabs);
-    const derivedBasenameForSharedTabs = statsLatestBasenameFromDataUrl(sharedTabDataUrl);
+    const derivedBasenameForSharedTabs =
+      statsLatestBasenameFromDataUrl(sharedTabDataUrl);
     const hideDownloadTableTabSelect = Boolean(
       sharedTabDataUrl && derivedBasenameForSharedTabs,
     );
@@ -879,7 +1046,9 @@ async function showCardDetailTable(sectionId) {
     downloadBtn.setAttribute('aria-expanded', 'false');
     downloadBtn.setAttribute(
       'aria-label',
-      locale === 'ja' ? 'JSON または TXT でダウンロード' : 'Download as JSON or TXT',
+      locale === 'ja'
+        ? 'JSON または TXT でダウンロード'
+        : 'Download as JSON or TXT',
     );
     downloadBtn.innerHTML =
       '<i class="fas fa-download" aria-hidden="true"></i> Download';
@@ -889,7 +1058,10 @@ async function showCardDetailTable(sectionId) {
     downloadPanel.id = `popup-download-${sectionId}`;
     downloadPanel.setAttribute('aria-hidden', 'true');
     downloadPanel.setAttribute('role', 'dialog');
-    downloadPanel.setAttribute('aria-labelledby', `popupDownloadTitle-${sectionId}`);
+    downloadPanel.setAttribute(
+      'aria-labelledby',
+      `popupDownloadTitle-${sectionId}`,
+    );
 
     const downloadTitle = document.createElement('div');
     downloadTitle.className = 'popup-title';
@@ -979,7 +1151,11 @@ async function showCardDetailTable(sectionId) {
         const selectedTabId = downloadTabSelect.value;
         if (!selectedTabId) return;
 
-        if (sectionConfig.tabs?.some((tab) => resolveDataUrl(tab) && tab.columns?.length)) {
+        if (
+          sectionConfig.tabs?.some(
+            (tab) => resolveDataUrl(tab) && tab.columns?.length,
+          )
+        ) {
           const selectedIndex = sectionConfig.tabs.findIndex(
             (tab) => tab.id === selectedTabId,
           );
@@ -996,7 +1172,8 @@ async function showCardDetailTable(sectionId) {
             typeof loadTabTable === 'function'
               ? await loadTabTable(selectedIndex, { silent: true })
               : [];
-          const fallbackBasename = officialBasename || `${sectionId}-${selectedTabId}`;
+          const fallbackBasename =
+            officialBasename || `${sectionId}-${selectedTabId}`;
           emitDownload(selectedTab.columns || [], rows, fallbackBasename);
           return;
         }
@@ -1028,7 +1205,11 @@ async function showCardDetailTable(sectionId) {
       }
 
       const fallbackBasename = effectiveSectionLatestBasename || sectionId;
-      emitDownload(sectionConfig.columns || [], loadedRowsFromApi, fallbackBasename);
+      emitDownload(
+        sectionConfig.columns || [],
+        loadedRowsFromApi,
+        fallbackBasename,
+      );
     });
     downloadBody.appendChild(downloadConfirmBtn);
     downloadPanel.appendChild(downloadBody);
@@ -1049,12 +1230,13 @@ async function showCardDetailTable(sectionId) {
     section.appendChild(header);
 
     const descriptionText =
-      sectionConfig.description?.[locale] || sectionConfig.description?.en || '';
+      sectionConfig.description?.[locale] ||
+      sectionConfig.description?.en ||
+      '';
     if (descriptionText) {
-      const description = document.createElement('p');
-      description.className = 'stats-section-description';
-      description.textContent = descriptionText;
-      section.appendChild(description);
+      section.appendChild(
+        createCollapsibleDescription(descriptionText, locale),
+      );
     }
 
     const tableWrap = document.createElement('div');
@@ -1088,12 +1270,15 @@ async function showCardDetailTable(sectionId) {
       /** タイトル横の件数表示を更新（タブごとの行数の合計。トップAPIがあるセクションでは呼ばない） */
       function updateTitleCountFromCache() {
         if (topPageApiDef || !titleCount) return;
-        const total = Object.entries(tabCache).reduce((sum, [tabIndex, rows]) => {
-          if (!Array.isArray(rows)) return sum;
-          const tab = sectionConfig.tabs?.[Number(tabIndex)];
-          if (!tab) return sum;
-          return sum + getTabCountValue(rows, tab);
-        }, 0);
+        const total = Object.entries(tabCache).reduce(
+          (sum, [tabIndex, rows]) => {
+            if (!Array.isArray(rows)) return sum;
+            const tab = sectionConfig.tabs?.[Number(tabIndex)];
+            if (!tab) return sum;
+            return sum + getTabCountValue(rows, tab);
+          },
+          0,
+        );
         if (Number.isFinite(total)) {
           setCountValue(titleCount, total);
         }
@@ -1137,10 +1322,13 @@ async function showCardDetailTable(sectionId) {
             '" class="stats-table-loading"><div class="stats-table-loading-spinner-wrap"><div class="loading-spinner -stats"></div></div></td></tr>';
         }
         try {
-          const r = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(tab)));
+          const r = await fetchWithTimeout(
+            resolveStatsFetchUrl(resolveDataUrl(tab)),
+          );
           if (!r.ok) throw new Error(r.statusText);
           const data = await r.json();
-          let rows = data.rows || data.data || (Array.isArray(data) ? data : []);
+          let rows =
+            data.rows || data.data || (Array.isArray(data) ? data : []);
           if (Array.isArray(rows)) {
             rows.forEach((row) => {
               if (row && row.kegg_url != null && row.kegg == null) {
@@ -1292,7 +1480,8 @@ async function showCardDetailTable(sectionId) {
           const firstSortableKey = (cols || []).reduce((found, col) => {
             if (found) return found;
             const key = getPrimaryDataKeyForLocale(col, loc);
-            const isSortable = col?.sortable !== false && !!key && !col?.disableSort;
+            const isSortable =
+              col?.sortable !== false && !!key && !col?.disableSort;
             return isSortable ? key : null;
           }, null);
           if (firstSortableKey) {
@@ -1493,7 +1682,11 @@ async function showCardDetailTable(sectionId) {
             while (
               i + span < rowList.length &&
               (function () {
-                const nextVal = getCellValueFromRowByCol(rowList[i + span], col, loc);
+                const nextVal = getCellValueFromRowByCol(
+                  rowList[i + span],
+                  col,
+                  loc,
+                );
                 return String(nextVal) === String(val);
               })()
             )
@@ -1908,7 +2101,6 @@ async function showCardDetailTable(sectionId) {
         '</p>';
       return;
     }
-
   } catch (e) {
     console.warn('カード詳細テーブルの表示に失敗しました', e);
     container.innerHTML =
@@ -1993,7 +2185,9 @@ async function loadSectionTableFromColumnApis(
   let successCount = 0;
   const tasks = apiColumns.map(async (col) => {
     try {
-      const res = await fetchWithTimeout(resolveStatsFetchUrl(resolveDataUrl(col)));
+      const res = await fetchWithTimeout(
+        resolveStatsFetchUrl(resolveDataUrl(col)),
+      );
       if (!res.ok) throw new Error(`${col.dataKey}: ${res.statusText}`);
       const data = await res.json();
       if (data && typeof data === 'object' && !Array.isArray(data)) {
@@ -2004,7 +2198,10 @@ async function loadSectionTableFromColumnApis(
             if (id != null) byId[id] = r.value ?? r.count ?? r;
           });
           columnData[col.dataKey] = byId;
-        } else if (col.valuePathByRow && typeof col.valuePathByRow === 'object') {
+        } else if (
+          col.valuePathByRow &&
+          typeof col.valuePathByRow === 'object'
+        ) {
           const byId = {};
           Object.entries(col.valuePathByRow).forEach(([rowId, path]) => {
             byId[rowId] = getValueByPath(data, path);
@@ -2019,7 +2216,10 @@ async function loadSectionTableFromColumnApis(
       successCount += 1;
       renderPartialTable();
     } catch (e) {
-      console.warn(`Stats column API エラー (${sectionConfig.id}/${col.dataKey}):`, e);
+      console.warn(
+        `Stats column API エラー (${sectionConfig.id}/${col.dataKey}):`,
+        e,
+      );
     }
   });
 
@@ -2088,7 +2288,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
         const firstSortableKey = (columns || []).reduce((found, col) => {
           if (found) return found;
           const key = getPrimaryDataKeyForColumn(col);
-          const isSortable = col?.sortable !== false && !!key && !col?.disableSort;
+          const isSortable =
+            col?.sortable !== false && !!key && !col?.disableSort;
           return isSortable ? key : null;
         }, null);
         table._statsSortState = firstSortableKey
@@ -2101,7 +2302,9 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
     const sortRows = (list, sortState) => {
       const copied = Array.isArray(list) ? list.slice() : [];
       if (!sortState || !sortState.key) return copied;
-      const col = columns.find((c) => getPrimaryDataKeyForColumn(c) === sortState.key);
+      const col = columns.find(
+        (c) => getPrimaryDataKeyForColumn(c) === sortState.key,
+      );
       const isNumericColumn =
         col && col.sortType === 'number'
           ? true
@@ -2109,7 +2312,11 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
             ? false
             : undefined;
       const localeCode =
-        locale === 'ja' ? 'ja-JP' : locale === 'en' ? 'en-US' : navigator.language;
+        locale === 'ja'
+          ? 'ja-JP'
+          : locale === 'en'
+            ? 'en-US'
+            : navigator.language;
       const toComparable = (val) => {
         if (val === undefined || val === null) return null;
         if (typeof val === 'number') return val;
@@ -2125,7 +2332,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
         if (va == null) return 1;
         if (vb == null) return -1;
         const bothNumbers =
-          isNumericColumn === true || (typeof va === 'number' && typeof vb === 'number');
+          isNumericColumn === true ||
+          (typeof va === 'number' && typeof vb === 'number');
         let cmp;
         if (bothNumbers) {
           cmp = va === vb ? 0 : va < vb ? -1 : 1;
@@ -2167,7 +2375,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
           hasIcon = true;
         }
         const sortKey = getPrimaryDataKeyForColumn(col);
-        const isSortable = col.sortable !== false && !!sortKey && !col.disableSort;
+        const isSortable =
+          col.sortable !== false && !!sortKey && !col.disableSort;
         if (isSortable) {
           th.classList.add('stats-sortable');
           th.dataset.sortKey = sortKey;
@@ -2176,7 +2385,9 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
           const icon = document.createElement('i');
           icon.className = 'fas sort-icon';
           if (sortState.key === sortKey) {
-            icon.classList.add(sortState.order === 'asc' ? 'fa-sort-up' : 'fa-sort-down');
+            icon.classList.add(
+              sortState.order === 'asc' ? 'fa-sort-up' : 'fa-sort-down',
+            );
           } else {
             icon.classList.add('fa-sort');
           }
@@ -2245,12 +2456,16 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
         }
         columns.forEach((col, colIdx) => {
           if (col.rowspan && rowspanGroups[colIdx]) {
-            const group = rowspanGroups[colIdx].find((g) => g.startRow === rowIndex);
+            const group = rowspanGroups[colIdx].find(
+              (g) => g.startRow === rowIndex,
+            );
             if (!group) return;
           }
           const td = document.createElement('td');
           if (col.rowspan && rowspanGroups[colIdx]) {
-            const group = rowspanGroups[colIdx].find((g) => g.startRow === rowIndex);
+            const group = rowspanGroups[colIdx].find(
+              (g) => g.startRow === rowIndex,
+            );
             if (group) {
               td.rowSpan = group.span;
               td.style.verticalAlign = getRowspanVerticalAlign(col);
@@ -2290,7 +2505,8 @@ async function loadSectionTableFromApi(table, tbody, sectionConfig, locale) {
               a.href = hpoUrl;
               a.target = '_blank';
               a.rel = 'noopener noreferrer';
-              a.textContent = displayVal === '-' ? String(val).trim() : displayVal;
+              a.textContent =
+                displayVal === '-' ? String(val).trim() : displayVal;
               td.appendChild(a);
             } else {
               td.textContent = displayVal;
@@ -2785,7 +3001,9 @@ function updateAllTables(statsData) {
 // NANDO_count APIからデータを取得する関数
 async function fetchNANDOData() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_count'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_count'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2813,7 +3031,9 @@ async function fetchNANDOData() {
 // BRC APIからデータを取得する関数
 async function fetchBRCData() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count3'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count3'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2841,7 +3061,9 @@ async function fetchBRCData() {
 // NANDO_link_count APIからデータを取得する関数
 async function fetchLinkData() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2869,7 +3091,9 @@ async function fetchLinkData() {
 // NANDO_link_count2 APIからデータを取得する関数
 async function fetchLinkData2() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count2'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count2'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2897,7 +3121,9 @@ async function fetchLinkData2() {
 // NANDO_link_count4 APIからデータを取得する関数
 async function fetchLinkData4() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count4'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count4'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2925,7 +3151,9 @@ async function fetchLinkData4() {
 // NANDO_link_count5 APIからデータを取得する関数
 async function fetchLinkData5() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count5'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count5'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2953,7 +3181,9 @@ async function fetchLinkData5() {
 // NANDO_link_count7 APIからデータを取得する関数（ClinVar）
 async function fetchLinkData7() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count7'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count7'),
+    );
 
     if (!response.ok) {
       throw new Error(
@@ -2981,7 +3211,9 @@ async function fetchLinkData7() {
 // NANDO_link_count8 APIから糖鎖関連遺伝子データを取得する関数
 async function fetchGlycoGeneData() {
   try {
-    const response = await fetch(resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count8'));
+    const response = await fetch(
+      resolveStatsFetchUrl('/sparqlist/api/NANDO_link_count8'),
+    );
 
     if (!response.ok) {
       throw new Error(
