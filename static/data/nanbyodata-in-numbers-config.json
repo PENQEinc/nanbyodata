@@ -738,7 +738,10 @@
               "rowspanVerticalAlign": "top"
             },
             {
-              "dataKey": "nando_label",
+              "dataKeyByLocale": {
+                "ja": "nando_label",
+                "en": "nando_label_en"
+              },
               "noWrap": false,
               "label": {
                 "ja": "疾患",
@@ -751,7 +754,10 @@
               "link": "nando"
             },
             {
-              "dataKey": "nando_category",
+              "dataKeyByLocale": {
+                "ja": "nando_category",
+                "en": "nando_category_en"
+              },
               "label": {
                 "ja": "制度区分",
                 "en": "Medical Subsidy Category"
@@ -827,7 +833,10 @@
               "rowspanVerticalAlign": "top"
             },
             {
-              "dataKey": "nando_label",
+              "dataKeyByLocale": {
+                "ja": "nando_label",
+                "en": "nando_label_en"
+              },
               "noWrap": false,
               "label": {
                 "ja": "疾患",
@@ -856,7 +865,10 @@
               }
             },
             {
-              "dataKey": "nando_category",
+              "dataKeyByLocale": {
+                "ja": "nando_category",
+                "en": "nando_category_en"
+              },
               "label": {
                 "ja": "制度区分",
                 "en": "Medical Subsidy Category"
